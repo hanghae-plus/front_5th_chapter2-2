@@ -1,6 +1,7 @@
 // useCart.ts
 import { useState } from 'react';
 import { Cart, CartItem, Product } from '../../types';
+import { updateCartItemQuantity } from '../models/cart.ts';
 
 export type AddToCart = (product: Product) => void;
 export type RemoveFromCart = (productId: string) => void;
@@ -63,23 +64,7 @@ export const useCart = () => {
     newQuantity: number,
   ) => {
     setCart((prevCart) =>
-      prevCart
-        .map((item) => {
-          if (item.product.id !== productId) {
-            return item;
-          }
-
-          const maxQuantity = item.product.stock;
-          const updatedQuantity = Math.max(
-            0,
-            Math.min(newQuantity, maxQuantity),
-          );
-
-          return updatedQuantity > 0
-            ? { ...item, quantity: updatedQuantity }
-            : null;
-        })
-        .filter((item): item is CartItem => item !== null),
+      updateCartItemQuantity(prevCart, productId, newQuantity),
     );
   };
 

@@ -61,5 +61,18 @@ export const updateCartItemQuantity = (
   productId: string,
   newQuantity: number,
 ): CartItem[] => {
-  return [];
+  return cart
+    .map((item) => {
+      if (item.product.id !== productId) {
+        return item;
+      }
+
+      const maxQuantity = item.product.stock;
+      const updatedQuantity = Math.max(0, Math.min(newQuantity, maxQuantity));
+
+      return updatedQuantity > 0
+        ? { ...item, quantity: updatedQuantity }
+        : null;
+    })
+    .filter((item): item is CartItem => item !== null);
 };
