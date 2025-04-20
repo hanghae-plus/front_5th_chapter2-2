@@ -39,6 +39,9 @@ const _calculateCouponDiscountValue = (selectedCoupon: Coupon | null, totalBefor
 };
 
 export const calculateCartTotal = (cart: CartItem[], selectedCoupon: Coupon | null) => {
+  // 빈 장바구니 예외처리 -> 할인 쿠폰이 음수값이 적용 가능함
+  if (!cart.length) return { totalBeforeDiscount: 0, totalAfterDiscount: 0, totalDiscount: 0 };
+
   // 쿠폰 적용 전 할인된 총액, 기본 할인 액
   const { totalBeforeDiscount, quantityDiscount } = _calculateCartTotalWithoutCoupon(cart);
 
