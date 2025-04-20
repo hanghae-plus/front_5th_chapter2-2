@@ -1,4 +1,3 @@
-import { useCart } from "../../hooks";
 import type { Product, CartItem } from "../../types";
 import { getRemainingStock, getMaxDiscount } from "../../utils";
 interface ProductListProps {
@@ -50,6 +49,7 @@ export const ProductList = ({
               {product.discounts.length > 0 && (
                 <ul className="list-disc list-inside text-sm text-gray-500 mb-2">
                   {product.discounts.map((discount, index) => (
+                    // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                     <li key={index}>
                       {discount.quantity}개 이상:{" "}
                       {(discount.rate * 100).toFixed(0)}% 할인
@@ -58,6 +58,7 @@ export const ProductList = ({
                 </ul>
               )}
               <button
+                type="button"
                 onClick={() => addToCart(product)}
                 className={`w-full px-3 py-1 rounded ${
                   remainingStock > 0

@@ -1,5 +1,5 @@
 import { Cart, ProductList } from "../components/cart";
-import type { Product, CouponItem, CartItem } from "../types";
+import type { Product, CouponItem } from "../types";
 import { useCart } from "../hooks";
 interface CartPageProps {
   products: Product[];

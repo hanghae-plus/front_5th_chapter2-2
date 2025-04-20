@@ -1,4 +1,4 @@
-import { Product, CouponItem } from "../types";
+import type { Product, CouponItem } from "../types";
 import { AdminProductList, AdminCouponList } from "../components";
 interface AdminPageProps {
   products: Product[];

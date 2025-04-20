@@ -1,6 +1,5 @@
-import { useCart } from "../../hooks";
+import type { CartItem } from "../../types";
 import { getAppliedDiscount } from "../../utils";
-import { CartItem } from "../../types";
 
 interface CartListProps {
   cart: CartItem[];
@@ -13,8 +12,6 @@ export const CartList = ({
   removeFromCart,
   updateQuantity,
 }: CartListProps) => {
-  console.log("cartList", cart);
-
   return (
     <div className="space-y-2">
       {cart.map((item) => {
@@ -38,6 +35,7 @@ export const CartList = ({
             </div>
             <div>
               <button
+                type="button"
                 onClick={() =>
                   updateQuantity(item.product.id, item.quantity - 1)
                 }
@@ -46,6 +44,7 @@ export const CartList = ({
                 -
               </button>
               <button
+                type="button"
                 onClick={() =>
                   updateQuantity(item.product.id, item.quantity + 1)
                 }
@@ -54,6 +53,7 @@ export const CartList = ({
                 +
               </button>
               <button
+                type="button"
                 onClick={() => removeFromCart(item.product.id)}
                 className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
               >

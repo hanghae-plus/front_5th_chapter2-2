@@ -1,4 +1,4 @@
-import { CartItem, CouponItem } from "../../types";
+import type { CartItem, CouponItem } from "../../types";
 import { CartList } from "./CartList";
 import { Coupon } from "./Coupon";
 import { Order } from "./Order";

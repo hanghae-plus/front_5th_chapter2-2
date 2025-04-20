@@ -486,7 +486,7 @@ describe("basic > ", () => {
         result.current.addToCart(testProduct);
         result.current.updateQuantity(testProduct.id, 5);
       });
-
+      console.log("result.current.cart", result.current.cart);
       expect(result.current.cart[0].quantity).toBe(5);
     });
 
