@@ -1,7 +1,11 @@
 // useCart.ts
 import { useCallback, useState } from "react";
 import { CartItem, Coupon, Product } from "../../types";
-import { addToCartCheckStock, calculateCartTotal, updateCartItemQuantity } from "../models/cart";
+import {
+  addToCartCheckStock,
+  calculateCartTotal,
+  updateCartItemQuantity,
+} from "../models/cart";
 
 export const useCart = () => {
   const [cart, setCart] = useState<CartItem[]>([]);
@@ -15,9 +19,12 @@ export const useCart = () => {
     setCart((prev) => updateCartItemQuantity(prev, productId, 0));
   }, []);
 
-  const updateQuantity = useCallback((productId: string, newQuantity: number) => {
-    setCart((prev) => updateCartItemQuantity(prev, productId, newQuantity));
-  }, []);
+  const updateQuantity = useCallback(
+    (productId: string, newQuantity: number) => {
+      setCart((prev) => updateCartItemQuantity(prev, productId, newQuantity));
+    },
+    []
+  );
 
   const applyCoupon = useCallback((coupon: Coupon) => {
     setSelectedCoupon(coupon);
@@ -25,5 +32,13 @@ export const useCart = () => {
 
   const calculateTotal = () => calculateCartTotal(cart, selectedCoupon);
 
-  return { cart, addToCart, removeFromCart, updateQuantity, applyCoupon, calculateTotal, selectedCoupon };
+  return {
+    cart,
+    addToCart,
+    removeFromCart,
+    updateQuantity,
+    applyCoupon,
+    calculateTotal,
+    selectedCoupon,
+  };
 };
