@@ -1,13 +1,18 @@
 import { useCart } from "../../hooks";
-import type { Product } from "../../types";
+import type { Product, CartItem } from "../../types";
 import { getRemainingStock, getMaxDiscount } from "../../utils";
 interface ProductListProps {
   products: Product[];
+  cart: CartItem[];
+  addToCart: (product: Product) => void;
 }
 
-export const ProductList = ({ products }: ProductListProps) => {
+export const ProductList = ({
+  products,
+  cart,
+  addToCart,
+}: ProductListProps) => {
   console.log(products);
-  const { cart, addToCart } = useCart();
 
   return (
     <div>

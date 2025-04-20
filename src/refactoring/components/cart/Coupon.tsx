@@ -1,13 +1,15 @@
-import { useCart } from "../../hooks";
 import type { CouponItem } from "../../types";
-
 interface CouponProps {
   coupons: CouponItem[];
+  selectedCoupon: CouponItem | null;
+  applyCoupon: (coupon: CouponItem) => void;
 }
 
-export const Coupon = ({ coupons }: CouponProps) => {
-  const { selectedCoupon, applyCoupon } = useCart();
-
+export const Coupon = ({
+  coupons,
+  selectedCoupon,
+  applyCoupon,
+}: CouponProps) => {
   return (
     <div className="mt-6 bg-white p-4 rounded shadow">
       <h2 className="text-2xl font-semibold mb-2">쿠폰 적용</h2>

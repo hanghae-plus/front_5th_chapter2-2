@@ -1,12 +1,20 @@
-import type { CartItem } from "../../types";
 import { useCart } from "../../hooks";
 import { getAppliedDiscount } from "../../utils";
+import { CartItem } from "../../types";
+
 interface CartListProps {
   cart: CartItem[];
+  removeFromCart: (productId: string) => void;
+  updateQuantity: (productId: string, quantity: number) => void;
 }
 
-export const CartList = ({ cart }: CartListProps) => {
-  const { updateQuantity, removeFromCart } = useCart();
+export const CartList = ({
+  cart,
+  removeFromCart,
+  updateQuantity,
+}: CartListProps) => {
+  console.log("cartList", cart);
+
   return (
     <div className="space-y-2">
       {cart.map((item) => {
