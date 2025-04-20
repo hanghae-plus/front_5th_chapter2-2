@@ -1,9 +1,11 @@
 import { Coupon, Product } from '../../types.ts';
-import { useCart } from '../hooks';
+import { ApplyCoupon, useCart } from '../hooks';
 import { Products } from './Cart/components/Products';
 import { CartDisplay } from './Cart/components/CartDisplay';
-import { ApplyCouponToCart } from './Cart/components/ApplyCouponToCart/CartPage.tsx';
+
 import { Summary } from './Cart/components/Summary';
+import { ApplyCouponToCart } from './Cart/components/ApplyCouponToCart';
+import { useState } from 'react';
 
 interface Props {
   products: Product[];
@@ -11,16 +13,52 @@ interface Props {
 }
 
 export const CartPage = ({ products, coupons }: Props) => {
-  const {
-    cart,
-    addToCart,
-    removeFromCart,
-    updateQuantity,
-    applyCoupon,
-    calculateTotal,
-    selectedCoupon,
-    getRemainingStock,
-  } = useCart();
+  const { cart, addToCart, removeFromCart, updateQuantity, getRemainingStock } =
+    useCart();
+
+  const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
+  const applyCoupon: ApplyCoupon = (coupon: Coupon) => {
+    setSelectedCoupon(coupon);
+  };
+
+  const calculateTotal = () => {
+    let totalBeforeDiscount = 0;
+    let totalAfterDiscount = 0;
+
+    cart.forEach((item) => {
+      const { price } = item.product;
+
+      const { quantity } = item;
+      totalBeforeDiscount += price * quantity;
+
+      const discount = item.product.discounts.reduce((maxDiscount, d) => {
+        return quantity >= d.quantity && d.rate > maxDiscount
+          ? d.rate
+          : maxDiscount;
+      }, 0);
+      totalAfterDiscount += price * quantity * (1 - discount);
+    });
+
+    let totalDiscount = totalBeforeDiscount - totalAfterDiscount;
+
+    if (selectedCoupon) {
+      if (selectedCoupon.discountType === 'amount') {
+        totalAfterDiscount = Math.max(
+          0,
+          totalAfterDiscount - selectedCoupon.discountValue,
+        );
+      } else {
+        totalAfterDiscount *= 1 - selectedCoupon.discountValue / 100;
+      }
+      totalDiscount = totalBeforeDiscount - totalAfterDiscount;
+    }
+
+    return {
+      totalBeforeDiscount: Math.round(totalBeforeDiscount),
+      totalAfterDiscount: Math.round(totalAfterDiscount),
+      totalDiscount: Math.round(totalDiscount),
+    };
+  };
 
   return (
     <div className='container mx-auto p-4'>

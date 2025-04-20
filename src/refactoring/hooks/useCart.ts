@@ -1,11 +1,11 @@
 // useCart.ts
 import { useState } from 'react';
-import { Cart, Coupon, Product } from '../../types';
+import { Cart, CartItem, Product } from '../../types';
 
 export type AddToCart = (product: Product) => void;
 export type RemoveFromCart = (productId: string) => void;
 export type UpdateQuantity = (productId: string, newQuantity: number) => void;
-export type ApplyCoupon = (coupon: Coupon) => void;
+
 export type GetRemainingStock = (product: Product) => number;
 export type TotalPrices = {
   totalBeforeDiscount: number;
@@ -13,10 +13,27 @@ export type TotalPrices = {
   totalDiscount: number;
 };
 export type CalculateTotal = () => TotalPrices;
-export type SelectedCoupon = Coupon | null;
+
+//계산
+const findItemById = (cart: Cart, id: string): CartItem | undefined => {
+  const foundItem = cart.find((item) => item.product.id === id);
+  return foundItem ? { ...foundItem } : undefined;
+};
+//계산
+const addNewItemToCart = (prevCart: Cart, product: Product): Cart => [
+  ...prevCart,
+  { product, quantity: 1 },
+];
+// 계산
+const addExitingItemToCart = (prevCart: Cart, product: Product) =>
+  prevCart.map((item) =>
+    item.product.id === product.id
+      ? { ...item, quantity: Math.min(item.quantity + 1, product.stock) }
+      : item,
+  );
+
 export const useCart = () => {
   const [cart, setCart] = useState<Cart>([]);
-  const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
 
   const getRemainingStock = (product: Product) => {
     const cartItem = cart.find((item) => item.product.id === product.id);
@@ -24,50 +41,57 @@ export const useCart = () => {
   };
 
   const addToCart: AddToCart = (product: Product) => {
-    console.log({ product });
-    console.log({ cart });
-
     const remainingStock = getRemainingStock(product);
     if (remainingStock <= 0) return;
 
     setCart((prevCart) => {
-      const existingItem = prevCart.find(
-        (item) => item.product.id === product.id,
-      );
-      if (existingItem) {
-        return prevCart.map((item) =>
-          item.product.id === product.id
-            ? { ...item, quantity: Math.min(item.quantity + 1, product.stock) }
-            : item,
-        );
-      }
-      return [...prevCart, { product, quantity: 1 }];
+      const existingItem = findItemById(prevCart, product.id);
+      return existingItem
+        ? addExitingItemToCart(prevCart, product)
+        : addNewItemToCart(prevCart, product);
     });
   };
 
-  const removeFromCart: RemoveFromCart = (productId: string) => {};
+  const removeFromCart: RemoveFromCart = (productId: string) => {
+    setCart((prevCart) =>
+      prevCart
+        .map((item) => {
+          return item.product.id === productId ? null : item;
+        })
+        .filter((item): item is CartItem => item !== null),
+    );
+  };
 
   const updateQuantity: UpdateQuantity = (
     productId: string,
     newQuantity: number,
-  ) => {};
+  ) => {
+    setCart((prevCart) =>
+      prevCart
+        .map((item) => {
+          if (item.product.id !== productId) {
+            return item;
+          }
 
-  const applyCoupon: ApplyCoupon = (coupon: Coupon) => {};
+          const maxQuantity = item.product.stock;
+          const updatedQuantity = Math.max(
+            0,
+            Math.min(newQuantity, maxQuantity),
+          );
 
-  const calculateTotal = () => ({
-    totalBeforeDiscount: 0,
-    totalAfterDiscount: 0,
-    totalDiscount: 0,
-  });
+          return updatedQuantity > 0
+            ? { ...item, quantity: updatedQuantity }
+            : null;
+        })
+        .filter((item): item is CartItem => item !== null),
+    );
+  };
 
   return {
     cart,
     addToCart,
     removeFromCart,
     updateQuantity,
-    applyCoupon,
-    calculateTotal,
-    selectedCoupon,
     getRemainingStock,
   };
 };

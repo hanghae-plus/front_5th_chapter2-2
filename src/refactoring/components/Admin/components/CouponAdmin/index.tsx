@@ -5,24 +5,23 @@ interface Props {
   coupons: Coupon[];
   onCouponAdd: (newCoupon: Coupon) => void;
 }
-
+const defaultNewCoupon: Coupon = {
+  name: '',
+  code: '',
+  discountType: 'percentage',
+  discountValue: 0,
+};
 export const CouponAdmin = ({ coupons, onCouponAdd }: Props) => {
-  const [newCoupon, setNewCoupon] = useState<Coupon>({
-    name: '',
-    code: '',
-    discountType: 'percentage',
-    discountValue: 0,
-  });
+  const [newCoupon, setNewCoupon] = useState<Coupon>(defaultNewCoupon);
 
   const handleAddCoupon = () => {
     onCouponAdd(newCoupon);
-    setNewCoupon({
-      name: '',
-      code: '',
-      discountType: 'percentage',
-      discountValue: 0,
-    });
+    setNewCoupon(defaultNewCoupon);
   };
+
+  function handleChangeCoupon(fieldName: string, value: string | number) {
+    setNewCoupon({ ...newCoupon, [fieldName]: value });
+  }
 
   return (
     <div id={'쿠폰 관리'}>
@@ -33,28 +32,24 @@ export const CouponAdmin = ({ coupons, onCouponAdd }: Props) => {
             type='text'
             placeholder='쿠폰 이름'
             value={newCoupon.name}
-            onChange={(e) =>
-              setNewCoupon({ ...newCoupon, name: e.target.value })
-            }
+            onChange={(e) => handleChangeCoupon('name', e.target.value)}
             className='w-full p-2 border rounded'
           />
           <input
             type='text'
             placeholder='쿠폰 코드'
             value={newCoupon.code}
-            onChange={(e) =>
-              setNewCoupon({ ...newCoupon, code: e.target.value })
-            }
+            onChange={(e) => handleChangeCoupon('code', e.target.value)}
             className='w-full p-2 border rounded'
           />
           <div className='flex gap-2'>
             <select
               value={newCoupon.discountType}
               onChange={(e) =>
-                setNewCoupon({
-                  ...newCoupon,
-                  discountType: e.target.value as 'amount' | 'percentage',
-                })
+                handleChangeCoupon(
+                  'discountType',
+                  e.target.value as 'amount' | 'percentage',
+                )
               }
               className='w-full p-2 border rounded'
             >
@@ -66,10 +61,7 @@ export const CouponAdmin = ({ coupons, onCouponAdd }: Props) => {
               placeholder='할인 값'
               value={newCoupon.discountValue}
               onChange={(e) =>
-                setNewCoupon({
-                  ...newCoupon,
-                  discountValue: parseInt(e.target.value),
-                })
+                handleChangeCoupon('discountValue', parseInt(e.target.value))
               }
               className='w-full p-2 border rounded'
             />
