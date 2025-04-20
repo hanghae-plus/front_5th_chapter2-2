@@ -1,4 +1,12 @@
-export const CartList = () => {
+import type { CartItem } from "../../types";
+import { useCart } from "../../hooks";
+import { getAppliedDiscount } from "../../utils";
+interface CartListProps {
+  cart: CartItem[];
+}
+
+export const CartList = ({ cart }: CartListProps) => {
+  const { updateQuantity, removeFromCart } = useCart();
   return (
     <div className="space-y-2">
       {cart.map((item) => {

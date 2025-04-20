@@ -1,10 +1,20 @@
-export const ProductList = () => {
+import { useCart } from "../../hooks";
+import type { Product } from "../../types";
+import { getRemainingStock, getMaxDiscount } from "../../utils";
+interface ProductListProps {
+  products: Product[];
+}
+
+export const ProductList = ({ products }: ProductListProps) => {
+  console.log(products);
+  const { cart, addToCart } = useCart();
+
   return (
     <div>
       <h2 className="text-2xl font-semibold mb-4">상품 목록</h2>
       <div className="space-y-2">
         {products.map((product) => {
-          const remainingStock = getRemainingStock(product);
+          const remainingStock = getRemainingStock(product, cart);
           return (
             <div
               key={product.id}
