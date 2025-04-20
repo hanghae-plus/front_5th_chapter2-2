@@ -4,16 +4,17 @@ import { Product } from "../../types.ts";
 export const useProducts = (initialProducts: Product[]) => {
   const [products, setProducts] = useState(initialProducts);
 
-  const addProduct = useCallback(
-    (product: Product) => {
-      setProducts((prev) => [...prev, product]);
-    },
-    [setProducts]
-  );
+  const updateProduct = useCallback((product: Product) => {
+    setProducts((prev) => prev.map((p) => (p.id === product.id ? product : p)));
+  }, []);
+
+  const addProduct = useCallback((product: Product) => {
+    setProducts((prev) => [...prev, product]);
+  }, []);
 
   return {
     products,
-    updateProduct: () => undefined,
+    updateProduct,
     addProduct,
   };
 };
