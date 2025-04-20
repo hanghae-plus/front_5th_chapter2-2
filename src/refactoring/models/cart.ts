@@ -24,5 +24,19 @@ export const updateCartItemQuantity = (
   productId: string,
   newQuantity: number
 ): CartItem[] => {
-  return [];
+  if (newQuantity === 0) {
+    return cart.filter((item) => item.product.id !== productId);
+  }
+
+  const computedCart = cart.map((item) => {
+    if (item.product.id === productId) {
+      return {
+        product: { ...item.product, stock: item.product.stock - 1 },
+        quantity: newQuantity,
+      };
+    }
+    return item;
+  });
+
+  return computedCart;
 };
