@@ -8,19 +8,13 @@ export const useCart = () => {
   const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
 
   const addToCart = (product: Product) => {
-    const isInCart = cart.some((p) => p.product.id === product.id);
-
-    if (isInCart) {
-      setCart((prev) =>
-        prev.map((p) =>
-          p.product.id === product.id ? { ...p, quantity: p.quantity + 1 } : p
-        )
-      );
-    }
-
-    if (!isInCart) {
-      setCart((prev) => [...prev, { product, quantity: 1 }]);
-    }
+    setCart((prev) =>
+      cart.some((p) => p.product.id === product.id)
+        ? prev.map((p) =>
+            p.product.id === product.id ? { ...p, quantity: p.quantity + 1 } : p
+          )
+        : [...prev, { product, quantity: 1 }]
+    );
   };
 
   const removeFromCart = (productId: string) => {
