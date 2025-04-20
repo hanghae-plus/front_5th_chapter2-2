@@ -1,4 +1,4 @@
-import { CartItem, Coupon, DISCOUNT_TYPE } from "../../types";
+import { CartItem, Coupon, DISCOUNT_TYPE, Product } from "../../types";
 
 export const calculateItemTotal = (item: CartItem) => {
   const { product, quantity } = item;
@@ -68,4 +68,20 @@ export const updateCartItemQuantity = (cart: CartItem[], productId: string, newQ
     const quantity = item.product.stock >= newQuantity ? newQuantity : item.product.stock;
     return { ...item, quantity };
   });
+};
+
+// 장바구니에 추가할때 새배열 함수, 재고 확인 로직 포함
+export const addToCartCheckStock = (cart: CartItem[], product: Product) => {
+  const newCart = [...cart];
+  const idx = newCart.findIndex((item) => item.product.id === product.id);
+
+  // 있는 경우 재고 확인 후 추가
+  if (idx !== -1) {
+    const item = newCart[idx];
+    const quantity = Math.min(item.quantity + 1, product.stock);
+    newCart[idx] = { ...item, quantity };
+    return newCart;
+  }
+
+  return [...newCart, { product, quantity: 1 }];
 };
