@@ -61,6 +61,10 @@ export const updateCartItemQuantity = (
   productId: string,
   newQuantity: number
 ): CartItem[] => {
+  if (newQuantity === 0) {
+    return cart.filter((item) => item.product.id !== productId);
+  }
+
   return cart.map((item) =>
     item.product.id === productId ? { ...item, quantity: newQuantity } : item
   );
