@@ -66,6 +66,8 @@ export const updateCartItemQuantity = (
   }
 
   return cart.map((item) =>
-    item.product.id === productId ? { ...item, quantity: newQuantity } : item
+    item.product.id === productId
+      ? { ...item, quantity: Math.min(item.product.stock, newQuantity) }
+      : item
   );
 };
