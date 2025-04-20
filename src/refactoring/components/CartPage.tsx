@@ -1,11 +1,10 @@
 import { Coupon, Product } from '../../types.ts';
-import { ApplyCoupon, useCart } from '../hooks';
+import { useCart } from '../hooks';
 import { Products } from './Cart/components/Products';
 import { CartDisplay } from './Cart/components/CartDisplay';
 
 import { Summary } from './Cart/components/Summary';
 import { ApplyCouponToCart } from './Cart/components/ApplyCouponToCart';
-import { useState } from 'react';
 import { calculateCartTotal } from '../models/cart.ts';
 
 interface Props {
@@ -14,13 +13,15 @@ interface Props {
 }
 
 export const CartPage = ({ products, coupons }: Props) => {
-  const { cart, addToCart, removeFromCart, updateQuantity, getRemainingStock } =
-    useCart();
-
-  const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
-  const applyCoupon: ApplyCoupon = (coupon: Coupon) => {
-    setSelectedCoupon(coupon);
-  };
+  const {
+    cart,
+    addToCart,
+    removeFromCart,
+    updateQuantity,
+    getRemainingStock,
+    selectedCoupon,
+    applyCoupon,
+  } = useCart();
 
   return (
     <div className='container mx-auto p-4'>

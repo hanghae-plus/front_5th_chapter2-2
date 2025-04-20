@@ -1,7 +1,8 @@
 // useCart.ts
 import { useState } from 'react';
-import { Cart, CartItem, Product } from '../../types';
-import { updateCartItemQuantity } from '../models/cart.ts';
+import { Cart, CartItem, Coupon, Product } from '../../types';
+import { calculateCartTotal, updateCartItemQuantity } from '../models/cart.ts';
+import { ApplyCoupon } from './useCoupon.ts';
 
 export type AddToCart = (product: Product) => void;
 export type RemoveFromCart = (productId: string) => void;
@@ -68,11 +69,19 @@ export const useCart = () => {
     );
   };
 
+  //todo: 따로 분리하고 싶은데 test코드 상 분리할 수가 없어보임..
+  const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
+  const applyCoupon: ApplyCoupon = (coupon: Coupon) => {
+    setSelectedCoupon(coupon);
+  };
   return {
     cart,
     addToCart,
     removeFromCart,
     updateQuantity,
     getRemainingStock,
+    selectedCoupon,
+    applyCoupon,
+    calculateTotal: () => calculateCartTotal(cart, selectedCoupon),
   };
 };
