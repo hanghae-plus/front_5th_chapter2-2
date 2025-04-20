@@ -4,7 +4,7 @@ import { PERMISSION_TYPE } from "../../types";
 export const getUserPermission = async () => {
   return new Promise((resolve) => {
     setTimeout(() => {
-      resolve(PERMISSION_TYPE.ADMIN);
+      resolve(() => PERMISSION_TYPE.ADMIN);
     }, 300);
   });
 };
