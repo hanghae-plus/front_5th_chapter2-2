@@ -27,7 +27,13 @@ export const useCart = () => {
     setCart((prev) => prev.filter((p) => p.product.id !== productId));
   };
 
-  const updateQuantity = (productId: string, newQuantity: number) => {};
+  const updateQuantity = (productId: string, newQuantity: number) => {
+    setCart((prev) =>
+      prev.map((p) =>
+        p.product.id === productId ? { ...p, quantity: newQuantity } : p
+      )
+    );
+  };
 
   const applyCoupon = (coupon: Coupon) => {};
 
