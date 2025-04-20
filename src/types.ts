@@ -16,6 +16,11 @@ export interface ICartItem {
   quantity: number;
 }
 
+/**
+ * 할인 타입
+ * amount: 금액 할인
+ * percentage: 퍼센트 할인
+ */
 export type TDiscountType = "amount" | "percentage";
 
 export interface ICoupon {

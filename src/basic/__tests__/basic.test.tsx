@@ -316,7 +316,7 @@ describe("basic > ", () => {
     });
   });
 
-  describe.only("cartUtils", () => {
+  describe("cartUtils", () => {
     const testProduct: IProduct = {
       id: "1",
       name: "Test Product",
