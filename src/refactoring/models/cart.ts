@@ -5,7 +5,11 @@ export const calculateItemTotal = (item: CartItem) => {
 };
 
 export const getMaxApplicableDiscount = (item: CartItem) => {
-  return 0;
+  return item.product.discounts.reduce((maxDiscount, d) => {
+    return item.quantity >= d.quantity && d.rate > maxDiscount
+      ? d.rate
+      : maxDiscount;
+  }, 0);
 };
 
 export type TotalPrices = {
@@ -27,11 +31,7 @@ export const calculateCartTotal = (
     const { quantity } = item;
     totalBeforeDiscount += price * quantity;
 
-    const discount = item.product.discounts.reduce((maxDiscount, d) => {
-      return quantity >= d.quantity && d.rate > maxDiscount
-        ? d.rate
-        : maxDiscount;
-    }, 0);
+    const discount = getMaxApplicableDiscount(item);
     totalAfterDiscount += price * quantity * (1 - discount);
   });
 
