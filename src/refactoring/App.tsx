@@ -1,60 +1,18 @@
 import { useCallback, useState } from "react";
 import { CartPage } from "./cart/_components/page/CartPage";
 import { AdminPage } from "./admin/_components/page/AdminPage";
-import { ICoupon, IProduct } from "../types.ts";
 import { useCoupons, useProducts } from "./hooks";
-import Nav from "./components/layouts/Nav.tsx";
-
-const initialProducts: IProduct[] = [
-  {
-    id: "p1",
-    name: "상품1",
-    price: 10000,
-    stock: 20,
-    discounts: [
-      { quantity: 10, rate: 0.1 },
-      { quantity: 20, rate: 0.2 },
-    ],
-  },
-  {
-    id: "p2",
-    name: "상품2",
-    price: 20000,
-    stock: 20,
-    discounts: [{ quantity: 10, rate: 0.15 }],
-  },
-  {
-    id: "p3",
-    name: "상품3",
-    price: 30000,
-    stock: 20,
-    discounts: [{ quantity: 10, rate: 0.2 }],
-  },
-];
-
-const initialCoupons: ICoupon[] = [
-  {
-    name: "5000원 할인 쿠폰",
-    code: "AMOUNT5000",
-    discountType: "amount",
-    discountValue: 5000,
-  },
-  {
-    name: "10% 할인 쿠폰",
-    code: "PERCENT10",
-    discountType: "percentage",
-    discountValue: 10,
-  },
-];
+import Nav from "./components/layouts/Nav";
+import { initialProducts, initialCoupons } from "./constants";
 
 const App = () => {
-  const { products, updateProduct, addProduct } = useProducts(initialProducts);
-  const { coupons, addCoupon } = useCoupons(initialCoupons);
-
   const [isAdmin, setIsAdmin] = useState(false);
   const onToggleAdmin = useCallback(() => {
     setIsAdmin((prev) => !prev);
   }, []);
+
+  const { products, updateProduct, addProduct } = useProducts(initialProducts);
+  const { coupons, addCoupon } = useCoupons(initialCoupons);
 
   return (
     <div className="min-h-screen bg-gray-100">
