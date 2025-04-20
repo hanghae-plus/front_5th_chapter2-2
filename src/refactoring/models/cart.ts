@@ -1,11 +1,22 @@
 import { CartItem, Coupon } from "../../types";
 
 export const calculateItemTotal = (item: CartItem) => {
-  return 0;
+  const discountRate = getMaxApplicableDiscount(item);
+  const itemTotal = item.quantity * item.product.price * (1 - discountRate);
+
+  return itemTotal;
 };
 
 export const getMaxApplicableDiscount = (item: CartItem) => {
-  return 0;
+  // 아이템 수량 기준을 충족하는 할인 항목들. 그 중 할인율만 추출
+  const applicableDiscountRates = item.product.discounts
+    .filter((discount) => item.quantity >= discount.quantity)
+    .map((discount) => discount.rate);
+
+  // 적용가능한 할인율 중 최댓값. 빈 배열을 고려해 0과 비교
+  const maxDiscountRate = Math.max(...applicableDiscountRates, 0);
+
+  return maxDiscountRate;
 };
 
 export const calculateCartTotal = (
