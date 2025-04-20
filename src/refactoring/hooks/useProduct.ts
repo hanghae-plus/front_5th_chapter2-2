@@ -1,10 +1,23 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { Product } from "../../types.ts";
 
 export const useProducts = (initialProducts: Product[]) => {
-  return {
-    products: [],
-    updateProduct: () => undefined,
-    addProduct: () => undefined,
-  };
+  const [products, setProducts] = useState<Product[]>(initialProducts);
+
+  const updateProduct = useCallback((product: Product) => {
+    setProducts((prev) => {
+      const next = [...prev];
+      const idx = next.findIndex(({ id }) => id === product.id);
+      if (idx === -1) return next;
+
+      next[idx] = product;
+      return next;
+    });
+  }, []);
+
+  const addProduct = useCallback((product: Product) => {
+    setProducts((prev) => [...prev, product]);
+  }, []);
+
+  return { products, updateProduct, addProduct };
 };
