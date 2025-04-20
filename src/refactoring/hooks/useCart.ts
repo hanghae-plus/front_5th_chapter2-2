@@ -35,7 +35,9 @@ export const useCart = () => {
     );
   };
 
-  const applyCoupon = (coupon: Coupon) => {};
+  const applyCoupon = (coupon: Coupon) => {
+    setSelectedCoupon(coupon);
+  };
 
   const calculateTotal = () => ({
     totalBeforeDiscount: 0,
