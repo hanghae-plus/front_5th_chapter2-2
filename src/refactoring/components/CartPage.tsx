@@ -1,9 +1,9 @@
-import { CartItem, Coupon, Product } from "../../types.ts";
+import { ICartItem, ICoupon, IProduct } from "../../types.ts";
 import { useCart } from "../hooks";
 
 interface Props {
-  products: Product[];
-  coupons: Coupon[];
+  products: IProduct[];
+  coupons: ICoupon[];
 }
 
 export const CartPage = ({ products, coupons }: Props) => {
@@ -13,14 +13,14 @@ export const CartPage = ({ products, coupons }: Props) => {
     return discounts.reduce((max, discount) => Math.max(max, discount.rate), 0);
   };
 
-  const getRemainingStock = (product: Product) => {
+  const getRemainingStock = (product: IProduct) => {
     const cartItem = cart.find((item) => item.product.id === product.id);
     return product.stock - (cartItem?.quantity || 0);
   };
 
   const { totalBeforeDiscount, totalAfterDiscount, totalDiscount } = calculateTotal();
 
-  const getAppliedDiscount = (item: CartItem) => {
+  const getAppliedDiscount = (item: ICartItem) => {
     const { discounts } = item.product;
     const { quantity } = item;
     let appliedDiscount = 0;

@@ -1,12 +1,12 @@
 import { useState } from "react";
-import type { Coupon } from "#src/types";
+import type { ICoupon } from "#src/types";
 
 // 엔티티를 다루는 훅
-export const useCoupons = (initialCoupons: Coupon[]) => {
-  const [coupons, setCoupons] = useState<Coupon[]>(initialCoupons);
+export const useCoupons = (initialCoupons: ICoupon[]) => {
+  const [coupons, setCoupons] = useState<ICoupon[]>(initialCoupons);
 
   /** 쿠폰 추가 */
-  const addCoupon = (newCoupon: Coupon) => {
+  const addCoupon = (newCoupon: ICoupon) => {
     setCoupons((prevCoupons) => [...prevCoupons, newCoupon]);
   };
 
