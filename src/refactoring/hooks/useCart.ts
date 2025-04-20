@@ -28,11 +28,8 @@ export const useCart = () => {
   };
 
   const updateQuantity = (productId: string, newQuantity: number) => {
-    setCart((prev) =>
-      prev.map((p) =>
-        p.product.id === productId ? { ...p, quantity: newQuantity } : p
-      )
-    );
+    const newCart = updateCartItemQuantity(cart, productId, newQuantity);
+    setCart(newCart);
   };
 
   const applyCoupon = (coupon: Coupon) => {
