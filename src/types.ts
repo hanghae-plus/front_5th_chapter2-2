@@ -29,3 +29,17 @@ export interface Coupon {
   discountType: DiscountType;
   discountValue: number;
 }
+
+export const PERMISSION_TYPE = {
+  USER: "user",
+  ADMIN: "admin",
+} as const;
+
+export type Permission = (typeof PERMISSION_TYPE)[keyof typeof PERMISSION_TYPE];
+
+export const SERVICE_TYPE = {
+  USER: "user",
+  ADMIN: "admin",
+} as const;
+
+export type ServiceType = (typeof SERVICE_TYPE)[keyof typeof SERVICE_TYPE];
