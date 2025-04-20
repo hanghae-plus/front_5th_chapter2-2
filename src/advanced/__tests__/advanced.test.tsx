@@ -1,9 +1,11 @@
-import { act, fireEvent, render, screen, within } from "@testing-library/react";
+import { act, fireEvent, render, renderHook, screen, within } from "@testing-library/react";
 import { useState } from "react";
 import { describe, expect, test } from "vitest";
 import { AdminPage } from "../../refactoring/components/AdminPage";
 import { CartPage } from "../../refactoring/components/CartPage";
-import { Coupon, Product } from "../../types";
+import { useService } from "../../refactoring/hooks";
+import { getNextService } from "../../refactoring/models/service";
+import { Coupon, PERMISSION_TYPE, Product, SERVICE_TYPE } from "../../types";
 
 const mockProducts: Product[] = [
   {
@@ -215,12 +217,32 @@ describe("advanced > ", () => {
   });
 
   describe("자유롭게 작성해보세요.", () => {
-    test("새로운 유틸 함수를 만든 후에 테스트 코드를 작성해서 실행해보세요", () => {
-      expect(true).toBe(false);
+    describe("새로운 유틸 함수를 만든 후에 테스트 코드를 작성해서 실행해보세요", () => {
+      test("관리자 권한이 있을 때, 장바구니에서 토글된 다음 페이지는 어드민 페이지이다.", () => {
+        const hasAdminPermission = true;
+        expect(getNextService(SERVICE_TYPE.CART, hasAdminPermission)).toBe(SERVICE_TYPE.ADMIN);
+      });
+      test("관리자 권한이 없을 때, 장바구니에서 토글된 다음 페이지는 어드민 페이지이면 안된다.", () => {
+        const hasAdminPermission = false;
+        expect(getNextService(SERVICE_TYPE.CART, hasAdminPermission)).not.toBe(SERVICE_TYPE.ADMIN);
+      });
+      test("어드민 페이지에서 토글된 다음 페이지는 장바구니 페이지이다.(권한은 어드민 고정)", () => {
+        const hasAdminPermission = true;
+        expect(getNextService(SERVICE_TYPE.ADMIN, hasAdminPermission)).toBe(SERVICE_TYPE.CART);
+      });
     });
 
-    test("새로운 hook 함수를 만든 후에 테스트 코드를 작성해서 실행해보세요", () => {
-      expect(true).toBe(false);
+    describe("새로운 hook 함수를 만든 후에 테스트 코드를 작성해서 실행해보세요", () => {
+      test("권한이 없는 사용자의 초기화면은 장바구니 페이지이다.", () => {
+        const SERVER_USER_PERMISSION = undefined;
+        const { result } = renderHook(() => useService(SERVER_USER_PERMISSION));
+        expect(result.current.service).toBe(SERVICE_TYPE.CART);
+      });
+      test("사실, 관리자 권한이 있어도 초기 페이지는 장바구니 페이지이다.", () => {
+        const SERVER_USER_PERMISSION = PERMISSION_TYPE.ADMIN;
+        const { result } = renderHook(() => useService(SERVER_USER_PERMISSION));
+        expect(result.current.service).toBe(SERVICE_TYPE.CART);
+      });
     });
   });
 });

@@ -38,7 +38,7 @@ export const PERMISSION_TYPE = {
 export type Permission = (typeof PERMISSION_TYPE)[keyof typeof PERMISSION_TYPE];
 
 export const SERVICE_TYPE = {
-  USER: "user",
+  CART: "cart",
   ADMIN: "admin",
 } as const;
 
