@@ -1,4 +1,4 @@
-import { TotalPrices } from '../../../../models/cart.ts';
+import { TotalPrices } from '../../../models/cart.ts';
 
 interface Props {
   totalPrices: TotalPrices;

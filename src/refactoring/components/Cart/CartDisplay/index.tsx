@@ -1,5 +1,5 @@
-import { Cart, CartItem } from '../../../../../types.ts';
-import { RemoveFromCart, UpdateQuantity } from '../../../../hooks';
+import { Cart, CartItem } from '../../../../types.ts';
+import { RemoveFromCart, UpdateQuantity } from '../../../hooks';
 
 interface Props {
   cart: Cart;

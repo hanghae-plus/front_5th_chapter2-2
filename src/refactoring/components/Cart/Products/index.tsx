@@ -1,5 +1,5 @@
-import { Product } from '../../../../../types.ts';
-import { AddToCart, GetRemainingStock } from '../../../../hooks';
+import { Product } from '../../../../types.ts';
+import { AddToCart, GetRemainingStock } from '../../../hooks';
 
 interface Props {
   products: Product[];

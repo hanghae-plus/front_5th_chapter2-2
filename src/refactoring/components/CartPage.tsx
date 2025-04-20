@@ -1,10 +1,10 @@
 import { Coupon, Product } from '../../types.ts';
 import { useCart } from '../hooks';
-import { Products } from './Cart/components/Products';
-import { CartDisplay } from './Cart/components/CartDisplay';
+import { Products } from './Cart/Products';
+import { CartDisplay } from './Cart/CartDisplay';
 
-import { Summary } from './Cart/components/Summary';
-import { ApplyCouponToCart } from './Cart/components/ApplyCouponToCart';
+import { Summary } from './Cart/Summary';
+import { ApplyCouponToCart } from './Cart/ApplyCouponToCart';
 import { calculateCartTotal } from '../models/cart.ts';
 
 interface Props {

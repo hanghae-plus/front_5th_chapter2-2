@@ -1,5 +1,5 @@
-import { Coupon } from '../../../../../types.ts';
-import { ApplyCoupon, SelectedCoupon } from '../../../../hooks';
+import { Coupon } from '../../../../types.ts';
+import { ApplyCoupon, SelectedCoupon } from '../../../hooks';
 
 interface Props {
   coupons: Coupon[];

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Coupon } from '../../../../../types.ts';
+import { Coupon } from '../../../../types.ts';
 
 interface Props {
   coupons: Coupon[];

@@ -1,4 +1,4 @@
-import { Product } from '../../../../../types.ts';
+import { Product } from '../../../../types.ts';
 import { AddProduct } from './components/AddProduct';
 import { ProductList } from './components/ProductList';
 
