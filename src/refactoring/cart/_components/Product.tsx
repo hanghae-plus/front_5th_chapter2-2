@@ -1,14 +1,13 @@
 import { useMemo } from "react";
-import type { IProduct } from "#src/types";
-import { useCart } from "#src/refactoring/cart/_hooks/useCart";
+import type { ICartItem, IProduct } from "#src/types";
 
 interface IProps {
+  cart: ICartItem[];
+  addToCart: (product: IProduct) => void;
   product: IProduct;
 }
 
-const Product: React.FC<IProps> = ({ product }) => {
-  const { cart, addToCart } = useCart();
-
+const Product: React.FC<IProps> = ({ cart, addToCart, product }) => {
   /** 남은 재고 */
   const remainingStock = useMemo(() => {
     const cartItem = cart.find((item) => item.product.id === product.id);
