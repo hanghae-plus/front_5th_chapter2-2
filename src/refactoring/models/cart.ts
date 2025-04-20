@@ -19,14 +19,40 @@ export const getMaxApplicableDiscount = (item: CartItem) => {
   return maxDiscountRate;
 };
 
+export const getCouponAppliedTotal = (amount: number, coupon: Coupon) => {
+  switch (coupon.discountType) {
+    case "amount":
+      return Math.max(0, amount - coupon.discountValue);
+    case "percentage":
+      return amount * (1 - coupon.discountValue / 100);
+  }
+};
+
 export const calculateCartTotal = (
   cart: CartItem[],
   selectedCoupon: Coupon | null
 ) => {
+  const totalBeforeDiscount = cart.reduce(
+    (prevTotal, currCart) =>
+      prevTotal + currCart.quantity * currCart.product.price,
+    0
+  );
+
+  const totalAfterItemDiscount = cart.reduce(
+    (prevTotal, currCart) => prevTotal + calculateItemTotal(currCart),
+    0
+  );
+
+  const totalAfterDiscount = selectedCoupon
+    ? getCouponAppliedTotal(totalAfterItemDiscount, selectedCoupon)
+    : totalAfterItemDiscount;
+
+  const totalDiscount = totalBeforeDiscount - totalAfterDiscount;
+
   return {
-    totalBeforeDiscount: 0,
-    totalAfterDiscount: 0,
-    totalDiscount: 0,
+    totalBeforeDiscount,
+    totalAfterDiscount,
+    totalDiscount,
   };
 };
 
