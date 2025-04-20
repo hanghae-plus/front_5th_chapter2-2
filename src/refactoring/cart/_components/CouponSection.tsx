@@ -1,3 +1,4 @@
+import React from "react";
 import type { ICoupon } from "#src/types";
 
 interface IProps {
@@ -35,4 +36,4 @@ const CouponSection: React.FC<IProps> = ({ coupons, selectedCoupon, applyCoupon 
   );
 };
 
-export default CouponSection;
+export default React.memo(CouponSection);

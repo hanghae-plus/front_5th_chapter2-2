@@ -1,8 +1,9 @@
-import { ICoupon, IProduct } from "#src/types";
+import type { ICoupon, IProduct } from "#src/types";
 import { useCart } from "#src/refactoring/cart/_hooks/useCart";
-import Product from "../Product";
-import CartProduct from "../CartProduct";
-import CouponSection from "../CouponSection";
+import Product from "#src/refactoring/cart/_components/Product";
+import CartProduct from "#src/refactoring/cart/_components/CartProduct";
+import CouponSection from "#src/refactoring/cart/_components/CouponSection";
+import CartSummarySection from "#src/refactoring/cart/_components/CartSummarySection";
 
 interface Props {
   products: IProduct[];
@@ -42,14 +43,11 @@ export const CartPage = ({ products, coupons }: Props) => {
 
           <CouponSection coupons={coupons} selectedCoupon={selectedCoupon} applyCoupon={applyCoupon} />
 
-          <div className="mt-6 bg-white p-4 rounded shadow">
-            <h2 className="text-2xl font-semibold mb-2">주문 요약</h2>
-            <div className="space-y-1">
-              <p>상품 금액: {totalBeforeDiscount.toLocaleString()}원</p>
-              <p className="text-green-600">할인 금액: {totalDiscount.toLocaleString()}원</p>
-              <p className="text-xl font-bold">최종 결제 금액: {totalAfterDiscount.toLocaleString()}원</p>
-            </div>
-          </div>
+          <CartSummarySection
+            totalBeforeDiscount={totalBeforeDiscount}
+            totalAfterDiscount={totalAfterDiscount}
+            totalDiscount={totalDiscount}
+          />
         </div>
       </div>
     </div>

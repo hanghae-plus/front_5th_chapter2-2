@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import React, { useMemo } from "react";
 import type { ICartItem, IProduct } from "#src/types";
 
 interface IProps {
@@ -56,4 +56,4 @@ const Product: React.FC<IProps> = ({ cart, addToCart, product }) => {
   );
 };
 
-export default Product;
+export default React.memo(Product);
