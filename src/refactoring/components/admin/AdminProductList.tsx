@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Product, Discount } from "../../types";
+import type { Product, Discount } from "../../types";
 
 interface AdminProductListProps {
   products: Product[];
@@ -116,6 +116,7 @@ export const AdminProductList = ({
     <div>
       <h2 className="text-2xl font-semibold mb-4">상품 관리</h2>
       <button
+        type="button"
         onClick={() => setShowNewProductForm(!showNewProductForm)}
         className="bg-green-500 text-white px-4 py-2 rounded mb-4 hover:bg-green-600"
       >
@@ -155,7 +156,7 @@ export const AdminProductList = ({
               onChange={(e) =>
                 setNewProduct({
                   ...newProduct,
-                  price: parseInt(e.target.value),
+                  price: Number.parseInt(e.target.value),
                 })
               }
               className="w-full p-2 border rounded"
@@ -175,13 +176,14 @@ export const AdminProductList = ({
               onChange={(e) =>
                 setNewProduct({
                   ...newProduct,
-                  stock: parseInt(e.target.value),
+                  stock: Number.parseInt(e.target.value),
                 })
               }
               className="w-full p-2 border rounded"
             />
           </div>
           <button
+            type="button"
             onClick={handleAddNewProduct}
             className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
           >
@@ -197,6 +199,7 @@ export const AdminProductList = ({
             className="bg-white p-4 rounded shadow"
           >
             <button
+              type="button"
               data-testid="toggle-button"
               onClick={() => toggleProductAccordion(product.id)}
               className="w-full text-left font-semibold"
@@ -208,6 +211,7 @@ export const AdminProductList = ({
                 {editingProduct && editingProduct.id === product.id ? (
                   <div>
                     <div className="mb-4">
+                      {/* biome-ignore lint/a11y/noLabelWithoutControl: <explanation> */}
                       <label className="block mb-1">상품명: </label>
                       <input
                         type="text"
@@ -219,6 +223,7 @@ export const AdminProductList = ({
                       />
                     </div>
                     <div className="mb-4">
+                      {/* biome-ignore lint/a11y/noLabelWithoutControl: <explanation> */}
                       <label className="block mb-1">가격: </label>
                       <input
                         type="number"
@@ -226,13 +231,14 @@ export const AdminProductList = ({
                         onChange={(e) =>
                           handlePriceUpdate(
                             product.id,
-                            parseInt(e.target.value)
+                            Number.parseInt(e.target.value)
                           )
                         }
                         className="w-full p-2 border rounded"
                       />
                     </div>
                     <div className="mb-4">
+                      {/* biome-ignore lint/a11y/noLabelWithoutControl: <explanation> */}
                       <label className="block mb-1">재고: </label>
                       <input
                         type="number"
@@ -240,7 +246,7 @@ export const AdminProductList = ({
                         onChange={(e) =>
                           handleStockUpdate(
                             product.id,
-                            parseInt(e.target.value)
+                            Number.parseInt(e.target.value)
                           )
                         }
                         className="w-full p-2 border rounded"
@@ -251,6 +257,7 @@ export const AdminProductList = ({
                       <h4 className="text-lg font-semibold mb-2">할인 정보</h4>
                       {editingProduct.discounts.map((discount, index) => (
                         <div
+                          // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                           key={index}
                           className="flex justify-between items-center mb-2"
                         >
@@ -259,6 +266,7 @@ export const AdminProductList = ({
                             {discount.rate * 100}% 할인
                           </span>
                           <button
+                            type="button"
                             onClick={() =>
                               handleRemoveDiscount(product.id, index)
                             }
@@ -276,7 +284,7 @@ export const AdminProductList = ({
                           onChange={(e) =>
                             setNewDiscount({
                               ...newDiscount,
-                              quantity: parseInt(e.target.value),
+                              quantity: Number.parseInt(e.target.value),
                             })
                           }
                           className="w-1/3 p-2 border rounded"
@@ -288,12 +296,13 @@ export const AdminProductList = ({
                           onChange={(e) =>
                             setNewDiscount({
                               ...newDiscount,
-                              rate: parseInt(e.target.value) / 100,
+                              rate: Number.parseInt(e.target.value) / 100,
                             })
                           }
                           className="w-1/3 p-2 border rounded"
                         />
                         <button
+                          type="button"
                           onClick={() => handleAddDiscount(product.id)}
                           className="w-1/3 bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
                         >
@@ -302,6 +311,7 @@ export const AdminProductList = ({
                       </div>
                     </div>
                     <button
+                      type="button"
                       onClick={handleEditComplete}
                       className="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600 mt-2"
                     >
@@ -311,6 +321,7 @@ export const AdminProductList = ({
                 ) : (
                   <div>
                     {product.discounts.map((discount, index) => (
+                      // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                       <div key={index} className="mb-2">
                         <span>
                           {discount.quantity}개 이상 구매 시{" "}

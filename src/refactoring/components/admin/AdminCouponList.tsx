@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CouponItem } from "../../types";
+import type { CouponItem } from "../../types";
 
 interface AdminCouponListProps {
   coupons: CouponItem[];
@@ -71,13 +71,14 @@ export const AdminCouponList = ({
               onChange={(e) =>
                 setNewCoupon({
                   ...newCoupon,
-                  discountValue: parseInt(e.target.value),
+                  discountValue: Number.parseInt(e.target.value),
                 })
               }
               className="w-full p-2 border rounded"
             />
           </div>
           <button
+            type="button"
             onClick={handleAddCoupon}
             className="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600"
           >
@@ -89,6 +90,7 @@ export const AdminCouponList = ({
           <div className="space-y-2">
             {coupons.map((coupon, index) => (
               <div
+                // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                 key={index}
                 data-testid={`coupon-${index + 1}`}
                 className="bg-gray-100 p-2 rounded"
