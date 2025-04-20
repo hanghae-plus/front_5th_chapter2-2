@@ -7,23 +7,19 @@ export type RemoveFromCart = (productId: string) => void;
 export type UpdateQuantity = (productId: string, newQuantity: number) => void;
 
 export type GetRemainingStock = (product: Product) => number;
-export type TotalPrices = {
-  totalBeforeDiscount: number;
-  totalAfterDiscount: number;
-  totalDiscount: number;
-};
-export type CalculateTotal = () => TotalPrices;
 
 //계산
 const findItemById = (cart: Cart, id: string): CartItem | undefined => {
   const foundItem = cart.find((item) => item.product.id === id);
   return foundItem ? { ...foundItem } : undefined;
 };
+
 //계산
 const addNewItemToCart = (prevCart: Cart, product: Product): Cart => [
   ...prevCart,
   { product, quantity: 1 },
 ];
+
 // 계산
 const addExitingItemToCart = (prevCart: Cart, product: Product) =>
   prevCart.map((item) =>

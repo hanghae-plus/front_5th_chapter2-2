@@ -1,12 +1,12 @@
-import { CalculateTotal } from '../../../../hooks';
+import { TotalPrices } from '../../../../models/cart.ts';
 
 interface Props {
-  calculateTotal: CalculateTotal;
+  totalPrices: TotalPrices;
 }
 
-export const Summary = ({ calculateTotal }: Props) => {
+export const Summary = ({ totalPrices }: Props) => {
   const { totalBeforeDiscount, totalAfterDiscount, totalDiscount } =
-    calculateTotal();
+    totalPrices;
 
   return (
     <div className='mt-6 bg-white p-4 rounded shadow'>

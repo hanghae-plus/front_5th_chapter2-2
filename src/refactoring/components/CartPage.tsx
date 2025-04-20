@@ -6,6 +6,7 @@ import { CartDisplay } from './Cart/components/CartDisplay';
 import { Summary } from './Cart/components/Summary';
 import { ApplyCouponToCart } from './Cart/components/ApplyCouponToCart';
 import { useState } from 'react';
+import { calculateCartTotal } from '../models/cart.ts';
 
 interface Props {
   products: Product[];
@@ -19,45 +20,6 @@ export const CartPage = ({ products, coupons }: Props) => {
   const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
   const applyCoupon: ApplyCoupon = (coupon: Coupon) => {
     setSelectedCoupon(coupon);
-  };
-
-  const calculateTotal = () => {
-    let totalBeforeDiscount = 0;
-    let totalAfterDiscount = 0;
-
-    cart.forEach((item) => {
-      const { price } = item.product;
-
-      const { quantity } = item;
-      totalBeforeDiscount += price * quantity;
-
-      const discount = item.product.discounts.reduce((maxDiscount, d) => {
-        return quantity >= d.quantity && d.rate > maxDiscount
-          ? d.rate
-          : maxDiscount;
-      }, 0);
-      totalAfterDiscount += price * quantity * (1 - discount);
-    });
-
-    let totalDiscount = totalBeforeDiscount - totalAfterDiscount;
-
-    if (selectedCoupon) {
-      if (selectedCoupon.discountType === 'amount') {
-        totalAfterDiscount = Math.max(
-          0,
-          totalAfterDiscount - selectedCoupon.discountValue,
-        );
-      } else {
-        totalAfterDiscount *= 1 - selectedCoupon.discountValue / 100;
-      }
-      totalDiscount = totalBeforeDiscount - totalAfterDiscount;
-    }
-
-    return {
-      totalBeforeDiscount: Math.round(totalBeforeDiscount),
-      totalAfterDiscount: Math.round(totalAfterDiscount),
-      totalDiscount: Math.round(totalDiscount),
-    };
   };
 
   return (
@@ -81,7 +43,7 @@ export const CartPage = ({ products, coupons }: Props) => {
             selectedCoupon={selectedCoupon}
           />
 
-          <Summary calculateTotal={calculateTotal} />
+          <Summary totalPrices={calculateCartTotal(cart, selectedCoupon)} />
         </div>
       </div>
     </div>
