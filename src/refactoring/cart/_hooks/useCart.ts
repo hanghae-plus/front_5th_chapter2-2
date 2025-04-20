@@ -1,7 +1,7 @@
 // useCart.ts
 import { useState } from "react";
 import { ICartItem, ICoupon, IProduct } from "#src/types";
-import { calculateCartTotal, updateCartItemQuantity } from "../models/cart";
+import { calculateCartTotal, updateCartItemQuantity } from "#src/refactoring/cart/_libs/cart";
 
 export const useCart = () => {
   const [cart, setCart] = useState<ICartItem[]>([]);

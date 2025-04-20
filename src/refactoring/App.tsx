@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
-import { CartPage } from "./components/CartPage.tsx";
-import { AdminPage } from "./components/AdminPage.tsx";
+import { CartPage } from "./cart/_components/page/CartPage";
+import { AdminPage } from "./admin/_components/page/AdminPage";
 import { ICoupon, IProduct } from "../types.ts";
 import { useCoupons, useProducts } from "./hooks";
 import Nav from "./components/layouts/Nav.tsx";

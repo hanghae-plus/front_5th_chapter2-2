@@ -1,5 +1,5 @@
-import { ICartItem, ICoupon, IProduct } from "../../types.ts";
-import { useCart } from "../hooks";
+import { ICartItem, ICoupon, IProduct } from "#src/types";
+import { useCart } from "#src/refactoring/cart/_hooks/useCart";
 
 interface Props {
   products: IProduct[];
