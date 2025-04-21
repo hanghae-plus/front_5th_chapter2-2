@@ -1,6 +1,6 @@
 import { act, fireEvent, render, renderHook, screen, within } from "@testing-library/react";
 import { useState } from "react";
-import { describe, expect, test } from "vitest";
+import { beforeEach, describe, expect, test } from "vitest";
 import { AdminPage } from "../../refactoring/components/AdminPage";
 import { CartPage } from "../../refactoring/components/CartPage";
 import { useCart, useCoupons, useProducts } from "../../refactoring/hooks";
@@ -65,6 +65,11 @@ const TestAdminPage = () => {
 };
 
 describe("basic > ", () => {
+  // useLocalStorage 적용 시 초기화 필요
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
   describe("시나리오 테스트 > ", () => {
     test("장바구니 페이지 테스트 > ", async () => {
       render(<CartPage products={mockProducts} coupons={mockCoupons} />);
