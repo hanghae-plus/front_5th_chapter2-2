@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { CartItem, Coupon, Product } from '../../types.ts';
 import { useCart } from "../hooks";
 
@@ -7,6 +8,7 @@ interface Props {
 }
 
 export const CartPage = ({ products, coupons }: Props) => {
+  
   const {
     cart,
     addToCart,
@@ -39,6 +41,16 @@ export const CartPage = ({ products, coupons }: Props) => {
     }
     return appliedDiscount;
   };
+
+  useEffect(() => {
+    products.forEach(product => {
+      const remainingStock = getRemainingStock(product);
+      if (remainingStock <= 0) {
+        removeFromCart(product.id);
+      }
+      addToCart(product);
+    })
+  }, [products])
 
   return (
     <div className="container mx-auto p-4">
