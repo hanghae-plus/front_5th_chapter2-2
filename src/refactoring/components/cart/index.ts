@@ -1,5 +1,4 @@
-export * from "./CartItemCard";
+export * from "./CartItemCardList";
+export * from "./ProductCardList";
 export * from "./CouponSelection";
 export * from "./OrderSummary";
-export * from "./ProductCard";
-export * from "./ProductCardList";

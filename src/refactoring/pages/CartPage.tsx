@@ -1,13 +1,13 @@
 import { Coupon, Product } from "../../types.ts";
 import { useCart } from "../hooks";
 import {
+  CartItemCardList,
   ProductCardList,
   CouponSection,
   OrderSummary,
-  CartItemCard,
 } from "../components/cart";
 import { PageLayout, SectionLayout } from "../components/common";
-import { getAppliedDiscount } from "../calculations/cart";
+
 interface Props {
   products: Product[];
   coupons: Coupon[];
@@ -37,20 +37,11 @@ export const CartPage = ({ products, coupons }: Props) => {
         />
       </SectionLayout>
       <SectionLayout title="장바구니 내역">
-        <div className="space-y-2">
-          {cart.map((item) => {
-            const appliedDiscount = getAppliedDiscount(item);
-            return (
-              <CartItemCard
-                key={item.product.id}
-                item={item}
-                appliedDiscount={appliedDiscount}
-                onUpdateQuantity={updateQuantity}
-                onRemoveFromCart={removeFromCart}
-              />
-            );
-          })}
-        </div>
+        <CartItemCardList
+          cart={cart}
+          updateQuantity={updateQuantity}
+          removeFromCart={removeFromCart}
+        />
 
         <CouponSection
           coupons={coupons}
