@@ -6,6 +6,8 @@ import {
   OrderSummary,
   CartItemCard,
 } from "../components/cart";
+import { Typography } from "../components/common";
+
 interface Props {
   products: Product[];
   coupons: Coupon[];
@@ -48,10 +50,10 @@ export const CartPage = ({ products, coupons }: Props) => {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-6">장바구니</h1>
+      <Typography variant="h1">장바구니</Typography>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <h2 className="text-2xl font-semibold mb-4">상품 목록</h2>
+          <Typography variant="h2">상품 목록</Typography>
           <div className="space-y-2">
             {products.map((product) => {
               const remainingStock = getRemainingStock(product);
@@ -68,7 +70,7 @@ export const CartPage = ({ products, coupons }: Props) => {
           </div>
         </div>
         <div>
-          <h2 className="text-2xl font-semibold mb-4">장바구니 내역</h2>
+          <Typography variant="h2">장바구니 내역</Typography>
 
           <div className="space-y-2">
             {cart.map((item) => {
