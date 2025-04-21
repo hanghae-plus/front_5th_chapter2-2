@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { Product, Discount } from "../../types";
+import { NewProductForm } from "./product/NewProductForm";
 
 interface AdminProductListProps {
   products: Product[];
@@ -12,12 +13,6 @@ export const AdminProductList = ({
   onProductUpdate,
   onProductAdd,
 }: AdminProductListProps) => {
-  const [newProduct, setNewProduct] = useState<Omit<Product, "id">>({
-    name: "",
-    price: 0,
-    stock: 0,
-    discounts: [],
-  });
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [showNewProductForm, setShowNewProductForm] = useState(false);
   const [openProductIds, setOpenProductIds] = useState<Set<string>>(new Set());
@@ -70,18 +65,6 @@ export const AdminProductList = ({
     }
   };
 
-  const handleAddNewProduct = () => {
-    const productWithId = { ...newProduct, id: Date.now().toString() };
-    onProductAdd(productWithId);
-    setNewProduct({
-      name: "",
-      price: 0,
-      stock: 0,
-      discounts: [],
-    });
-    setShowNewProductForm(false);
-  };
-
   const handleAddDiscount = (productId: string) => {
     const updatedProduct = products.find((p) => p.id === productId);
     if (updatedProduct && editingProduct) {
@@ -123,73 +106,10 @@ export const AdminProductList = ({
         {showNewProductForm ? "취소" : "새 상품 추가"}
       </button>
       {showNewProductForm && (
-        <div className="bg-white p-4 rounded shadow mb-4">
-          <h3 className="text-xl font-semibold mb-2">새 상품 추가</h3>
-          <div className="mb-2">
-            <label
-              htmlFor="productName"
-              className="block text-sm font-medium text-gray-700"
-            >
-              상품명
-            </label>
-            <input
-              id="productName"
-              type="text"
-              value={newProduct.name}
-              onChange={(e) =>
-                setNewProduct({ ...newProduct, name: e.target.value })
-              }
-              className="w-full p-2 border rounded"
-            />
-          </div>
-          <div className="mb-2">
-            <label
-              htmlFor="productPrice"
-              className="block text-sm font-medium text-gray-700"
-            >
-              가격
-            </label>
-            <input
-              id="productPrice"
-              type="number"
-              value={newProduct.price}
-              onChange={(e) =>
-                setNewProduct({
-                  ...newProduct,
-                  price: Number.parseInt(e.target.value),
-                })
-              }
-              className="w-full p-2 border rounded"
-            />
-          </div>
-          <div className="mb-2">
-            <label
-              htmlFor="productStock"
-              className="block text-sm font-medium text-gray-700"
-            >
-              재고
-            </label>
-            <input
-              id="productStock"
-              type="number"
-              value={newProduct.stock}
-              onChange={(e) =>
-                setNewProduct({
-                  ...newProduct,
-                  stock: Number.parseInt(e.target.value),
-                })
-              }
-              className="w-full p-2 border rounded"
-            />
-          </div>
-          <button
-            type="button"
-            onClick={handleAddNewProduct}
-            className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
-          >
-            추가
-          </button>
-        </div>
+        <NewProductForm
+          onProductAdd={onProductAdd}
+          setShowNewProductForm={setShowNewProductForm}
+        />
       )}
       <div className="space-y-2">
         {products.map((product, index) => (
@@ -330,6 +250,7 @@ export const AdminProductList = ({
                       </div>
                     ))}
                     <button
+                      type="button"
                       data-testid="modify-button"
                       onClick={() => handleEditProduct(product)}
                       className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 mt-2"
