@@ -4,6 +4,11 @@ import { AdminPage } from "./components/AdminPage.tsx";
 import { Coupon, Product } from "../types.ts";
 import { useCoupons, useProducts } from "./hooks";
 
+// - Component에서 비즈니스 로직을 분리하기
+// - 비즈니스 로직에서 특정 엔티티만 다루는 계산을 분리하기
+// - 뷰데이터와 엔티티데이터의 분리에 대한 이해
+// - entities -> features -> UI 계층에 대한 이해
+
 const initialProducts: Product[] = [
   {
     id: "p1",
