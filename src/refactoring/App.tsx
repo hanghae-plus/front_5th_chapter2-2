@@ -3,6 +3,7 @@ import { CartPage } from "./components/CartPage.tsx";
 import { AdminPage } from "./components/AdminPage.tsx";
 import { Coupon, Product } from "../types.ts";
 import { useCoupons, useProducts } from "./hooks";
+import QuantityButton from "./components/cart/QuantityButton.tsx";
 
 const initialProducts: Product[] = [
   {
@@ -47,7 +48,7 @@ const initialCoupons: Coupon[] = [
 ];
 
 const App = () => {
-  const { products, updateProduct, addProduct } = useProducts(initialProducts);
+  const { products } = useProducts(initialProducts);
   const { coupons, addCoupon } = useCoupons(initialCoupons);
   const [isAdmin, setIsAdmin] = useState(false);
 
@@ -65,17 +66,17 @@ const App = () => {
         </div>
       </nav>
       <main className="container mx-auto mt-6">
-        {isAdmin ? (
-          <AdminPage
-            products={products}
-            coupons={coupons}
-            onProductUpdate={updateProduct}
-            onProductAdd={addProduct}
-            onCouponAdd={addCoupon}
-          />
-        ) : (
-          <CartPage products={initialProducts} coupons={initialCoupons} />
-        )}
+        {/*{isAdmin ? (*/}
+        {/*  <AdminPage*/}
+        {/*    products={products}*/}
+        {/*    coupons={coupons}*/}
+        {/*    onProductUpdate={updateProduct}*/}
+        {/*    onProductAdd={addProduct}*/}
+        {/*    onCouponAdd={addCoupon}*/}
+        {/*  />*/}
+        {/*) : (*/}
+        <CartPage products={products} coupons={coupons} />
+        {/*)}*/}
       </main>
     </div>
   );
