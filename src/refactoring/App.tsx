@@ -48,10 +48,12 @@ const initialCoupons: Coupon[] = [
 
 const App = () => {
   //액션, 계산, 데이터
-
-  const { products, updateProduct, addProduct } = useProducts(initialProducts);
-  const { coupons, addCoupon } = useCoupons(initialCoupons);
+  //데이터(관리자 상태 엔티티), 액션
   const [isAdmin, setIsAdmin] = useState(false);
+  //데이터, 액션, 액션
+  const { products, updateProduct, addProduct } = useProducts(initialProducts);
+  //데이터, 액션
+  const { coupons, addCoupon } = useCoupons(initialCoupons);
 
   return (
     <div className="min-h-screen bg-gray-100">

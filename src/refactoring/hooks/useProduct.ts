@@ -2,10 +2,13 @@ import { useState } from "react";
 import { Product } from "../../types.ts";
 
 /**
+ * 엔티티(상품)을 다루는 훅
+ * 
  *액션: updateProduct, addProduct
+
  *계산:
- *데이터: initialProducts, products -> state와 props
- */
+
+ *데이터: initialProducts(props), products(state)*/
 export const useProducts = (initialProducts: Product[]) => {
   //  TODO: 액션에서 계산 분리하기
 
