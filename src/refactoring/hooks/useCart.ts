@@ -8,7 +8,19 @@ export const useCart = () => {
   const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
 
   const addToCart = (product: Product) => {
-    setCart((prevCart) => [...prevCart, { product, quantity: 1 }]);
+    setCart((prevCart) => {
+      const existingItem = prevCart.find(
+        (item) => item.product.id === product.id
+      );
+      if (existingItem) {
+        return updateCartItemQuantity(
+          prevCart,
+          product.id,
+          existingItem.quantity + 1
+        );
+      }
+      return [...prevCart, { product, quantity: 1 }];
+    });
   };
 
   const removeFromCart = (productId: string) => {
@@ -19,11 +31,7 @@ export const useCart = () => {
 
   const updateQuantity = (productId: string, newQuantity: number) => {
     setCart((prevCart) =>
-      prevCart.map((item) =>
-        item.product.id === productId
-          ? { ...item, quantity: newQuantity }
-          : item
-      )
+      updateCartItemQuantity(prevCart, productId, newQuantity)
     );
   };
 
