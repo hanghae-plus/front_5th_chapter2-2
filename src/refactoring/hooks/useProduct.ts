@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Product } from "../../types.ts";
+import { useState } from 'react';
+import { Product } from '../../types.ts';
 
 export const useProducts = (initialProducts: Product[]) => {
   const [products, setProducts] = useState(initialProducts);
@@ -11,7 +11,7 @@ export const useProducts = (initialProducts: Product[]) => {
           return updateProduct;
         }
         return product;
-      })
+      }),
     );
   };
 
