@@ -10,8 +10,8 @@ export const Typography = ({
   className = "",
 }: TypographyProps) => {
   const baseStyles = {
-    h1: "text-3xl font-bold mb-4",
-    h2: "text-2xl font-semibold mb-2",
+    h1: "text-3xl font-bold mb-6",
+    h2: "text-2xl font-semibold mb-4",
     price: "text-gray-600",
     label: "text-sm font-medium",
     productName: "font-semibold",

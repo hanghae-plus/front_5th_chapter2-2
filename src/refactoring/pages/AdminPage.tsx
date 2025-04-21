@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Coupon, Discount, Product } from "../../types.ts";
-import { PageLayout } from "../components/common";
+import { PageLayout, SectionLayout } from "../components/common";
 interface Props {
   products: Product[];
   coupons: Coupon[];
@@ -135,8 +135,7 @@ export const AdminPage = ({
 
   return (
     <PageLayout title="관리자 페이지">
-      <div>
-        <h2 className="text-2xl font-semibold mb-4">상품 관리</h2>
+      <SectionLayout title="상품 관리">
         <button
           onClick={() => setShowNewProductForm(!showNewProductForm)}
           className="bg-green-500 text-white px-4 py-2 rounded mb-4 hover:bg-green-600"
@@ -356,9 +355,8 @@ export const AdminPage = ({
             </div>
           ))}
         </div>
-      </div>
-      <div>
-        <h2 className="text-2xl font-semibold mb-4">쿠폰 관리</h2>
+      </SectionLayout>
+      <SectionLayout title="쿠폰 관리">
         <div className="bg-white p-4 rounded shadow">
           <div className="space-y-2 mb-4">
             <input
@@ -432,7 +430,7 @@ export const AdminPage = ({
             </div>
           </div>
         </div>
-      </div>
+      </SectionLayout>
     </PageLayout>
   );
 };

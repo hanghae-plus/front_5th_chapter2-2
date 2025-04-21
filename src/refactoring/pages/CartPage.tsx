@@ -6,7 +6,7 @@ import {
   OrderSummary,
   CartItemCard,
 } from "../components/cart";
-import { PageLayout, Typography } from "../components/common";
+import { PageLayout, Typography, SectionLayout } from "../components/common";
 
 interface Props {
   products: Product[];
@@ -50,8 +50,7 @@ export const CartPage = ({ products, coupons }: Props) => {
 
   return (
     <PageLayout title="장바구니">
-      <div>
-        <Typography variant="h2">상품 목록</Typography>
+      <SectionLayout title="상품 목록">
         <div className="space-y-2">
           {products.map((product) => {
             const remainingStock = getRemainingStock(product);
@@ -66,10 +65,8 @@ export const CartPage = ({ products, coupons }: Props) => {
             );
           })}
         </div>
-      </div>
-      <div>
-        <Typography variant="h2">장바구니 내역</Typography>
-
+      </SectionLayout>
+      <SectionLayout title="장바구니 내역">
         <div className="space-y-2">
           {cart.map((item) => {
             const appliedDiscount = getAppliedDiscount(item);
@@ -96,7 +93,7 @@ export const CartPage = ({ products, coupons }: Props) => {
           totalDiscount={totalDiscount}
           totalAfterDiscount={totalAfterDiscount}
         />
-      </div>
+      </SectionLayout>
     </PageLayout>
   );
 };
