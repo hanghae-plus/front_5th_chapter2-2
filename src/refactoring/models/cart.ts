@@ -106,3 +106,20 @@ export const getMaxDiscount = (
 ): number => {
   return discounts.reduce((max, discount) => Math.max(max, discount.rate), 0);
 };
+
+/**
+ * 할인율을 적용합니다.
+ * @param item
+ * @returns
+ */
+export const getAppliedDiscount = (item: CartItem) => {
+  const { discounts } = item.product;
+  const { quantity } = item;
+  let appliedDiscount = 0;
+  for (const discount of discounts) {
+    if (quantity >= discount.quantity) {
+      appliedDiscount = Math.max(appliedDiscount, discount.rate);
+    }
+  }
+  return appliedDiscount;
+};
