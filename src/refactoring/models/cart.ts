@@ -40,5 +40,13 @@ export const updateCartItemQuantity = (
   productId: string,
   newQuantity: number
 ): CartItem[] => {
-  return [];
+
+  const updatedCart = newQuantity == 0 ? cart.filter(item => item.product.id !== productId) : cart.map(item => {
+    if(item.product.id === productId) {
+      return { ...item, quantity: newQuantity > item.product.stock ? item.product.stock : newQuantity }
+    }
+    return item
+  })
+
+  return updatedCart
 };
