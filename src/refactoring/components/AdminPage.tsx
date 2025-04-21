@@ -3,6 +3,7 @@ import { ProductEditAccordion } from "./ProductEditAccordion.tsx";
 import { AddNewProductForm } from "./AddNewProductForm.tsx";
 import { ToggleButton } from "./ui/ToggleButton.tsx";
 import { AddCouponForm } from "./AddCouponForm.tsx";
+import { CouponList } from "./CouponList.tsx";
 
 interface Props {
 	products: Product[];
@@ -53,24 +54,7 @@ export const AdminPage = ({
 					<h2 className="mb-4 text-2xl font-semibold">쿠폰 관리</h2>
 					<div className="rounded bg-white p-4 shadow">
 						<AddCouponForm onCouponAdd={onCouponAdd} />
-						<div>
-							<h3 className="mb-2 text-lg font-semibold">현재 쿠폰 목록</h3>
-							<div className="space-y-2">
-								{coupons.map((coupon, index) => (
-									<div
-										key={index}
-										data-testid={`coupon-${index + 1}`}
-										className="rounded bg-gray-100 p-2"
-									>
-										{coupon.name} ({coupon.code}):
-										{coupon.discountType === "amount"
-											? `${coupon.discountValue}원`
-											: `${coupon.discountValue}%`}{" "}
-										할인
-									</div>
-								))}
-							</div>
-						</div>
+						<CouponList coupons={coupons} />
 					</div>
 				</div>
 			</div>
