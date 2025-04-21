@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Coupon, Discount, Product } from "../../types.ts";
 import { Button } from "./ui/Button.tsx";
 import { ProductEditAccordion } from "./ProductEditAccordion.tsx";
+import { AddNewProductForm } from "./AddNewProductForm.tsx";
 
 interface Props {
 	products: Product[];
@@ -25,12 +26,6 @@ export const AdminPage = ({
 		discountValue: 0,
 	});
 	const [showNewProductForm, setShowNewProductForm] = useState(false);
-	const [newProduct, setNewProduct] = useState<Omit<Product, "id">>({
-		name: "",
-		price: 0,
-		stock: 0,
-		discounts: [],
-	});
 
 	const handleAddCoupon = () => {
 		onCouponAdd(newCoupon);
@@ -40,18 +35,6 @@ export const AdminPage = ({
 			discountType: "percentage",
 			discountValue: 0,
 		});
-	};
-
-	const handleAddNewProduct = () => {
-		const productWithId = { ...newProduct, id: Date.now().toString() };
-		onProductAdd(productWithId);
-		setNewProduct({
-			name: "",
-			price: 0,
-			stock: 0,
-			discounts: [],
-		});
-		setShowNewProductForm(false);
 	};
 
 	return (
@@ -67,73 +50,10 @@ export const AdminPage = ({
 						{showNewProductForm ? "취소" : "새 상품 추가"}
 					</Button>
 					{showNewProductForm && (
-						<div className="mb-4 rounded bg-white p-4 shadow">
-							<h3 className="mb-2 text-xl font-semibold">새 상품 추가</h3>
-							<div className="mb-2">
-								<label
-									htmlFor="productName"
-									className="block text-sm font-medium text-gray-700"
-								>
-									상품명
-								</label>
-								<input
-									id="productName"
-									type="text"
-									value={newProduct.name}
-									onChange={(e) =>
-										setNewProduct({ ...newProduct, name: e.target.value })
-									}
-									className="w-full rounded border p-2"
-								/>
-							</div>
-							<div className="mb-2">
-								<label
-									htmlFor="productPrice"
-									className="block text-sm font-medium text-gray-700"
-								>
-									가격
-								</label>
-								<input
-									id="productPrice"
-									type="number"
-									value={newProduct.price}
-									onChange={(e) =>
-										setNewProduct({
-											...newProduct,
-											price: parseInt(e.target.value),
-										})
-									}
-									className="w-full rounded border p-2"
-								/>
-							</div>
-							<div className="mb-2">
-								<label
-									htmlFor="productStock"
-									className="block text-sm font-medium text-gray-700"
-								>
-									재고
-								</label>
-								<input
-									id="productStock"
-									type="number"
-									value={newProduct.stock}
-									onChange={(e) =>
-										setNewProduct({
-											...newProduct,
-											stock: parseInt(e.target.value),
-										})
-									}
-									className="w-full rounded border p-2"
-								/>
-							</div>
-							<Button
-								color="blue"
-								className="w-full"
-								onClick={handleAddNewProduct}
-							>
-								추가
-							</Button>
-						</div>
+						<AddNewProductForm
+							onProductAdd={onProductAdd}
+							onAddComplete={() => setShowNewProductForm(false)}
+						/>
 					)}
 					<div className="space-y-2">
 						{products.map((product, index) => (
