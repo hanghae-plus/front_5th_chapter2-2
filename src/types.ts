@@ -43,3 +43,27 @@ export const SERVICE_TYPE = {
 } as const;
 
 export type ServiceType = (typeof SERVICE_TYPE)[keyof typeof SERVICE_TYPE];
+
+export const MEMBERSHIP_TYPE = {
+  BASIC: "basic",
+  SILVER: "silver",
+  GOLD: "gold",
+  VIP: "vip",
+} as const;
+
+export type MembershipType = (typeof MEMBERSHIP_TYPE)[keyof typeof MEMBERSHIP_TYPE];
+
+export type Updater<T> = (prev: T) => T;
+
+export type Storage<T> = {
+  item: T;
+  updateItem: (prev: T | Updater<T>) => T; // SetStateAction<T>
+};
+
+export const LOCAL_STORAGE_KEY = {
+  CART: "cart",
+  COUPON: "coupon",
+  PRODUCT: "product",
+} as const;
+
+export type LocalStorageKeyType = (typeof LOCAL_STORAGE_KEY)[keyof typeof LOCAL_STORAGE_KEY];
