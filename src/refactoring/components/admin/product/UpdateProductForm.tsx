@@ -109,9 +109,13 @@ export const UpdateProductForm = ({
         <label className="block mb-1">재고: </label>
         <input
           type="number"
-          value={editingProduct.stock}
+          value={editingProduct?.stock ?? ""}
           onChange={(e) =>
-            handleStockUpdate(product.id, Number.parseInt(e.target.value))
+            editingProduct?.id &&
+            handleStockUpdate(
+              editingProduct.id,
+              Number.parseInt(e.target.value)
+            )
           }
           className="w-full p-2 border rounded"
         />
@@ -119,7 +123,7 @@ export const UpdateProductForm = ({
       {/* 할인 정보 수정 부분 */}
       <div>
         <h4 className="text-lg font-semibold mb-2">할인 정보</h4>
-        {editingProduct.discounts.map((discount, index) => (
+        {editingProduct?.discounts.map((discount, index) => (
           <div
             // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
             key={index}
