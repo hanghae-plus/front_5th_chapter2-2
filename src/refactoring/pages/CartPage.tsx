@@ -1,10 +1,11 @@
 import { CartItem, Coupon, Product } from "../../types.ts";
 import { useCart } from "../hooks";
-import { ProductCard } from "../components/ProductCard";
-import { CartItemCard } from "../components/CartItemCard";
-import { CouponSection } from "../components/CouponSelection";
-import { OrderSummary } from "../components/OrderSummary";
-
+import {
+  ProductCard,
+  CouponSection,
+  OrderSummary,
+  CartItemCard,
+} from "../components/cart";
 interface Props {
   products: Product[];
   coupons: Coupon[];
