@@ -1,9 +1,8 @@
-import { useState } from "react";
-import { Coupon, Discount, Product } from "../../types.ts";
-import { Button } from "./ui/Button.tsx";
+import { Coupon, Product } from "../../types.ts";
 import { ProductEditAccordion } from "./ProductEditAccordion.tsx";
 import { AddNewProductForm } from "./AddNewProductForm.tsx";
 import { ToggleButton } from "./ui/ToggleButton.tsx";
+import { AddCouponForm } from "./AddCouponForm.tsx";
 
 interface Props {
 	products: Product[];
@@ -20,23 +19,6 @@ export const AdminPage = ({
 	onProductAdd,
 	onCouponAdd,
 }: Props) => {
-	const [newCoupon, setNewCoupon] = useState<Coupon>({
-		name: "",
-		code: "",
-		discountType: "percentage",
-		discountValue: 0,
-	});
-
-	const handleAddCoupon = () => {
-		onCouponAdd(newCoupon);
-		setNewCoupon({
-			name: "",
-			code: "",
-			discountType: "percentage",
-			discountValue: 0,
-		});
-	};
-
 	return (
 		<div className="container mx-auto p-4">
 			<h1 className="mb-6 text-3xl font-bold">관리자 페이지</h1>
@@ -70,60 +52,7 @@ export const AdminPage = ({
 				<div>
 					<h2 className="mb-4 text-2xl font-semibold">쿠폰 관리</h2>
 					<div className="rounded bg-white p-4 shadow">
-						<div className="mb-4 space-y-2">
-							<input
-								type="text"
-								placeholder="쿠폰 이름"
-								value={newCoupon.name}
-								onChange={(e) =>
-									setNewCoupon({ ...newCoupon, name: e.target.value })
-								}
-								className="w-full rounded border p-2"
-							/>
-							<input
-								type="text"
-								placeholder="쿠폰 코드"
-								value={newCoupon.code}
-								onChange={(e) =>
-									setNewCoupon({ ...newCoupon, code: e.target.value })
-								}
-								className="w-full rounded border p-2"
-							/>
-							<div className="flex gap-2">
-								<select
-									value={newCoupon.discountType}
-									onChange={(e) =>
-										setNewCoupon({
-											...newCoupon,
-											discountType: e.target.value as "amount" | "percentage",
-										})
-									}
-									className="w-full rounded border p-2"
-								>
-									<option value="amount">금액(원)</option>
-									<option value="percentage">할인율(%)</option>
-								</select>
-								<input
-									type="number"
-									placeholder="할인 값"
-									value={newCoupon.discountValue}
-									onChange={(e) =>
-										setNewCoupon({
-											...newCoupon,
-											discountValue: parseInt(e.target.value),
-										})
-									}
-									className="w-full rounded border p-2"
-								/>
-							</div>
-							<Button
-								color="green"
-								className="w-full"
-								onClick={handleAddCoupon}
-							>
-								쿠폰 추가
-							</Button>
-						</div>
+						<AddCouponForm onCouponAdd={onCouponAdd} />
 						<div>
 							<h3 className="mb-2 text-lg font-semibold">현재 쿠폰 목록</h3>
 							<div className="space-y-2">
