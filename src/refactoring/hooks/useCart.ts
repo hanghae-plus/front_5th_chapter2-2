@@ -1,10 +1,12 @@
 // useCart.ts
 import { useCallback, useState } from "react";
-import { CartItem, Coupon, Product } from "../../types";
+import { CartItem, Coupon, LOCAL_STORAGE_KEY, Product } from "../../types";
 import { addToCartCheckStock, calculateCartTotal, updateCartItemQuantity } from "../models/cart";
+import { useLocalStorage } from "./useLocalStorage";
 
 export const useCart = () => {
-  const [cart, setCart] = useState<CartItem[]>([]);
+  // const [cart, setCart] = useState<CartItem[]>([]);
+  const { item: cart, setItem: setCart } = useLocalStorage<CartItem[]>({ key: LOCAL_STORAGE_KEY.CART, initialValue: [] });
   const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
 
   const addToCart = useCallback((product: Product) => {

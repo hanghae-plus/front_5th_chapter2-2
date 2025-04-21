@@ -8,13 +8,15 @@ type UseLocalStorageProps<T> = {
 };
 
 export const useLocalStorage = <T>({ key, initialValue }: UseLocalStorageProps<T>): Storage<T> => {
-  const [item, setItem] = useState<T>(() => getLocalStorage(key, initialValue));
+  const [storedItem, setStoredItem] = useState<T>(() => getLocalStorage(key, initialValue));
 
-  const updateItem = (updater: T | Updater<T>) => {
-    const newValue = isUpdater<T>(updater) ? updater(item) : updater;
-    setItem(setLocalStorage(key, newValue));
-    return newValue;
+  const setItem = (updater: T | Updater<T>) => {
+    setStoredItem((prev) => {
+      const newValue = isUpdater<T>(updater) ? updater(prev) : updater;
+      setLocalStorage(key, newValue);
+      return newValue;
+    });
   };
 
-  return { item, updateItem };
+  return { item: storedItem, setItem };
 };

@@ -57,7 +57,7 @@ export type Updater<T> = (prev: T) => T;
 
 export type Storage<T> = {
   item: T;
-  updateItem: (prev: T | Updater<T>) => T; // SetStateAction<T>
+  setItem: (prev: T | Updater<T>) => void; // SetStateAction<T>
 };
 
 export const LOCAL_STORAGE_KEY = {
