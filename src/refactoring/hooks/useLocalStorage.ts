@@ -17,6 +17,5 @@ export const useLocalStorage = <T>({ key, initialValue }: UseLocalStorageProps<T
       return newValue;
     });
   };
-
-  return { item: storedItem, setItem };
+  return [storedItem, setItem];
 };
