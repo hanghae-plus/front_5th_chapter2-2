@@ -1,11 +1,10 @@
 import { useState } from "react";
 import { CartItem, Coupon, Product } from "../../types.ts";
 import {
-  calculateTotal,
-  getAppliedDiscount,
+  calculateCartTotal,
   getMaxDiscount,
   getRemainingStock,
-} from "../util/cartUtil.ts";
+} from "../models/cart.ts";
 
 export const useCart = () => {
   const [cart, setCart] = useState<CartItem[]>([]);
@@ -60,7 +59,9 @@ export const useCart = () => {
     setSelectedCoupon(coupon);
   };
 
-  const totals = calculateTotal(cart, selectedCoupon);
+  const calculateTotal = () => {
+    return calculateCartTotal(cart, selectedCoupon);
+  };
 
   return {
     cart,
@@ -69,8 +70,7 @@ export const useCart = () => {
     removeFromCart,
     updateQuantity,
     applyCoupon,
-    totals,
-    getAppliedDiscount,
+    calculateTotal,
     getMaxDiscount: (discounts: { quantity: number; rate: number }[]) =>
       getMaxDiscount(discounts),
     getRemainingStock: (product: Product) => getRemainingStock(product, cart),

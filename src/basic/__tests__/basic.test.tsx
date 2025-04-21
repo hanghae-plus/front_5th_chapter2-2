@@ -285,7 +285,7 @@ describe("basic > ", () => {
       const updatedProduct = { ...initialProducts[0], name: "Updated Product" };
 
       act(() => {
-        result.current.updateProduct();
+        result.current.updateProduct(updatedProduct);
       });
 
       expect(result.current.products[0]).toEqual({
