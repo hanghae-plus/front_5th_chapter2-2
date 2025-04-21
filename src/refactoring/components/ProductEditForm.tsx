@@ -1,172 +1,185 @@
 import { useState } from "react";
 import { Discount, Product } from "../../types";
 import { Button } from "./ui/Button";
+import { z } from "zod";
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 interface ProductEditFormProps {
-	editingProduct: Product;
-	setEditingProduct: (product: Product | null) => void;
-	products: Product[];
+	product: Product;
 	onProductUpdate: (updatedProduct: Product) => void;
+	onEditComplete: () => void;
 }
 
+const formSchema = z.object({
+	id: z.string(),
+	name: z.string(),
+	price: z.number(),
+	stock: z.number(),
+	discounts: z.array(
+		z.object({
+			quantity: z.number(),
+			rate: z.number(),
+		}),
+	),
+});
+
 export function ProductEditForm({
-	editingProduct,
-	setEditingProduct,
-	products,
+	product,
 	onProductUpdate,
+	onEditComplete,
 }: ProductEditFormProps) {
+	const { control, getValues, setValue } = useForm<z.infer<typeof formSchema>>({
+		defaultValues: {
+			id: product.id,
+			name: product.name,
+			price: product.price,
+			stock: product.stock,
+			discounts: product.discounts,
+		},
+		resolver: zodResolver(formSchema),
+	});
+
 	const [newDiscount, setNewDiscount] = useState<Discount>({
 		quantity: 0,
 		rate: 0,
 	});
 
-	// 새로운 핸들러 함수 추가
-	const handleProductNameUpdate = (productId: string, newName: string) => {
-		if (editingProduct && editingProduct.id === productId) {
-			const updatedProduct = { ...editingProduct, name: newName };
-			setEditingProduct(updatedProduct);
-		}
-	};
-
-	// 새로운 핸들러 함수 추가
-	const handlePriceUpdate = (productId: string, newPrice: number) => {
-		if (editingProduct && editingProduct.id === productId) {
-			const updatedProduct = { ...editingProduct, price: newPrice };
-			setEditingProduct(updatedProduct);
-		}
-	};
-
-	// 수정 완료 핸들러 함수 추가
 	const handleEditComplete = () => {
-		if (editingProduct) {
-			onProductUpdate(editingProduct);
-			setEditingProduct(null);
-		}
+		const updatedProduct = getValues();
+		onProductUpdate(updatedProduct);
+		onEditComplete();
 	};
 
-	const handleStockUpdate = (productId: string, newStock: number) => {
-		const updatedProduct = products.find((p) => p.id === productId);
-		if (updatedProduct) {
-			const newProduct = { ...updatedProduct, stock: newStock };
-			onProductUpdate(newProduct);
-			setEditingProduct(newProduct);
-		}
+	const handleAddDiscount = () => {
+		const currentDiscounts = getValues("discounts");
+		setValue("discounts", [...currentDiscounts, newDiscount]);
+		setNewDiscount({ quantity: 0, rate: 0 });
 	};
 
-	const handleAddDiscount = (productId: string) => {
-		const updatedProduct = products.find((p) => p.id === productId);
-		if (updatedProduct && editingProduct) {
-			const newProduct = {
-				...updatedProduct,
-				discounts: [...updatedProduct.discounts, newDiscount],
-			};
-			onProductUpdate(newProduct);
-			setEditingProduct(newProduct);
-			setNewDiscount({ quantity: 0, rate: 0 });
-		}
-	};
-
-	const handleRemoveDiscount = (productId: string, index: number) => {
-		const updatedProduct = products.find((p) => p.id === productId);
-		if (updatedProduct) {
-			const newProduct = {
-				...updatedProduct,
-				discounts: updatedProduct.discounts.filter((_, i) => i !== index),
-			};
-			onProductUpdate(newProduct);
-			setEditingProduct(newProduct);
-		}
+	const handleRemoveDiscount = (index: number) => {
+		const currentDiscounts = getValues("discounts");
+		setValue(
+			"discounts",
+			currentDiscounts.filter((_, i) => i !== index),
+		);
 	};
 
 	return (
-		<div>
-			<div className="mb-4">
-				<label className="mb-1 block">상품명: </label>
-				<input
-					type="text"
-					value={editingProduct.name}
-					onChange={(e) =>
-						handleProductNameUpdate(editingProduct.id, e.target.value)
-					}
-					className="w-full rounded border p-2"
-				/>
-			</div>
-			<div className="mb-4">
-				<label className="mb-1 block">가격: </label>
-				<input
-					type="number"
-					value={editingProduct.price}
-					onChange={(e) =>
-						handlePriceUpdate(editingProduct.id, parseInt(e.target.value))
-					}
-					className="w-full rounded border p-2"
-				/>
-			</div>
-			<div className="mb-4">
-				<label className="mb-1 block">재고: </label>
-				<input
-					type="number"
-					value={editingProduct.stock}
-					onChange={(e) =>
-						handleStockUpdate(editingProduct.id, parseInt(e.target.value))
-					}
-					className="w-full rounded border p-2"
-				/>
-			</div>
-			{/* 할인 정보 수정 부분 */}
-			<div>
-				<h4 className="mb-2 text-lg font-semibold">할인 정보</h4>
-				{editingProduct.discounts.map((discount, index) => (
-					<div key={index} className="mb-2 flex items-center justify-between">
-						<span>
-							{discount.quantity}개 이상 구매 시 {discount.rate * 100}% 할인
-						</span>
-						<Button
-							color="red"
-							className="px-2 py-1"
-							onClick={() => handleRemoveDiscount(editingProduct.id, index)}
-						>
-							삭제
-						</Button>
+		<form onSubmit={handleEditComplete}>
+			<Controller
+				control={control}
+				name="name"
+				render={({ field }) => (
+					<div className="mb-4">
+						<label className="mb-1 block">상품명: </label>
+						<input
+							type="text"
+							value={field.value}
+							onChange={field.onChange}
+							className="w-full rounded border p-2"
+						/>
 					</div>
-				))}
-				<div className="flex space-x-2">
-					<input
-						type="number"
-						placeholder="수량"
-						value={newDiscount.quantity}
-						onChange={(e) =>
-							setNewDiscount({
-								...newDiscount,
-								quantity: parseInt(e.target.value),
-							})
-						}
-						className="w-1/3 rounded border p-2"
-					/>
-					<input
-						type="number"
-						placeholder="할인율 (%)"
-						value={newDiscount.rate * 100}
-						onChange={(e) =>
-							setNewDiscount({
-								...newDiscount,
-								rate: parseInt(e.target.value) / 100,
-							})
-						}
-						className="w-1/3 rounded border p-2"
-					/>
-					<Button
-						color="blue"
-						className="w-1/3"
-						onClick={() => handleAddDiscount(editingProduct.id)}
-					>
-						할인 추가
-					</Button>
-				</div>
-			</div>
+				)}
+			/>
+
+			<Controller
+				control={control}
+				name="price"
+				render={({ field }) => (
+					<div className="mb-4">
+						<label className="mb-1 block">가격: </label>
+						<input
+							type="number"
+							value={field.value}
+							onChange={field.onChange}
+							className="w-full rounded border p-2"
+						/>
+					</div>
+				)}
+			/>
+
+			<Controller
+				control={control}
+				name="stock"
+				render={({ field }) => (
+					<div className="mb-4">
+						<label className="mb-1 block">재고: </label>
+						<input
+							type="number"
+							value={field.value}
+							onChange={field.onChange}
+							className="w-full rounded border p-2"
+						/>
+					</div>
+				)}
+			/>
+
+			<Controller
+				control={control}
+				name="discounts"
+				render={({ field }) => (
+					<div>
+						<h4 className="mb-2 text-lg font-semibold">할인 정보</h4>
+						{field.value.map((discount, index) => (
+							<div
+								key={index}
+								className="mb-2 flex items-center justify-between"
+							>
+								<span>
+									{discount.quantity}개 이상 구매 시 {discount.rate * 100}% 할인
+								</span>
+								<Button
+									type="button"
+									color="red"
+									className="px-2 py-1"
+									onClick={() => handleRemoveDiscount(index)}
+								>
+									삭제
+								</Button>
+							</div>
+						))}
+						<div className="flex space-x-2">
+							<input
+								type="number"
+								placeholder="수량"
+								value={newDiscount.quantity}
+								onChange={(e) =>
+									setNewDiscount({
+										...newDiscount,
+										quantity: parseInt(e.target.value),
+									})
+								}
+								className="w-1/3 rounded border p-2"
+							/>
+							<input
+								type="number"
+								placeholder="할인율 (%)"
+								value={newDiscount.rate * 100}
+								onChange={(e) =>
+									setNewDiscount({
+										...newDiscount,
+										rate: parseInt(e.target.value) / 100,
+									})
+								}
+								className="w-1/3 rounded border p-2"
+							/>
+							<Button
+								type="button"
+								color="blue"
+								className="w-1/3"
+								onClick={handleAddDiscount}
+							>
+								할인 추가
+							</Button>
+						</div>
+					</div>
+				)}
+			/>
+
 			<Button color="green" onClick={handleEditComplete}>
 				수정 완료
 			</Button>
-		</div>
+		</form>
 	);
 }

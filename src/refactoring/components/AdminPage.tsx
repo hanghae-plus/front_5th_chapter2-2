@@ -141,7 +141,6 @@ export const AdminPage = ({
 								key={product.id}
 								data-testid={`product-${index + 1}`}
 								product={product}
-								products={products}
 								onProductUpdate={onProductUpdate}
 							/>
 						))}

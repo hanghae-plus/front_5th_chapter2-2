@@ -1,7 +1,7 @@
 import { Button } from "./ui/Button";
 
 import { useState } from "react";
-import { Discount, Product } from "../../types.ts";
+import { Product } from "../../types.ts";
 import {
 	Accordion,
 	AccordionTrigger,
@@ -12,22 +12,15 @@ import { ProductEditForm } from "./ProductEditForm.tsx";
 interface ProductEditAccordionProps
 	extends React.HTMLAttributes<HTMLDivElement> {
 	product: Product;
-	products: Product[];
 	onProductUpdate: (updatedProduct: Product) => void;
 }
 
 export function ProductEditAccordion({
 	product,
-	products,
 	onProductUpdate,
 	...props
 }: ProductEditAccordionProps) {
-	const [editingProduct, setEditingProduct] = useState<Product | null>(null);
-
-	// handleEditProduct 함수 수정
-	const handleEditProduct = (product: Product) => {
-		setEditingProduct({ ...product });
-	};
+	const [isEditing, setIsEditing] = useState(false);
 
 	return (
 		<Accordion className="rounded bg-white p-4 shadow" {...props}>
@@ -35,12 +28,11 @@ export function ProductEditAccordion({
 				{product.name} - {product.price}원 (재고: {product.stock})
 			</AccordionTrigger>
 			<AccordionContent>
-				{editingProduct && editingProduct.id === product.id ? (
+				{isEditing ? (
 					<ProductEditForm
-						editingProduct={editingProduct}
-						setEditingProduct={setEditingProduct}
-						products={products}
+						product={product}
 						onProductUpdate={onProductUpdate}
+						onEditComplete={() => setIsEditing(false)}
 					/>
 				) : (
 					<div>
@@ -54,7 +46,7 @@ export function ProductEditAccordion({
 						<Button
 							color="blue"
 							data-testid="modify-button"
-							onClick={() => handleEditProduct(product)}
+							onClick={() => setIsEditing(true)}
 						>
 							수정
 						</Button>
