@@ -6,7 +6,7 @@ import { useLocalStorage } from "./useLocalStorage";
 
 export const useCart = () => {
   // const [cart, setCart] = useState<CartItem[]>([]);
-  const [cart, setCart] = useLocalStorage<CartItem[]>({ key: LOCAL_STORAGE_KEY.CART, initialValue: [] });
+  const [cart, setCart] = useLocalStorage<CartItem[]>(LOCAL_STORAGE_KEY.CART, []);
   const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
 
   const addToCart = useCallback((product: Product) => {
