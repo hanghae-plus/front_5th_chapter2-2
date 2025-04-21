@@ -1,17 +1,16 @@
-import { useState } from "react";
 import type { CouponItem } from "../../../types";
 import { CouponForm } from "./CouponForm";
 import { CouponList } from ".";
 
-interface AdminCouponListProps {
+interface AdminCouponInfoProps {
   coupons: CouponItem[];
   onCouponAdd: (newCoupon: CouponItem) => void;
 }
 
-export const AdminCouponList = ({
+export const AdminCouponInfo = ({
   coupons,
   onCouponAdd,
-}: AdminCouponListProps) => {
+}: AdminCouponInfoProps) => {
   return (
     <div>
       <h2 className="text-2xl font-semibold mb-4">쿠폰 관리</h2>
