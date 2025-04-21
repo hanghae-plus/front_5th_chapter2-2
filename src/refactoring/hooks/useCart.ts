@@ -27,14 +27,19 @@ export const useCart = () => {
     );
   };
 
-  const applyCoupon = (coupon: Coupon) => {};
+  const applyCoupon = (coupon: Coupon) => {
+    setSelectedCoupon(coupon);
+  };
 
-  const calculateTotal = () => ({
-    totalBeforeDiscount: 0,
-    totalAfterDiscount: 0,
-    totalDiscount: 0,
-  });
-
+  const calculateTotal = () => {
+    const { totalBeforeDiscount, totalAfterDiscount, totalDiscount } =
+      calculateCartTotal(cart, selectedCoupon);
+    return {
+      totalBeforeDiscount,
+      totalAfterDiscount,
+      totalDiscount,
+    };
+  };
   return {
     cart,
     addToCart,

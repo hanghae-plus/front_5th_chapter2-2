@@ -23,8 +23,6 @@ const getCouponDiscount = (
   selectedCoupon: Coupon | null,
   totalBeforeDiscount: number
 ) => {
-  console.log("selectedCoupon", selectedCoupon);
-  console.log("totalBeforeDiscount", totalBeforeDiscount);
   if (!selectedCoupon) return 0;
   if (selectedCoupon.discountType === "amount") {
     return selectedCoupon.discountValue;
