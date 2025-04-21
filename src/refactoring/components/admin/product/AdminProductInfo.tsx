@@ -1,9 +1,7 @@
 import { useState } from "react";
-import type { Product, Discount } from "../../types";
-import { NewProductForm } from "./product/NewProductForm";
-import { UpdateProductForm } from "./product/UpdateProductForm";
-import { ProductToggleButton } from "./product/ProductToggleButton";
-import { ProductList } from "./product/ProductList";
+import type { Product } from "../../../types";
+import { NewProductForm } from "./NewProductForm";
+import { ProductList } from "./ProductList";
 
 interface AdminProductListProps {
   products: Product[];
@@ -11,7 +9,7 @@ interface AdminProductListProps {
   onProductAdd: (newProduct: Product) => void;
 }
 
-export const AdminProductList = ({
+export const AdminProductInfo = ({
   products,
   onProductUpdate,
   onProductAdd,

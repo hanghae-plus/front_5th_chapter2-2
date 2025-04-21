@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { Product } from "../../../types";
 import { ProductToggleButton } from "./ProductToggleButton";
 import { UpdateProductForm } from "./UpdateProductForm";
+import { DiscountInfo } from "./DiscountInfo";
 
 interface ProductListProps {
   products: Product[];
@@ -46,12 +47,7 @@ export const ProductList = ({
                 <div>
                   {product.discounts.map((discount, index) => (
                     // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-                    <div key={index} className="mb-2">
-                      <span>
-                        {discount.quantity}개 이상 구매 시 {discount.rate * 100}
-                        % 할인
-                      </span>
-                    </div>
+                    <DiscountInfo key={index} discount={discount} />
                   ))}
                   <button
                     type="button"

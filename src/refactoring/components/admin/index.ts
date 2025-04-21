@@ -1,2 +1,2 @@
-export * from "./AdminProductList";
-export * from "./AdminCouponList";
+export * from "./coupon";
+export * from "./product";
