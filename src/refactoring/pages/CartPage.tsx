@@ -1,17 +1,13 @@
-import { CartItem, Coupon, Product } from "../../types.ts";
+import { Coupon, Product } from "../../types.ts";
 import { useCart } from "../hooks";
 import {
-  ProductCard,
+  ProductCardList,
   CouponSection,
   OrderSummary,
   CartItemCard,
 } from "../components/cart";
 import { PageLayout, SectionLayout } from "../components/common";
-import {
-  getMaxDiscount,
-  getRemainingStock,
-  getAppliedDiscount,
-} from "../calculations/cart";
+import { getAppliedDiscount } from "../calculations/cart";
 interface Props {
   products: Product[];
   coupons: Coupon[];
@@ -34,20 +30,11 @@ export const CartPage = ({ products, coupons }: Props) => {
   return (
     <PageLayout title="장바구니">
       <SectionLayout title="상품 목록">
-        <div className="space-y-2">
-          {products.map((product) => {
-            const remainingStock = getRemainingStock(cart, product);
-            return (
-              <ProductCard
-                key={product.id}
-                product={product}
-                remainingStock={remainingStock}
-                onAddToCart={addToCart}
-                getMaxDiscount={getMaxDiscount}
-              />
-            );
-          })}
-        </div>
+        <ProductCardList
+          products={products}
+          cart={cart}
+          onAddToCart={addToCart}
+        />
       </SectionLayout>
       <SectionLayout title="장바구니 내역">
         <div className="space-y-2">
