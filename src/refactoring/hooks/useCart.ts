@@ -71,6 +71,7 @@ export const useCart = () => {
     updateQuantity,
     applyCoupon,
     calculateTotal,
+    getRemainingStock,
     selectedCoupon,
   };
 };

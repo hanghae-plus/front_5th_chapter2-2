@@ -20,7 +20,6 @@ export const calculateItemTotal = (item: CartItem) => {
  */
 export const getMaxApplicableDiscount = (item: CartItem) => {
   const { quantity } = item;
-
   const discount = item.product.discounts.reduce((maxDiscount, d) => {
     return quantity >= d.quantity && d.rate > maxDiscount
       ? d.rate
@@ -98,4 +97,10 @@ export const updateCartItemQuantity = (
     .filter((item): item is CartItem => item !== null);
 
   return newCart;
+};
+
+export const getMaxDiscount = (
+  discounts: { quantity: number; rate: number }[],
+) => {
+  return discounts.reduce((max, discount) => Math.max(max, discount.rate), 0);
 };
