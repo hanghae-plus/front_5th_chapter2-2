@@ -43,6 +43,7 @@ const AccordionTrigger = React.forwardRef<
       onClick={() => setOpen(!open)}
     >
       {children}
+      <Icons.chevronDown className={cn(open && "rotate-180", "transition-transform duration-300 ease-in-out")} />
     </button>
   );
 });
