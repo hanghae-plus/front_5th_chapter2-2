@@ -1,9 +1,7 @@
-import { useState } from "react";
-import { Discount, Product } from "../../types";
+import { Product } from "../../types";
 import { Button } from "./ui/Button";
-import { z } from "zod";
-import { Controller, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { Controller } from "react-hook-form";
+import { useProductEditForm } from "../hooks/useProductEditForm";
 
 interface ProductEditFormProps {
 	product: Product;
@@ -11,59 +9,24 @@ interface ProductEditFormProps {
 	onEditComplete: () => void;
 }
 
-const formSchema = z.object({
-	id: z.string(),
-	name: z.string(),
-	price: z.number(),
-	stock: z.number(),
-	discounts: z.array(
-		z.object({
-			quantity: z.number(),
-			rate: z.number(),
-		}),
-	),
-});
-
 export function ProductEditForm({
 	product,
 	onProductUpdate,
 	onEditComplete,
 }: ProductEditFormProps) {
-	const { control, getValues, setValue } = useForm<z.infer<typeof formSchema>>({
-		defaultValues: {
-			id: product.id,
-			name: product.name,
-			price: product.price,
-			stock: product.stock,
-			discounts: product.discounts,
-		},
-		resolver: zodResolver(formSchema),
+	const {
+		form: { control },
+		newDiscount,
+		handleEditComplete,
+		handleAddDiscount,
+		handleRemoveDiscount,
+		handleChangeDiscountQuantity,
+		handleChangeDiscountRate,
+	} = useProductEditForm({
+		product,
+		onProductUpdate,
+		onEditComplete,
 	});
-
-	const [newDiscount, setNewDiscount] = useState<Discount>({
-		quantity: 0,
-		rate: 0,
-	});
-
-	const handleEditComplete = () => {
-		const updatedProduct = getValues();
-		onProductUpdate(updatedProduct);
-		onEditComplete();
-	};
-
-	const handleAddDiscount = () => {
-		const currentDiscounts = getValues("discounts");
-		setValue("discounts", [...currentDiscounts, newDiscount]);
-		setNewDiscount({ quantity: 0, rate: 0 });
-	};
-
-	const handleRemoveDiscount = (index: number) => {
-		const currentDiscounts = getValues("discounts");
-		setValue(
-			"discounts",
-			currentDiscounts.filter((_, i) => i !== index),
-		);
-	};
 
 	return (
 		<form onSubmit={handleEditComplete}>
@@ -144,24 +107,14 @@ export function ProductEditForm({
 								type="number"
 								placeholder="수량"
 								value={newDiscount.quantity}
-								onChange={(e) =>
-									setNewDiscount({
-										...newDiscount,
-										quantity: parseInt(e.target.value),
-									})
-								}
+								onChange={handleChangeDiscountQuantity}
 								className="w-1/3 rounded border p-2"
 							/>
 							<input
 								type="number"
 								placeholder="할인율 (%)"
 								value={newDiscount.rate * 100}
-								onChange={(e) =>
-									setNewDiscount({
-										...newDiscount,
-										rate: parseInt(e.target.value) / 100,
-									})
-								}
+								onChange={handleChangeDiscountRate}
 								className="w-1/3 rounded border p-2"
 							/>
 							<Button
