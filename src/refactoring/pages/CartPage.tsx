@@ -6,8 +6,12 @@ import {
   OrderSummary,
   CartItemCard,
 } from "../components/cart";
-import { PageLayout, Typography, SectionLayout } from "../components/common";
-
+import { PageLayout, SectionLayout } from "../components/common";
+import {
+  getMaxDiscount,
+  getRemainingStock,
+  getAppliedDiscount,
+} from "../calculations/cart";
 interface Props {
   products: Product[];
   coupons: Coupon[];
@@ -24,36 +28,15 @@ export const CartPage = ({ products, coupons }: Props) => {
     selectedCoupon,
   } = useCart();
 
-  const getMaxDiscount = (discounts: { quantity: number; rate: number }[]) => {
-    return discounts.reduce((max, discount) => Math.max(max, discount.rate), 0);
-  };
-
-  const getRemainingStock = (product: Product) => {
-    const cartItem = cart.find((item) => item.product.id === product.id);
-    return product.stock - (cartItem?.quantity || 0);
-  };
-
   const { totalBeforeDiscount, totalAfterDiscount, totalDiscount } =
     calculateTotal();
-
-  const getAppliedDiscount = (item: CartItem) => {
-    const { discounts } = item.product;
-    const { quantity } = item;
-    let appliedDiscount = 0;
-    for (const discount of discounts) {
-      if (quantity >= discount.quantity) {
-        appliedDiscount = Math.max(appliedDiscount, discount.rate);
-      }
-    }
-    return appliedDiscount;
-  };
 
   return (
     <PageLayout title="장바구니">
       <SectionLayout title="상품 목록">
         <div className="space-y-2">
           {products.map((product) => {
-            const remainingStock = getRemainingStock(product);
+            const remainingStock = getRemainingStock(cart, product);
             return (
               <ProductCard
                 key={product.id}
