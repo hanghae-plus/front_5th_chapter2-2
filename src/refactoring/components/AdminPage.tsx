@@ -3,6 +3,7 @@ import { Coupon, Discount, Product } from "../../types.ts";
 import { Button } from "./ui/Button.tsx";
 import { ProductEditAccordion } from "./ProductEditAccordion.tsx";
 import { AddNewProductForm } from "./AddNewProductForm.tsx";
+import { ToggleButton } from "./ui/ToggleButton.tsx";
 
 interface Props {
 	products: Product[];
@@ -25,7 +26,6 @@ export const AdminPage = ({
 		discountType: "percentage",
 		discountValue: 0,
 	});
-	const [showNewProductForm, setShowNewProductForm] = useState(false);
 
 	const handleAddCoupon = () => {
 		onCouponAdd(newCoupon);
@@ -43,18 +43,19 @@ export const AdminPage = ({
 			<div className="grid grid-cols-1 gap-6 md:grid-cols-2">
 				<div>
 					<h2 className="mb-4 text-2xl font-semibold">상품 관리</h2>
-					<Button
+
+					<ToggleButton
 						color="green"
-						onClick={() => setShowNewProductForm(!showNewProductForm)}
-					>
-						{showNewProductForm ? "취소" : "새 상품 추가"}
-					</Button>
-					{showNewProductForm && (
-						<AddNewProductForm
-							onProductAdd={onProductAdd}
-							onAddComplete={() => setShowNewProductForm(false)}
-						/>
-					)}
+						showLabel="새 상품 추가"
+						hideLabel="취소"
+						render={(closeForm) => (
+							<AddNewProductForm
+								onProductAdd={onProductAdd}
+								onAddComplete={closeForm}
+							/>
+						)}
+					/>
+
 					<div className="space-y-2">
 						{products.map((product, index) => (
 							<ProductEditAccordion

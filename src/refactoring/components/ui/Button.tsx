@@ -17,7 +17,7 @@ const buttonVariants = cva("rounded", {
 	},
 });
 
-interface ButtonProps
+export interface ButtonProps
 	extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "color">,
 		VariantProps<typeof buttonVariants> {}
 
@@ -30,5 +30,5 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 		>
 			{children}
 		</button>
-	)
+	),
 );
