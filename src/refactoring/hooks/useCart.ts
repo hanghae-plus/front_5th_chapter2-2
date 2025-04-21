@@ -7,19 +7,44 @@ export const useCart = () => {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
 
-  const addToCart = (product: Product) => {};
+  const addToCart = (product: Product) => {
+    // 없는 상품이면 push.
+    const isInCart = cart.some((item) => item.product.id === product.id);
 
-  const removeFromCart = (productId: string) => {};
+    // 있는 상품이면 quantity ++1
+    let newCart: CartItem[] = [];
+    if (isInCart) {
+      cart.forEach((item) => {
+        if (item.product.id !== product.id)
+          newCart.push({ ...item, quantity: item.quantity });
+        const newItem = { ...item, quantity: item.quantity + 1 };
+        newCart.push(newItem);
+      });
+    }
 
-  const updateQuantity = (productId: string, newQuantity: number) => {};
+    if (!isInCart) {
+      newCart = [...cart, { product, quantity: 1 }];
+    }
 
-  const applyCoupon = (coupon: Coupon) => {};
+    setCart(newCart);
+  };
 
-  const calculateTotal = () => ({
-    totalBeforeDiscount: 0,
-    totalAfterDiscount: 0,
-    totalDiscount: 0,
-  });
+  const removeFromCart = (productId: string) => {
+    const newCart = cart.filter((item) => item.product.id !== productId);
+    setCart(newCart);
+  };
+
+  const updateQuantity = (productId: string, newQuantity: number) => {
+    setCart((prev) => updateCartItemQuantity(prev, productId, newQuantity));
+  };
+
+  const applyCoupon = (coupon: Coupon) => {
+    setSelectedCoupon(coupon);
+  };
+
+  const calculateTotal = () => {
+    return calculateCartTotal(cart, selectedCoupon);
+  };
 
   return {
     cart,
