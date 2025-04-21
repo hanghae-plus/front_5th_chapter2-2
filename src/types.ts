@@ -3,7 +3,7 @@ export interface Product {
   name: string;
   price: number;
   stock: number;
-  discounts: Discount[];
+  discounts: Discount[]; // 예시: discounts: [{ quantity: 10, rate: 0.1 }]
 }
 
 export interface Discount {
