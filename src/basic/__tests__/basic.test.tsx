@@ -8,7 +8,7 @@ import {
   screen,
   within,
 } from "@testing-library/react";
-import { AdminPage, CartPage } from "@r/pages";
+import { AdminPage, CartPage } from "@r/components";
 import { CartItem, Coupon, Product } from "@/types";
 import { useCart, useCoupons, useProducts } from "@r/hooks";
 import * as cartUtils from "@r/models/cart";

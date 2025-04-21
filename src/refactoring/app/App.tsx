@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { Coupon, Product } from "@/types.ts";
 
-import { AdminPage, CartPage } from "@r/pages/index.ts";
+import { AdminPage, CartPage } from "@r/components";
 
 import { useProducts } from "@r/hooks/useProduct.ts";
 import { useCoupons } from "@r/hooks/useCoupon.ts";
