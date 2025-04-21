@@ -6,7 +6,7 @@ import { initialProducts } from './store/products.ts';
 import { useCoupons, useProducts } from "./hooks";
 
 const App = () => {
-  // useProducts로 상품 상태관리리
+  // useProducts로 상품 상태관리
   const { products, updateProduct, addProduct } = useProducts(initialProducts);
   // useCoupons로 쿠폰 상태관리
   const { coupons, addCoupon } = useCoupons(initialCoupons);
