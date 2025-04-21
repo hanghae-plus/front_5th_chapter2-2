@@ -4,10 +4,10 @@ import { z } from "zod";
 import { Coupon } from "../../types";
 
 const formSchema = z.object({
-	name: z.string().min(1),
-	code: z.string().min(1),
+	name: z.string(),
+	code: z.string(),
 	discountType: z.enum(["percentage", "amount"]),
-	discountValue: z.number().min(0),
+	discountValue: z.number(),
 });
 
 interface AddCouponFormProps {
@@ -25,7 +25,8 @@ export const useAddCouponForm = ({ onCouponAdd }: AddCouponFormProps) => {
 		},
 	});
 
-	const handleAddCoupon = (data: z.infer<typeof formSchema>) => {
+	const handleAddCoupon = () => {
+		const data = form.getValues();
 		onCouponAdd(data);
 		form.reset();
 	};

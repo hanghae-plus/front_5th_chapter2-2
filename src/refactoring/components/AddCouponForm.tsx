@@ -9,12 +9,12 @@ interface AddCouponFormProps {
 
 export function AddCouponForm({ onCouponAdd }: AddCouponFormProps) {
 	const {
-		form: { control, handleSubmit },
+		form: { control },
 		handleAddCoupon,
 	} = useAddCouponForm({ onCouponAdd });
 
 	return (
-		<form onSubmit={handleSubmit(handleAddCoupon)} className="mb-4 space-y-2">
+		<form onSubmit={handleAddCoupon} className="mb-4 space-y-2">
 			<Controller
 				control={control}
 				name="name"
@@ -70,7 +70,7 @@ export function AddCouponForm({ onCouponAdd }: AddCouponFormProps) {
 					)}
 				/>
 			</div>
-			<Button color="green" className="w-full">
+			<Button type="submit" color="green" className="w-full">
 				쿠폰 추가
 			</Button>
 		</form>

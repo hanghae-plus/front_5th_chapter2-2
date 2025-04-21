@@ -21,9 +21,12 @@ export function CouponList({ coupons }: CouponListProps) {
 	);
 }
 
-CouponList.Item = ({ coupon }: { coupon: Coupon }) => {
+CouponList.Item = ({
+	coupon,
+	...props
+}: { coupon: Coupon } & React.HTMLAttributes<HTMLDivElement>) => {
 	return (
-		<div className="rounded bg-gray-100 p-2">
+		<div className="rounded bg-gray-100 p-2" {...props}>
 			{coupon.name} ({coupon.code}):
 			{coupon.discountType === "amount"
 				? `${coupon.discountValue}원`
