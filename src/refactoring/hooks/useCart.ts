@@ -35,13 +35,13 @@ export const useCart = () => {
   };
 
   const removeFromCart = (productId: string) => {
-    setCart((prevCart) =>
+    setCart((prevCart: CartItem[]) =>
       prevCart.filter((item) => item.product.id !== productId)
     );
   };
 
   const updateQuantity = (productId: string, newQuantity: number) => {
-    setCart((prevCart) => {
+    setCart((prevCart: CartItem[]) => {
       return updateCartItemQuantity(prevCart, productId, newQuantity);
     });
   };
