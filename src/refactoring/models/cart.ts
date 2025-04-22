@@ -2,7 +2,7 @@ import { CartItem, Coupon } from "../../types";
 
 export const calculateItemTotal = (item: CartItem) => {
   const discountRate = getMaxApplicableDiscount(item);
-  const priceWithDiscount = item.product.price * (1 - discountRate);
+  const priceWithDiscount = item.product.price * (1 - discountRate); // 상품수량에 따라 할인
   return Math.floor(priceWithDiscount * item.quantity); // 소수점 버림 처리
 };
 
@@ -18,19 +18,20 @@ export const calculateCartTotal = (
   selectedCoupon: Coupon | null
 ) => {
   const totalBeforeDiscount = cart.reduce(
-    (acc, item) => acc + calculateItemTotal(item),
-    0
+    (acc, item) => acc + item.product.price * item.quantity,0
   );
 
-  let totalDiscount = 0;
+  const discountedSubTotal = cart.reduce(
+    (acc, item) => acc + calculateItemTotal(item),0
+  );
+
+  let totalDiscount = totalBeforeDiscount - discountedSubTotal;
 
   if (selectedCoupon) {
     if (selectedCoupon.discountType === "amount") {
-      // 금액 쿠폰의 경우, 할인 금액을 coupon.discountValue로 설정
-      totalDiscount = selectedCoupon.discountValue;
+      totalDiscount += selectedCoupon.discountValue;
     } else if (selectedCoupon.discountType === "percentage") {
-      // 퍼센트 쿠폰의 경우, 총액에서 해당 비율을 할인
-      totalDiscount = totalBeforeDiscount * (selectedCoupon.discountValue / 100);
+      totalDiscount += discountedSubTotal * (selectedCoupon.discountValue / 100);
     }
 
     // 할인액이 총액을 초과하지 않도록 보정
