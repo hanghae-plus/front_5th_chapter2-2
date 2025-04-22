@@ -7,6 +7,13 @@ import { CartItem, Coupon, Product } from '../../types';
 import { useCart, useCoupons, useProducts } from '../../refactoring/hooks';
 import * as cartUtils from '../../refactoring/models/cart';
 
+const INITIAL_COUPON: Coupon = {
+  name: '',
+  code: '',
+  discountType: 'percentage',
+  discountValue: 0,
+};
+
 const mockProducts: Product[] = [
   {
     id: 'p1',
@@ -56,9 +63,18 @@ const TestAdminPage = () => {
   const handleProductAdd = (newProduct: Product) => {
     setProducts((prevProducts) => [...prevProducts, newProduct]);
   };
+  const [newCoupon, setNewCoupon] = useState(INITIAL_COUPON);
 
   const handleCouponAdd = (newCoupon: Coupon) => {
     setCoupons((prevCoupons) => [...prevCoupons, newCoupon]);
+  };
+
+  const reset = () => setNewCoupon(INITIAL_COUPON);
+
+  //새쿠폰 추가 - 액션
+  const handleAddCoupon = () => {
+    handleCouponAdd(newCoupon);
+    reset();
   };
 
   return (
@@ -67,7 +83,9 @@ const TestAdminPage = () => {
       coupons={coupons}
       onProductUpdate={handleProductUpdate}
       onProductAdd={handleProductAdd}
-      onCouponAdd={handleCouponAdd}
+      newCoupon={newCoupon}
+      setNewCoupon={setNewCoupon}
+      handleAddCoupon={handleAddCoupon}
     />
   );
 };
