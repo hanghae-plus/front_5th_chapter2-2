@@ -14,13 +14,13 @@ interface Props {
 export const CartPage = ({ products, coupons }: Props) => {
   const {
     cart,
+    selectedCoupon,
     addToCart,
     removeFromCart,
     updateQuantity,
     applyCoupon,
     calculateTotal,
     getRemainingStock,
-    selectedCoupon,
   } = useCart();
 
   const { totalBeforeDiscount, totalAfterDiscount, totalDiscount } =

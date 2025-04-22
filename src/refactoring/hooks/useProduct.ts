@@ -10,8 +10,6 @@ import { Product } from "../../types.ts";
 
  *데이터: initialProducts(props), products(state)*/
 export const useProducts = (initialProducts: Product[]) => {
-  //  TODO: 액션에서 계산 분리하기
-
   const [products, setProducts] = useState<Product[]>(initialProducts);
 
   /**상품을 업데이트합니다. */

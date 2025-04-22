@@ -1,7 +1,17 @@
 import { CartItem, Coupon } from "../../types";
+
 /**
- * model/cart와 hooks/useCart의 차이점
- * cart에는 useCart에서 다루는 상태(데이터)에 의존하지 않지만, cart책무를 이행하는 함수들을 다룹니다.
+ * 엔티티(cart,selectedCoupon)을 다루는 유틸함수
+ *
+ *데이터: 
+ *액션: 
+ *계산:
+  calculateItemTotal (item->총액)
+  getMaxApplicableDiscount (item->할인율)
+  calculateCartTotal (cart,selectedCoupon -> totalBeforeDiscount, totalAfterDiscount, totalDiscount)
+  updateCartItemQuantity (cart,productId,newQuantity -> 수량이 업데이트된 cart)
+  getMaxDiscount (discounts->가장큰 할인율)
+  getDiscountPercent (discount-> %로 나타낼 할인율)  
  */
 
 /** 할인을 포함한 아이템의 총액을 계산합니다. */
@@ -25,7 +35,7 @@ export const getMaxApplicableDiscount = (item: CartItem) => {
   return discount;
 };
 
-/** 장바구니의 총액을 쿠폰을 적용하여 계산합니다. */
+/** 장바구니의 쿠폰 적용 전후의 금액, 전체 할인율을 반환합니다.. */
 export const calculateCartTotal = (
   cart: CartItem[],
   selectedCoupon: Coupon | null,
