@@ -1,4 +1,5 @@
-import { CartItem, Discount, Product } from "@/types";
+import { getMaxDiscount } from "@r/entities/discount";
+import { CartItem, Product } from "@/types";
 
 interface ProductListProps {
   products: Product[];
@@ -11,10 +12,6 @@ export const ProductList: React.FC<ProductListProps> = ({
   cart,
   addToCart,
 }) => {
-  const getMaxDiscount = (discounts: Discount[]) => {
-    return discounts.reduce((max, discount) => Math.max(max, discount.rate), 0);
-  };
-
   const getRemainingStock = (product: Product) => {
     const cartItem = cart.find((item) => item.product.id === product.id);
     return product.stock - (cartItem?.quantity || 0);
