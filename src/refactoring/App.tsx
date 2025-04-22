@@ -4,6 +4,7 @@ import { AdminPage } from './components/AdminPage.tsx';
 import { Coupon, Product } from '../types.ts';
 import { useCoupons, useProducts } from "./hooks";
 
+// 초기 상품 목록
 const initialProducts: Product[] = [
   {
     id: 'p1',
@@ -28,6 +29,7 @@ const initialProducts: Product[] = [
   }
 ];
 
+// 초기 쿠폰 목록
 const initialCoupons: Coupon[] = [
   {
     name: '5000원 할인 쿠폰',
@@ -44,8 +46,11 @@ const initialCoupons: Coupon[] = [
 ];
 
 const App = () => {
+  // 상품 관리 훅 사용
   const { products, updateProduct, addProduct } = useProducts(initialProducts);
+  // 쿠폰 관리 훅 사용
   const { coupons, addCoupon } = useCoupons(initialCoupons);
+  // 관리자 페이지 표시 여부 상태 관리
   const [isAdmin, setIsAdmin] = useState(false);
 
   return (
