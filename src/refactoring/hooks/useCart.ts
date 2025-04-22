@@ -1,30 +1,18 @@
 // useCart.ts
 import { useState } from "react";
 import { CartItem, Coupon, Product } from "../../types";
-import { calculateCartTotal, updateCartItemQuantity } from "../models/cart";
+import {
+  calculateCartTotal,
+  getAddedToCart,
+  updateCartItemQuantity,
+} from "../models/cart";
 
 export const useCart = () => {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
 
   const addToCart = (product: Product) => {
-    // 없는 상품이면 push.
-    const isInCart = cart.some((item) => item.product.id === product.id);
-
-    // 있는 상품이면 quantity ++1
-    let newCart: CartItem[] = [];
-    if (isInCart) {
-      cart.forEach((item) => {
-        if (item.product.id !== product.id)
-          newCart.push({ ...item, quantity: item.quantity });
-        const newItem = { ...item, quantity: item.quantity + 1 };
-        newCart.push(newItem);
-      });
-    }
-
-    if (!isInCart) {
-      newCart = [...cart, { product, quantity: 1 }];
-    }
+    const newCart = getAddedToCart(cart, product);
 
     setCart(newCart);
   };
@@ -36,6 +24,8 @@ export const useCart = () => {
 
   const updateQuantity = (productId: string, newQuantity: number) => {
     setCart((prev) => updateCartItemQuantity(prev, productId, newQuantity));
+    // const newCart = updateCartItemQuantity(cart, productId, newQuantity);
+    // setCart(newCart);
   };
 
   const applyCoupon = (coupon: Coupon) => {
