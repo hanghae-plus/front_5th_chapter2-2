@@ -5,19 +5,19 @@ export type LocalStorage = {
   CART: "cart";
 };
 
-const getLocalStorage = (key: LocalStorage[keyof LocalStorage]) => {
+export const getLocalStorage = (key: LocalStorage[keyof LocalStorage]) => {
   const storageItems = localStorage.getItem(key) || JSON.stringify([]);
   return JSON.parse(storageItems);
 };
 
-const setLocalStorage = (
+export const setLocalStorage = (
   key: LocalStorage[keyof LocalStorage],
   newCartItems: CartItem[] | []
 ) => {
   localStorage.setItem(key, JSON.stringify(newCartItems));
 };
 
-const removeLocalStorage = (key: LocalStorage[keyof LocalStorage]) => {
+export const removeLocalStorage = (key: LocalStorage[keyof LocalStorage]) => {
   localStorage.removeItem(key);
 };
 
