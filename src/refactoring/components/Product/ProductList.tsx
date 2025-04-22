@@ -6,11 +6,12 @@ import { getRemainingStock } from "../../utils/getRemainingStock";
 export const ProductList = ({
   products,
   cart,
+  onAddToCart
 }: {
   products: Product[];
   cart: CartItem[];
+  onAddToCart: (product: Product) => void;
 }) => {
-  const { addToCart } = useCart();
   return (
     <div>
       <h2 className="text-2xl font-semibold mb-4">상품 목록</h2>
@@ -55,7 +56,7 @@ export const ProductList = ({
                 </ul>
               )}
               <button
-                onClick={() => addToCart(product)}
+                onClick={() => onAddToCart(product)}
                 className={`w-full px-3 py-1 rounded ${
                   remainingStock > 0
                     ? "bg-blue-500 text-white hover:bg-blue-600"
