@@ -9,9 +9,12 @@ import {
   within,
 } from "@testing-library/react";
 import { AdminPage, CartPage } from "@r/components";
-import { CartItem, Coupon, Product } from "@/types";
-import { useCart, useCoupons, useProducts } from "@r/hooks";
+
 import * as cartUtils from "@r/entities/cart/lib";
+
+import { Product, useProducts } from "@/refactoring/entities/product";
+import { Coupon, useCoupons } from "@/refactoring/entities/coupon";
+import { CartItem, useCart } from "@/refactoring/entities/cart";
 
 const mockProducts: Product[] = [
   {
