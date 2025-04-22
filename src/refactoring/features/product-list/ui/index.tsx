@@ -1,5 +1,6 @@
 import { getMaxDiscount } from "@r/entities/discount";
 import { CartItem, Product } from "@/types";
+import { getRemainingStock } from "../lib";
 
 interface ProductListProps {
   products: Product[];
@@ -12,17 +13,12 @@ export const ProductList: React.FC<ProductListProps> = ({
   cart,
   addToCart,
 }) => {
-  const getRemainingStock = (product: Product) => {
-    const cartItem = cart.find((item) => item.product.id === product.id);
-    return product.stock - (cartItem?.quantity || 0);
-  };
-
   return (
     <div>
       <h2 className="text-2xl font-semibold mb-4">상품 목록</h2>
       <div className="space-y-2">
         {products.map((product) => {
-          const remainingStock = getRemainingStock(product);
+          const remainingStock = getRemainingStock(product, cart);
           return (
             <div
               key={product.id}
