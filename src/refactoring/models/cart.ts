@@ -2,7 +2,6 @@ import { CartItem, Coupon } from "../../types";
 
 // 기본가격 + 할인율 계산
 export const calculateItemTotal = (item: CartItem) => {
-    console.log("item: ", item);
     // 기본 가격 계산 (가격 * 수량)
     const baseTotal = item.product.price * item.quantity;
 
@@ -42,8 +41,6 @@ export const calculateCartTotal = (
     cart: CartItem[],
     selectedCoupon: Coupon | null
 ) => {
-    console.log("cart: ", cart);
-    console.log("selectedCoupon: ", selectedCoupon);
     // 기본 가격 계산 (가격 * 수량)
     // const baseTotal = item.product.price * item.quantity;
     // 할인 전 총액 계산 (모든 상품의 기본 가격 * 수량의 합)
@@ -87,11 +84,33 @@ export const calculateCartTotal = (
     };
 };
 
-//
+// 수량 업데이트
 export const updateCartItemQuantity = (
     cart: CartItem[],
     productId: string,
     newQuantity: number
 ): CartItem[] => {
-    return [];
+    if (newQuantity === 0) {
+        return cart.filter((item) => item.product.id !== productId);
+    }
+
+    // 수량 업데이트
+    return cart.map((item) => {
+        // 해당 상품이 아니면 그대로 반환
+        if (item.product.id !== productId) {
+            return item;
+        }
+
+        // 재고 한도를 초과하지 않도록 제한
+        const maxQuantity = item.product.stock;
+        const limitedQuantity = Math.min(newQuantity, maxQuantity);
+
+        // 새 수량으로 업데이트된 항목 반환
+        return {
+            ...item,
+            quantity: limitedQuantity,
+        };
+    });
+
+    // return [];
 };
