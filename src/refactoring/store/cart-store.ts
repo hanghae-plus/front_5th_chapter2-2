@@ -12,6 +12,7 @@ interface CartStore {
   addToCart: (product: Product) => void;
   removeFromCart: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
+  resetCart: () => void;
 }
 
 export const useCartStore = create<CartStore>((set, get) => ({
@@ -31,4 +32,6 @@ export const useCartStore = create<CartStore>((set, get) => ({
     const updated = logicUpdateQuantity(get().cart, productId, quantity);
     set({ cart: updated });
   },
+
+  resetCart: () => set({ cart: [] }),
 }));
