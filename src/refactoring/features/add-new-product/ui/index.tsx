@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { Product } from "@r/entities/product/types";
+import { Product } from "@r/entities/product";
 
 interface AddNewProductProps {
   onProductAdd: (newProduct: Product) => void;

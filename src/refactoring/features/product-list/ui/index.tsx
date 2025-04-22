@@ -1,4 +1,6 @@
-import { CartItem, Product } from "@/types";
+import { Product } from "@r/entities/product";
+import { CartItem } from "@r/entities/cart";
+
 import { ProductCard } from "./product-card";
 
 interface ProductListProps {

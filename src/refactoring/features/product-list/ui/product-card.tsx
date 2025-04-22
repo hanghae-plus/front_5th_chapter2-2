@@ -1,6 +1,6 @@
-import { CartItem, Product } from "@/types";
+import { CartItem } from "@r/entities/cart";
+import { getMaxDiscount, Product } from "@r/entities/product";
 
-import { getMaxDiscount } from "@r/entities/discount";
 import { getRemainingStock } from "@r/features/product-list";
 
 interface ProductCardProps {

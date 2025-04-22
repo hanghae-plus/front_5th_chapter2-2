@@ -1,6 +1,6 @@
-import { Discount } from "@/refactoring/entities/discount";
-import { Product } from "@/refactoring/entities/product/types";
 import { useState } from "react";
+
+import { Product, Discount } from "@r/entities/product";
 
 interface ProductAccordionProps extends React.HTMLProps<HTMLDivElement> {
   products: Product[];

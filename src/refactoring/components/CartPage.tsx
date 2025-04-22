@@ -1,7 +1,10 @@
-import { Coupon, Product } from "@/types.ts";
-import { useCart } from "@r/hooks";
-import { CartList, CouponApplier, OrderSummary } from "@r/widget";
+import { Product } from "@r/entities/product";
+import { Coupon } from "@r/entities/coupon";
+import { useCart } from "@r/entities/cart";
+
 import { ProductList } from "@r/features/product-list";
+
+import { CartList, CouponApplier, OrderSummary } from "@r/widget";
 
 interface Props {
   products: Product[];

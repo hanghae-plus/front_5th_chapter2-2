@@ -1,5 +1,6 @@
-import { Coupon } from "@/types";
 import { useState } from "react";
+
+import { Coupon } from "@r/entities/coupon";
 
 interface CouponManagementProps {
   coupons: Coupon[];

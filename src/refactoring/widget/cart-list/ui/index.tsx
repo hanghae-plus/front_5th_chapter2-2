@@ -1,4 +1,4 @@
-import { CartItem } from "@/types";
+import { CartItem } from "@r/entities/cart";
 
 interface CartListProps {
   cart: CartItem[];

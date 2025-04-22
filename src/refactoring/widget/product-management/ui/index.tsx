@@ -1,7 +1,8 @@
-import { Product } from "@/types";
-import { ProductAccordion } from "./product-accordion";
+import { Product } from "@r/entities/product";
+
 import { AddNewProduct } from "@r/features/add-new-product/ui";
 
+import { ProductAccordion } from "./product-accordion";
 interface ProductManagementProps {
   products: Product[];
   onProductUpdate: (updatedProduct: Product) => void;

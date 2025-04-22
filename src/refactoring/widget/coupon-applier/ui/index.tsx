@@ -1,4 +1,4 @@
-import { Coupon } from "@/types";
+import { Coupon } from "@r/entities/coupon";
 
 interface CouponApplierProps {
   coupons: Coupon[];
