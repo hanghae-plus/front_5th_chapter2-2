@@ -1,4 +1,4 @@
-import { CartItem, Product } from "@/types";
+import { CartItem, Discount, Product } from "@/types";
 
 interface ProductListProps {
   products: Product[];
@@ -11,7 +11,7 @@ export const ProductList: React.FC<ProductListProps> = ({
   cart,
   addToCart,
 }) => {
-  const getMaxDiscount = (discounts: { quantity: number; rate: number }[]) => {
+  const getMaxDiscount = (discounts: Discount[]) => {
     return discounts.reduce((max, discount) => Math.max(max, discount.rate), 0);
   };
 

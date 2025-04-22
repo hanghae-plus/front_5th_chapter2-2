@@ -1,5 +1,4 @@
 export * from "./cart-list";
-export * from "./product-list";
 export * from "./product-management";
 export * from "./coupon-applier";
 export * from "./order-summary";
