@@ -3,7 +3,8 @@ import { ProductEditAccordion } from "../components/admin/ProductEditAccordion.t
 import { ProductAddForm } from "../components/admin/ProductAddForm.tsx";
 import { ToggleButton } from "../components/ui/ToggleButton.tsx";
 import { CouponAddForm } from "../components/admin/CouponAddForm.tsx";
-import { CouponList } from "../components/admin/CouponList.tsx";
+import { ProductManageContainer } from "../components/admin/ProductManageContainer.tsx";
+import { CouponManageContainer } from "../components/admin/CouponManageContainer.tsx";
 
 interface Props {
 	products: Product[];
@@ -22,37 +23,12 @@ export const AdminPage = ({
 }: Props) => {
 	return (
 		<AdminPage.Layout>
-			<div>
-				<h2 className="mb-4 text-2xl font-semibold">상품 관리</h2>
-				<ToggleButton
-					color="green"
-					showLabel="새 상품 추가"
-					hideLabel="취소"
-					render={(closeForm) => (
-						<ProductAddForm
-							onProductAdd={onProductAdd}
-							onAddComplete={closeForm}
-						/>
-					)}
-				/>
-				<div className="space-y-2">
-					{products.map((product, index) => (
-						<ProductEditAccordion
-							key={product.id}
-							data-testid={`product-${index + 1}`}
-							product={product}
-							onProductUpdate={onProductUpdate}
-						/>
-					))}
-				</div>
-			</div>
-			<div>
-				<h2 className="mb-4 text-2xl font-semibold">쿠폰 관리</h2>
-				<div className="rounded bg-white p-4 shadow">
-					<CouponAddForm onCouponAdd={onCouponAdd} />
-					<CouponList coupons={coupons} />
-				</div>
-			</div>
+			<ProductManageContainer
+				products={products}
+				onProductAdd={onProductAdd}
+				onProductUpdate={onProductUpdate}
+			/>
+			<CouponManageContainer coupons={coupons} onCouponAdd={onCouponAdd} />
 		</AdminPage.Layout>
 	);
 };
