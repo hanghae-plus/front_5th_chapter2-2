@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
-import { CartPage } from "./cart/_components/page/CartPage";
-import { AdminPage } from "./admin/_components/page/AdminPage";
+import { CartPage } from "./pages/cart/CartPage";
+import { AdminPage } from "./pages/admin/AdminPage";
 import { useCoupons, useProducts } from "./hooks";
 import Nav from "./components/layouts/Nav";
 import { initialProducts, initialCoupons } from "./constants";

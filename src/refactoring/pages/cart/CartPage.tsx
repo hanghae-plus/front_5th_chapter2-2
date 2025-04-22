@@ -1,9 +1,9 @@
 import type { ICoupon, IProduct } from "#src/types";
-import { useCart } from "#src/refactoring/cart/_hooks/useCart";
-import Product from "#src/refactoring/cart/_components/Product";
-import CartProduct from "#src/refactoring/cart/_components/CartProduct";
-import CouponSection from "#src/refactoring/cart/_components/CouponSection";
-import CartSummarySection from "#src/refactoring/cart/_components/CartSummarySection";
+import { useCart } from "#src/refactoring/pages/cart/_hooks/useCart";
+import Product from "#src/refactoring/pages/cart/_components/Product";
+import CartProduct from "#src/refactoring/pages/cart/_components/CartProduct";
+import CouponSection from "#src/refactoring/pages/cart/_components/CouponSection";
+import CartSummarySection from "#src/refactoring/pages/cart/_components/CartSummarySection";
 
 interface Props {
   products: IProduct[];
