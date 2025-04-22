@@ -13,11 +13,11 @@ export const useProducts = (initialProducts: Product[]) => {
   const [products, setProducts] = useState<Product[]>(initialProducts);
 
   const updateProduct = (updatedProduct: Product) => {
-    setProducts(updateProductInList(products, updatedProduct));
+    setProducts((prevProducts) => updateProductInList(prevProducts, updatedProduct));
   };
 
   const addProduct = (newProduct: Product) => {
-    setProducts(addProductToList(products, newProduct));
+    setProducts((prevProducts) => addProductToList(prevProducts, newProduct));
   };
 
   return {
