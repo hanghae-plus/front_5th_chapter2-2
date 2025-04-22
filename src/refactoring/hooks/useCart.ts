@@ -58,8 +58,8 @@ export const useCart = () => {
       calculateCartTotal(cart, selectedCoupon);
 
     return {
-      totalAfterDiscount,
       totalBeforeDiscount,
+      totalAfterDiscount,
       totalDiscount,
     };
   };
