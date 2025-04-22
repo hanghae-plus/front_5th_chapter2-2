@@ -1,5 +1,4 @@
 import { Coupon } from "../../../types";
-import { initialCoupons } from "../../store/coupons";
 
 interface SelectCouponProps {
   coupons: Coupon[];
@@ -8,7 +7,7 @@ interface SelectCouponProps {
 }
 
 export const SelectCoupon = ({ 
-  coupons=initialCoupons, 
+  coupons, 
   selectedCoupon, 
   applyCoupon 
 }: SelectCouponProps) => {
