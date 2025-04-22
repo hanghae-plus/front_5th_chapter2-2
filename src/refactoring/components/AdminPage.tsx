@@ -1,4 +1,4 @@
-import { Coupon, Product, Discount } from "../../types.ts";
+import { Coupon, Product } from "../../types.ts";
 import { useProductUI } from "../hooks/useProductUI";
 import { useCouponUI } from "../hooks/useCouponUI";
 import { formatDiscountInfo } from "../models/product.ts";
