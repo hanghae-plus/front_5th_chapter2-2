@@ -7,7 +7,6 @@ import { CartItem, Discount } from "../../entities";
  * @returns {number} - 가장 높은 할인율 (0 ~ 1 사이의 값)
  *
  */
-
 export const getMaxDiscount = (discounts: Discount[]): number => {
   return discounts.reduce((max, discount) => Math.max(max, discount.rate), 0);
 };
@@ -18,7 +17,6 @@ export const getMaxDiscount = (discounts: Discount[]): number => {
  * @param {CartItem} item - 장바구니 항목
  * @returns {number} - 적용된 할인율
  */
-
 export const getAppliedDiscount = (item: CartItem) => {
   const { discounts } = item.product;
   const { quantity } = item;
