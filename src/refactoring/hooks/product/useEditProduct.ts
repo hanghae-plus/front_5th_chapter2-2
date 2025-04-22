@@ -1,8 +1,10 @@
+import { useProducts } from "@/refactoring/hooks/product/useProduct";
 import { useState } from "react";
 import { Product } from "../../entities";
 
-export const useEditProduct = (onProductUpdate: (updatedProduct: Product) => void) => {
+export const useEditProduct = () => {
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+  const { updateProduct } = useProducts();
 
   const handleEditProduct = (product: Product) => {
     setEditingProduct({ ...product });
@@ -32,7 +34,7 @@ export const useEditProduct = (onProductUpdate: (updatedProduct: Product) => voi
   // 수정 완료
   const handleEditComplete = () => {
     if (editingProduct) {
-      onProductUpdate(editingProduct);
+      updateProduct(editingProduct);
       setEditingProduct(null);
     }
   };

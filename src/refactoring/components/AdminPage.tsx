@@ -1,16 +1,8 @@
-import { useCoupons, useDiscount } from "@/refactoring/hooks";
-import { useState } from "react";
-import { Product } from "../../types.ts";
+import { useCoupons, useDiscount, useProducts } from "@/refactoring/hooks";
 import { useToggle } from "../hooks/index.ts";
 import { useEditProduct } from "../hooks/product/useEditProduct.ts";
 
-interface Props {
-  products: Product[];
-  onProductUpdate: (updatedProduct: Product) => void;
-  onProductAdd: (newProduct: Product) => void;
-}
-
-export const AdminPage = ({ products, onProductUpdate, onProductAdd }: Props) => {
+export const AdminPage = () => {
   const { openToggle: openProductIds, handleToggleClick: toggleProductAccordion } =
     useToggle<string>();
 
@@ -21,27 +13,22 @@ export const AdminPage = ({ products, onProductUpdate, onProductAdd }: Props) =>
     handleProductNameUpdate,
     handlePriceUpdate,
     handleEditComplete,
-  } = useEditProduct(onProductUpdate);
+  } = useEditProduct();
 
   const { newDiscount, resetNewDiscount, updateNewDiscount } = useDiscount();
 
   const { coupons, newCoupon, updateNewCoupon, handleAddCoupon } = useCoupons();
-  const [showNewProductForm, setShowNewProductForm] = useState(false);
-  const [newProduct, setNewProduct] = useState<Omit<Product, "id">>({
-    name: "",
-    price: 0,
-    stock: 0,
-    discounts: [],
-  });
 
-  const handleStockUpdate = (productId: string, newStock: number) => {
-    const updatedProduct = products.find((p) => p.id === productId);
-    if (updatedProduct) {
-      const newProduct = { ...updatedProduct, stock: newStock };
-      onProductUpdate(newProduct);
-      updateEditingProduct(newProduct);
-    }
-  };
+  const {
+    products,
+    newProduct,
+    updateNewProduct,
+    handleAddNewProduct,
+    showNewProductForm,
+    toggleNewProductForm,
+    updateProduct,
+    handleStockUpdate,
+  } = useProducts();
 
   const handleAddDiscount = (productId: string) => {
     const updatedProduct = products.find((p) => p.id === productId);
@@ -50,7 +37,7 @@ export const AdminPage = ({ products, onProductUpdate, onProductAdd }: Props) =>
         ...updatedProduct,
         discounts: [...updatedProduct.discounts, newDiscount],
       };
-      onProductUpdate(newProduct);
+      updateProduct(newProduct);
       updateEditingProduct(newProduct);
       resetNewDiscount();
     }
@@ -63,21 +50,9 @@ export const AdminPage = ({ products, onProductUpdate, onProductAdd }: Props) =>
         ...updatedProduct,
         discounts: updatedProduct.discounts.filter((_, i) => i !== index),
       };
-      onProductUpdate(newProduct);
+      updateProduct(newProduct);
       updateEditingProduct(newProduct);
     }
-  };
-
-  const handleAddNewProduct = () => {
-    const productWithId = { ...newProduct, id: Date.now().toString() };
-    onProductAdd(productWithId);
-    setNewProduct({
-      name: "",
-      price: 0,
-      stock: 0,
-      discounts: [],
-    });
-    setShowNewProductForm(false);
   };
 
   return (
@@ -87,7 +62,7 @@ export const AdminPage = ({ products, onProductUpdate, onProductAdd }: Props) =>
         <div>
           <h2 className="text-2xl font-semibold mb-4">상품 관리</h2>
           <button
-            onClick={() => setShowNewProductForm(!showNewProductForm)}
+            onClick={toggleNewProductForm}
             className="bg-green-500 text-white px-4 py-2 rounded mb-4 hover:bg-green-600"
           >
             {showNewProductForm ? "취소" : "새 상품 추가"}
@@ -103,7 +78,7 @@ export const AdminPage = ({ products, onProductUpdate, onProductAdd }: Props) =>
                   id="productName"
                   type="text"
                   value={newProduct.name}
-                  onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
+                  onChange={(e) => updateNewProduct({ ...newProduct, name: e.target.value })}
                   className="w-full p-2 border rounded"
                 />
               </div>
@@ -116,7 +91,7 @@ export const AdminPage = ({ products, onProductUpdate, onProductAdd }: Props) =>
                   type="number"
                   value={newProduct.price}
                   onChange={(e) =>
-                    setNewProduct({ ...newProduct, price: parseInt(e.target.value) })
+                    updateNewProduct({ ...newProduct, price: parseInt(e.target.value) })
                   }
                   className="w-full p-2 border rounded"
                 />
@@ -130,7 +105,7 @@ export const AdminPage = ({ products, onProductUpdate, onProductAdd }: Props) =>
                   type="number"
                   value={newProduct.stock}
                   onChange={(e) =>
-                    setNewProduct({ ...newProduct, stock: parseInt(e.target.value) })
+                    updateNewProduct({ ...newProduct, stock: parseInt(e.target.value) })
                   }
                   className="w-full p-2 border rounded"
                 />
