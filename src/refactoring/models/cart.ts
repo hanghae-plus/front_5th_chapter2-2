@@ -1,10 +1,10 @@
 import { CartItem, Coupon } from "../../types";
-// import { calculateCartTotal, updateCartItemQuantity } from "../models/cart";
-
 /**
- *1. 할인 없이 총액을 계산해야 한다.
- *2. 수량에 따라 올바른 할인을 적용해야한다.
+ * model/cart와 hooks/useCart의 차이점
+ * cart에는 useCart에서 다루는 상태(데이터)에 의존하지 않지만, cart책무를 이행하는 함수들을 다룹니다.
  */
+
+/** 할인을 포함한 아이템의 총액을 계산합니다. */
 export const calculateItemTotal = (item: CartItem) => {
   const { price } = item.product;
   const { quantity } = item;
@@ -14,10 +14,7 @@ export const calculateItemTotal = (item: CartItem) => {
   return itemTotal;
 };
 
-/**
- *1. 할인이 적용되지 않으면 0을 반환해야 한다.
- *2. 적용 가능한 가장 높은 할인율을 반환해야한다.
- */
+/** 가장 높은 할인율을 반환합니다. */
 export const getMaxApplicableDiscount = (item: CartItem) => {
   const { quantity } = item;
   const discount = item.product.discounts.reduce((maxDiscount, d) => {
@@ -28,11 +25,7 @@ export const getMaxApplicableDiscount = (item: CartItem) => {
   return discount;
 };
 
-/**
- *1. 쿠폰 없이 총액을 올바르게 계산해야한다.
- *2. 금액쿠폰을 올바르게 적용해야 한다.
- *3. 퍼센트 쿠폰을 올바르게 적용해야 한다.
- */
+/** 장바구니의 총액을 쿠폰을 적용하여 계산합니다. */
 export const calculateCartTotal = (
   cart: CartItem[],
   selectedCoupon: Coupon | null,
@@ -73,11 +66,7 @@ export const calculateCartTotal = (
   };
 };
 
-/**
- *1. 수량을 올바르게 업데이트해야합니다.
- *2. 수량이 0으로 설정된 경우, 항목을 제거해야 한다.
- *3. 재고 한도를 초과해서는 안된다.
- */
+/** 장바구니의 수량을 업데이트합니다. */
 export const updateCartItemQuantity = (
   cart: CartItem[],
   productId: string,
@@ -99,8 +88,14 @@ export const updateCartItemQuantity = (
   return newCart;
 };
 
+/**가장 큰 할인율을 반환합니다. */
 export const getMaxDiscount = (
   discounts: { quantity: number; rate: number }[],
 ) => {
   return discounts.reduce((max, discount) => Math.max(max, discount.rate), 0);
+};
+
+/** %로 나타낼 할인률을 계산합니다.*/
+export const getDiscountPercent = (discount: number) => {
+  return (discount * 100).toFixed(0);
 };

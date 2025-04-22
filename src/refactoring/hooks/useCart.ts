@@ -40,7 +40,7 @@ export const useCart = () => {
     );
   };
 
-  /** 재고수량을 업데이트 */
+  /** 재고수량을 업데이트합니다. */
   const updateQuantity = (productId: string, newQuantity: number) => {
     setCart((prevCart) =>
       updateCartItemQuantity(prevCart, productId, newQuantity),

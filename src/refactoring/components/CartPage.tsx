@@ -1,6 +1,10 @@
 import { Coupon, Product } from "../../types.ts";
 import { useCart } from "../hooks";
-import { getMaxApplicableDiscount, getMaxDiscount } from "../models/cart.ts";
+import {
+  getDiscountPercent,
+  getMaxApplicableDiscount,
+  getMaxDiscount,
+} from "../models/cart.ts";
 
 interface Props {
   products: Product[];
@@ -54,7 +58,7 @@ export const CartPage = ({ products, coupons }: Props) => {
                     {product.discounts.length > 0 && (
                       <span className="ml-2 font-medium text-blue-600">
                         최대{" "}
-                        {(getMaxDiscount(product.discounts) * 100).toFixed(0)}%
+                        {getDiscountPercent(getMaxDiscount(product.discounts))}%
                         할인
                       </span>
                     )}
@@ -64,7 +68,7 @@ export const CartPage = ({ products, coupons }: Props) => {
                       {product.discounts.map((discount, index) => (
                         <li key={index}>
                           {discount.quantity}개 이상:{" "}
-                          {(discount.rate * 100).toFixed(0)}% 할인
+                          {getDiscountPercent(discount.rate)}% 할인
                         </li>
                       ))}
                     </ul>
@@ -103,7 +107,7 @@ export const CartPage = ({ products, coupons }: Props) => {
                       {item.product.price}원 x {item.quantity}
                       {appliedDiscount > 0 && (
                         <span className="text-green-600 ml-1">
-                          ({(appliedDiscount * 100).toFixed(0)}% 할인 적용)
+                          ({getDiscountPercent(appliedDiscount)}% 할인 적용)
                         </span>
                       )}
                     </span>
