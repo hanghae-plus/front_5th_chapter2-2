@@ -48,31 +48,63 @@ export const CartPage = ({ products, coupons }: Props) => {
   const calculateTotal = () => {
     let totalBeforeDiscount = 0;
     let totalAfterDiscount = 0;
-
+  
+    console.log("계산 시작:", cart);
+  
     cart.forEach(item => {
       const { price } = item.product;
       const { quantity } = item;
-      totalBeforeDiscount += price * quantity;
-
+      const itemTotal = price * quantity;
+      totalBeforeDiscount += itemTotal;
+  
+      // 수량 할인 계산
       const discount = item.product.discounts.reduce((maxDiscount, d) => {
         return quantity >= d.quantity && d.rate > maxDiscount ? d.rate : maxDiscount;
       }, 0);
-
-      totalAfterDiscount += price * quantity * (1 - discount);
+  
+      const discountedTotal = itemTotal * (1 - discount);
+      totalAfterDiscount += discountedTotal;
+  
+      console.log(`
+        상품: ${item.product.name}
+        수량: ${quantity}
+        가격: ${price}
+        할인율: ${discount * 100}%
+        할인 전: ${itemTotal}
+        할인 후: ${discountedTotal}
+      `);
     });
-
+  
     let totalDiscount = totalBeforeDiscount - totalAfterDiscount;
-
+  
     // 쿠폰 적용
     if (selectedCoupon) {
+      const beforeCoupon = totalAfterDiscount;
+      
       if (selectedCoupon.discountType === 'amount') {
         totalAfterDiscount = Math.max(0, totalAfterDiscount - selectedCoupon.discountValue);
       } else {
         totalAfterDiscount *= (1 - selectedCoupon.discountValue / 100);
       }
+      
+      console.log(`
+        쿠폰 적용:
+        적용 전: ${beforeCoupon}
+        적용 후: ${totalAfterDiscount}
+        쿠폰 타입: ${selectedCoupon.discountType}
+        할인 값: ${selectedCoupon.discountValue}
+      `);
+  
       totalDiscount = totalBeforeDiscount - totalAfterDiscount;
     }
-
+  
+    console.log(`
+      최종 계산:
+      총 상품 금액: ${totalBeforeDiscount}
+      할인 후 금액: ${totalAfterDiscount}
+      총 할인 금액: ${totalDiscount}
+    `);
+  
     return {
       totalBeforeDiscount: Math.round(totalBeforeDiscount),
       totalAfterDiscount: Math.round(totalAfterDiscount),

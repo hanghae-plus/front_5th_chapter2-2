@@ -137,6 +137,7 @@ describe("basic > ", () => {
       fireEvent.click(addToCartButtonsAtProduct3); // 상품3 추가
 
       const increaseButtons = screen.getAllByText("+");
+      
       for (let i = 0; i < 9; i++) {
         fireEvent.click(increaseButtons[1]); // 상품2
         fireEvent.click(increaseButtons[2]); // 상품3
