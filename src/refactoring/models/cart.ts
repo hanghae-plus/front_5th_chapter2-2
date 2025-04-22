@@ -1,18 +1,4 @@
-import { CartItem, Coupon } from "../../types";
-
-/**
- * 엔티티(cart,selectedCoupon)을 다루는 유틸함수
- *
- *데이터: 
- *액션: 
- *계산:
-  calculateItemTotal (item->총액)
-  getMaxApplicableDiscount (item->할인율)
-  calculateCartTotal (cart,selectedCoupon -> totalBeforeDiscount, totalAfterDiscount, totalDiscount)
-  updateCartItemQuantity (cart,productId,newQuantity -> 수량이 업데이트된 cart)
-  getMaxDiscount (discounts->가장큰 할인율)
-  getDiscountPercent (discount-> %로 나타낼 할인율)  
- */
+import { CartItem, Coupon, Product } from "../../types";
 
 /** 할인을 포함한 아이템의 총액을 계산합니다. */
 export const calculateItemTotal = (item: CartItem) => {
@@ -108,4 +94,15 @@ export const getMaxDiscount = (
 /** %로 나타낼 할인률을 계산합니다.*/
 export const getDiscountPercent = (discount: number) => {
   return (discount * 100).toFixed(0);
+};
+
+/**남은 재고 수량을 반환합니다.*/
+export const getRemainingStock = (cart: CartItem[], product: Product) => {
+  const cartItem = cart.find((item) => item.product.id === product.id);
+  return product.stock - (cartItem?.quantity || 0);
+};
+
+/** 남은 재고의 여부를 반환합니다.*/
+export const isRemainingStock = (cart: CartItem[], product: Product) => {
+  return getRemainingStock(cart, product) > 0;
 };

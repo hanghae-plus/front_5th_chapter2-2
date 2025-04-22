@@ -52,7 +52,7 @@ export const AdminPage = ({
     });
   };
 
-  /** 상품을 수정합니다.*/
+  /** 편집하는 상품을 수정합니다.*/
   const handleEditProduct = (product: Product) => {
     setEditingProduct({ ...product });
   };

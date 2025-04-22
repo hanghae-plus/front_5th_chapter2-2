@@ -1,7 +1,11 @@
 // useCart.ts
 import { useState } from "react";
 import { CartItem, Coupon, Product } from "../../types";
-import { calculateCartTotal, updateCartItemQuantity } from "../models/cart";
+import {
+  calculateCartTotal,
+  isRemainingStock,
+  updateCartItemQuantity,
+} from "../models/cart";
 /**
  * 엔티티(cart,selectedCoupon)을 다루는 훅
  *
@@ -12,27 +16,15 @@ import { calculateCartTotal, updateCartItemQuantity } from "../models/cart";
     updateQuantity,
     applyCoupon,
   계산:
-    getRemainingStock,
-    isRemainingStock,
     calculateTotal
  */
 export const useCart = () => {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
 
-  /**남은 재고 수량을 반환합니다.*/
-  const getRemainingStock = (product: Product) => {
-    const cartItem = cart.find((item) => item.product.id === product.id);
-    return product.stock - (cartItem?.quantity || 0);
-  };
-
-  const isRemainingStock = (product: Product) => {
-    return getRemainingStock(product) > 0;
-  };
-
   /**장바구니에 상품을 추가합니다. */
   const addToCart = (product: Product) => {
-    if (!isRemainingStock(product)) return;
+    if (!isRemainingStock(cart, product)) return;
 
     setCart((prevCart) => {
       const existingItem = prevCart.find(
@@ -74,7 +66,6 @@ export const useCart = () => {
   return {
     cart,
     selectedCoupon,
-    getRemainingStock,
     addToCart,
     removeFromCart,
     updateQuantity,

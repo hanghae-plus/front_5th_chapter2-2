@@ -4,6 +4,7 @@ import {
   getDiscountPercent,
   getMaxApplicableDiscount,
   getMaxDiscount,
+  getRemainingStock,
 } from "../models/cart.ts";
 
 interface Props {
@@ -20,7 +21,6 @@ export const CartPage = ({ products, coupons }: Props) => {
     updateQuantity,
     applyCoupon,
     calculateTotal,
-    getRemainingStock,
   } = useCart();
 
   const { totalBeforeDiscount, totalAfterDiscount, totalDiscount } =
@@ -34,7 +34,7 @@ export const CartPage = ({ products, coupons }: Props) => {
           <h2 className="text-2xl font-semibold mb-4">상품 목록</h2>
           <div className="space-y-2">
             {products.map((product) => {
-              const remainingStock = getRemainingStock(product);
+              const remainingStock = getRemainingStock(cart, product);
               return (
                 <div
                   key={product.id}
