@@ -1,9 +1,5 @@
 import { CartItem, Coupon, Discount, Product } from '../../types';
 
-export const getMaxDiscount = (discounts: { quantity: number; rate: number }[]) => {
-  return discounts.reduce((max, discount) => Math.max(max, discount.rate), 0);
-};
-
 export const getRemainingStock = (product: Product, cart: CartItem[]) => {
   const cartItem = cart.find((item) => item.product.id === product.id);
 
@@ -24,9 +20,12 @@ export const getAppliedDiscount = (item: CartItem) => {
 };
 
 const getAvailableDiscounts = (item: CartItem) => {
-  const discounts = item.product.discounts;
+  const {
+    quantity,
+    product: { discounts },
+  } = item;
 
-  return discounts.filter((discount) => item.quantity >= discount.quantity);
+  return discounts.filter((discount) => quantity >= discount.quantity);
 };
 
 const getApplicableDiscount = (item: CartItem) => {
@@ -39,11 +38,16 @@ const getApplicableDiscount = (item: CartItem) => {
 export const calculateItemTotal = (item: CartItem) => {
   const applicableDiscount = getApplicableDiscount(item);
 
+  const {
+    quantity,
+    product: { price },
+  } = item;
+
   if (applicableDiscount) {
-    return item.product.price * item.quantity * (1 - applicableDiscount.rate);
+    return price * quantity * (1 - applicableDiscount.rate);
   }
 
-  return item.product.price * item.quantity;
+  return price * quantity;
 };
 
 export const getMaxApplicableDiscount = (item: CartItem) => {
@@ -68,7 +72,10 @@ export const getTotalAfterDiscount = (cart: CartItem[], selectedCoupon: Coupon |
 };
 
 export const calculateCartTotal = (cart: CartItem[], selectedCoupon: Coupon | null) => {
-  const totalBeforeDiscount = cart.reduce((acc, item) => acc + item.product.price * item.quantity, 0);
+  const totalBeforeDiscount = cart.reduce(
+    (acc, item) => acc + item.product.price * item.quantity,
+    0,
+  );
   const totalAfterDiscount = getTotalAfterDiscount(cart, selectedCoupon);
   const totalDiscount = totalBeforeDiscount - totalAfterDiscount;
 
@@ -85,7 +92,11 @@ export const getProductById = (cart: CartItem[], productId: string) =>
 export const getFilteredCart = (cart: CartItem[], productId: string) =>
   cart.filter((cartItem) => cartItem.product.id !== productId);
 
-export const updateCartItemQuantity = (cart: CartItem[], productId: string, newQuantity: number): CartItem[] => {
+export const updateCartItemQuantity = (
+  cart: CartItem[],
+  productId: string,
+  newQuantity: number,
+): CartItem[] => {
   if (newQuantity <= 0) {
     return getFilteredCart(cart, productId);
   }
