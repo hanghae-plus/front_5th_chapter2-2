@@ -1,21 +1,27 @@
 // useCart.ts
 import { useState } from "react";
 import { CartItem, Coupon, Product } from "../../types";
+import { updateCartItemQuantity } from "../models/cart";
 import { getTotalDiscount } from "../utils/discount";
-
 export const useCart = () => {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
 
-  const addToCart = (product: Product) => {
-    const isProductInCart = cart.some(item => item.product.id === product.id)
+  const addToCart = (product: Product, initialQuantity: number = 1) => {
+    const isProductInCart = cart.some(item => item.product.id === product.id);
+    let updatedCart: CartItem[];
 
-    if(isProductInCart) {
-      const updatedCart = cart.map(item => item.product.id === product.id ? { ...item, quantity: item.quantity + 1 } : item)
-      setCart(updatedCart)
+    if (isProductInCart) {
+      updatedCart = cart.map(item =>
+        item.product.id === product.id
+          ? { ...item, quantity: item.quantity + initialQuantity }
+          : item
+      );
     } else {
-      setCart([...cart, { product, quantity: 1 }]);
+      updatedCart = [...cart, { product, quantity: initialQuantity }];
     }
+
+    setCart(updatedCart);
   };
 
   const removeFromCart = (productId: string) => {
@@ -24,8 +30,9 @@ export const useCart = () => {
   };
 
   const updateQuantity = (productId: string, newQuantity: number) => {
-    const updatedCart = cart.map(item => item.product.id === productId ? { ...item, quantity: newQuantity } : item)
-    setCart(updatedCart)
+    setCart((prev) => {
+      return updateCartItemQuantity(prev, productId, newQuantity)
+    })
   };
 
   const applyCoupon = (coupon: Coupon) => {
