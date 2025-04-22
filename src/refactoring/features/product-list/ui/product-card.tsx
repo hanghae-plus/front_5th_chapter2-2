@@ -1,20 +1,17 @@
-import { CartItem } from "@r/entities/cart";
+import { useCartContext } from "@r/entities/cart";
 import { getMaxDiscount, Product } from "@r/entities/product";
 
 import { getRemainingStock } from "@r/features/product-list";
 
 interface ProductCardProps {
   product: Product;
-  cart: CartItem[];
-  addToCart: (product: Product) => void;
 }
 
-export const ProductCard: React.FC<ProductCardProps> = ({
-  product,
-  cart,
-  addToCart,
-}) => {
+export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+  const { cart, addToCart } = useCartContext();
+
   const remainingStock = getRemainingStock(product, cart);
+
   return (
     <div
       key={product.id}

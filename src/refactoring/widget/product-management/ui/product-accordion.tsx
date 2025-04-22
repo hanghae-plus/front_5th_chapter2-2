@@ -8,7 +8,6 @@ interface ProductAccordionProps extends React.HTMLProps<HTMLDivElement> {
 
 export const ProductAccordion: React.FC<ProductAccordionProps> = ({
   product,
-
   ...props
 }) => {
   const { updateProduct } = useProductContext();

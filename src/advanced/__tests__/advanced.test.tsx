@@ -3,9 +3,9 @@ import { act, fireEvent, render, screen, within } from "@testing-library/react";
 
 import { AdminPage, CartPage } from "@r/components";
 
-import { Product, ProductProvider } from "@/refactoring/entities/product";
-import { Coupon } from "@/refactoring/entities/coupon";
-import { CouponProvider } from "@/refactoring/entities/coupon/model/coupon-context";
+import { Product, ProductProvider } from "@r/entities/product";
+import { Coupon, CouponProvider } from "@r/entities/coupon";
+import { CartProvider } from "@r/entities/cart";
 
 const mockProducts: Product[] = [
   {
@@ -49,7 +49,9 @@ const TestAdminPage = () => {
   return (
     <ProductProvider initialProducts={mockProducts}>
       <CouponProvider initialCoupons={mockCoupons}>
-        <AdminPage />
+        <CartProvider>
+          <AdminPage />
+        </CartProvider>
       </CouponProvider>
     </ProductProvider>
   );
@@ -59,7 +61,9 @@ const TestCartPage = () => {
   return (
     <ProductProvider initialProducts={mockProducts}>
       <CouponProvider initialCoupons={mockCoupons}>
-        <CartPage />
+        <CartProvider>
+          <CartPage />
+        </CartProvider>
       </CouponProvider>
     </ProductProvider>
   );

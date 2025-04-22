@@ -11,14 +11,9 @@ import { AdminPage, CartPage } from "@r/components";
 
 import * as cartUtils from "@r/entities/cart/lib";
 
-import {
-  Product,
-  ProductProvider,
-  useProducts,
-} from "@/refactoring/entities/product";
-import { Coupon, useCoupons } from "@/refactoring/entities/coupon";
-import { CartItem, useCart } from "@/refactoring/entities/cart";
-import { CouponProvider } from "@/refactoring/entities/coupon/model/coupon-context";
+import { Product, ProductProvider, useProducts } from "@r/entities/product";
+import { Coupon, useCoupons, CouponProvider } from "@r/entities/coupon";
+import { CartItem, useCart, CartProvider } from "@r/entities/cart";
 
 const mockProducts: Product[] = [
   {
@@ -62,7 +57,9 @@ const TestAdminPage = () => {
   return (
     <ProductProvider initialProducts={mockProducts}>
       <CouponProvider initialCoupons={mockCoupons}>
-        <AdminPage />
+        <CartProvider>
+          <AdminPage />
+        </CartProvider>
       </CouponProvider>
     </ProductProvider>
   );
@@ -72,7 +69,9 @@ const TestCartPage = () => {
   return (
     <ProductProvider initialProducts={mockProducts}>
       <CouponProvider initialCoupons={mockCoupons}>
-        <CartPage />
+        <CartProvider>
+          <CartPage />
+        </CartProvider>
       </CouponProvider>
     </ProductProvider>
   );

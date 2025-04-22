@@ -1,16 +1,11 @@
+import { useCartContext } from "@/refactoring/entities/cart";
 import { useCouponContext } from "@/refactoring/entities/coupon/model/coupon-context";
-import { Coupon } from "@r/entities/coupon";
 
-interface CouponApplierProps {
-  applyCoupon: (coupon: Coupon) => void;
-  selectedCoupon: Coupon | null;
-}
+interface CouponApplierProps {}
 
-export const CouponApplier: React.FC<CouponApplierProps> = ({
-  applyCoupon,
-  selectedCoupon,
-}) => {
+export const CouponApplier: React.FC<CouponApplierProps> = () => {
   const { coupons } = useCouponContext();
+  const { applyCoupon, selectedCoupon } = useCartContext();
 
   return (
     <div className="mt-6 bg-white p-4 rounded shadow">

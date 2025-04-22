@@ -1,14 +1,9 @@
-interface OrderSummaryProps {
-  calculateTotal: () => {
-    totalBeforeDiscount: number;
-    totalAfterDiscount: number;
-    totalDiscount: number;
-  };
-}
+import { useCartContext } from "@/refactoring/entities/cart";
 
-export const OrderSummary: React.FC<OrderSummaryProps> = ({
-  calculateTotal,
-}) => {
+interface OrderSummaryProps {}
+
+export const OrderSummary: React.FC<OrderSummaryProps> = () => {
+  const { calculateTotal } = useCartContext();
   const { totalBeforeDiscount, totalAfterDiscount, totalDiscount } =
     calculateTotal();
 

@@ -1,16 +1,10 @@
-import { CartItem, getMaxApplicableDiscount } from "@r/entities/cart";
+import { getMaxApplicableDiscount, useCartContext } from "@r/entities/cart";
 
-interface CartListProps {
-  cart: CartItem[];
-  updateQuantity: (productId: string, newQuantity: number) => void;
-  removeFromCart: (productId: string) => void;
-}
+interface CartListProps {}
 
-export const CartList: React.FC<CartListProps> = ({
-  cart,
-  updateQuantity,
-  removeFromCart,
-}) => {
+export const CartList: React.FC<CartListProps> = () => {
+  const { cart, updateQuantity, removeFromCart } = useCartContext();
+
   return (
     <div className="space-y-2">
       {cart.map((item) => {
