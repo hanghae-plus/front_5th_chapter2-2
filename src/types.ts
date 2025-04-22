@@ -53,10 +53,6 @@ export const MEMBERSHIP_TYPE = {
 
 export type MembershipType = (typeof MEMBERSHIP_TYPE)[keyof typeof MEMBERSHIP_TYPE];
 
-export type Updater<T> = (prev: T) => T;
-
-export type Storage<T> = [item: T, setItem: (prev: T | Updater<T>) => void];
-
 export const LOCAL_STORAGE_KEY = {
   CART: "cart",
   COUPON: "coupon",
