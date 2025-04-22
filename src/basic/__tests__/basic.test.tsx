@@ -11,7 +11,7 @@ import {
 import { AdminPage, CartPage } from "@r/components";
 import { CartItem, Coupon, Product } from "@/types";
 import { useCart, useCoupons, useProducts } from "@r/hooks";
-import * as cartUtils from "@r/models/cart";
+import * as cartUtils from "@r/entities/cart/lib";
 
 const mockProducts: Product[] = [
   {
