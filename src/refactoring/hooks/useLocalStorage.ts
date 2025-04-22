@@ -43,5 +43,5 @@ export const useLocalStorage = (key: LocalStorage[keyof LocalStorage]) => {
     }
   };
 
-  return [cart, setCart];
+  return { cart, setCart };
 };

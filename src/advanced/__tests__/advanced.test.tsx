@@ -1,6 +1,13 @@
 import { useState } from "react";
 import { describe, expect, test } from "vitest";
-import { act, fireEvent, render, screen, within } from "@testing-library/react";
+import {
+  act,
+  fireEvent,
+  render,
+  renderHook,
+  screen,
+  within,
+} from "@testing-library/react";
 import { CartPage } from "../../refactoring/components/CartPage";
 import { AdminPage } from "../../refactoring/components/AdminPage";
 import { Coupon, Product } from "../../types";
@@ -8,6 +15,7 @@ import {
   getLocalStorage,
   setLocalStorage,
   removeLocalStorage,
+  useLocalStorage,
 } from "../../refactoring/hooks";
 
 const mockProducts: Product[] = [
@@ -283,6 +291,16 @@ describe("advanced > ", () => {
 
       removeLocalStorage("cart");
       expect(getLocalStorage("cart")).toHaveLength(0);
+    });
+
+    test("useLocalStorage hook 테스트", () => {
+      const { result } = renderHook(() => useLocalStorage("cart"));
+      act(() => {
+        result.current.setCart(
+          mockProducts.map((product) => ({ product, quantity: 3 }))
+        );
+      });
+      expect(result.current.cart).toHaveLength(3);
     });
   });
 });

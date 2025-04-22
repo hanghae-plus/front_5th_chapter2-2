@@ -5,7 +5,7 @@ import { calculateCartTotal, updateCartItemQuantity } from "../models/cart";
 import { useLocalStorage } from "../hooks";
 
 export const useCart = () => {
-  const [cart, setCart] = useLocalStorage("cart");
+  const { cart, setCart } = useLocalStorage("cart");
   const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
 
   const getRemainingStock = (product: Product) => {
