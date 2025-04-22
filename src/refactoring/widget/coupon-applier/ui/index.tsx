@@ -1,16 +1,17 @@
+import { useCouponContext } from "@/refactoring/entities/coupon/model/coupon-context";
 import { Coupon } from "@r/entities/coupon";
 
 interface CouponApplierProps {
-  coupons: Coupon[];
   applyCoupon: (coupon: Coupon) => void;
   selectedCoupon: Coupon | null;
 }
 
 export const CouponApplier: React.FC<CouponApplierProps> = ({
-  coupons,
   applyCoupon,
   selectedCoupon,
 }) => {
+  const { coupons } = useCouponContext();
+
   return (
     <div className="mt-6 bg-white p-4 rounded shadow">
       <h2 className="text-2xl font-semibold mb-2">쿠폰 적용</h2>

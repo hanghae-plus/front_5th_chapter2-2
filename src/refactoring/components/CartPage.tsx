@@ -1,15 +1,12 @@
-import { Coupon } from "@r/entities/coupon";
 import { useCart } from "@r/entities/cart";
 
 import { ProductList } from "@r/features/product-list";
 
 import { CartList, CouponApplier, OrderSummary } from "@r/widget";
 
-interface Props {
-  coupons: Coupon[];
-}
+interface Props {}
 
-export const CartPage = ({ coupons }: Props) => {
+export const CartPage: React.FC<Props> = () => {
   const {
     cart,
     addToCart,
@@ -33,7 +30,6 @@ export const CartPage = ({ coupons }: Props) => {
             removeFromCart={removeFromCart}
           />
           <CouponApplier
-            coupons={coupons}
             applyCoupon={applyCoupon}
             selectedCoupon={selectedCoupon}
           />

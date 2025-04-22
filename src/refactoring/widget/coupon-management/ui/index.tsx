@@ -1,16 +1,13 @@
 import { useState } from "react";
 
 import { Coupon } from "@r/entities/coupon";
+import { useCouponContext } from "@/refactoring/entities/coupon/model/coupon-context";
 
-interface CouponManagementProps {
-  coupons: Coupon[];
-  onCouponAdd: (newCoupon: Coupon) => void;
-}
+interface CouponManagementProps {}
 
-export const CouponManagement: React.FC<CouponManagementProps> = ({
-  coupons,
-  onCouponAdd,
-}) => {
+export const CouponManagement: React.FC<CouponManagementProps> = ({}) => {
+  const { coupons, addCoupon } = useCouponContext();
+
   const [newCoupon, setNewCoupon] = useState<Coupon>({
     name: "",
     code: "",
@@ -19,7 +16,7 @@ export const CouponManagement: React.FC<CouponManagementProps> = ({
   });
 
   const handleAddCoupon = () => {
-    onCouponAdd(newCoupon);
+    addCoupon(newCoupon);
     setNewCoupon({
       name: "",
       code: "",

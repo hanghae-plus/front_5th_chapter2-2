@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { describe, expect, test } from "vitest";
 import { act, fireEvent, render, screen, within } from "@testing-library/react";
 
@@ -6,6 +5,7 @@ import { AdminPage, CartPage } from "@r/components";
 
 import { Product, ProductProvider } from "@/refactoring/entities/product";
 import { Coupon } from "@/refactoring/entities/coupon";
+import { CouponProvider } from "@/refactoring/entities/coupon/model/coupon-context";
 
 const mockProducts: Product[] = [
   {
@@ -46,15 +46,11 @@ const mockCoupons: Coupon[] = [
 ];
 
 const TestAdminPage = () => {
-  const [coupons, setCoupons] = useState<Coupon[]>(mockCoupons);
-
-  const handleCouponAdd = (newCoupon: Coupon) => {
-    setCoupons((prevCoupons) => [...prevCoupons, newCoupon]);
-  };
-
   return (
     <ProductProvider initialProducts={mockProducts}>
-      <AdminPage coupons={coupons} onCouponAdd={handleCouponAdd} />
+      <CouponProvider initialCoupons={mockCoupons}>
+        <AdminPage />
+      </CouponProvider>
     </ProductProvider>
   );
 };
@@ -62,7 +58,9 @@ const TestAdminPage = () => {
 const TestCartPage = () => {
   return (
     <ProductProvider initialProducts={mockProducts}>
-      <CartPage coupons={mockCoupons} />
+      <CouponProvider initialCoupons={mockCoupons}>
+        <CartPage />
+      </CouponProvider>
     </ProductProvider>
   );
 };
