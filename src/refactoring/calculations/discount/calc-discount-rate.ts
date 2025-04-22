@@ -17,13 +17,8 @@ export const getMaxDiscount = (discounts: Discount[]): number => {
  * @param {CartItem} item - 장바구니 항목
  * @returns {number} - 적용된 할인율
  */
-export const getAppliedDiscount = (item: CartItem) => {
-  const { discounts } = item.product;
-  const { quantity } = item;
-
-  const appliedDiscount = discounts
-    .filter((discount) => quantity >= discount.quantity)
+export const getMaxApplicableDiscount = (item: CartItem): number => {
+  return item.product.discounts
+    .filter((discount) => item.quantity >= discount.quantity)
     .reduce((max, discount) => Math.max(max, discount.rate), 0);
-
-  return appliedDiscount;
 };

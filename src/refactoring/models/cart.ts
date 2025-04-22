@@ -1,28 +1,5 @@
-import { CartItem, Coupon } from "../../types";
-
-export const calculateItemTotal = (item: CartItem) => {
-  return 0;
-};
-
-export const getMaxApplicableDiscount = (item: CartItem) => {
-  return 0;
-};
-
-export const calculateCartTotal = (
-  cart: CartItem[],
-  selectedCoupon: Coupon | null
-) => {
-  return {
-    totalBeforeDiscount: 0,
-    totalAfterDiscount: 0,
-    totalDiscount: 0,
-  };
-};
-
-export const updateCartItemQuantity = (
-  cart: CartItem[],
-  productId: string,
-  newQuantity: number
-): CartItem[] => {
-  return [];
-};
+/**테스트 코드 통과 위해 export해옴 */
+export { calculateItemTotal } from "../calculations/cart/calc-item";
+export { getMaxApplicableDiscount } from "../calculations/discount/calc-discount-rate";
+export { updateQuantity as updateCartItemQuantity } from "../logic/cart/cart-logic";
+export { calculateCartTotal } from "./../calculations/cart/calc-total-discount";

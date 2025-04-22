@@ -2,7 +2,10 @@ import { Coupon, Product } from "../../types.ts";
 import { getRemainingStock } from "../calculations/cart/calc-item.ts";
 import { calculateCartTotal } from "../calculations/cart/calc-total-discount.ts";
 
-import { getAppliedDiscount, getMaxDiscount } from "../calculations/discount/calc-discount-rate.ts";
+import {
+  getMaxApplicableDiscount,
+  getMaxDiscount,
+} from "../calculations/discount/calc-discount-rate.ts";
 import { useSelectedCoupon } from "../hooks/useSelectedCoupon.ts";
 import { useCartStore } from "../store/cart-store.ts";
 
@@ -81,7 +84,7 @@ export const CartPage = ({ products, coupons }: Props) => {
 
           <div className="space-y-2">
             {cart.map((item) => {
-              const appliedDiscount = getAppliedDiscount(item);
+              const appliedDiscount = getMaxApplicableDiscount(item);
               return (
                 <div
                   key={item.product.id}
