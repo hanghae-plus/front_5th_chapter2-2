@@ -1,15 +1,15 @@
-import { CartItem, Product } from "../../entities";
+import { CartItem, Discount } from "../../entities";
 
 /**
- * 장바구니에 담긴 수량을 고려해, 남은 재고를 계산하는 순수 함수
+ * 주어진 할인 조건 배열에서 가장 높은 할인율(rate)을 계산하는 순수함수
  *
- * @param {Product} product - 상품 객체
- * @param {CartItem[]} cart - 현재 장바구니 목록
- * @returns {number} - 장바구니 반영 후 남은 재고 수량
+ * @param {Array<{ quantity: number; rate: number }>} discounts - 할인 조건 목록
+ * @returns {number} - 가장 높은 할인율 (0 ~ 1 사이의 값)
+ *
  */
-export const getRemainingStock = (product: Product, cart: CartItem[]): number => {
-  const cartItem = cart.find((item) => item.product.id === product.id);
-  return product.stock - (cartItem?.quantity || 0);
+
+export const getMaxDiscount = (discounts: Discount[]): number => {
+  return discounts.reduce((max, discount) => Math.max(max, discount.rate), 0);
 };
 
 /**

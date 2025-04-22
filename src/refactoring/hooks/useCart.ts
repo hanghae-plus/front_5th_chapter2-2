@@ -1,5 +1,10 @@
 // useCart.ts
 import { useState } from "react";
+import {
+  calculateTotalAfterDiscount,
+  calculateTotalBeforeDiscount,
+} from "../calculations/cart/calc-total-discount";
+import { applyCouponDiscount } from "../calculations/coupon/apply-coupon";
 import { CartItem, Coupon, Product } from "../entities";
 
 export const useCart = () => {
@@ -14,11 +19,18 @@ export const useCart = () => {
 
   const applyCoupon = (coupon: Coupon) => {};
 
-  const calculateTotal = () => ({
-    totalBeforeDiscount: 0,
-    totalAfterDiscount: 0,
-    totalDiscount: 0,
-  });
+  const calculateTotal = () => {
+    const totalBeforeDiscount = calculateTotalBeforeDiscount(cart);
+    const totalAfterDiscount = calculateTotalAfterDiscount(cart);
+    const totalAfterCoupon = applyCouponDiscount(totalAfterDiscount, selectedCoupon!);
+    const totalDiscount = totalBeforeDiscount - totalAfterCoupon;
+
+    return {
+      totalBeforeDiscount: Math.round(totalBeforeDiscount),
+      totalAfterDiscount: Math.round(totalAfterCoupon),
+      totalDiscount: Math.round(totalDiscount),
+    };
+  };
 
   return {
     cart,

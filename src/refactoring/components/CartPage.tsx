@@ -1,6 +1,7 @@
 import { Coupon, Product } from '../../types.ts';
-import { getAppliedDiscount, getRemainingStock } from '../calculations/cart/itemCalculation.ts';
-import { getMaxDiscount } from '../calculations/discount/getMaxDiscount.ts';
+import { getRemainingStock } from '../calculations/cart/calc-item.ts';
+
+import { getAppliedDiscount, getMaxDiscount } from '../calculations/discount/calc-discount-rate.ts';
 import { useCart } from "../hooks";
 
 interface Props {
