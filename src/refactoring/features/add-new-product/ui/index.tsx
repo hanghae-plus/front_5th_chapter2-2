@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 
-import { Product } from "@r/entities/product";
+import { Product, useProductContext } from "@r/entities/product";
 
-interface AddNewProductProps {
-  onProductAdd: (newProduct: Product) => void;
-}
+interface AddNewProductProps {}
 
 const initialProduct: Omit<Product, "id"> = {
   name: "",
@@ -13,16 +11,16 @@ const initialProduct: Omit<Product, "id"> = {
   discounts: [],
 };
 
-export const AddNewProduct: React.FC<AddNewProductProps> = ({
-  onProductAdd,
-}) => {
+export const AddNewProduct: React.FC<AddNewProductProps> = () => {
+  const { addProduct } = useProductContext();
+
   const [showNewProductForm, setShowNewProductForm] = useState(false);
   const [newProduct, setNewProduct] =
     useState<Omit<Product, "id">>(initialProduct);
 
   const handleAddNewProduct = () => {
     const productId = Date.now().toString();
-    onProductAdd({ ...newProduct, id: productId });
+    addProduct({ ...newProduct, id: productId });
     setNewProduct(initialProduct);
   };
 

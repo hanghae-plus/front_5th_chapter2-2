@@ -1,19 +1,18 @@
 import { useState } from "react";
 
-import { Product, Discount } from "@r/entities/product";
+import { Product, Discount, useProductContext } from "@r/entities/product";
 
 interface ProductAccordionProps extends React.HTMLProps<HTMLDivElement> {
-  products: Product[];
   product: Product;
-  onProductUpdate: (updatedProduct: Product) => void;
 }
 
 export const ProductAccordion: React.FC<ProductAccordionProps> = ({
   product,
-  products,
-  onProductUpdate,
+
   ...props
 }) => {
+  const { updateProduct } = useProductContext();
+
   const [openProductIds, setOpenProductIds] = useState<Set<string>>(new Set());
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [newDiscount, setNewDiscount] = useState<Discount>({
@@ -57,43 +56,36 @@ export const ProductAccordion: React.FC<ProductAccordionProps> = ({
   // 수정 완료 핸들러 함수 추가
   const handleEditComplete = () => {
     if (editingProduct) {
-      onProductUpdate(editingProduct);
+      updateProduct(editingProduct);
       setEditingProduct(null);
     }
   };
 
   const handleStockUpdate = (productId: string, newStock: number) => {
-    const updatedProduct = products.find((p) => p.id === productId);
-    if (updatedProduct) {
-      const newProduct = { ...updatedProduct, stock: newStock };
-      onProductUpdate(newProduct);
-      setEditingProduct(newProduct);
-    }
+    const newProduct = { ...product, stock: newStock };
+    updateProduct(newProduct);
+    setEditingProduct(newProduct);
   };
 
   const handleAddDiscount = (productId: string) => {
-    const updatedProduct = products.find((p) => p.id === productId);
-    if (updatedProduct && editingProduct) {
+    if (editingProduct) {
       const newProduct = {
-        ...updatedProduct,
-        discounts: [...updatedProduct.discounts, newDiscount],
+        ...product,
+        discounts: [...product.discounts, newDiscount],
       };
-      onProductUpdate(newProduct);
+      updateProduct(newProduct);
       setEditingProduct(newProduct);
       setNewDiscount({ quantity: 0, rate: 0 });
     }
   };
 
   const handleRemoveDiscount = (productId: string, index: number) => {
-    const updatedProduct = products.find((p) => p.id === productId);
-    if (updatedProduct) {
-      const newProduct = {
-        ...updatedProduct,
-        discounts: updatedProduct.discounts.filter((_, i) => i !== index),
-      };
-      onProductUpdate(newProduct);
-      setEditingProduct(newProduct);
-    }
+    const newProduct = {
+      ...product,
+      discounts: product.discounts.filter((_, i) => i !== index),
+    };
+    updateProduct(newProduct);
+    setEditingProduct(newProduct);
   };
 
   return (
