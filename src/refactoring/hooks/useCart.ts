@@ -29,14 +29,7 @@ export const useCart = () => {
   };
 
   const updateQuantity = (productId: string, newQuantity: number) => {
-    if (newQuantity < 1) return; // 최소 1개 이상
-    setCart(prevCart =>
-      prevCart.map(item =>
-        item.product.id === productId
-          ? { ...item, quantity: newQuantity }
-          : item
-      )
-    );
+    setCart(prevCart => updateCartItemQuantity(prevCart, productId, newQuantity));
   };
 
   const applyCoupon = (coupon: Coupon) => {
@@ -44,26 +37,7 @@ export const useCart = () => {
   };
 
   const calculateTotal = () => {
-    // 쿠폰적용 전 합계
-    const totalBeforeDiscount = cart.reduce((total, item) => {
-      return total + item.product.price * item.quantity;
-    }, 0);
-
-    // 할인총액
-    const totalDiscount = selectedCoupon
-      ? selectedCoupon.discountType === "amount"
-        ? selectedCoupon.discountValue
-        : totalBeforeDiscount * (selectedCoupon.discountValue / 100)
-      : 0;
-    
-    // 쿠폰적용 후 합계
-    const totalAfterDiscount = totalBeforeDiscount - totalDiscount;
-
-    return {
-      totalBeforeDiscount,
-      totalDiscount,
-      totalAfterDiscount
-    }
+    return calculateCartTotal(cart, selectedCoupon);
   };
 
   return {
