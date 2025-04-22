@@ -1,4 +1,4 @@
 export * from "./useCart.ts";
-export * from "./useCoupon.ts";
+export * from "./useCoupons.ts";
 export * from "./useProduct.ts";
 export * from "./useSelectedCoupon.ts";
