@@ -1,27 +1,47 @@
+import { useState } from "react";
 import { CartItem } from "../../types";
 
-const CART_STORAGE = "cart"
-export const useLocalStorage = (initialState: CartItem[] | []) => {
+export type LocalStorage = {
+  CART: "cart";
+};
 
-    const getLocalStorage = () => {
-        const storageItems = localStorage.getItem(CART_STORAGE) || JSON.stringify([])
-        return JSON.parse(storageItems)
+const getLocalStorage = (key: LocalStorage[keyof LocalStorage]) => {
+  const storageItems = localStorage.getItem(key) || JSON.stringify([]);
+  return JSON.parse(storageItems);
+};
+
+const setLocalStorage = (
+  key: LocalStorage[keyof LocalStorage],
+  newCartItems: CartItem[] | []
+) => {
+  localStorage.setItem(key, JSON.stringify(newCartItems));
+};
+
+const removeLocalStorage = (key: LocalStorage[keyof LocalStorage]) => {
+  localStorage.removeItem(key);
+};
+
+export const useLocalStorage = (key: LocalStorage[keyof LocalStorage]) => {
+  const [cart, setStorage] = useState(() => getLocalStorage(key));
+
+  removeLocalStorage(key);
+
+  const setCart = (
+    newCart: ((caritems: CartItem[]) => CartItem[]) | CartItem[] | []
+  ) => {
+    if (typeof newCart === "function") {
+      setStorage((prev: CartItem[]) => {
+        const newCartData = newCart(prev);
+        setLocalStorage(key, newCartData);
+        return newCartData;
+      });
+    } else {
+      setStorage(() => {
+        setLocalStorage(key, newCart);
+        return newCart;
+      });
     }
+  };
 
-    const cart: CartItem[] = getLocalStorage()
-
-    const setCart = (newCartItems: ((caritems: CartItem[]) => CartItem[]) | CartItem[] | []) => {
-        if(typeof newCartItems === 'function') {
-            localStorage.setItem(CART_STORAGE, JSON.stringify(newCartItems(cart)));
-        } else {
-            localStorage.setItem(CART_STORAGE, JSON.stringify(newCartItems));
-        }
-    }
-
-    setCart(initialState)
-
-    return {
-        cart: getLocalStorage(),
-        setCart,
-    }
-}
+  return [cart, setCart];
+};

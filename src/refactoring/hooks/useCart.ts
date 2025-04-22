@@ -2,14 +2,16 @@
 import { useState } from "react";
 import { CartItem, Coupon, Product } from "../../types";
 import { calculateCartTotal, updateCartItemQuantity } from "../models/cart";
-import {useLocalStorage} from "../hooks"
+import { useLocalStorage } from "../hooks";
 
 export const useCart = () => {
-  const {cart, setCart} = useLocalStorage([]);
+  const [cart, setCart] = useLocalStorage("cart");
   const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
 
   const getRemainingStock = (product: Product) => {
-    const cartItem = cart.find((item: CartItem) => item.product.id === product.id);
+    const cartItem = cart.find(
+      (item: CartItem) => item.product.id === product.id
+    );
     return product.stock - (cartItem?.quantity || 0);
   };
 
