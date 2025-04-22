@@ -1,5 +1,5 @@
 import { Product } from "../../../types";
-import { ToggleButton } from "../ui/ToggleButton";
+import { ToggleButton } from "../ToggleButton";
 import { ProductAddForm } from "./ProductAddForm";
 import { ProductEditAccordion } from "./ProductEditAccordion";
 

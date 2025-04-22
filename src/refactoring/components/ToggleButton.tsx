@@ -1,6 +1,6 @@
 // ToggleButton.tsx
 import { ReactNode, useState } from "react";
-import { Button, ButtonProps } from "./Button";
+import { Button, ButtonProps } from "./ui/Button";
 
 interface ToggleButtonProps {
 	color: ButtonProps["color"];
