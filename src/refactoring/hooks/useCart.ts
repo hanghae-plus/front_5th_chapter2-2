@@ -1,8 +1,8 @@
 // useCart.ts
+import { useLocalStorage } from "@/refactoring/hooks";
+import { addToCartCheckStock, calculateCartTotal, updateCartItemQuantity } from "@/refactoring/models";
+import { CartItem, Coupon, LOCAL_STORAGE_KEY, Product } from "@/types";
 import { useCallback, useState } from "react";
-import { CartItem, Coupon, LOCAL_STORAGE_KEY, Product } from "../../types";
-import { addToCartCheckStock, calculateCartTotal, updateCartItemQuantity } from "../models/cart";
-import { useLocalStorage } from "./useLocalStorage";
 
 export const useCart = () => {
   // const [cart, setCart] = useState<CartItem[]>([]);

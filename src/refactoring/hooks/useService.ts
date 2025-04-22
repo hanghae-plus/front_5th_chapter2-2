@@ -1,6 +1,6 @@
+import { getNextService } from "@/refactoring/models";
+import { PERMISSION_TYPE, Permission, SERVICE_TYPE, ServiceType } from "@/types";
 import { useCallback, useState } from "react";
-import { PERMISSION_TYPE, Permission, SERVICE_TYPE, ServiceType } from "../../types";
-import { getNextService } from "../models/service";
 
 export const useService = (initialPermission: Permission = PERMISSION_TYPE.USER) => {
   const [permission] = useState<Permission>(initialPermission);

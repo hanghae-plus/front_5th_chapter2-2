@@ -1,4 +1,4 @@
-import { LocalStorageKeyType, Updater } from "../../types";
+import { LocalStorageKeyType, Updater } from "@/types";
 
 const _setLocalStorage = <T>(key: LocalStorageKeyType, newValue: T): T => {
   localStorage.setItem(key, JSON.stringify(newValue));

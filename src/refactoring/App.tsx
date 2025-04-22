@@ -1,7 +1,7 @@
-import { Coupon, PERMISSION_TYPE, Product } from "../types.ts";
-import { AdminPage } from "./components/AdminPage.tsx";
-import { CartPage } from "./components/CartPage.tsx";
-import { useCoupons, useProducts, useService } from "./hooks";
+import { AdminPage } from "@/refactoring/components/AdminPage";
+import { CartPage } from "@/refactoring/components/CartPage";
+import { useCoupons, useProducts, useService } from "@/refactoring/hooks";
+import { Coupon, PERMISSION_TYPE, Product } from "@/types";
 
 const initialProducts: Product[] = [
   {

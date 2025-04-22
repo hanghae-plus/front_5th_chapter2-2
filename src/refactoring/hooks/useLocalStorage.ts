@@ -1,6 +1,6 @@
+import { getLocalStorage, setStateWithLocalStorage } from "@/refactoring/models";
+import { LocalStorageKeyType, Storage, Updater } from "@/types";
 import { useState } from "react";
-import { LocalStorageKeyType, Storage, Updater } from "../../types";
-import { getLocalStorage, setStateWithLocalStorage } from "../models/localStorage";
 
 export const useLocalStorage = <T>(key: LocalStorageKeyType, initialValue: T): Storage<T> => {
   const [storedItem, setStoredItem] = useState<T>(() => getLocalStorage(key, initialValue));

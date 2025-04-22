@@ -1,4 +1,4 @@
-import { SERVICE_TYPE, ServiceType } from "../../types";
+import { SERVICE_TYPE, ServiceType } from "@/types";
 
 export const getNextService = (current: ServiceType, hasAdminPermission: boolean): ServiceType => {
   if (current === SERVICE_TYPE.CART && hasAdminPermission) return SERVICE_TYPE.ADMIN;

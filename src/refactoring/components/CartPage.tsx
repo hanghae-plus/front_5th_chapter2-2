@@ -1,6 +1,6 @@
-import { Coupon, Product } from "../../types.ts";
-import { useCart } from "../hooks";
-import { getMaxApplicableDiscount, getMaxDiscount } from "../models/cart.ts";
+import { useCart } from "@/refactoring/hooks";
+import { getMaxApplicableDiscount, getMaxDiscount } from "@/refactoring/models";
+import { Coupon, Product } from "@/types";
 
 interface Props {
   products: Product[];
