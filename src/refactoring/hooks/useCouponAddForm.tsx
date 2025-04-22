@@ -10,11 +10,11 @@ const formSchema = z.object({
 	discountValue: z.number(),
 });
 
-interface AddCouponFormProps {
+interface UseCouponAddFormProps {
 	onCouponAdd: (coupon: Coupon) => void;
 }
 
-export const useAddCouponForm = ({ onCouponAdd }: AddCouponFormProps) => {
+export const useCouponAddForm = ({ onCouponAdd }: UseCouponAddFormProps) => {
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {

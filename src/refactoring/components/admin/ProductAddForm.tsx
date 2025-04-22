@@ -1,27 +1,27 @@
 import { Button } from "../ui/Button";
 import { Product } from "../../../types";
-import { useAddNewProductForm } from "../../hooks/useAddNewProductForm";
+import { useProductAddForm } from "../../hooks/useProductAddForm";
 import { Controller } from "react-hook-form";
 
 interface ProductAddFormProps {
 	onProductAdd: (product: Product) => void;
-	onAddComplete: () => void;
+	onComplete: () => void;
 }
 
 export function ProductAddForm({
 	onProductAdd,
-	onAddComplete,
+	onComplete,
 }: ProductAddFormProps) {
 	const {
 		form: { control },
 		handleAddNewProduct,
-	} = useAddNewProductForm({
+	} = useProductAddForm({
 		onProductAdd,
 	});
 
 	const handleSubmit = () => {
 		handleAddNewProduct();
-		onAddComplete();
+		onComplete();
 	};
 
 	return (

@@ -9,7 +9,6 @@ export function CartInvoice() {
 	return (
 		<CartInvoice.Layout>
 			<p>상품 금액: {totalBeforeDiscount.toLocaleString()}원</p>
-			<p>상품 금액: {totalBeforeDiscount.toLocaleString()}원</p>
 			<p className="text-green-600">
 				할인 금액: {totalDiscount.toLocaleString()}원
 			</p>

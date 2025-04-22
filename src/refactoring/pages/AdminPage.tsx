@@ -1,8 +1,4 @@
 import { Coupon, Product } from "../../types.ts";
-import { ProductEditAccordion } from "../components/admin/ProductEditAccordion.tsx";
-import { ProductAddForm } from "../components/admin/ProductAddForm.tsx";
-import { ToggleButton } from "../components/ToggleButton.tsx";
-import { CouponAddForm } from "../components/admin/CouponAddForm.tsx";
 import { ProductManageContainer } from "../components/admin/ProductManageContainer.tsx";
 import { CouponManageContainer } from "../components/admin/CouponManageContainer.tsx";
 

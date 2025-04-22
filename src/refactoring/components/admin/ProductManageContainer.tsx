@@ -21,10 +21,7 @@ export function ProductManageContainer({
 				showLabel="새 상품 추가"
 				hideLabel="취소"
 				render={(closeForm) => (
-					<ProductAddForm
-						onProductAdd={onProductAdd}
-						onAddComplete={closeForm}
-					/>
+					<ProductAddForm onProductAdd={onProductAdd} onComplete={closeForm} />
 				)}
 			/>
 			<div className="space-y-2">

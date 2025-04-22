@@ -6,13 +6,13 @@ import { useProductEditForm } from "../../hooks/useProductEditForm";
 interface ProductEditFormProps {
 	product: Product;
 	onProductUpdate: (updatedProduct: Product) => void;
-	onEditComplete: () => void;
+	onComplete: () => void;
 }
 
 export function ProductEditForm({
 	product,
 	onProductUpdate,
-	onEditComplete,
+	onComplete,
 }: ProductEditFormProps) {
 	const {
 		form: { control },
@@ -25,7 +25,7 @@ export function ProductEditForm({
 	} = useProductEditForm({
 		product,
 		onProductUpdate,
-		onEditComplete,
+		onComplete,
 	});
 
 	return (

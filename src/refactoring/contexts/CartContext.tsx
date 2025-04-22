@@ -1,6 +1,7 @@
 import { createContext, useState, useContext, ReactNode } from "react";
 import { CartItem, Coupon, Product } from "../../types";
 import {
+	addItemToCart,
 	calculateCartTotal,
 	getRemainingStock,
 	updateCartItemQuantity,
@@ -30,22 +31,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 		const remainingStock = getRemainingStock(cart, product);
 		if (remainingStock <= 0) return;
 
-		setCart((prevCart) => {
-			const existingItem = prevCart.find(
-				(item) => item.product.id === product.id,
-			);
-
-			if (!existingItem) return [...prevCart, { product, quantity: 1 }];
-
-			return prevCart.map((item) =>
-				item.product.id === product.id
-					? {
-							...item,
-							quantity: Math.min(item.quantity + 1, product.stock),
-						}
-					: item,
-			);
-		});
+		setCart((prevCart) => addItemToCart(prevCart, product));
 	};
 
 	const removeFromCart = (productId: string) => {

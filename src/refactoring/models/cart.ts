@@ -104,3 +104,18 @@ export const updateCartItemQuantity = (
 
 	return updatedCart;
 };
+
+export const addItemToCart = (cart: CartItem[], product: Product) => {
+	const existingItem = cart.find((item) => item.product.id === product.id);
+
+	if (!existingItem) return [...cart, { product, quantity: 1 }];
+
+	return cart.map((item) =>
+		item.product.id === product.id
+			? {
+					...item,
+					quantity: Math.min(item.quantity + 1, product.stock),
+				}
+			: item,
+	);
+};

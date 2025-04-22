@@ -1,6 +1,6 @@
 import { Coupon } from "../../../types";
 import { Button } from "../ui/Button";
-import { useAddCouponForm } from "../../hooks/useAddCouponForm";
+import { useCouponAddForm } from "../../hooks/useCouponAddForm";
 import { Controller } from "react-hook-form";
 
 interface CouponAddFormProps {
@@ -11,7 +11,7 @@ export function CouponAddForm({ onCouponAdd }: CouponAddFormProps) {
 	const {
 		form: { control },
 		handleAddCoupon,
-	} = useAddCouponForm({ onCouponAdd });
+	} = useCouponAddForm({ onCouponAdd });
 
 	return (
 		<form onSubmit={handleAddCoupon} className="mb-4 space-y-2">

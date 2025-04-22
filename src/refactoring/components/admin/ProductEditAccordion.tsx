@@ -32,7 +32,7 @@ export function ProductEditAccordion({
 					<ProductEditForm
 						product={product}
 						onProductUpdate={onProductUpdate}
-						onEditComplete={() => setIsEditing(false)}
+						onComplete={() => setIsEditing(false)}
 					/>
 				) : (
 					<div>

@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Product } from "../../types";
 
-interface UseAddNewProductFormProps {
+interface UseProductAddFormProps {
 	onProductAdd: (product: Product) => void;
 }
 
@@ -13,9 +13,7 @@ const formSchema = z.object({
 	stock: z.number(),
 });
 
-export const useAddNewProductForm = ({
-	onProductAdd,
-}: UseAddNewProductFormProps) => {
+export const useProductAddForm = ({ onProductAdd }: UseProductAddFormProps) => {
 	const form = useForm<z.infer<typeof formSchema>>({
 		defaultValues: {
 			name: "",
