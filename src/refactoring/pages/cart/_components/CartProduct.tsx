@@ -1,13 +1,14 @@
 import React, { useMemo } from "react";
 import type { ICartItem } from "#src/types";
+import { useCart } from "#src/refactoring/pages/cart/_hooks/useCart";
 
 interface IProps {
   cartItem: ICartItem;
-  removeFromCart: (productId: string) => void;
-  updateQuantity: (productId: string, quantity: number) => void;
 }
 
-const CartProduct: React.FC<IProps> = ({ cartItem, removeFromCart, updateQuantity }) => {
+const CartProduct: React.FC<IProps> = ({ cartItem }) => {
+  const { removeFromCart, updateQuantity } = useCart();
+
   const appliedDiscount = useMemo(() => {
     const { quantity } = cartItem;
     const { discounts } = cartItem.product;

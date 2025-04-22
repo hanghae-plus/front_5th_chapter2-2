@@ -28,7 +28,7 @@ const initialProducts: IProduct[] = [
   },
 ];
 
-export const ProductContext = createContext<{
+export const ProductsContext = createContext<{
   products: IProduct[];
   setProducts: React.Dispatch<React.SetStateAction<IProduct[]>>;
 }>({
@@ -36,10 +36,10 @@ export const ProductContext = createContext<{
   setProducts: () => {},
 });
 
-const ProductProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
+const ProductsProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [products, setProducts] = useState<IProduct[]>(initialProducts);
 
-  return <ProductContext.Provider value={{ products, setProducts }}>{children}</ProductContext.Provider>;
+  return <ProductsContext.Provider value={{ products, setProducts }}>{children}</ProductsContext.Provider>;
 };
 
-export default ProductProvider;
+export default ProductsProvider;

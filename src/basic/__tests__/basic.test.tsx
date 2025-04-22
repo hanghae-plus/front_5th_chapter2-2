@@ -7,8 +7,8 @@ import type { ICartItem, ICoupon, IProduct } from "#src/types";
 import { useCart } from "#src/refactoring/pages/cart/_hooks/useCart";
 import { useCoupons, useProducts } from "#src/refactoring/hooks";
 import * as cartUtils from "#src/refactoring/pages/cart/_libs/cart";
-import { ProductContext } from "#src/refactoring/providers/ProductProvider";
-import { CouponContext } from "#src/refactoring/providers/CouponProvider";
+import { ProductsContext } from "#src/refactoring/providers/ProductsProvider";
+import { CouponsContext } from "#src/refactoring/providers/CouponsProvider";
 import { CartContext } from "#src/refactoring/pages/cart/providers/CartProvider";
 
 const mockProducts: IProduct[] = [
@@ -83,7 +83,7 @@ const MockProductProvider: React.FC<{
 }> = ({ children, initialTestProducts }) => {
   const [products, setProducts] = useState<IProduct[]>(initialTestProducts);
 
-  return <ProductContext.Provider value={{ products, setProducts }}>{children}</ProductContext.Provider>;
+  return <ProductsContext.Provider value={{ products, setProducts }}>{children}</ProductsContext.Provider>;
 };
 // 테스트 환경에서 사용할 Coupon ContextAPI Provider
 const MockCouponProvider: React.FC<{
@@ -92,7 +92,7 @@ const MockCouponProvider: React.FC<{
 }> = ({ children, initialTestCoupons }) => {
   const [coupons, setCoupons] = useState<ICoupon[]>(initialTestCoupons);
 
-  return <CouponContext.Provider value={{ coupons, setCoupons }}>{children}</CouponContext.Provider>;
+  return <CouponsContext.Provider value={{ coupons, setCoupons }}>{children}</CouponsContext.Provider>;
 };
 // 테스트 환경에서 사용할 Cart ContextAPI Provider
 const MockCartProvider: React.FC<{
@@ -100,8 +100,11 @@ const MockCartProvider: React.FC<{
   initialTestCart: ICartItem[];
 }> = ({ children, initialTestCart }) => {
   const [cart, setCart] = useState<ICartItem[]>(initialTestCart);
+  const [selectedCoupon, setSelectedCoupon] = useState<ICoupon | null>(null);
 
-  return <CartContext.Provider value={{ cart, setCart }}>{children}</CartContext.Provider>;
+  return (
+    <CartContext.Provider value={{ cart, setCart, selectedCoupon, setSelectedCoupon }}>{children}</CartContext.Provider>
+  );
 };
 
 describe("basic > ", () => {

@@ -1,35 +1,34 @@
 // useCart.ts
-import { useContext, useState } from "react";
+import { useCallback, useContext } from "react";
 import type { ICoupon, IProduct } from "#src/types";
 import { calculateCartTotal, updateCartItemQuantity } from "#src/refactoring/pages/cart/_libs/cart";
-import { CartContext } from "../providers/CartProvider";
+import { CartContext } from "#src/refactoring/pages/cart/providers/CartProvider";
 
 export const useCart = () => {
-  const { cart, setCart } = useContext(CartContext);
-  const [selectedCoupon, setSelectedCoupon] = useState<ICoupon | null>(null);
+  const { cart, setCart, selectedCoupon, setSelectedCoupon } = useContext(CartContext);
 
-  const addToCart = (product: IProduct) => {
+  const addToCart = useCallback((product: IProduct) => {
     setCart((prev) => {
       const exProduct = prev.find((item) => item.product.id === product.id);
       if (!exProduct) return [...prev, { product, quantity: 1 }];
 
       return prev.map((item) => (item.product.id === product.id ? { ...item, quantity: item.quantity + 1 } : item));
     });
-  };
+  }, []);
 
-  const removeFromCart = (productId: string) => {
+  const removeFromCart = useCallback((productId: string) => {
     setCart((prev) => prev.filter((item) => item.product.id !== productId));
-  };
+  }, []);
 
-  const updateQuantity = (productId: string, newQuantity: number) => {
+  const updateQuantity = useCallback((productId: string, newQuantity: number) => {
     setCart((prev) => updateCartItemQuantity(prev, productId, newQuantity));
-  };
+  }, []);
 
-  const applyCoupon = (coupon: ICoupon) => {
+  const applyCoupon = useCallback((coupon: ICoupon) => {
     setSelectedCoupon(coupon);
-  };
+  }, []);
 
-  const calculateTotal = () => {
+  const calculateTotal = useCallback(() => {
     const { totalBeforeDiscount, totalAfterDiscount, totalDiscount } = calculateCartTotal(cart, selectedCoupon);
 
     return {
@@ -37,7 +36,7 @@ export const useCart = () => {
       totalAfterDiscount,
       totalDiscount,
     };
-  };
+  }, [cart, selectedCoupon]);
 
   return {
     cart,

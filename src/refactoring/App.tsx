@@ -1,4 +1,5 @@
 import { useCallback, useState } from "react";
+
 import { CartPage } from "./pages/cart/CartPage";
 import { AdminPage } from "./pages/admin/AdminPage";
 import { useCoupons, useProducts } from "./hooks";
@@ -28,7 +29,7 @@ const App = () => {
             onCouponAdd={addCoupon}
           />
         ) : (
-          <CartPage products={products} coupons={coupons} />
+          <CartPage />
         )}
       </main>
     </Layout>

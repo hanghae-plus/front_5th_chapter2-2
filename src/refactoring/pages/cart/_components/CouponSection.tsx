@@ -1,13 +1,11 @@
 import React from "react";
-import type { ICoupon } from "#src/types";
+import { useCoupons } from "#src/refactoring/hooks";
+import { useCart } from "../_hooks/useCart";
 
-interface IProps {
-  coupons: ICoupon[];
-  selectedCoupon: ICoupon | null;
-  applyCoupon: (coupon: ICoupon) => void;
-}
+const CouponSection: React.FC = () => {
+  const { applyCoupon, selectedCoupon } = useCart();
+  const { coupons } = useCoupons();
 
-const CouponSection: React.FC<IProps> = ({ coupons, selectedCoupon, applyCoupon }) => {
   return (
     <section className="mt-6 bg-white p-4 rounded shadow">
       <h2 className="text-2xl font-semibold mb-2">쿠폰 적용</h2>

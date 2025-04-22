@@ -16,7 +16,7 @@ const initialCoupons: ICoupon[] = [
   },
 ];
 
-export const CouponContext = createContext<{
+export const CouponsContext = createContext<{
   coupons: ICoupon[];
   setCoupons: React.Dispatch<React.SetStateAction<ICoupon[]>>;
 }>({
@@ -24,10 +24,10 @@ export const CouponContext = createContext<{
   setCoupons: () => {},
 });
 
-const CouponProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
+const CouponsProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [coupons, setCoupons] = useState<ICoupon[]>(initialCoupons);
 
-  return <CouponContext.Provider value={{ coupons, setCoupons }}>{children}</CouponContext.Provider>;
+  return <CouponsContext.Provider value={{ coupons, setCoupons }}>{children}</CouponsContext.Provider>;
 };
 
-export default CouponProvider;
+export default CouponsProvider;
