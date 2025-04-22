@@ -1,15 +1,6 @@
 import { LocalStorageKeyType } from "@/types";
 import { useState } from "react";
 
-// type
-type Updater<T> = (prev: T) => T; // 타입가드에서 함수를 확실히 식별시킬 수 있음
-type Storage<T> = [item: T, setItem: (prev: T | Updater<T>) => void]; // 튜플 인자 이름을 인식시킬 수 있음
-
-// type guard
-const isUpdater = <T>(updater: unknown): updater is Updater<T> => {
-  return typeof updater === "function";
-};
-
 // 내부함수
 const setLocalStorage = <T>(key: LocalStorageKeyType, newValue: T): T => {
   localStorage.setItem(key, JSON.stringify(newValue));
@@ -25,6 +16,15 @@ const getLocalStorage = <T>(key: LocalStorageKeyType, initialValue: T): T => {
   // 없거나 에러인 경우 초기값으로 로컬 변경
   setLocalStorage(key, initialValue);
   return initialValue;
+};
+
+// type
+type Updater<T> = (prev: T) => T; // 타입가드와 함께 활용하여 함수를 확실히 식별시킬 수 있음
+type Storage<T> = [item: T, setItem: (prev: T | Updater<T>) => void]; // 튜플 인자 이름을 인식시킬 수 있음 [item, setItem]
+
+// type guard
+const isUpdater = <T>(updater: unknown): updater is Updater<T> => {
+  return typeof updater === "function";
 };
 
 // 유틸함수? 헬퍼함수?
