@@ -2,6 +2,8 @@ import { Coupon, Product } from "@/types";
 import { ReactNode } from "react";
 import { CouponProvider } from "./CouponProvider";
 import { ProductProvider } from "./ProductProvider";
+export { useCouponContext } from "./CouponProvider";
+export { useProductContext } from "./ProductProvider";
 
 const initialProducts: Product[] = [
   {

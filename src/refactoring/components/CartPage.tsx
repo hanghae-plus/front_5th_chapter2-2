@@ -1,7 +1,6 @@
 import { useCart } from "@/refactoring/hooks";
 import { getMaxApplicableDiscount, getMaxDiscount } from "@/refactoring/models";
-import { useCouponContext } from "@/refactoring/provider/CouponProvider";
-import { useProductContext } from "@/refactoring/provider/ProductProvider";
+import { useCouponContext, useProductContext } from "@/refactoring/provider";
 
 export const CartPage = () => {
   const { products } = useProductContext();

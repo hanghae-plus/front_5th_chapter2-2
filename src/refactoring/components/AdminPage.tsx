@@ -1,7 +1,6 @@
+import { useCouponContext, useProductContext } from "@/refactoring/provider";
 import { Coupon, Discount, Product } from "@/types";
 import { useState } from "react";
-import { useCouponContext } from "../provider/CouponProvider";
-import { useProductContext } from "../provider/ProductProvider";
 
 const initialNewDiscount: Discount = {
   quantity: 0,
