@@ -7,6 +7,7 @@ import type { ICartItem, ICoupon, IProduct } from "#src/types";
 import { useCart } from "#src/refactoring/pages/cart/_hooks/useCart";
 import { useCoupons, useProducts } from "#src/refactoring/hooks";
 import * as cartUtils from "#src/refactoring/pages/cart/_libs/cart";
+import { ProductContext } from "#src/refactoring/providers/ProductProvider";
 
 const mockProducts: IProduct[] = [
   {
@@ -71,6 +72,16 @@ const TestAdminPage = () => {
       onCouponAdd={handleCouponAdd}
     />
   );
+};
+
+// 테스트 환경에서 사용할 Product ContextAPI Provider
+const MockProductProvider: React.FC<{
+  children: React.ReactNode;
+  initialTestProducts: IProduct[];
+}> = ({ children, initialTestProducts }) => {
+  const [products, setProducts] = useState<IProduct[]>(initialTestProducts);
+
+  return <ProductContext.Provider value={{ products, setProducts }}>{children}</ProductContext.Provider>;
 };
 
 describe("basic > ", () => {
@@ -253,12 +264,20 @@ describe("basic > ", () => {
     const initialProducts: IProduct[] = [{ id: "1", name: "Product 1", price: 100, stock: 10, discounts: [] }];
 
     test("특정 제품으로 초기화할 수 있다.", () => {
-      const { result } = renderHook(() => useProducts(initialProducts));
+      const { result } = renderHook(() => useProducts(), {
+        wrapper: ({ children }) => (
+          <MockProductProvider initialTestProducts={initialProducts}>{children}</MockProductProvider>
+        ),
+      });
       expect(result.current.products).toEqual(initialProducts);
     });
 
     test("제품을 업데이트할 수 있다.", () => {
-      const { result } = renderHook(() => useProducts(initialProducts));
+      const { result } = renderHook(() => useProducts(), {
+        wrapper: ({ children }) => (
+          <MockProductProvider initialTestProducts={initialProducts}>{children}</MockProductProvider>
+        ),
+      });
       const updatedProduct = { ...initialProducts[0], name: "Updated Product" };
 
       act(() => {
@@ -275,7 +294,11 @@ describe("basic > ", () => {
     });
 
     test("새로운 제품을 추가할 수 있다.", () => {
-      const { result } = renderHook(() => useProducts(initialProducts));
+      const { result } = renderHook(() => useProducts(), {
+        wrapper: ({ children }) => (
+          <MockProductProvider initialTestProducts={initialProducts}>{children}</MockProductProvider>
+        ),
+      });
       const newProduct: IProduct = {
         id: "2",
         name: "New Product",
