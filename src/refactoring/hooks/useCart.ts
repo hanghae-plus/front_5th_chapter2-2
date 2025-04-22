@@ -7,10 +7,19 @@ export const useCart = () => {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
 
+  /**남은 재고 수량을 반환합니다.*/
+  const getRemainingStock = (product: Product) => {
+    const cartItem = cart.find((item) => item.product.id === product.id);
+    return product.stock - (cartItem?.quantity || 0);
+  };
+
+  const isRemainingStock = (product: Product) => {
+    return getRemainingStock(product) > 0;
+  };
+
   /**장바구니에 상품을 추가합니다. */
   const addToCart = (product: Product) => {
-    const remainingStock = getRemainingStock(product);
-    if (remainingStock <= 0) return;
+    if (!isRemainingStock(product)) return;
 
     setCart((prevCart) => {
       const existingItem = prevCart.find(
@@ -27,12 +36,6 @@ export const useCart = () => {
     });
   };
 
-  /**남은 재고 수량을 반환합니다.*/
-  const getRemainingStock = (product: Product) => {
-    const cartItem = cart.find((item) => item.product.id === product.id);
-    return product.stock - (cartItem?.quantity || 0);
-  };
-
   /**장바구니에서 상품을 삭제합니다 */
   const removeFromCart = (productId: string) => {
     setCart((prevCart) =>
@@ -47,31 +50,22 @@ export const useCart = () => {
     );
   };
 
-  /**쿠폰 적용*/
+  /**쿠폰을 적용합니다.*/
   const applyCoupon = (coupon: Coupon) => {
     setSelectedCoupon(coupon);
   };
 
   /**상품금액, 최종 결제 금액, 할인 금액을 반환합니다.  */
-  const calculateTotal = () => {
-    const { totalBeforeDiscount, totalAfterDiscount, totalDiscount } =
-      calculateCartTotal(cart, selectedCoupon);
-
-    return {
-      totalBeforeDiscount,
-      totalAfterDiscount,
-      totalDiscount,
-    };
-  };
+  const calculateTotal = () => calculateCartTotal(cart, selectedCoupon);
 
   return {
     cart,
+    getRemainingStock,
     addToCart,
     removeFromCart,
     updateQuantity,
     applyCoupon,
     calculateTotal,
-    getRemainingStock,
     selectedCoupon,
   };
 };
