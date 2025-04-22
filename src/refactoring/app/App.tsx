@@ -1,12 +1,12 @@
 import { useState } from "react";
 
+import { useProducts } from "@r/entities/product";
+import { useCoupons } from "@r/entities/coupon";
+
 import { AdminPage, CartPage } from "@r/components";
 
-import { useProducts } from "@r/hooks/useProduct.ts";
-import { useCoupons } from "@r/hooks/useCoupon.ts";
-
-import { initialCoupons } from "@/refactoring/mock/initial-coupons";
-import { initialProducts } from "@/refactoring/mock/initial-products";
+import { initialCoupons } from "@r/mock/initial-coupons";
+import { initialProducts } from "@r/mock/initial-products";
 
 const App = () => {
   const { products, updateProduct, addProduct } = useProducts(initialProducts);
