@@ -1,4 +1,4 @@
-import { Product } from "@r/entities/product/types";
+import { Product } from "@r/entities/product";
 
 export interface CartItem {
   product: Product;

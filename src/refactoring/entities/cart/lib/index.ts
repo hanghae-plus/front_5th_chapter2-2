@@ -1,4 +1,5 @@
-import { CartItem, Coupon } from "@/types";
+import { CartItem } from "@r/entities/cart";
+import { Coupon, getCouponAppliedTotal } from "@r/entities/coupon";
 
 export const calculateItemTotal = (item: CartItem) => {
   const discountRate = getMaxApplicableDiscount(item);
@@ -17,15 +18,6 @@ export const getMaxApplicableDiscount = (item: CartItem) => {
   const maxDiscountRate = Math.max(...applicableDiscountRates, 0);
 
   return maxDiscountRate;
-};
-
-export const getCouponAppliedTotal = (amount: number, coupon: Coupon) => {
-  switch (coupon.discountType) {
-    case "amount":
-      return Math.max(0, amount - coupon.discountValue);
-    case "percentage":
-      return amount * (1 - coupon.discountValue / 100);
-  }
 };
 
 export const calculateCartTotal = (
