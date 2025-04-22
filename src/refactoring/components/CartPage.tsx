@@ -1,13 +1,12 @@
 import { useCart } from "@/refactoring/hooks";
 import { getMaxApplicableDiscount, getMaxDiscount } from "@/refactoring/models";
-import { Coupon, Product } from "@/types";
+import { useCouponContext } from "@/refactoring/provider/CouponProvider";
+import { useProductContext } from "@/refactoring/provider/ProductProvider";
 
-interface Props {
-  products: Product[];
-  coupons: Coupon[];
-}
+export const CartPage = () => {
+  const { products } = useProductContext();
+  const { coupons } = useCouponContext();
 
-export const CartPage = ({ products, coupons }: Props) => {
   const { cart, addToCart, removeFromCart, updateQuantity, applyCoupon, calculateTotal, selectedCoupon, getRemainingStock } = useCart();
 
   const { totalBeforeDiscount, totalAfterDiscount, totalDiscount } = calculateTotal();

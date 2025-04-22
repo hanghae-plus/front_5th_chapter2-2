@@ -1,34 +1,37 @@
 import { Coupon, Discount, Product } from "@/types";
 import { useState } from "react";
+import { useCouponContext } from "../provider/CouponProvider";
+import { useProductContext } from "../provider/ProductProvider";
 
-interface Props {
-  products: Product[];
-  coupons: Coupon[];
-  onProductUpdate: (updatedProduct: Product) => void;
-  onProductAdd: (newProduct: Product) => void;
-  onCouponAdd: (newCoupon: Coupon) => void;
-}
+const initialNewDiscount: Discount = {
+  quantity: 0,
+  rate: 0,
+};
 
-export const AdminPage = ({ products, coupons, onProductUpdate, onProductAdd, onCouponAdd }: Props) => {
+const initialNewCoupon: Coupon = {
+  name: "",
+  code: "",
+  discountType: "percentage",
+  discountValue: 0,
+};
+
+const initialNewProduct: Omit<Product, "id"> = {
+  name: "",
+  price: 0,
+  stock: 0,
+  discounts: [],
+};
+
+export const AdminPage = () => {
+  const { products, updateProduct: onProductUpdate, addProduct: onProductAdd } = useProductContext();
+  const { coupons, addCoupon: onCouponAdd } = useCouponContext();
+
   const [openProductIds, setOpenProductIds] = useState<Set<string>>(new Set());
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
-  const [newDiscount, setNewDiscount] = useState<Discount>({
-    quantity: 0,
-    rate: 0,
-  });
-  const [newCoupon, setNewCoupon] = useState<Coupon>({
-    name: "",
-    code: "",
-    discountType: "percentage",
-    discountValue: 0,
-  });
+  const [newDiscount, setNewDiscount] = useState<Discount>(initialNewDiscount);
+  const [newCoupon, setNewCoupon] = useState<Coupon>(initialNewCoupon);
   const [showNewProductForm, setShowNewProductForm] = useState(false);
-  const [newProduct, setNewProduct] = useState<Omit<Product, "id">>({
-    name: "",
-    price: 0,
-    stock: 0,
-    discounts: [],
-  });
+  const [newProduct, setNewProduct] = useState<Omit<Product, "id">>(initialNewProduct);
 
   const toggleProductAccordion = (productId: string) => {
     setOpenProductIds((prev) => {
