@@ -9,6 +9,7 @@ import { useCoupons, useProducts } from "#src/refactoring/hooks";
 import * as cartUtils from "#src/refactoring/pages/cart/_libs/cart";
 import { ProductContext } from "#src/refactoring/providers/ProductProvider";
 import { CouponContext } from "#src/refactoring/providers/CouponProvider";
+import { CartContext } from "#src/refactoring/pages/cart/providers/CartProvider";
 
 const mockProducts: IProduct[] = [
   {
@@ -93,11 +94,28 @@ const MockCouponProvider: React.FC<{
 
   return <CouponContext.Provider value={{ coupons, setCoupons }}>{children}</CouponContext.Provider>;
 };
+// 테스트 환경에서 사용할 Cart ContextAPI Provider
+const MockCartProvider: React.FC<{
+  children: React.ReactNode;
+  initialTestCart: ICartItem[];
+}> = ({ children, initialTestCart }) => {
+  const [cart, setCart] = useState<ICartItem[]>(initialTestCart);
+
+  return <CartContext.Provider value={{ cart, setCart }}>{children}</CartContext.Provider>;
+};
 
 describe("basic > ", () => {
   describe("시나리오 테스트 > ", () => {
     test("장바구니 페이지 테스트 > ", async () => {
-      render(<CartPage products={mockProducts} coupons={mockCoupons} />);
+      render(
+        <MockProductProvider initialTestProducts={mockProducts}>
+          <MockCouponProvider initialTestCoupons={mockCoupons}>
+            <MockCartProvider initialTestCart={[]}>
+              <CartPage />
+            </MockCartProvider>
+          </MockCouponProvider>
+        </MockProductProvider>,
+      );
       const product1 = screen.getByTestId("product-p1");
       const product2 = screen.getByTestId("product-p2");
       const product3 = screen.getByTestId("product-p3");
@@ -469,7 +487,9 @@ describe("basic > ", () => {
     };
 
     test("장바구니에 제품을 추가해야 합니다", () => {
-      const { result } = renderHook(() => useCart());
+      const { result } = renderHook(() => useCart(), {
+        wrapper: ({ children }) => <MockCartProvider initialTestCart={[]}>{children}</MockCartProvider>,
+      });
 
       act(() => {
         result.current.addToCart(testProduct);
@@ -483,7 +503,9 @@ describe("basic > ", () => {
     });
 
     test("장바구니에서 제품을 제거해야 합니다", () => {
-      const { result } = renderHook(() => useCart());
+      const { result } = renderHook(() => useCart(), {
+        wrapper: ({ children }) => <MockCartProvider initialTestCart={[]}>{children}</MockCartProvider>,
+      });
 
       act(() => {
         result.current.addToCart(testProduct);
@@ -494,7 +516,9 @@ describe("basic > ", () => {
     });
 
     test("제품 수량을 업데이트해야 합니다", () => {
-      const { result } = renderHook(() => useCart());
+      const { result } = renderHook(() => useCart(), {
+        wrapper: ({ children }) => <MockCartProvider initialTestCart={[]}>{children}</MockCartProvider>,
+      });
 
       act(() => {
         result.current.addToCart(testProduct);
@@ -505,7 +529,9 @@ describe("basic > ", () => {
     });
 
     test("쿠폰을 적용해야지", () => {
-      const { result } = renderHook(() => useCart());
+      const { result } = renderHook(() => useCart(), {
+        wrapper: ({ children }) => <MockCartProvider initialTestCart={[]}>{children}</MockCartProvider>,
+      });
 
       act(() => {
         result.current.applyCoupon(testCoupon);
@@ -515,7 +541,9 @@ describe("basic > ", () => {
     });
 
     test("합계를 정확하게 계산해야 합니다", () => {
-      const { result } = renderHook(() => useCart());
+      const { result } = renderHook(() => useCart(), {
+        wrapper: ({ children }) => <MockCartProvider initialTestCart={[]}>{children}</MockCartProvider>,
+      });
 
       act(() => {
         result.current.addToCart(testProduct);
