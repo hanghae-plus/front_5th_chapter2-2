@@ -1,9 +1,9 @@
 import { Coupon, Product } from "../../types.ts";
-import { ProductEditAccordion } from "./ProductEditAccordion.tsx";
-import { AddNewProductForm } from "./AddNewProductForm.tsx";
-import { ToggleButton } from "./ui/ToggleButton.tsx";
-import { AddCouponForm } from "./AddCouponForm.tsx";
-import { CouponList } from "./CouponList.tsx";
+import { ProductEditAccordion } from "../components/admin/ProductEditAccordion.tsx";
+import { AddNewProductForm } from "../components/admin/AddNewProductForm.tsx";
+import { ToggleButton } from "../components/ui/ToggleButton.tsx";
+import { AddCouponForm } from "../components/admin/AddCouponForm.tsx";
+import { CouponList } from "../components/admin/CouponList.tsx";
 
 interface Props {
 	products: Product[];

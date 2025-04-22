@@ -1,6 +1,6 @@
-import { getMaxApplicableDiscount } from "../models/cart";
-import { Button } from "./ui/Button";
-import { useCart } from "../contexts/CartContext";
+import { getMaxApplicableDiscount } from "../../models/cart";
+import { Button } from "../ui/Button";
+import { useCart } from "../../contexts/CartContext";
 
 export function CartItemList() {
 	const { cart, removeFromCart, updateQuantity } = useCart();

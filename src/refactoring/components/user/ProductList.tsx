@@ -1,6 +1,6 @@
-import { Product } from "../../types";
-import { useCart } from "../contexts/CartContext";
-import { getRemainingStock } from "../models/cart";
+import { Product } from "../../../types";
+import { useCart } from "../../contexts/CartContext";
+import { getRemainingStock } from "../../models/cart";
 import { ProductItem } from "./ProductItem";
 
 interface ProductListProps {

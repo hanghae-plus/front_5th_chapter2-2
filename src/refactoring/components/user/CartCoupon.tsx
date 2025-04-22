@@ -1,6 +1,6 @@
-import { Coupon } from "../../types";
+import { Coupon } from "../../../types";
 
-import { useCart } from "../contexts/CartContext";
+import { useCart } from "../../contexts/CartContext";
 
 export function CartCoupon({ coupons }: { coupons: Coupon[] }) {
 	return (

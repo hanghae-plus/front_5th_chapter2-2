@@ -1,12 +1,12 @@
-import { Button } from "./ui/Button";
+import { Button } from "../ui/Button.tsx";
 
 import { useState } from "react";
-import { Product } from "../../types.ts";
+import { Product } from "../../../types.ts";
 import {
 	Accordion,
 	AccordionTrigger,
 	AccordionContent,
-} from "./ui/Accordion.tsx";
+} from "../ui/Accordion.tsx";
 import { ProductEditForm } from "./ProductEditForm.tsx";
 
 interface ProductEditAccordionProps

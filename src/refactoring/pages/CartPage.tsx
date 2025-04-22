@@ -1,7 +1,7 @@
 import { Coupon, Product } from "../../types.ts";
 import { CartProvider } from "../contexts/CartContext.tsx";
-import { CartContainer } from "./CartContainer.tsx";
-import { ProductList } from "./ProductList.tsx";
+import { CartContainer } from "../components/user/CartContainer.tsx";
+import { ProductList } from "../components/user/ProductList.tsx";
 
 interface Props {
 	products: Product[];

@@ -1,6 +1,6 @@
-import { Button } from "./ui/Button";
-import { Product } from "../../types";
-import { useAddNewProductForm } from "../hooks/useAddNewProductForm";
+import { Button } from "../ui/Button";
+import { Product } from "../../../types";
+import { useAddNewProductForm } from "../../hooks/useAddNewProductForm";
 import { Controller } from "react-hook-form";
 
 interface AddNewProductFormProps {

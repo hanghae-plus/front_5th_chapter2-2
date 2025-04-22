@@ -1,7 +1,7 @@
-import { Product } from "../../types";
-import { Button } from "./ui/Button";
+import { Product } from "../../../types";
+import { Button } from "../ui/Button";
 import { Controller } from "react-hook-form";
-import { useProductEditForm } from "../hooks/useProductEditForm";
+import { useProductEditForm } from "../../hooks/useProductEditForm";
 
 interface ProductEditFormProps {
 	product: Product;

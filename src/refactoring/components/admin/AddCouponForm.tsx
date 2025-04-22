@@ -1,6 +1,6 @@
-import { Coupon } from "../../types";
-import { Button } from "./ui/Button";
-import { useAddCouponForm } from "../hooks/useAddCouponForm";
+import { Coupon } from "../../../types";
+import { Button } from "../ui/Button";
+import { useAddCouponForm } from "../../hooks/useAddCouponForm";
 import { Controller } from "react-hook-form";
 
 interface AddCouponFormProps {

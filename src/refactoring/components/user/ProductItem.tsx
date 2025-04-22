@@ -1,6 +1,6 @@
-import { Product } from "../../types";
-import { getMaxDiscount } from "../models/cart";
-import { Button } from "./ui/Button";
+import { Product } from "../../../types";
+import { getMaxDiscount } from "../../models/cart";
+import { Button } from "../ui/Button";
 
 interface ProductCardProps {
 	product: Product;
