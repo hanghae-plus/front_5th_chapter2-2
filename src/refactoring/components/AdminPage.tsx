@@ -1,5 +1,6 @@
+import { useNewDiscount } from "@/refactoring/hooks/discount/useNewDiscount.ts";
 import { useState } from "react";
-import { Coupon, Discount, Product } from "../../types.ts";
+import { Coupon, Product } from "../../types.ts";
 import { useToggle } from "../hooks/index.ts";
 import { useEditProduct } from "../hooks/product/useEditProduct.ts";
 
@@ -30,7 +31,7 @@ export const AdminPage = ({
     handleEditComplete,
   } = useEditProduct(onProductUpdate);
 
-  const [newDiscount, setNewDiscount] = useState<Discount>({ quantity: 0, rate: 0 });
+  const { newDiscount, resetNewDiscount, updateNewDiscount } = useNewDiscount();
   const [newCoupon, setNewCoupon] = useState<Coupon>({
     name: "",
     code: "",
@@ -63,7 +64,7 @@ export const AdminPage = ({
       };
       onProductUpdate(newProduct);
       updateEditingProduct(newProduct);
-      setNewDiscount({ quantity: 0, rate: 0 });
+      resetNewDiscount();
     }
   };
 
@@ -235,7 +236,7 @@ export const AdminPage = ({
                               placeholder="수량"
                               value={newDiscount.quantity}
                               onChange={(e) =>
-                                setNewDiscount({
+                                updateNewDiscount({
                                   ...newDiscount,
                                   quantity: parseInt(e.target.value),
                                 })
@@ -247,7 +248,7 @@ export const AdminPage = ({
                               placeholder="할인율 (%)"
                               value={newDiscount.rate * 100}
                               onChange={(e) =>
-                                setNewDiscount({
+                                updateNewDiscount({
                                   ...newDiscount,
                                   rate: parseInt(e.target.value) / 100,
                                 })
