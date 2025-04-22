@@ -1,9 +1,13 @@
+// /src/widgets/cart/hooks/useCart.ts 파일에 추가
 import { useState } from "react";
-import { CartItem, Coupon, Product } from "../../types";
-import { calculateCartTotal } from "../models/cart";
+import { CartItem } from "../../../entities/cart/types";
+import { Coupon } from "../../../entities/coupon/types";
+import { Product } from "../../../entities/product/types";
+import { useLocalStorage } from "../../../shared/hooks";
+import { calculateCartTotal } from "../../../shared/utils";
 
 export const useCart = () => {
-  const [cart, setCart] = useState<CartItem[]>([]);
+  const [cart, setCart] = useLocalStorage<CartItem[]>("cart", []);
   const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
 
   const addToCart = (product: Product) => {
