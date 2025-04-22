@@ -1,8 +1,8 @@
 import { Coupon, Product } from "../../types.ts";
 import { ProductEditAccordion } from "../components/admin/ProductEditAccordion.tsx";
-import { AddNewProductForm } from "../components/admin/AddNewProductForm.tsx";
+import { ProductAddForm } from "../components/admin/ProductAddForm.tsx";
 import { ToggleButton } from "../components/ui/ToggleButton.tsx";
-import { AddCouponForm } from "../components/admin/AddCouponForm.tsx";
+import { CouponAddForm } from "../components/admin/CouponAddForm.tsx";
 import { CouponList } from "../components/admin/CouponList.tsx";
 
 interface Props {
@@ -29,7 +29,7 @@ export const AdminPage = ({
 					showLabel="새 상품 추가"
 					hideLabel="취소"
 					render={(closeForm) => (
-						<AddNewProductForm
+						<ProductAddForm
 							onProductAdd={onProductAdd}
 							onAddComplete={closeForm}
 						/>
@@ -49,7 +49,7 @@ export const AdminPage = ({
 			<div>
 				<h2 className="mb-4 text-2xl font-semibold">쿠폰 관리</h2>
 				<div className="rounded bg-white p-4 shadow">
-					<AddCouponForm onCouponAdd={onCouponAdd} />
+					<CouponAddForm onCouponAdd={onCouponAdd} />
 					<CouponList coupons={coupons} />
 				</div>
 			</div>

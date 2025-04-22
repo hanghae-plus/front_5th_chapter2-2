@@ -3,15 +3,15 @@ import { Product } from "../../../types";
 import { useAddNewProductForm } from "../../hooks/useAddNewProductForm";
 import { Controller } from "react-hook-form";
 
-interface AddNewProductFormProps {
+interface ProductAddFormProps {
 	onProductAdd: (product: Product) => void;
 	onAddComplete: () => void;
 }
 
-export function AddNewProductForm({
+export function ProductAddForm({
 	onProductAdd,
 	onAddComplete,
-}: AddNewProductFormProps) {
+}: ProductAddFormProps) {
 	const {
 		form: { control },
 		handleAddNewProduct,

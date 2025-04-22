@@ -3,11 +3,11 @@ import { Button } from "../ui/Button";
 import { useAddCouponForm } from "../../hooks/useAddCouponForm";
 import { Controller } from "react-hook-form";
 
-interface AddCouponFormProps {
+interface CouponAddFormProps {
 	onCouponAdd: (coupon: Coupon) => void;
 }
 
-export function AddCouponForm({ onCouponAdd }: AddCouponFormProps) {
+export function CouponAddForm({ onCouponAdd }: CouponAddFormProps) {
 	const {
 		form: { control },
 		handleAddCoupon,
