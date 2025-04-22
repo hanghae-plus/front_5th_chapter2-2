@@ -1,7 +1,7 @@
 import { createContext, useState } from "react";
 import type { IProduct } from "#src/types";
 
-export const initialProducts: IProduct[] = [
+const initialProducts: IProduct[] = [
   {
     id: "p1",
     name: "상품1",

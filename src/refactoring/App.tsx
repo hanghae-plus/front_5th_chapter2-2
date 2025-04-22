@@ -3,8 +3,8 @@ import { CartPage } from "./pages/cart/CartPage";
 import { AdminPage } from "./pages/admin/AdminPage";
 import { useCoupons, useProducts } from "./hooks";
 import Nav from "./components/layouts/Nav";
-import { initialCoupons } from "./constants";
 import ProductProvider from "./providers/ProductProvider";
+import CouponProvider from "./providers/CouponProvider";
 
 const App = () => {
   const [isAdmin, setIsAdmin] = useState(false);
@@ -13,28 +13,30 @@ const App = () => {
   }, []);
 
   const { products, updateProduct, addProduct } = useProducts();
-  const { coupons, addCoupon } = useCoupons(initialCoupons);
+  const { coupons, addCoupon } = useCoupons();
 
   return (
-    <ProductProvider>
-      <div className="min-h-screen bg-gray-100">
-        <Nav isAdmin={isAdmin} onToggleAdmin={onToggleAdmin} />
+    <CouponProvider>
+      <ProductProvider>
+        <div className="min-h-screen bg-gray-100">
+          <Nav isAdmin={isAdmin} onToggleAdmin={onToggleAdmin} />
 
-        <main className="container mx-auto mt-6">
-          {isAdmin ? (
-            <AdminPage
-              products={products}
-              coupons={coupons}
-              onProductUpdate={updateProduct}
-              onProductAdd={addProduct}
-              onCouponAdd={addCoupon}
-            />
-          ) : (
-            <CartPage products={products} coupons={coupons} />
-          )}
-        </main>
-      </div>
-    </ProductProvider>
+          <main className="container mx-auto mt-6">
+            {isAdmin ? (
+              <AdminPage
+                products={products}
+                coupons={coupons}
+                onProductUpdate={updateProduct}
+                onProductAdd={addProduct}
+                onCouponAdd={addCoupon}
+              />
+            ) : (
+              <CartPage products={products} coupons={coupons} />
+            )}
+          </main>
+        </div>
+      </ProductProvider>
+    </CouponProvider>
   );
 };
 

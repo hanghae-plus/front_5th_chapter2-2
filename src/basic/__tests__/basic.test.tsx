@@ -8,6 +8,7 @@ import { useCart } from "#src/refactoring/pages/cart/_hooks/useCart";
 import { useCoupons, useProducts } from "#src/refactoring/hooks";
 import * as cartUtils from "#src/refactoring/pages/cart/_libs/cart";
 import { ProductContext } from "#src/refactoring/providers/ProductProvider";
+import { CouponContext } from "#src/refactoring/providers/CouponProvider";
 
 const mockProducts: IProduct[] = [
   {
@@ -82,6 +83,15 @@ const MockProductProvider: React.FC<{
   const [products, setProducts] = useState<IProduct[]>(initialTestProducts);
 
   return <ProductContext.Provider value={{ products, setProducts }}>{children}</ProductContext.Provider>;
+};
+// 테스트 환경에서 사용할 Coupon ContextAPI Provider
+const MockCouponProvider: React.FC<{
+  children: React.ReactNode;
+  initialTestCoupons: ICoupon[];
+}> = ({ children, initialTestCoupons }) => {
+  const [coupons, setCoupons] = useState<ICoupon[]>(initialTestCoupons);
+
+  return <CouponContext.Provider value={{ coupons, setCoupons }}>{children}</CouponContext.Provider>;
 };
 
 describe("basic > ", () => {
@@ -318,12 +328,16 @@ describe("basic > ", () => {
 
   describe("useCoupons > ", () => {
     test("쿠폰을 초기화할 수 있다.", () => {
-      const { result } = renderHook(() => useCoupons(mockCoupons));
+      const { result } = renderHook(() => useCoupons(), {
+        wrapper: ({ children }) => <MockCouponProvider initialTestCoupons={mockCoupons}>{children}</MockCouponProvider>,
+      });
       expect(result.current.coupons).toEqual(mockCoupons);
     });
 
     test("쿠폰을 추가할 수 있다", () => {
-      const { result } = renderHook(() => useCoupons(mockCoupons));
+      const { result } = renderHook(() => useCoupons(), {
+        wrapper: ({ children }) => <MockCouponProvider initialTestCoupons={mockCoupons}>{children}</MockCouponProvider>,
+      });
       const newCoupon: ICoupon = {
         name: "New Coupon",
         code: "NEWCODE",
