@@ -1,21 +1,22 @@
-import { useState } from "react";
-
 import {
   calculateTotalAfterDiscount,
   calculateTotalBeforeDiscount,
 } from "../calculations/cart/calc-total-discount";
 import { applyCouponDiscount } from "../calculations/coupon/apply-coupon";
 
-import { Coupon } from "../entities";
 import { useCartStore } from "../store/cart-store";
+import { useSelectedCoupon } from "./useSelectedCoupon";
 
+/**
+ * 장바구니 쿠폰 관련 로직을 관리하는 커스텀 훅
+ *
+ * - 쿠폰을 적용하거나 해제할 수 있고
+ * - 현재 장바구니(`useCartStore`)의 상품과 쿠폰을 바탕으로 총액 및 할인 금액을 계산합니다.
+ *
+ **/
 export const useCart = () => {
   const { cart } = useCartStore();
-  const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
-
-  const applyCoupon = (coupon: Coupon) => {
-    setSelectedCoupon(coupon);
-  };
+  const { selectedCoupon } = useSelectedCoupon();
 
   const calculateTotal = () => {
     const totalBeforeDiscount = calculateTotalBeforeDiscount(cart);
@@ -31,8 +32,6 @@ export const useCart = () => {
   };
 
   return {
-    applyCoupon,
     calculateTotal,
-    selectedCoupon,
   };
 };

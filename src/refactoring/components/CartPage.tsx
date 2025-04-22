@@ -3,6 +3,7 @@ import { getRemainingStock } from "../calculations/cart/calc-item.ts";
 
 import { getAppliedDiscount, getMaxDiscount } from "../calculations/discount/calc-discount-rate.ts";
 import { useCart } from "../hooks";
+import { useSelectedCoupon } from "../hooks/useSelectedCoupon.ts";
 import { useCartStore } from "../store/cart-store.ts";
 
 interface Props {
@@ -11,7 +12,8 @@ interface Props {
 }
 
 export const CartPage = ({ products, coupons }: Props) => {
-  const { applyCoupon, calculateTotal, selectedCoupon } = useCart();
+  const { calculateTotal } = useCart();
+  const { selectedCoupon, applyCoupon } = useSelectedCoupon();
 
   const { cart, addToCart, removeFromCart, updateQuantity } = useCartStore();
 
