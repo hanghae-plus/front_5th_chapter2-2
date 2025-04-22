@@ -16,13 +16,9 @@ export const getAddedToCart = (cart: CartItem[], product: Product) => {
 export const calculateItemTotal = (item: CartItem) => {
   const price = item.product.price;
   const quantityInCart = item.quantity;
-  const discountInfos = item.product.discounts;
 
   // discountRate 중 적용되는 큰 값으로 price * discountRate
-  const discountRate = discountInfos.reduce((prevRate, discountInfo) => {
-    const { quantity, rate } = discountInfo;
-    return quantityInCart >= quantity ? rate : prevRate;
-  }, 0);
+  const discountRate = getMaxApplicableDiscount(item);
 
   return price * (1 - discountRate) * quantityInCart;
 };
@@ -31,7 +27,6 @@ export const getMaxApplicableDiscount = (item: CartItem) => {
   const quantityInCart = item.quantity;
   const discountInfos = item.product.discounts;
 
-  // reduce 인자 3개 (이전값, 배열의각item = forEach의 각 item, 초기값)
   const maxDiscountRate = discountInfos.reduce((prevRate, discountInfo) => {
     const { quantity, rate } = discountInfo;
     return quantityInCart >= quantity && rate > prevRate ? rate : prevRate;
@@ -70,21 +65,17 @@ function getCouponDiscount(
   selectedCoupon: Coupon | null,
   totalAfterProductDiscount: number
 ) {
-  let couponDiscount = 0;
+  if (!selectedCoupon) return 0;
 
   // 금액 할인인 경우
-  if (selectedCoupon?.discountType === "amount") {
-    couponDiscount += selectedCoupon?.discountValue;
+  switch (selectedCoupon.discountType) {
+    case "amount":
+      return selectedCoupon.discountValue;
+    case "percentage":
+      return (totalAfterProductDiscount * selectedCoupon.discountValue) / 100;
+    default:
+      return 0;
   }
-
-  // % 할인인 경우
-  if (selectedCoupon?.discountType === "percentage") {
-    const discount =
-      (totalAfterProductDiscount * selectedCoupon?.discountValue) / 100;
-    couponDiscount += discount;
-  }
-
-  return couponDiscount;
 }
 
 export const updateCartItemQuantity = (
@@ -94,7 +85,7 @@ export const updateCartItemQuantity = (
 ): CartItem[] => {
   // 수량이 0인 경우 cart에서 item 삭제
   if (newQuantity === 0) {
-    return cart.filter((item) => item.product.id !== productId);
+    return getRemovedFromCart(cart, productId);
   }
 
   const newCart = cart.map((item) => {
@@ -106,4 +97,8 @@ export const updateCartItemQuantity = (
   });
 
   return newCart;
+};
+
+export const getRemovedFromCart = (cart: CartItem[], productId: string) => {
+  return cart.filter((item) => item.product.id !== productId);
 };

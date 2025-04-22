@@ -4,6 +4,7 @@ import { CartItem, Coupon, Product } from "../../types";
 import {
   calculateCartTotal,
   getAddedToCart,
+  getRemovedFromCart,
   updateCartItemQuantity,
 } from "../models/cart";
 
@@ -12,20 +13,19 @@ export const useCart = () => {
   const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
 
   const addToCart = (product: Product) => {
-    const newCart = getAddedToCart(cart, product);
-
-    setCart(newCart);
+    setCart((prev) => {
+      return getAddedToCart(prev, product);
+    });
   };
 
   const removeFromCart = (productId: string) => {
-    const newCart = cart.filter((item) => item.product.id !== productId);
-    setCart(newCart);
+    setCart((prev) => {
+      return getRemovedFromCart(prev, productId);
+    });
   };
 
   const updateQuantity = (productId: string, newQuantity: number) => {
     setCart((prev) => updateCartItemQuantity(prev, productId, newQuantity));
-    // const newCart = updateCartItemQuantity(cart, productId, newQuantity);
-    // setCart(newCart);
   };
 
   const applyCoupon = (coupon: Coupon) => {
