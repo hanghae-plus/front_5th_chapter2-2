@@ -1,8 +1,8 @@
 import { Coupon, Product } from "../../types.ts";
 import { getRemainingStock } from "../calculations/cart/calc-item.ts";
+import { calculateCartTotal } from "../calculations/cart/calc-total-discount.ts";
 
 import { getAppliedDiscount, getMaxDiscount } from "../calculations/discount/calc-discount-rate.ts";
-import { useCart } from "../hooks";
 import { useSelectedCoupon } from "../hooks/useSelectedCoupon.ts";
 import { useCartStore } from "../store/cart-store.ts";
 
@@ -12,12 +12,13 @@ interface Props {
 }
 
 export const CartPage = ({ products, coupons }: Props) => {
-  const { calculateTotal } = useCart();
   const { selectedCoupon, applyCoupon } = useSelectedCoupon();
-
   const { cart, addToCart, removeFromCart, updateQuantity } = useCartStore();
 
-  const { totalBeforeDiscount, totalAfterDiscount, totalDiscount } = calculateTotal();
+  const { totalBeforeDiscount, totalAfterDiscount, totalDiscount } = calculateCartTotal(
+    cart,
+    selectedCoupon,
+  );
 
   return (
     <div className="container mx-auto p-4">

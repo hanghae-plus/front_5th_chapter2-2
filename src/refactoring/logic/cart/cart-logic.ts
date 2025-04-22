@@ -8,7 +8,7 @@ import { CartItem, Product } from "../../entities";
  * @param product - 추가할 상품
  * @returns 새로운 장바구니 배열
  */
-export const addToCart = (cart: CartItem[], product: Product): CartItem[] => {
+const addToCart = (cart: CartItem[], product: Product): CartItem[] => {
   const remainingStock = getRemainingStock(product, cart);
   if (remainingStock <= 0) return cart;
 
@@ -32,7 +32,7 @@ export const addToCart = (cart: CartItem[], product: Product): CartItem[] => {
  * @param productId - 제거할 상품 ID
  * @returns 필터링된 새로운 장바구니 배열
  */
-export const removeFromCart = (cart: CartItem[], productId: string): CartItem[] => {
+const removeFromCart = (cart: CartItem[], productId: string): CartItem[] => {
   return cart.filter((item) => item.product.id !== productId);
 };
 
@@ -44,11 +44,7 @@ export const removeFromCart = (cart: CartItem[], productId: string): CartItem[] 
  * @param newQuantity - 새로운 수량
  * @returns 수량이 적용된 새로운 장바구니 배열
  */
-export const updateQuantity = (
-  cart: CartItem[],
-  productId: string,
-  newQuantity: number,
-): CartItem[] => {
+const updateQuantity = (cart: CartItem[], productId: string, newQuantity: number): CartItem[] => {
   return cart
     .map((item) => {
       if (item.product.id === productId) {
@@ -60,3 +56,5 @@ export const updateQuantity = (
     })
     .filter((item): item is CartItem => item !== null);
 };
+
+export { addToCart, removeFromCart, updateQuantity };
