@@ -3,6 +3,7 @@ import { useProductUI } from "../hooks/useProductUI";
 import { useCouponUI } from "../hooks/useCouponUI";
 import { formatDiscountInfo } from "../models/product.ts";
 import ProductForm from "./admin/ProductForm.tsx";
+import DiscountForm from "./admin/DiscountForm.tsx";
 
 interface Props {
   products: Product[];
@@ -177,38 +178,11 @@ export const AdminPage = ({
                               </button>
                             </div>
                           ))}
-                          <div className="flex space-x-2">
-                            <input
-                              type="number"
-                              placeholder="수량"
-                              value={newDiscount.quantity}
-                              onChange={(e) =>
-                                setNewDiscount({
-                                  ...newDiscount,
-                                  quantity: parseInt(e.target.value),
-                                })
-                              }
-                              className="w-1/3 p-2 border rounded"
-                            />
-                            <input
-                              type="number"
-                              placeholder="할인율 (%)"
-                              value={newDiscount.rate * 100}
-                              onChange={(e) =>
-                                setNewDiscount({
-                                  ...newDiscount,
-                                  rate: parseInt(e.target.value) / 100,
-                                })
-                              }
-                              className="w-1/3 p-2 border rounded"
-                            />
-                            <button
-                              onClick={handleAddDiscount}
-                              className="w-1/3 bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
-                            >
-                              할인 추가
-                            </button>
-                          </div>
+                          <DiscountForm
+                            newDiscount={newDiscount}
+                            setNewDiscount={setNewDiscount}
+                            onAddDiscount={handleAddDiscount}
+                          />
                         </div>
                         <div className="mt-2 space-x-2">
                           <button
