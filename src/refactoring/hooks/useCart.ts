@@ -7,19 +7,64 @@ export const useCart = () => {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
 
-  const addToCart = (product: Product) => {};
+  const addToCart = (product: Product) => {
+    console.log("addToCart", product);
+    setCart((prevCart) => {
+      const existingItem = prevCart.find((item) => item.product.id === product.id);
+      if (existingItem) {
+        console.log("Product already in cart, updating quantity");
+        return prevCart.map((item) =>
+          item.product.id === product.id ? {
+            ...item,
+            quantity: item.quantity + 1,
+          } : item
+        );
+      } else {
+        console.log("Product not in cart, adding to cart");
+        return [
+          ...prevCart,
+          {
+            product: product,
+            quantity: 1,
+          },
+        ];
+      };
+    })
+  }
 
-  const removeFromCart = (productId: string) => {};
 
-  const updateQuantity = (productId: string, newQuantity: number) => {};
+  const removeFromCart = (productId: string) => {
+    console.log("removeFromCart", productId);
+    setCart((preCart) => preCart.filter((item) => item.product.id !== productId))
+  };
 
-  const applyCoupon = (coupon: Coupon) => {};
+  const updateQuantity = (productId: string, newQuantity: number) => {
+    console.log("updateQuantity", productId, newQuantity);
 
-  const calculateTotal = () => ({
-    totalBeforeDiscount: 0,
-    totalAfterDiscount: 0,
-    totalDiscount: 0,
-  });
+    setCart((prevCart) => {
+      const updatedCart = updateCartItemQuantity(prevCart, productId, newQuantity);
+      return updatedCart;
+    }
+    );
+  };
+
+  const applyCoupon = (coupon: Coupon) => {
+    setSelectedCoupon((prevCoupon) => {
+      if (prevCoupon && prevCoupon.code === coupon.code) {
+        console.log("Coupon already applied, removing coupon");
+        return null;
+      } else {
+        console.log("Applying new coupon", coupon);
+        return coupon;
+      }
+
+    })
+
+  };
+
+  const calculateTotal = () => (
+    calculateCartTotal(cart, selectedCoupon)
+  );
 
   return {
     cart,
