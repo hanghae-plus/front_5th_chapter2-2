@@ -5,8 +5,8 @@ import { AdminPage, CartPage } from "@r/components";
 import { useProducts } from "@r/hooks/useProduct.ts";
 import { useCoupons } from "@r/hooks/useCoupon.ts";
 
-import { initialCoupons } from "@r/shared/mock/initial-coupons";
-import { initialProducts } from "@r/shared/mock/initial-products";
+import { initialCoupons } from "@/refactoring/mock/initial-coupons";
+import { initialProducts } from "@/refactoring/mock/initial-products";
 
 const App = () => {
   const { products, updateProduct, addProduct } = useProducts(initialProducts);
