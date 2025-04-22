@@ -1,11 +1,9 @@
-import { useState } from 'react';
-import { AdminPage } from './components/AdminPage.tsx';
-import { CartPage } from './components/CartPage.tsx';
+import { useState } from "react";
+import { AdminPage } from "./components/AdminPage.tsx";
+import { CartPage } from "./components/CartPage.tsx";
 
-import { initialCoupons, initialProducts } from './data';
+import { initialCoupons, initialProducts } from "./data";
 import { useCoupons, useProducts } from "./hooks";
-
-
 
 const App = () => {
   const { products, updateProduct, addProduct } = useProducts(initialProducts);
@@ -21,7 +19,7 @@ const App = () => {
             onClick={() => setIsAdmin(!isAdmin)}
             className="bg-white text-blue-600 px-4 py-2 rounded hover:bg-blue-100"
           >
-            {isAdmin ? '장바구니 페이지로' : '관리자 페이지로'}
+            {isAdmin ? "장바구니 페이지로" : "관리자 페이지로"}
           </button>
         </div>
       </nav>
@@ -35,7 +33,7 @@ const App = () => {
             onCouponAdd={addCoupon}
           />
         ) : (
-          <CartPage products={products} coupons={coupons}/>
+          <CartPage products={products} coupons={coupons} />
         )}
       </main>
     </div>

@@ -6,7 +6,7 @@ import {
   getMaxApplicableDiscount,
   getMaxDiscount,
 } from "../calculations/discount/calc-discount-rate.ts";
-import { useSelectedCoupon } from "../hooks/useSelectedCoupon.ts";
+import { useSelectedCoupon } from "../hooks";
 import { useCartStore } from "../store/cart-store.ts";
 
 interface Props {

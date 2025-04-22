@@ -1,5 +1,6 @@
+import { Coupon } from "@/refactoring/entities";
+
 import { useState } from "react";
-import { Coupon } from "../entities";
 
 /**
  * 선택된 쿠폰 상태를 관리하는 훅
