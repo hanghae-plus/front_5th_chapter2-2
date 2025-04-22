@@ -5,28 +5,26 @@ interface AddNewProductProps {
   onProductAdd: (newProduct: Product) => void;
 }
 
+const initialProduct: Omit<Product, "id"> = {
+  name: "",
+  price: 0,
+  stock: 0,
+  discounts: [],
+};
+
 export const AddNewProduct: React.FC<AddNewProductProps> = ({
   onProductAdd,
 }) => {
   const [showNewProductForm, setShowNewProductForm] = useState(false);
-  const [newProduct, setNewProduct] = useState<Omit<Product, "id">>({
-    name: "",
-    price: 0,
-    stock: 0,
-    discounts: [],
-  });
+  const [newProduct, setNewProduct] =
+    useState<Omit<Product, "id">>(initialProduct);
 
   const handleAddNewProduct = () => {
-    const productWithId = { ...newProduct, id: Date.now().toString() };
-    onProductAdd(productWithId);
-    setNewProduct({
-      name: "",
-      price: 0,
-      stock: 0,
-      discounts: [],
-    });
-    setShowNewProductForm(false);
+    const productId = Date.now().toString();
+    onProductAdd({ ...newProduct, id: productId });
+    setNewProduct(initialProduct);
   };
+
   return (
     <>
       <button
@@ -96,7 +94,10 @@ export const AddNewProduct: React.FC<AddNewProductProps> = ({
             />
           </div>
           <button
-            onClick={handleAddNewProduct}
+            onClick={() => {
+              handleAddNewProduct();
+              setShowNewProductForm(false);
+            }}
             className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
           >
             추가
