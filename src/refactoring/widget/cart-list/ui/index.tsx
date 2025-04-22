@@ -1,4 +1,4 @@
-import { CartItem } from "@r/entities/cart";
+import { CartItem, getMaxApplicableDiscount } from "@r/entities/cart";
 
 interface CartListProps {
   cart: CartItem[];
@@ -11,22 +11,10 @@ export const CartList: React.FC<CartListProps> = ({
   updateQuantity,
   removeFromCart,
 }) => {
-  const getAppliedDiscount = (item: CartItem) => {
-    const { discounts } = item.product;
-    const { quantity } = item;
-    let appliedDiscount = 0;
-    for (const discount of discounts) {
-      if (quantity >= discount.quantity) {
-        appliedDiscount = Math.max(appliedDiscount, discount.rate);
-      }
-    }
-    return appliedDiscount;
-  };
-
   return (
     <div className="space-y-2">
       {cart.map((item) => {
-        const appliedDiscount = getAppliedDiscount(item);
+        const appliedDiscount = getMaxApplicableDiscount(item);
         return (
           <div
             key={item.product.id}
