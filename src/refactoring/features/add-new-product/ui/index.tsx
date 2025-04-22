@@ -1,5 +1,6 @@
-import { Product } from "@/refactoring/entities/product/types";
 import React, { useState } from "react";
+
+import { Product } from "@r/entities/product/types";
 
 interface AddNewProductProps {
   onProductAdd: (newProduct: Product) => void;

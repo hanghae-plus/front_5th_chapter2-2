@@ -1,6 +1,6 @@
 import { Product } from "@/types";
 import { ProductAccordion } from "./product-accordion";
-import { AddNewProduct } from "./add-new-product";
+import { AddNewProduct } from "@r/features/add-new-product/ui";
 
 interface ProductManagementProps {
   products: Product[];
