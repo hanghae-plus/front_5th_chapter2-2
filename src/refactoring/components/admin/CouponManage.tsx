@@ -7,7 +7,7 @@ interface Props {
 }
 
 const CouponManage = ({ coupons, onCouponAdd }: Props) => {
-  const { newCoupon, setNewCoupon, handleAddCoupon } = useCoupons(coupons);
+  const { newCoupon, setNewCoupon, handleAddNewCoupon } = useCoupons(coupons);
 
   return (
     <>
@@ -65,7 +65,7 @@ const CouponManage = ({ coupons, onCouponAdd }: Props) => {
             </div>
             {/* 쿠폰추가 버튼 */}
             <button
-              onClick={() => handleAddCoupon(onCouponAdd)}
+              onClick={() => handleAddNewCoupon(onCouponAdd)}
               className="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600"
             >
               쿠폰 추가

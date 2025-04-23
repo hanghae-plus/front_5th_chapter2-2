@@ -29,10 +29,10 @@ export const useCoupons = (initialCoupons: Coupon[]) => {
     });
   };
 
-  const handleAddCoupon = (onCouponAdd: (newCoupon: Coupon) => void) => {
+  const handleAddNewCoupon = (onCouponAdd: (newCoupon: Coupon) => void) => {
     onCouponAdd(newCoupon);
     resetNewCoupon();
   };
 
-  return { coupons, newCoupon, addCoupon, setNewCoupon, handleAddCoupon };
+  return { coupons, newCoupon, addCoupon, setNewCoupon, handleAddNewCoupon };
 };
