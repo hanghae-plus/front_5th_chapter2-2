@@ -1,4 +1,4 @@
-import { useAtom } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 import { formatDiscountInfo } from "../../models/product.ts";
 import { DiscountFormSection } from "./DiscountFormSection";
 import { editingProductAtom } from "../../store/products/atom.ts";
@@ -10,11 +10,11 @@ import {
 } from "../../store/products/actions.ts";
 
 export const ProductEditForm = () => {
-  const [editingProduct] = useAtom(editingProductAtom);
-  const [, handleUpdateEditingField] = useAtom(handleUpdateEditingFieldAtom);
-  const [, handleCancelEdit] = useAtom(handleCancelEditAtom);
-  const [, handleRemoveDiscount] = useAtom(handleRemoveDiscountAtom);
-  const [, handleSaveProduct] = useAtom(handleSaveProductAtom);
+  const editingProduct = useAtomValue(editingProductAtom);
+  const handleUpdateEditingField = useSetAtom(handleUpdateEditingFieldAtom);
+  const handleCancelEdit = useSetAtom(handleCancelEditAtom);
+  const handleRemoveDiscount = useSetAtom(handleRemoveDiscountAtom);
+  const handleSaveProduct = useSetAtom(handleSaveProductAtom);
 
   if (!editingProduct) return null;
 

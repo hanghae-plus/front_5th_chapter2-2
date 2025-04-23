@@ -1,8 +1,8 @@
-import { useAtom } from "jotai";
+import { useAtomValue } from "jotai";
 import { couponsAtom } from "../../store/coupons/atom.ts";
 
 export const CouponList = () => {
-  const [coupons] = useAtom(couponsAtom);
+  const coupons = useAtomValue(couponsAtom);
 
   return (
     <div>

@@ -1,5 +1,4 @@
 import { Coupon, Product } from "../../../types";
-
 import { atom } from "jotai";
 import { cartItemsAtom, selectedCouponAtom } from "./atom";
 import { updateCartItemQuantity } from "../../models/cart";

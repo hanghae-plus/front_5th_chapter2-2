@@ -1,4 +1,4 @@
-import { useAtom } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 import { newProductAtom } from "../../store/products/atom.ts";
 import {
   updateNewProductAtom,
@@ -6,9 +6,9 @@ import {
 } from "../../store/products/actions.ts";
 
 export const ProductForm = () => {
-  const [newProduct] = useAtom(newProductAtom);
-  const [, updateNewProduct] = useAtom(updateNewProductAtom);
-  const [, handleAddNewProduct] = useAtom(handleAddNewProductAtom);
+  const newProduct = useAtomValue(newProductAtom);
+  const updateNewProduct = useSetAtom(updateNewProductAtom);
+  const handleAddNewProduct = useSetAtom(handleAddNewProductAtom);
 
   return (
     <div className="bg-white p-4 rounded shadow mb-4">

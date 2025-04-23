@@ -1,4 +1,4 @@
-import { useAtom } from "jotai";
+import { useAtomValue } from "jotai";
 import { Product } from "../../../types.ts";
 import { editingProductAtom } from "../../store/products/atom.ts";
 import { ProductEditForm } from "./ProductEditForm.tsx";
@@ -17,7 +17,7 @@ export const ProductItem = ({
   isOpen,
   onToggle,
 }: ProductItemProps) => {
-  const [editingProduct] = useAtom(editingProductAtom);
+  const editingProduct = useAtomValue(editingProductAtom);
 
   const isEditing = editingProduct?.id === product.id;
 

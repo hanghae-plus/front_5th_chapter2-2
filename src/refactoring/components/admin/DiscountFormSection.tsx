@@ -1,10 +1,10 @@
-import { useAtom } from "jotai";
+import { useAtom, useSetAtom } from "jotai";
 import { newDiscountAtom } from "../../store/products/atom.ts";
 import { handleAddDiscountAtom } from "../../store/products/actions.ts";
 
 export const DiscountFormSection = () => {
   const [newDiscount, setNewDiscount] = useAtom(newDiscountAtom);
-  const [, handleAddDiscount] = useAtom(handleAddDiscountAtom);
+  const handleAddDiscount = useSetAtom(handleAddDiscountAtom);
 
   return (
     <div className="mt-4 p-2 border rounded">

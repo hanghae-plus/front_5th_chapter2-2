@@ -1,11 +1,11 @@
-import { useAtom } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 import { showNewProductFormAtom } from "../../store/products/atom.ts";
 import { toggleNewProductFormAtom } from "../../store/products/actions.ts";
 import { ProductForm } from "./ProductForm.tsx";
 
 export const NewProductSection = () => {
-  const [showNewProductForm] = useAtom(showNewProductFormAtom);
-  const [, toggleNewProductForm] = useAtom(toggleNewProductFormAtom);
+  const showNewProductForm = useAtomValue(showNewProductFormAtom);
+  const toggleNewProductForm = useSetAtom(toggleNewProductFormAtom);
 
   return (
     <>

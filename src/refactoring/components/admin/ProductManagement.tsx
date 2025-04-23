@@ -1,10 +1,10 @@
-import { useAtom } from "jotai";
+import { useAtomValue } from "jotai";
 import { showNewProductFormAtom } from "../../store/products/atom.ts";
 import { ProductList } from "./ProductList.tsx";
 import { NewProductSection } from "./NewProductSection.tsx";
 
 export const ProductManagement = () => {
-  const [showNewProductForm] = useAtom(showNewProductFormAtom);
+  const showNewProductForm = useAtomValue(showNewProductFormAtom);
 
   return (
     <div>

@@ -1,4 +1,4 @@
-import { useAtom } from "jotai";
+import { useSetAtom } from "jotai";
 import { Product } from "../../../types.ts";
 import { formatDiscountInfo } from "../../models/product.ts";
 import { handleEditProductAtom } from "../../store/products/actions.ts";
@@ -8,7 +8,7 @@ interface ProductDetailsProps {
 }
 
 export const ProductDetails = ({ product }: ProductDetailsProps) => {
-  const [, handleEditProduct] = useAtom(handleEditProductAtom);
+  const handleEditProduct = useSetAtom(handleEditProductAtom);
 
   return (
     <div>

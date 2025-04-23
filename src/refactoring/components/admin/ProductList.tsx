@@ -1,12 +1,12 @@
-import { useAtom } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 import { productsAtom, openProductIdsAtom } from "../../store/products/atom.ts";
 import { toggleProductAccordionAtom } from "../../store/products/actions.ts";
 import { ProductItem } from "./ProductItem.tsx";
 
 export const ProductList = () => {
-  const [products] = useAtom(productsAtom);
-  const [openProductIds] = useAtom(openProductIdsAtom);
-  const [, toggleProductAccordion] = useAtom(toggleProductAccordionAtom);
+  const products = useAtomValue(productsAtom);
+  const openProductIds = useAtomValue(openProductIdsAtom);
+  const toggleProductAccordion = useSetAtom(toggleProductAccordionAtom);
 
   return (
     <div className="space-y-2">

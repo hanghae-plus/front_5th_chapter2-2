@@ -1,4 +1,4 @@
-import { useAtom } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 import { newCouponAtom } from "../../store/coupons/atom.ts";
 import {
   handleAddCouponAtom,
@@ -6,9 +6,9 @@ import {
 } from "../../store/coupons/action.ts";
 
 export const CouponForm = () => {
-  const [newCoupon] = useAtom(newCouponAtom);
-  const [, updateNewCoupon] = useAtom(updateNewCouponAtom);
-  const [, handleAddCoupon] = useAtom(handleAddCouponAtom);
+  const newCoupon = useAtomValue(newCouponAtom);
+  const updateNewCoupon = useSetAtom(updateNewCouponAtom);
+  const handleAddCoupon = useSetAtom(handleAddCouponAtom);
 
   return (
     <div className="space-y-2 mb-4">
