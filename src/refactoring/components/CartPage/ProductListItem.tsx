@@ -1,7 +1,7 @@
 import { useCallback, memo } from 'react';
 
-import { getMaxDiscount } from '../utils/discountUtils.ts';
-import type { Product } from '../../types';
+import { getMaxDiscount } from '../../utils/discountUtils.ts';
+import type { Product } from '../../../types';
 
 interface ProductListItemProps {
   product: Product;
