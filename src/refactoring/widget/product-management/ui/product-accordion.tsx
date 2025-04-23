@@ -1,83 +1,51 @@
 import { useState } from "react";
 
 import { Product, Discount, useProductContext } from "@r/entities/product";
+import { useForm } from "@/refactoring/shared/hooks/use-form";
+import { useDiscounts } from "@/refactoring/shared/hooks/use-discounts";
 
 interface ProductAccordionProps extends React.HTMLProps<HTMLDivElement> {
   product: Product;
 }
+
+const initialDiscount = {
+  quantity: 0,
+  rate: 0,
+};
 
 export const ProductAccordion: React.FC<ProductAccordionProps> = ({
   product,
   ...props
 }) => {
   const { updateProduct } = useProductContext();
+  const { handleFormChange, formValues, handleFormReset } =
+    useForm<Product>(product);
+  const { discounts, addDiscount, removeDiscount } = useDiscounts(
+    product.discounts
+  );
 
   const [isOpen, setIsOpen] = useState(false);
-  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
-  const [newDiscount, setNewDiscount] = useState<Discount>({
-    quantity: 0,
-    rate: 0,
-  });
+  const [isEditing, setIsEditing] = useState(false);
+  const [newDiscount, setNewDiscount] = useState<Discount>(initialDiscount);
 
   const toggleProductAccordion = () => {
     setIsOpen((prev) => !prev);
   };
 
-  // 수정하기 버튼 클릭시. 폼을 열고, 수정할 상품으로 초기화
-  const handleEditProduct = (product: Product) => {
-    setEditingProduct({ ...product });
-  };
-
-  // 수정하기 - 상품명 변경시 폼 업데잍트
-  const handleProductNameUpdate = (newName: string) => {
-    if (editingProduct) {
-      const updatedProduct = { ...editingProduct, name: newName };
-      setEditingProduct(updatedProduct);
-    }
-  };
-
-  // 수정하기 - 가격 변경시 폼 업데이트
-  const handlePriceUpdate = (newPrice: number) => {
-    if (editingProduct) {
-      const updatedProduct = { ...editingProduct, price: newPrice };
-      setEditingProduct(updatedProduct);
-    }
-  };
-
-  // 수정하기 - 재고 변경시 폼 업데이트
-  const handleStockUpdate = (newStock: number) => {
-    if (editingProduct) {
-      const newProduct = { ...editingProduct, stock: newStock };
-      setEditingProduct(newProduct);
-    }
-  };
-
   // 수정완료 버튼 클릭시 폼을 닫고, 상품 업데이트
   const handleEditComplete = () => {
-    if (editingProduct) {
-      updateProduct(editingProduct);
-      setEditingProduct(null);
-    }
+    updateProduct({ ...formValues, discounts });
+    handleFormReset();
+    setIsEditing(false);
   };
 
   const handleAddDiscount = () => {
-    if (editingProduct) {
-      const newProduct = {
-        ...product,
-        discounts: [...product.discounts, newDiscount],
-      };
-      setEditingProduct(newProduct);
-      setNewDiscount({ quantity: 0, rate: 0 });
-    }
+    addDiscount(newDiscount);
+    setNewDiscount(initialDiscount);
   };
 
   const handleRemoveDiscount = (index: number) => {
-    const newProduct = {
-      ...product,
-      discounts: product.discounts.filter((_, i) => i !== index),
-    };
-    updateProduct(newProduct);
-    setEditingProduct(newProduct);
+    removeDiscount(index);
   };
 
   return (
@@ -91,14 +59,15 @@ export const ProductAccordion: React.FC<ProductAccordionProps> = ({
       </button>
       {isOpen && (
         <div className="mt-2">
-          {editingProduct && editingProduct.id === product.id ? (
+          {isEditing ? (
             <div>
               <div className="mb-4">
                 <label className="block mb-1">상품명: </label>
                 <input
                   type="text"
-                  value={editingProduct.name}
-                  onChange={(e) => handleProductNameUpdate(e.target.value)}
+                  name="name"
+                  value={formValues.name}
+                  onChange={handleFormChange}
                   className="w-full p-2 border rounded"
                 />
               </div>
@@ -106,8 +75,9 @@ export const ProductAccordion: React.FC<ProductAccordionProps> = ({
                 <label className="block mb-1">가격: </label>
                 <input
                   type="number"
-                  value={editingProduct.price}
-                  onChange={(e) => handlePriceUpdate(parseInt(e.target.value))}
+                  value={formValues.price}
+                  name="price"
+                  onChange={handleFormChange}
                   className="w-full p-2 border rounded"
                 />
               </div>
@@ -115,15 +85,16 @@ export const ProductAccordion: React.FC<ProductAccordionProps> = ({
                 <label className="block mb-1">재고: </label>
                 <input
                   type="number"
-                  value={editingProduct.stock}
-                  onChange={(e) => handleStockUpdate(parseInt(e.target.value))}
+                  name="stock"
+                  value={formValues.stock}
+                  onChange={handleFormChange}
                   className="w-full p-2 border rounded"
                 />
               </div>
               {/* 할인 정보 수정 부분 */}
               <div>
                 <h4 className="text-lg font-semibold mb-2">할인 정보</h4>
-                {editingProduct.discounts.map((discount, index) => (
+                {discounts.map((discount, index) => (
                   <div
                     key={index}
                     className="flex justify-between items-center mb-2"
@@ -192,7 +163,10 @@ export const ProductAccordion: React.FC<ProductAccordionProps> = ({
               ))}
               <button
                 data-testid="modify-button"
-                onClick={() => handleEditProduct(product)}
+                onClick={() => {
+                  setIsEditing(true);
+                  handleFormReset();
+                }}
                 className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 mt-2"
               >
                 수정
