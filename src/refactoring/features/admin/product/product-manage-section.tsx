@@ -1,3 +1,4 @@
+import { Section } from "../../../\bui/section";
 import { useProductStore } from "../../../store/product-store";
 import { NewProductForm } from "./new-product-form";
 import { ProductList } from "./product-list";
@@ -6,8 +7,7 @@ export const ProductManageSection = () => {
   const { showNewProductForm, toggleNewProductForm } = useProductStore();
 
   return (
-    <div>
-      <h2 className="text-2xl font-semibold mb-4">상품 관리</h2>
+    <Section title="상품 관리">
       <button
         onClick={toggleNewProductForm}
         className="bg-green-500 text-white px-4 py-2 rounded mb-4 hover:bg-green-600"
@@ -16,6 +16,6 @@ export const ProductManageSection = () => {
       </button>
       {showNewProductForm && <NewProductForm />}
       <ProductList />
-    </div>
+    </Section>
   );
 };

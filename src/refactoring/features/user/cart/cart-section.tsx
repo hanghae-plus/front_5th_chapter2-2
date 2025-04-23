@@ -1,3 +1,4 @@
+import { Section } from "../../../\bui/section";
 import { CartItem } from "../../../entities";
 import { CouponSection } from "../coupon/coupon-section";
 import { CartList } from "./cart-list";
@@ -16,11 +17,10 @@ export const CartSection = (props: CartSectionProps) => {
   const { updateQuantity, removeFromCart } = actions;
 
   return (
-    <div>
-      <h2 className="text-2xl font-semibold mb-4">장바구니 내역</h2>
+    <Section title="장바구니 내역">
       <CartList cart={cart} actions={{ updateQuantity, removeFromCart }} />
       <CouponSection />
       <CartPriceSummary cart={cart} />
-    </div>
+    </Section>
   );
 };

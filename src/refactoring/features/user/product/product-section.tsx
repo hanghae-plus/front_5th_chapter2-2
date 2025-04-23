@@ -1,3 +1,4 @@
+import { Section } from "../../../\bui/section";
 import { getRemainingStock } from "../../../calculations/cart/calc-item";
 import { getMaxDiscount } from "../../../calculations/discount/calc-discount-rate";
 import { CartItem, Product } from "../../../entities";
@@ -10,8 +11,7 @@ interface Props {
 
 export const ProductSection = ({ products, cart, addToCart }: Props) => {
   return (
-    <div>
-      <h2 className="text-2xl font-semibold mb-4">상품 목록</h2>
+    <Section title="상품 목록">
       <div className="space-y-2">
         {products.map((product) => {
           const remainingStock = getRemainingStock(product, cart);
@@ -61,6 +61,6 @@ export const ProductSection = ({ products, cart, addToCart }: Props) => {
           );
         })}
       </div>
-    </div>
+    </Section>
   );
 };
