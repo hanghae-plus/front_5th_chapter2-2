@@ -12,23 +12,15 @@ export const ProductAccordion: React.FC<ProductAccordionProps> = ({
 }) => {
   const { updateProduct } = useProductContext();
 
-  const [openProductIds, setOpenProductIds] = useState<Set<string>>(new Set());
+  const [isOpen, setIsOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [newDiscount, setNewDiscount] = useState<Discount>({
     quantity: 0,
     rate: 0,
   });
 
-  const toggleProductAccordion = (productId: string) => {
-    setOpenProductIds((prev) => {
-      const newSet = new Set(prev);
-      if (newSet.has(productId)) {
-        newSet.delete(productId);
-      } else {
-        newSet.add(productId);
-      }
-      return newSet;
-    });
+  const toggleProductAccordion = () => {
+    setIsOpen((prev) => !prev);
   };
 
   // handleEditProduct 함수 수정
@@ -91,12 +83,12 @@ export const ProductAccordion: React.FC<ProductAccordionProps> = ({
     <div className="bg-white p-4 rounded shadow" {...props}>
       <button
         data-testid="toggle-button"
-        onClick={() => toggleProductAccordion(product.id)}
+        onClick={toggleProductAccordion}
         className="w-full text-left font-semibold"
       >
         {product.name} - {product.price}원 (재고: {product.stock})
       </button>
-      {openProductIds.has(product.id) && (
+      {isOpen && (
         <div className="mt-2">
           {editingProduct && editingProduct.id === product.id ? (
             <div>
