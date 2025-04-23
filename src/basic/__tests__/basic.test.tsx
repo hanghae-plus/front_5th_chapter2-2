@@ -1,11 +1,12 @@
-import { useState } from "react"
-import { describe, expect, test } from "vitest"
+import { describe, expect, test, vi } from "vitest"
 import { act, fireEvent, render, renderHook, screen, within } from "@testing-library/react"
 import { CartPage } from "../../refactoring/components/CartPage.tsx"
 import { AdminPage } from "../../refactoring/components/AdminPage"
 import { CartItem, Coupon, Product } from "../../types"
 import { useCart, useCoupons, useProducts } from "../../refactoring/hooks"
 import * as cartUtils from "../../refactoring/models/cart"
+import { ProductProvider } from "../../refactoring/context/ProductContext.tsx"
+import { CouponProvider } from "../../refactoring/context/CouponContext.tsx"
 
 const mockProducts: Product[] = [
   {
@@ -45,37 +46,33 @@ const mockCoupons: Coupon[] = [
   },
 ]
 
-const TestAdminPage = () => {
-  const [products, setProducts] = useState<Product[]>(mockProducts)
-  const [coupons, setCoupons] = useState<Coupon[]>(mockCoupons)
-
-  const handleProductUpdate = (updatedProduct: Product) => {
-    setProducts((prevProducts) => prevProducts.map((p) => (p.id === updatedProduct.id ? updatedProduct : p)))
-  }
-
-  const handleProductAdd = (newProduct: Product) => {
-    setProducts((prevProducts) => [...prevProducts, newProduct])
-  }
-
-  const handleCouponAdd = (newCoupon: Coupon) => {
-    setCoupons((prevCoupons) => [...prevCoupons, newCoupon])
-  }
-
+// 테스트용 장바구니 페이지 컴포넌트
+const TestCartPage = () => {
   return (
-    <AdminPage
-      products={products}
-      coupons={coupons}
-      onProductUpdate={handleProductUpdate}
-      onProductAdd={handleProductAdd}
-      onCouponAdd={handleCouponAdd}
-    />
+    <ProductProvider initialProducts={mockProducts}>
+      <CouponProvider initialCoupons={mockCoupons}>
+        <CartPage />
+      </CouponProvider>
+    </ProductProvider>
+  )
+}
+
+// 테스트용 관리자 페이지 컴포넌트
+const TestAdminPage = () => {
+  return (
+    <ProductProvider initialProducts={mockProducts}>
+      <CouponProvider initialCoupons={mockCoupons}>
+        <AdminPage />
+      </CouponProvider>
+    </ProductProvider>
   )
 }
 
 describe("basic > ", () => {
   describe("시나리오 테스트 > ", () => {
     test("장바구니 페이지 테스트 > ", async () => {
-      render(<CartPage products={mockProducts} coupons={mockCoupons} />)
+      render(<TestCartPage />)
+
       const product1 = screen.getByTestId("product-p1")
       const product2 = screen.getByTestId("product-p2")
       const product3 = screen.getByTestId("product-p3")
