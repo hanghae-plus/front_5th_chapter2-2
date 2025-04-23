@@ -7,7 +7,7 @@ import {
   screen,
   within,
 } from "@testing-library/react";
-import { AdminPage, CartPage } from "@r/components";
+import { AdminPage, CartPage } from "@/refactoring/pages";
 
 import * as cartUtils from "@r/entities/cart/lib";
 

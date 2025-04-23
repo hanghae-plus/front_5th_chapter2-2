@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { AdminPage, CartPage } from "@r/components";
+import { AdminPage, CartPage } from "@/refactoring/pages";
 
 import { initialCoupons } from "@r/mock/initial-coupons";
 import { initialProducts } from "@r/mock/initial-products";

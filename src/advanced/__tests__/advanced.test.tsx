@@ -1,7 +1,7 @@
 import { describe, expect, test } from "vitest";
 import { act, fireEvent, render, screen, within } from "@testing-library/react";
 
-import { AdminPage, CartPage } from "@r/components";
+import { AdminPage, CartPage } from "@/refactoring/pages";
 
 import { Product, ProductProvider } from "@r/entities/product";
 import { Coupon, CouponProvider } from "@r/entities/coupon";
