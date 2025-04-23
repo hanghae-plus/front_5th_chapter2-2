@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Product, CouponItem, CartItem } from "../../refactoring/types";
+import type { Product, CouponItem, CartItem } from "../../refactoring/types";
 interface Props {
   products: Product[];
   coupons: CouponItem[];

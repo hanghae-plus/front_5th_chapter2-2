@@ -2,19 +2,19 @@ import { useState } from "react";
 import type { Product } from "../../../types";
 import { NewProductForm } from "./NewProductForm";
 import { ProductList } from "./ProductList";
+import { useAtomValue, useSetAtom } from "jotai";
+import {
+  addProductAtom,
+  productsAtom,
+  updateProductAtom,
+} from "../../../state/product";
 
-interface AdminProductListProps {
-  products: Product[];
-  onProductUpdate: (updatedProduct: Product) => void;
-  onProductAdd: (newProduct: Product) => void;
-}
-
-export const AdminProductInfo = ({
-  products,
-  onProductUpdate,
-  onProductAdd,
-}: AdminProductListProps) => {
+export const AdminProductInfo = () => {
   const [showNewProductForm, setShowNewProductForm] = useState(false);
+
+  const products = useAtomValue(productsAtom);
+  const onProductUpdate = useSetAtom(updateProductAtom);
+  const onProductAdd = useSetAtom(addProductAtom);
 
   return (
     <div>

@@ -1,4 +1,4 @@
-import { CartItem } from "../../types";
+import type { CartItem } from "../../types";
 
 export const getAppliedDiscount = (item: CartItem) => {
   const { discounts } = item.product;

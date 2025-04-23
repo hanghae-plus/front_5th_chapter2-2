@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Product, CouponItem, Discount } from "../../refactoring/types";
+import type { Product, CouponItem, Discount } from "../../refactoring/types";
 
 interface Props {
   products: Product[];
@@ -205,10 +205,8 @@ export const AdminPage = ({
                   className="w-full p-2 border rounded"
                 />
               </div>
-              <button
-                onClick={handleAddNewProduct}
-                className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
-              >
+exp rt * from "./cart";
+export * from "./product";
                 추가
               </button>
             </div>

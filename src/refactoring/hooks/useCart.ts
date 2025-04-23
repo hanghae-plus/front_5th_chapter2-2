@@ -26,8 +26,6 @@ export const useCart = () => {
       }
       return [...prevCart, { product, quantity: 1 }];
     });
-
-    console.log("cart", cart);
   };
 
   const removeFromCart = (productId: string) => {
