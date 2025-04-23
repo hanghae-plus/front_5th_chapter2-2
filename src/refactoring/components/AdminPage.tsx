@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Coupon, Discount, Product } from '../../types.ts';
+import Container from './Container.tsx';
 
 interface Props {
   products: Product[];
@@ -142,7 +143,7 @@ export const AdminPage = ({ products, coupons, onProductUpdate, onProductAdd, on
             {showNewProductForm ? '취소' : '새 상품 추가'}
           </button>
           {showNewProductForm && (
-            <div className="bg-white p-4 rounded shadow mb-4">
+            <Container className="p-4 mb-4">
               <h3 className="text-xl font-semibold mb-2">새 상품 추가</h3>
               <div className="mb-2">
                 <label htmlFor="productName" className="block text-sm font-medium text-gray-700">
@@ -196,11 +197,11 @@ export const AdminPage = ({ products, coupons, onProductUpdate, onProductAdd, on
               >
                 추가
               </button>
-            </div>
+            </Container>
           )}
           <div className="space-y-2">
             {products.map((product, index) => (
-              <div key={product.id} data-testid={`product-${index + 1}`} className="bg-white p-4 rounded shadow">
+              <Container key={product.id} testId={`product-${index + 1}`} className="p-4">
                 <button
                   data-testid="toggle-button"
                   onClick={() => toggleProductAccordion(product.id)}
@@ -315,13 +316,13 @@ export const AdminPage = ({ products, coupons, onProductUpdate, onProductAdd, on
                     )}
                   </div>
                 )}
-              </div>
+              </Container>
             ))}
           </div>
         </div>
         <div>
           <h2 className="text-2xl font-semibold mb-4">쿠폰 관리</h2>
-          <div className="bg-white p-4 rounded shadow">
+          <Container className="p-4">
             <div className="space-y-2 mb-4">
               <input
                 type="text"
@@ -382,7 +383,7 @@ export const AdminPage = ({ products, coupons, onProductUpdate, onProductAdd, on
                 ))}
               </div>
             </div>
-          </div>
+          </Container>
         </div>
       </div>
     </div>
