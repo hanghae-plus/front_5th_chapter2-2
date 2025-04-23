@@ -1,4 +1,4 @@
-import { CartItem, Coupon } from "../../types";
+import { CartItem, Coupon } from "../../../types";
 
 // 기본가격 + 할인율 계산
 export const calculateItemTotal = (item: CartItem) => {
