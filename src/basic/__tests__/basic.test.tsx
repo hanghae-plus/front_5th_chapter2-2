@@ -13,6 +13,7 @@ import { AdminPage } from "../../refactoring/components/AdminPage";
 import { CartItem, Coupon, Product } from "../../types";
 import { useCart, useCoupons, useProducts } from "../../refactoring/hooks";
 import * as cartUtils from "../../refactoring/models/cart";
+import { ProductsProvider } from "../../refactoring/providers";
 
 const mockProducts: Product[] = [
   {
@@ -60,17 +61,26 @@ const TestAdminPage = () => {
   };
 
   return (
-    <AdminPage
-      coupons={coupons}
-      onCouponAdd={handleCouponAdd}
-    />
+    <ProductsProvider initialProducts={mockProducts}>
+      <AdminPage coupons={coupons} onCouponAdd={handleCouponAdd} />
+    </ProductsProvider>
+  );
+};
+
+const TestCartPage = () => {
+  const [coupons] = useState<Coupon[]>(mockCoupons);
+
+  return (
+    <ProductsProvider initialProducts={mockProducts}>
+      <CartPage coupons={coupons} />
+    </ProductsProvider>
   );
 };
 
 describe("basic > ", () => {
   describe("시나리오 테스트 > ", () => {
     test("장바구니 페이지 테스트 > ", async () => {
-      render(<CartPage coupons={mockCoupons} />);
+      render(<TestCartPage />);
       const product1 = screen.getByTestId("product-p1");
       const product2 = screen.getByTestId("product-p2");
       const product3 = screen.getByTestId("product-p3");
