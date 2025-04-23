@@ -1,5 +1,5 @@
-import { getRemainingStock } from "@/refactoring/calculations/cart/calc-item";
-import { CartItem, Product } from "@/refactoring/entities";
+import { getRemainingStock } from "../../calculations/cart/calc-item";
+import { CartItem, Product } from "../../entities";
 
 /**
  * 장바구니에 상품을 추가

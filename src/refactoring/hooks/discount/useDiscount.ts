@@ -1,7 +1,7 @@
-import { Discount } from "@/refactoring/entities";
-import { useEditProduct } from "@/refactoring/hooks/product/useEditProduct";
-import { useProducts } from "@/refactoring/hooks/product/useProduct";
 import { useState } from "react";
+import { Discount } from "../../entities";
+import { useEditProduct } from "../../hooks/product/useEditProduct";
+import { useProducts } from "../../hooks/product/useProduct";
 
 /**
  * 새로운 할인 항목을 입력하기 위한 상태를 관리하는 커스텀 훅
@@ -39,7 +39,7 @@ export const useDiscount = () => {
     if (updatedProduct) {
       const newProduct = {
         ...updatedProduct,
-        discounts: updatedProduct.discounts.filter((_, i) => i !== index),
+        discounts: updatedProduct.discounts.filter((_: any, i: number) => i !== index),
       };
       updateProduct(newProduct);
       updateEditingProduct(newProduct);

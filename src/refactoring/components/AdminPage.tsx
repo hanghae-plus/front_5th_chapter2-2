@@ -1,4 +1,4 @@
-import { useCoupons, useDiscount, useProducts } from "@/refactoring/hooks";
+import { useCoupons, useDiscount, useProducts } from "../hooks";
 import { useToggle } from "../hooks/index.ts";
 import { useEditProduct } from "../hooks/product/useEditProduct.ts";
 

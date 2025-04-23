@@ -1,7 +1,7 @@
-import { initialProduct, initialProducts } from "@/refactoring/data";
-import { Product } from "@/refactoring/entities";
-import { useEditProduct } from "@/refactoring/hooks/product/useEditProduct";
 import { useState } from "react";
+import { initialProduct, initialProducts } from "../../data";
+import { Product } from "../../entities";
+import { useEditProduct } from "../../hooks/product/useEditProduct";
 
 /**
  * 상품 목록을 관리하는 커스텀 훅
@@ -19,6 +19,10 @@ export const useProducts = () => {
 
   const addProduct = (newProduct: Product) => {
     setProducts((prevProducts) => [...prevProducts, newProduct]);
+  };
+
+  const initializeProducts = (initialProducts: Product[]) => {
+    setProducts(initialProducts);
   };
 
   const updateProduct = (updatedProduct: Product) => {
@@ -60,6 +64,7 @@ export const useProducts = () => {
   return {
     products,
     updateProduct,
+    initializeProducts,
     newProduct,
     addProduct,
     updateNewProduct,

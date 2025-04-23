@@ -1,10 +1,10 @@
-import { useProducts } from "@/refactoring/hooks/product/useProduct";
 import { useState } from "react";
 import { Product } from "../../entities";
+import { useProducts } from "../../hooks/product/useProduct";
 
 export const useEditProduct = () => {
-  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const { updateProduct } = useProducts();
+  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
 
   const handleEditProduct = (product: Product) => {
     setEditingProduct({ ...product });
