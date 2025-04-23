@@ -8,7 +8,7 @@ const calculateItemPrice = (item: CartItem): number => {
 };
 
 // 2. 단일 상품의 최대 할인율 찾기
-export const getMaxApplicableDiscount = (item: CartItem): number => {
+const getMaxApplicableDiscount = (item: CartItem): number => {
   const { quantity } = item; // 카트에 담은 상품의 수량
 
   return item.product.discounts.reduce((maxDiscount, d) => {
@@ -17,7 +17,7 @@ export const getMaxApplicableDiscount = (item: CartItem): number => {
 };
 
 // 3. 단일 상품의 할인된 가격 계산
-export const calculateItemTotal = (item: CartItem) => {
+const calculateItemTotal = (item: CartItem) => {
   const itemPrice = calculateItemPrice(item);
   const discountRate = getMaxApplicableDiscount(item);
   return itemPrice * (1 - discountRate);
@@ -47,12 +47,12 @@ const applyCouponDiscount = (total: number, coupon: Coupon | null): number => {
 };
 
 // 재고 확인
-export const getRemainingStock = (product: Product, cart: CartItem[]) => {
+const getRemainingStock = (product: Product, cart: CartItem[]) => {
   const cartItem = cart.find((item) => item.product.id === product.id);
   return product.stock - (cartItem?.quantity || 0);
 };
 
-export const calculateCartTotal = (cart: CartItem[], selectedCoupon: Coupon | null) => {
+const calculateCartTotal = (cart: CartItem[], selectedCoupon: Coupon | null) => {
   const totalBeforeDiscount = calculateTotalBeforeDiscount(cart);
   const itemDiscountedTotal = calculateItemDiscountedTotal(cart);
   const totalAfterDiscount = applyCouponDiscount(itemDiscountedTotal, selectedCoupon);
@@ -68,7 +68,7 @@ export const calculateCartTotal = (cart: CartItem[], selectedCoupon: Coupon | nu
 };
 
 // 카트에 담긴 수량 업데이트 -> 카트 반환
-export const updateCartItemQuantity = (
+const updateCartItemQuantity = (
   cart: CartItem[],
   productId: string,
   newQuantity: number
@@ -83,4 +83,32 @@ export const updateCartItemQuantity = (
       return item;
     })
     .filter((item): item is CartItem => item !== null);
+};
+
+// CartList.tsx
+const getAppliedDiscount = (item: CartItem) => {
+  const { discounts } = item.product;
+  const { quantity } = item;
+  let appliedDiscount = 0;
+  for (const discount of discounts) {
+    if (quantity >= discount.quantity) {
+      appliedDiscount = Math.max(appliedDiscount, discount.rate);
+    }
+  }
+  return appliedDiscount;
+};
+
+// ProductListItem.tsx
+const getMaxDiscount = (discounts: { quantity: number; rate: number }[]) => {
+  return discounts.reduce((max, discount) => Math.max(max, discount.rate), 0);
+};
+
+export {
+  getMaxApplicableDiscount,
+  calculateItemTotal,
+  getRemainingStock,
+  calculateCartTotal,
+  updateCartItemQuantity,
+  getAppliedDiscount,
+  getMaxDiscount,
 };

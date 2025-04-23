@@ -1,5 +1,5 @@
-import React from 'react';
-import { CartItem } from '../../types';
+import { CartItem } from '../../../types';
+import { getAppliedDiscount } from '../../_models/cart';
 
 interface CartListProps {
   cart: CartItem[];
@@ -8,19 +8,6 @@ interface CartListProps {
 }
 const CartList = ({ cart, removeFromCart, updateQuantity }: CartListProps) => {
   if (cart.length < 1) return null;
-
-  // TODO: 이친구 위치 고민
-  const getAppliedDiscount = (item: CartItem) => {
-    const { discounts } = item.product;
-    const { quantity } = item;
-    let appliedDiscount = 0;
-    for (const discount of discounts) {
-      if (quantity >= discount.quantity) {
-        appliedDiscount = Math.max(appliedDiscount, discount.rate);
-      }
-    }
-    return appliedDiscount;
-  };
 
   return (
     <div className="space-y-2">

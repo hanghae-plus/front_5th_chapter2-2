@@ -26,7 +26,6 @@ export const useCart = () => {
     setCart((prevCart) => prevCart.filter((item) => item.product.id !== productId));
   };
 
-  // 반영
   const updateQuantity = (productId: string, newQuantity: number) => {
     setCart((prevCart) => {
       const updatedCart = updateCartItemQuantity(prevCart, productId, newQuantity);

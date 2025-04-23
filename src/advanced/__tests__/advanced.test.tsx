@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { describe, expect, test } from 'vitest';
-import { act, fireEvent, render, screen, within } from '@testing-library/react';
+import { act, fireEvent, render, renderHook, screen, within } from '@testing-library/react';
 import { AdminPage } from '../../refactoring/Admin/AdminPage';
-import { Coupon, Product } from '../../types';
+import { Coupon, Discount, Product } from '../../types';
 import { CartPage } from '../../refactoring/Cart/CartPage';
+import { updateProductProperty } from '../../refactoring/_models/product';
+import useProductAccordion from '../../refactoring/Admin/_hooks/useProductAccordion';
 
 const mockProducts: Product[] = [
   {
@@ -229,12 +231,71 @@ describe('advanced > ', () => {
   });
 
   describe('자유롭게 작성해보세요.', () => {
-    test('새로운 유틸 함수를 만든 후에 테스트 코드를 작성해서 실행해보세요', () => {
-      expect(true).toBe(false);
+    const sampleProduct: Product = {
+      id: 'product1',
+      name: '테스트 상품',
+      price: 10000,
+      stock: 100,
+      discounts: [
+        { quantity: 5, rate: 0.1 }, // 5개 이상 10% 할인
+        { quantity: 10, rate: 0.2 }, // 10개 이상 20% 할인
+      ],
+    };
+
+    describe('유틸 함수 > ', () => {
+      describe('updateProductProperty', () => {
+        test('제품의 이름을 업데이트해야 함', () => {
+          const newName = '업데이트된 상품명';
+          const updatedProduct = updateProductProperty(sampleProduct, 'name', newName);
+
+          expect(updatedProduct.name).toBe(newName);
+          expect(updatedProduct.price).toBe(sampleProduct.price); // 다른 속성은 변경되지 않아야 함
+          expect(sampleProduct.name).toBe('테스트 상품');
+        });
+
+        test('제품의 가격을 업데이트해야 함', () => {
+          const newPrice = 15000;
+          const updatedProduct = updateProductProperty(sampleProduct, 'price', newPrice);
+
+          expect(updatedProduct.price).toBe(newPrice);
+          expect(updatedProduct.name).toBe(sampleProduct.name); // 다른 속성은 변경되지 않아야 함
+          expect(sampleProduct.price).toBe(10000);
+        });
+
+        test('제품의 재고를 업데이트해야 함', () => {
+          const newStock = 50;
+          const updatedProduct = updateProductProperty(sampleProduct, 'stock', newStock);
+
+          expect(updatedProduct.stock).toBe(newStock);
+          expect(updatedProduct.name).toBe(sampleProduct.name); // 다른 속성은 변경되지 않아야 함
+          expect(sampleProduct.stock).toBe(100);
+        });
+      });
     });
 
-    test('새로운 hook 함수르 만든 후에 테스트 코드를 작성해서 실행해보세요', () => {
-      expect(true).toBe(false);
+    describe('새로운 hook  > ', () => {
+      describe('updateProductProperty', () => {
+        test('아코디언 토글이 정상적으로 동작해야 함', () => {
+          const { result } = renderHook(() => useProductAccordion());
+
+          expect(result.current.openProductIds.size).toBe(0);
+
+          act(() => {
+            result.current.toggleProductAccordion('product1');
+          });
+
+          expect(result.current.openProductIds.has('product1')).toBe(true);
+          expect(result.current.openProductIds.size).toBe(1);
+
+          act(() => {
+            result.current.toggleProductAccordion('product1');
+          });
+
+          expect(result.current.openProductIds.has('product1')).toBe(false);
+          expect(result.current.openProductIds.size).toBe(0);
+        });
+      });
+      describe('상품 수정 시작 및 속성 업데이트, 수정 완료 과정이 정상적으로 동작 > ', () => {});
     });
   });
 });
