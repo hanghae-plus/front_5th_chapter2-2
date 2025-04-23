@@ -12,22 +12,23 @@ export const useCart = () => {
   const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
 
   const addToCart = (product: Product) => {
-    const remainingStock = product.stock;
+    const existingItem = cart.find((item) => item.product.id === product.id);
 
-    if (remainingStock > 0) {
-      const existingItem = cart.find((item) => item.product.id === product.id);
-      if (existingItem) {
-        const updatedCart = cart.map((item) =>
-          item.product.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        );
-        setCart(updatedCart);
-      } else setCart([...cart, { product, quantity: 1 }]);
+    if (existingItem) {
+      updateQuantity(product.id, existingItem.quantity + 1);
+    } else {
+      const newItem: CartItem = {
+        product,
+        quantity: 1,
+      };
+      setCart((prevCart) => [...prevCart, newItem]);
     }
   };
 
-  const removeFromCart = (productId: string) => {};
+  const removeFromCart = (productId: string) => {
+    const updatedCart = cart.filter((item) => item.product.id !== productId);
+    setCart(updatedCart);
+  };
 
   const updateQuantity = (productId: string, newQuantity: number) => {
     const updatedCart = updateCartItemQuantity(cart, productId, newQuantity);
