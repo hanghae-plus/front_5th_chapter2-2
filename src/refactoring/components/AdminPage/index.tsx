@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { Coupon, Discount, Product } from '../../types.ts';
-import { useProductContext } from '../contexts/productContext.tsx';
-import { useCouponContext } from '../contexts/couponContext.tsx';
+import { Coupon, Discount, Product } from '../../../types.ts';
+import { useProductContext } from '../../contexts/productContext.tsx';
+import { useCouponContext } from '../../contexts/couponContext.tsx';
 
 export const AdminPage = () => {
   const { products, updateProduct, addProduct } = useProductContext();
