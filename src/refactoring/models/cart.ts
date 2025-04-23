@@ -1,4 +1,4 @@
-import { CartItem, Coupon } from '../../types';
+import { CartItem, Coupon, Product } from '../../types';
 
 export const calculateItemTotal = (item: CartItem) => {
   const originalTotal = calculateItemOriginalTotal(item);
@@ -66,6 +66,27 @@ export const updateCartItemQuantity = (
 
     updatedCart[targetIdx] = newCartItem;
   }
+
+  return updatedCart;
+};
+
+export const updateCartWithProduct = (
+  prevCart: CartItem[],
+  product: Product,
+): CartItem[] => {
+  const productId = product.id;
+  const existingItem = prevCart.find((item) => item.product.id === productId);
+
+  if (!existingItem) {
+    return [...prevCart, { product, quantity: 1 }];
+  }
+
+  const updatedCart = prevCart.map((item) => {
+    if (item.product.id !== productId) return item;
+
+    const newQuantity = Math.min(item.quantity + 1, product.stock);
+    return { ...item, quantity: newQuantity };
+  });
 
   return updatedCart;
 };
