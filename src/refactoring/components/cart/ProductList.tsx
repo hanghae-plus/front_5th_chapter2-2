@@ -1,17 +1,11 @@
-import type { Product, CartItem } from "../../types";
 import { getRemainingStock, getMaxDiscount } from "../../utils";
-interface ProductListProps {
-  products: Product[];
-  cart: CartItem[];
-  addToCart: (product: Product) => void;
-}
+import { useAtomValue, useSetAtom } from "jotai";
+import { addToCartAtom, cartAtom, productsAtom } from "../../state";
 
-export const ProductList = ({
-  products,
-  cart,
-  addToCart,
-}: ProductListProps) => {
-  console.log(products);
+export const ProductList = () => {
+  const products = useAtomValue(productsAtom);
+  const cart = useAtomValue(cartAtom);
+  const addToCart = useSetAtom(addToCartAtom);
 
   return (
     <div>

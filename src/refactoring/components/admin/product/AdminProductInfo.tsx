@@ -1,5 +1,4 @@
 import { useState } from "react";
-import type { Product } from "../../../types";
 import { NewProductForm } from "./NewProductForm";
 import { ProductList } from "./ProductList";
 import { useAtomValue, useSetAtom } from "jotai";
@@ -7,7 +6,7 @@ import {
   addProductAtom,
   productsAtom,
   updateProductAtom,
-} from "../../../state/product";
+} from "../../../state";
 
 export const AdminProductInfo = () => {
   const [showNewProductForm, setShowNewProductForm] = useState(false);

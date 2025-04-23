@@ -1,14 +1,10 @@
-interface OrderProps {
-  totalBeforeDiscount: number;
-  totalDiscount: number;
-  totalAfterDiscount: number;
-}
+import { useAtom } from "jotai";
+import { calculateTotalPriceAtom } from "../../state";
 
-export const Order = ({
-  totalBeforeDiscount,
-  totalDiscount,
-  totalAfterDiscount,
-}: OrderProps) => {
+export const Order = () => {
+  const [total] = useAtom(calculateTotalPriceAtom);
+  const { totalBeforeDiscount, totalDiscount, totalAfterDiscount } = total;
+
   return (
     <div className="mt-6 bg-white p-4 rounded shadow">
       <h2 className="text-2xl font-semibold mb-2">주문 요약</h2>

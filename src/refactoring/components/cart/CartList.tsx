@@ -1,17 +1,12 @@
-import type { CartItem } from "../../types";
+import { useAtomValue, useSetAtom } from "jotai";
 import { getAppliedDiscount } from "../../utils";
+import { cartAtom, removeFromCartAtom, updateQuantityAtom } from "../../state";
 
-interface CartListProps {
-  cart: CartItem[];
-  removeFromCart: (productId: string) => void;
-  updateQuantity: (productId: string, quantity: number) => void;
-}
+export const CartList = () => {
+  const cart = useAtomValue(cartAtom);
+  const removeFromCart = useSetAtom(removeFromCartAtom);
+  const updateQuantity = useSetAtom(updateQuantityAtom);
 
-export const CartList = ({
-  cart,
-  removeFromCart,
-  updateQuantity,
-}: CartListProps) => {
   return (
     <div className="space-y-2">
       {cart.map((item) => {
@@ -37,7 +32,10 @@ export const CartList = ({
               <button
                 type="button"
                 onClick={() =>
-                  updateQuantity(item.product.id, item.quantity - 1)
+                  updateQuantity({
+                    productId: item.product.id,
+                    quantity: item.quantity - 1,
+                  })
                 }
                 className="bg-gray-300 text-gray-800 px-2 py-1 rounded mr-1 hover:bg-gray-400"
               >
@@ -46,7 +44,10 @@ export const CartList = ({
               <button
                 type="button"
                 onClick={() =>
-                  updateQuantity(item.product.id, item.quantity + 1)
+                  updateQuantity({
+                    productId: item.product.id,
+                    quantity: item.quantity + 1,
+                  })
                 }
                 className="bg-gray-300 text-gray-800 px-2 py-1 rounded mr-1 hover:bg-gray-400"
               >

@@ -1,16 +1,12 @@
-import type { CouponItem } from "../../../types";
 import { CouponForm } from "./CouponForm";
 import { CouponList } from ".";
+import { useAtomValue, useSetAtom } from "jotai";
+import { addCouponAtom, couponsAtom } from "../../../state";
 
-interface AdminCouponInfoProps {
-  coupons: CouponItem[];
-  onCouponAdd: (newCoupon: CouponItem) => void;
-}
+export const AdminCouponInfo = () => {
+  const coupons = useAtomValue(couponsAtom);
+  const onCouponAdd = useSetAtom(addCouponAtom);
 
-export const AdminCouponInfo = ({
-  coupons,
-  onCouponAdd,
-}: AdminCouponInfoProps) => {
   return (
     <div>
       <h2 className="text-2xl font-semibold mb-4">쿠폰 관리</h2>
