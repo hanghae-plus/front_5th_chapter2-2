@@ -1,8 +1,8 @@
-import { useState } from 'react';
 import { Product } from '../../types.ts';
+import { useLocalStorage } from './useLocalStorage.ts';
 
 export const useProducts = (initialProducts: Product[]) => {
-  const [products, setProducts] = useState(initialProducts);
+  const [products, setProducts] = useLocalStorage('products', initialProducts);
 
   const updateProduct = (updateProduct: Product) => {
     setProducts(
