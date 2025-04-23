@@ -1,6 +1,6 @@
-import { AdminPage } from "@/refactoring/components/AdminPage";
-import { CartPage } from "@/refactoring/components/CartPage";
 import { useService } from "@/refactoring/hooks";
+import { AdminPage } from "@/refactoring/pages/AdminPage";
+import { CartPage } from "@/refactoring/pages/CartPage";
 import { PERMISSION_TYPE } from "@/types";
 import { Providers } from "./provider";
 

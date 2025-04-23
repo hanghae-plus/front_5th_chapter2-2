@@ -1,10 +1,10 @@
 import { Providers } from "@/refactoring/provider";
 import { act, fireEvent, render, renderHook, screen, within } from "@testing-library/react";
 import { beforeEach, describe, expect, test } from "vitest";
-import { AdminPage } from "../../refactoring/components/AdminPage";
-import { CartPage } from "../../refactoring/components/CartPage";
 import { useService } from "../../refactoring/hooks";
 import { getNextService } from "../../refactoring/models/service";
+import { AdminPage } from "../../refactoring/pages/AdminPage";
+import { CartPage } from "../../refactoring/pages/CartPage";
 import { Coupon, PERMISSION_TYPE, Product, SERVICE_TYPE } from "../../types";
 
 const mockProducts: Product[] = [
