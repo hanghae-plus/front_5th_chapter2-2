@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Product } from '../../types.ts';
-import { INITIAL_PRODUCTS } from '../product/constant.ts';
+import { INITIAL_PRODUCTS } from '../_constants/product.ts';
 
 export const useProducts = (initialProducts?: Product[]) => {
   const [products, setProducts] = useState<Product[]>(initialProducts || INITIAL_PRODUCTS);
