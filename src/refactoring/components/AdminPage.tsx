@@ -1,15 +1,14 @@
 import { useState } from 'react';
 import { Coupon, Discount, Product } from '../../types.ts';
+import { useProducts } from '../hooks';
 
 interface Props {
-  products: Product[];
   coupons: Coupon[];
-  onProductUpdate: (updatedProduct: Product) => void;
-  onProductAdd: (newProduct: Product) => void;
   onCouponAdd: (newCoupon: Coupon) => void;
 }
 
-export const AdminPage = ({ products, coupons, onProductUpdate, onProductAdd, onCouponAdd }: Props) => {
+export const AdminPage = ({ coupons, onCouponAdd }: Props) => {
+  const {products, updateProduct: onProductUpdate, addProduct: onProductAdd} = useProducts()
   const [openProductIds, setOpenProductIds] = useState<Set<string>>(new Set());
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [newDiscount, setNewDiscount] = useState<Discount>({ quantity: 0, rate: 0 });

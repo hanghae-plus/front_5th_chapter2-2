@@ -1,12 +1,12 @@
-import { CartItem, Coupon, Product } from '../../types.ts';
-import { useCart } from "../hooks";
+import { CartItem, Coupon } from '../../types.ts';
+import { useCart, useProducts } from "../hooks";
 
 interface Props {
-  products: Product[];
   coupons: Coupon[];
 }
 
-export const CartPage = ({ products, coupons }: Props) => {
+export const CartPage = ({ coupons }: Props) => {
+  const {products} = useProducts()
   const {
     cart,
     getRemainingStock,
@@ -90,7 +90,7 @@ export const CartPage = ({ products, coupons }: Props) => {
           <h2 className="text-2xl font-semibold mb-4">장바구니 내역</h2>
 
           <div className="space-y-2">
-            {cart.map(item => {
+            {cart.map((item: CartItem) => {
               const appliedDiscount = getAppliedDiscount(item);
               return (
                 <div key={item.product.id} className="flex justify-between items-center bg-white p-3 rounded shadow">
