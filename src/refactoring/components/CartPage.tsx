@@ -1,5 +1,6 @@
 import { CartItem, Coupon, Product } from "../../types.ts";
 import { useCart } from "../hooks";
+import { useAdminContext } from "../hooks/useAdminContext.ts";
 import { ApplyCoupon } from "./cart/ApplyCoupon.tsx";
 import { CartList } from "./cart/CartList.tsx";
 import { OrderSummary } from "./cart/OrderSummary.tsx";
@@ -11,6 +12,7 @@ interface Props {
 }
 
 export const CartPage = ({ products, coupons }: Props) => {
+  const { isAdmin } = useAdminContext();
   const {
     cart,
     addToCart,
@@ -21,6 +23,7 @@ export const CartPage = ({ products, coupons }: Props) => {
     selectedCoupon,
   } = useCart();
 
+  if (isAdmin) return <></>;
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-6">장바구니</h1>

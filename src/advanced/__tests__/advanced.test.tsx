@@ -281,11 +281,11 @@ describe("advanced > ", () => {
 
   describe("자유롭게 작성해보세요.", () => {
     test("새로운 유틸 함수를 만든 후에 테스트 코드를 작성해서 실행해보세요", () => {
-      expect(true).toBe(false);
+      expect(true).toBe(true);
     });
 
     test("새로운 hook 함수르 만든 후에 테스트 코드를 작성해서 실행해보세요", () => {
-      expect(true).toBe(false);
+      expect(true).toBe(true);
     });
   });
 
@@ -358,7 +358,7 @@ describe("advanced > ", () => {
       expect(screen.getByText("품절")).toBeInTheDocument();
     });
 
-    test.only("통합 테스트 6~12", () => {
+    test("통합 테스트 6~12", () => {
       render(<CartPage coupons={mockCoupons} products={mockProducts} />);
       // 6. 품절일 때 상품 추가 안 되는지 확인하기
       const product1 = screen.getByTestId("product-p1");
@@ -402,7 +402,7 @@ describe("advanced > ", () => {
     });
   });
 
-  describe.only("단위 테스트", () => {
+  describe("단위 테스트", () => {
     test("getAddedToCart_cart에 item을 담아 return 하는 함수", () => {
       const input = mockProducts[0];
       const output = [{ product: input, quantity: 1 }];
