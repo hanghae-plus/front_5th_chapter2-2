@@ -1,10 +1,11 @@
 import { useCallback } from 'react';
 import { useCart } from '../hooks';
 import type { Coupon } from '../../types';
-import { getAppliedDiscount, getMaxDiscount } from '../utils/discountUtils.ts';
+import { getAppliedDiscount } from '../utils/discountUtils.ts';
 import { useProductContext } from '../contexts/productContext.tsx';
 import { useCouponContext } from '../contexts/couponContext.tsx';
 
+import ProductList from './ProductList.tsx';
 import OptionSelector from '../ui/OptionSelector.tsx';
 import OrderSummary from './OrderSummary.tsx';
 
@@ -38,58 +39,11 @@ export const CartPage = () => {
         <div>
           <h2 className="text-2xl font-semibold mb-4">상품 목록</h2>
           <div className="space-y-2">
-            {products.map((product) => {
-              const remainingStock = getRemainingStock(product);
-              return (
-                <div
-                  key={product.id}
-                  data-testid={`product-${product.id}`}
-                  className="bg-white p-3 rounded shadow"
-                >
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="font-semibold">{product.name}</span>
-                    <span className="text-gray-600">
-                      {product.price.toLocaleString()}원
-                    </span>
-                  </div>
-                  <div className="text-sm text-gray-500 mb-2">
-                    <span
-                      className={`font-medium ${remainingStock > 0 ? 'text-green-600' : 'text-red-600'}`}
-                    >
-                      재고: {remainingStock}개
-                    </span>
-                    {product.discounts.length > 0 && (
-                      <span className="ml-2 font-medium text-blue-600">
-                        최대{' '}
-                        {(getMaxDiscount(product.discounts) * 100).toFixed(0)}%
-                        할인
-                      </span>
-                    )}
-                  </div>
-                  {product.discounts.length > 0 && (
-                    <ul className="list-disc list-inside text-sm text-gray-500 mb-2">
-                      {product.discounts.map((discount, index) => (
-                        <li key={index}>
-                          {discount.quantity}개 이상:{' '}
-                          {(discount.rate * 100).toFixed(0)}% 할인
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                  <button
-                    onClick={() => addToCart(product)}
-                    className={`w-full px-3 py-1 rounded ${
-                      remainingStock > 0
-                        ? 'bg-blue-500 text-white hover:bg-blue-600'
-                        : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                    }`}
-                    disabled={remainingStock <= 0}
-                  >
-                    {remainingStock > 0 ? '장바구니에 추가' : '품절'}
-                  </button>
-                </div>
-              );
-            })}
+            <ProductList
+              products={products}
+              onAddToCart={addToCart}
+              getRemainingStock={getRemainingStock}
+            />
           </div>
         </div>
         <div>
@@ -147,14 +101,12 @@ export const CartPage = () => {
 
           <div className="mt-6 bg-white p-4 rounded shadow">
             <h2 className="text-2xl font-semibold mb-2">쿠폰 적용</h2>
-
             <OptionSelector
               options={coupons}
               placeholder="쿠폰 선택"
               renderLabel={getOptionLabel}
               onOptionChange={applyCoupon}
             />
-
             {selectedCoupon && (
               <p className="text-green-600">
                 적용된 쿠폰: {selectedCoupon.name}(
