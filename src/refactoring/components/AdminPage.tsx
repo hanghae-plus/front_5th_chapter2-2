@@ -26,6 +26,7 @@ export const AdminPage = () => {
           {/* 상품 목록 */}
           <ProductList />
         </div>
+
         {/* 쿠폰 관리 영역 */}
         <div>
           <h2 className="text-2xl font-semibold mb-4">쿠폰 관리</h2>

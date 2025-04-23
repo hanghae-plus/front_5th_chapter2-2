@@ -1,31 +1,11 @@
-import { useState } from "react"
-import { Product } from "../../../../types.ts"
-import { useProductContext } from "../../../context/ProductContext.tsx"
+import { useNewProductForm } from "../../../hooks/useNewProductForm.ts"
 
 export default function NewProductForm({
   setShowNewProductForm,
 }: {
   setShowNewProductForm: React.Dispatch<React.SetStateAction<boolean>>
 }) {
-  const { addProduct } = useProductContext()
-  const [newProduct, setNewProduct] = useState<Omit<Product, "id">>({
-    name: "",
-    price: 0,
-    stock: 0,
-    discounts: [],
-  })
-
-  const handleAddNewProduct = () => {
-    const productWithId = { ...newProduct, id: Date.now().toString() }
-    addProduct(productWithId)
-    setNewProduct({
-      name: "",
-      price: 0,
-      stock: 0,
-      discounts: [],
-    })
-    setShowNewProductForm(false)
-  }
+  const { newProduct, handleInputChange, handleAddNewProduct } = useNewProductForm(setShowNewProductForm)
 
   return (
     <div className="bg-white p-4 rounded shadow mb-4">
@@ -38,7 +18,7 @@ export default function NewProductForm({
           id="productName"
           type="text"
           value={newProduct.name}
-          onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
+          onChange={(e) => handleInputChange("name", e.target.value)}
           className="w-full p-2 border rounded"
         />
       </div>
@@ -50,7 +30,7 @@ export default function NewProductForm({
           id="productPrice"
           type="number"
           value={newProduct.price}
-          onChange={(e) => setNewProduct({ ...newProduct, price: parseInt(e.target.value) })}
+          onChange={(e) => handleInputChange("price", parseInt(e.target.value))}
           className="w-full p-2 border rounded"
         />
       </div>
@@ -62,7 +42,7 @@ export default function NewProductForm({
           id="productStock"
           type="number"
           value={newProduct.stock}
-          onChange={(e) => setNewProduct({ ...newProduct, stock: parseInt(e.target.value) })}
+          onChange={(e) => handleInputChange("stock", parseInt(e.target.value))}
           className="w-full p-2 border rounded"
         />
       </div>
