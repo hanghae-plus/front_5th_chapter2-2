@@ -8,14 +8,13 @@ export const AdminPage = () => {
 
   const {
     editingProduct,
-    updateEditingProduct,
     handleEditProduct,
     handleProductNameUpdate,
     handlePriceUpdate,
     handleEditComplete,
   } = useEditProduct();
 
-  const { newDiscount, resetNewDiscount, updateNewDiscount } = useDiscount();
+  const { newDiscount, updateNewDiscount, handleAddDiscount, handleRemoveDiscount } = useDiscount();
 
   const { coupons, newCoupon, updateNewCoupon, handleAddCoupon } = useCoupons();
 
@@ -26,34 +25,8 @@ export const AdminPage = () => {
     handleAddNewProduct,
     showNewProductForm,
     toggleNewProductForm,
-    updateProduct,
     handleStockUpdate,
   } = useProducts();
-
-  const handleAddDiscount = (productId: string) => {
-    const updatedProduct = products.find((p) => p.id === productId);
-    if (updatedProduct && editingProduct) {
-      const newProduct = {
-        ...updatedProduct,
-        discounts: [...updatedProduct.discounts, newDiscount],
-      };
-      updateProduct(newProduct);
-      updateEditingProduct(newProduct);
-      resetNewDiscount();
-    }
-  };
-
-  const handleRemoveDiscount = (productId: string, index: number) => {
-    const updatedProduct = products.find((p) => p.id === productId);
-    if (updatedProduct) {
-      const newProduct = {
-        ...updatedProduct,
-        discounts: updatedProduct.discounts.filter((_, i) => i !== index),
-      };
-      updateProduct(newProduct);
-      updateEditingProduct(newProduct);
-    }
-  };
 
   return (
     <div className="container mx-auto p-4">

@@ -1,4 +1,6 @@
 import { Discount } from "@/refactoring/entities";
+import { useEditProduct } from "@/refactoring/hooks/product/useEditProduct";
+import { useProducts } from "@/refactoring/hooks/product/useProduct";
 import { useState } from "react";
 
 /**
@@ -8,6 +10,8 @@ import { useState } from "react";
 
 export const useDiscount = () => {
   const [newDiscount, setNewDiscount] = useState<Discount>({ quantity: 0, rate: 0 });
+  const { products, updateProduct } = useProducts();
+  const { editingProduct, updateEditingProduct } = useEditProduct();
 
   const resetNewDiscount = () => {
     setNewDiscount({ quantity: 0, rate: 0 });
@@ -17,9 +21,36 @@ export const useDiscount = () => {
     setNewDiscount(discount);
   };
 
+  const handleAddDiscount = (productId: string) => {
+    const updatedProduct = products.find((p) => p.id === productId);
+    if (updatedProduct && editingProduct) {
+      const newProduct = {
+        ...updatedProduct,
+        discounts: [...updatedProduct.discounts, newDiscount],
+      };
+      updateProduct(newProduct);
+      updateEditingProduct(newProduct);
+      resetNewDiscount();
+    }
+  };
+
+  const handleRemoveDiscount = (productId: string, index: number) => {
+    const updatedProduct = products.find((p) => p.id === productId);
+    if (updatedProduct) {
+      const newProduct = {
+        ...updatedProduct,
+        discounts: updatedProduct.discounts.filter((_, i) => i !== index),
+      };
+      updateProduct(newProduct);
+      updateEditingProduct(newProduct);
+    }
+  };
+
   return {
     newDiscount,
     resetNewDiscount,
     updateNewDiscount,
+    handleAddDiscount,
+    handleRemoveDiscount,
   };
 };
