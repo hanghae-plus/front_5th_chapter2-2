@@ -7,8 +7,6 @@ import ProductList from "./cart/ProductList.tsx"
 export const CartPage = () => {
   const { cart, addToCart, removeFromCart, updateQuantity, applyCoupon, calculateTotal, selectedCoupon } = useCart()
 
-  const { totalBeforeDiscount, totalAfterDiscount, totalDiscount } = calculateTotal()
-
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-6">장바구니</h1>
@@ -35,11 +33,7 @@ export const CartPage = () => {
           <CouponSelector selectedCoupon={selectedCoupon} applyCoupon={applyCoupon} />
 
           {/* 주문 요약 */}
-          <OrderSummary
-            totalBeforeDiscount={totalBeforeDiscount}
-            totalDiscount={totalDiscount}
-            totalAfterDiscount={totalAfterDiscount}
-          />
+          <OrderSummary calculateTotal={calculateTotal} />
         </div>
       </div>
     </div>
