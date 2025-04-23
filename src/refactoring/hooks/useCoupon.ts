@@ -3,5 +3,20 @@ import { Coupon } from '../../types.ts';
 
 export const useCoupons = (initialCoupons: Coupon[]) => {
   const [coupons, setCoupons] = useState<Coupon[]>(initialCoupons);
-  return { coupons, addCoupon: () => undefined };
+
+  const addCoupon = (newCoupon: Coupon) => {
+    setCoupons((prevCoupons) => {
+      const existingCoupon = prevCoupons.find(
+        (coupon) => coupon.code === newCoupon.code
+      );
+      if (existingCoupon) {
+        return prevCoupons.map((coupon) =>
+          coupon.code === newCoupon.code ? { ...coupon, ...newCoupon } : coupon
+        );
+      }
+      return [...prevCoupons, newCoupon];
+    });
+  };
+
+  return { coupons, addCoupon };
 };
