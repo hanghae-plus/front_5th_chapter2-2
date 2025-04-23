@@ -15,6 +15,7 @@ import { useCart, useCoupons, useProducts } from '../../refactoring/hooks';
 import * as cartUtils from '../../refactoring/models/cart';
 
 import { ProductProvider } from '../../refactoring/contexts/productContext';
+import { CouponProvider } from '../../refactoring/contexts/couponContext';
 
 const mockProducts: Product[] = [
   {
@@ -63,11 +64,13 @@ const TestAdminPage = () => {
   };
 
   /**
-   * !! product를 context로 관리하기 때문에, 테스트 코드를 수정했습니다.
+   * !! product, coupon를 context로 관리하기 때문에, 테스트 코드를 수정했습니다.
    */
   return (
     <ProductProvider initialProducts={products}>
-      <AdminPage coupons={coupons} onCouponAdd={handleCouponAdd} />
+      <CouponProvider initialCoupons={coupons}>
+        <AdminPage />
+      </CouponProvider>
     </ProductProvider>
   );
 };
@@ -77,7 +80,9 @@ describe('basic > ', () => {
     test('장바구니 페이지 테스트 > ', async () => {
       render(
         <ProductProvider initialProducts={mockProducts}>
-          <CartPage coupons={mockCoupons} />
+          <CouponProvider initialCoupons={mockCoupons}>
+            <CartPage />
+          </CouponProvider>
         </ProductProvider>,
       );
       const product1 = screen.getByTestId('product-p1');

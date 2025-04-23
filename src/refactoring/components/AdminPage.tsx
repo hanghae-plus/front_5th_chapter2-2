@@ -1,14 +1,12 @@
 import { useState } from 'react';
 import { Coupon, Discount, Product } from '../../types.ts';
 import { useProductContext } from '../contexts/productContext.tsx';
+import { useCouponContext } from '../contexts/couponContext.tsx';
 
-interface Props {
-  coupons: Coupon[];
-  onCouponAdd: (newCoupon: Coupon) => void;
-}
-
-export const AdminPage = ({ coupons, onCouponAdd }: Props) => {
+export const AdminPage = () => {
   const { products, updateProduct, addProduct } = useProductContext();
+  const { coupons, addCoupon } = useCouponContext();
+
   const [openProductIds, setOpenProductIds] = useState<Set<string>>(new Set());
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [newDiscount, setNewDiscount] = useState<Discount>({
@@ -105,7 +103,7 @@ export const AdminPage = ({ coupons, onCouponAdd }: Props) => {
   };
 
   const handleAddCoupon = () => {
-    onCouponAdd(newCoupon);
+    addCoupon(newCoupon);
     setNewCoupon({
       name: '',
       code: '',

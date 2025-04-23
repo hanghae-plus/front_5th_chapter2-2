@@ -1,4 +1,4 @@
-import type { Product } from '../../types';
+import type { Product, Coupon } from '../../types';
 
 export const DEFAULT_PRODUCTS: Product[] = [
   {
@@ -24,5 +24,20 @@ export const DEFAULT_PRODUCTS: Product[] = [
     price: 30000,
     stock: 20,
     discounts: [{ quantity: 10, rate: 0.2 }],
+  },
+] as const;
+
+export const DEFAULT_COUPONS: Coupon[] = [
+  {
+    name: '5000원 할인 쿠폰',
+    code: 'AMOUNT5000',
+    discountType: 'amount',
+    discountValue: 5000,
+  },
+  {
+    name: '10% 할인 쿠폰',
+    code: 'PERCENT10',
+    discountType: 'percentage',
+    discountValue: 10,
   },
 ] as const;
