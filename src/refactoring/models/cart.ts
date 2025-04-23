@@ -14,13 +14,18 @@ export const calculateCartTotal = (
   selectedCoupon: Coupon | null
 ) => {
 
-  console.log(cart)
-  console.log(selectedCoupon)
-  const totalBeforeDiscount = cart.reduce((sum, item) => sum + calculateItemTotal(item), 0);
-  const totalAfterDiscount = cart.reduce((sum, item) => sum + calculateItemTotal(item), 0);
-  const totalDiscount = totalBeforeDiscount - totalAfterDiscount;
+  let totalBeforeDiscount = cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+  let totalAfterDiscount = cart.reduce((sum, item) => sum + calculateItemTotal(item), 0);
+  let totalDiscount = totalBeforeDiscount - totalAfterDiscount;
+  if(selectedCoupon) {
+    if(selectedCoupon.discountType === 'amount') {
+      totalAfterDiscount = Math.max(0, totalAfterDiscount - selectedCoupon.discountValue);
+    } else {
+      totalAfterDiscount *= (1 - selectedCoupon.discountValue / 100);
+    }
+    totalDiscount = totalBeforeDiscount - totalAfterDiscount;
 
-  console.log('utils',totalBeforeDiscount, totalAfterDiscount, totalDiscount);
+  }
   return {
     totalBeforeDiscount,
     totalAfterDiscount,
@@ -33,5 +38,15 @@ export const updateCartItemQuantity = (
   productId: string,
   newQuantity: number
 ): CartItem[] => {
-  return [];
+
+  const updatedCart = cart.map((item)=> {
+    if (item.product.id === productId) {
+      const maxQuantity = item.product.stock;
+      const updatedQuantity = Math.max(0, Math.min(newQuantity, maxQuantity));
+      return updatedQuantity > 0 ? { ...item, quantity: updatedQuantity } : null;
+    }
+    return item;
+  }).filter((item): item is CartItem => item !== null);
+
+  return updatedCart;
 };
