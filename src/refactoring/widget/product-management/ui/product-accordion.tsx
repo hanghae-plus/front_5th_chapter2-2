@@ -23,28 +23,36 @@ export const ProductAccordion: React.FC<ProductAccordionProps> = ({
     setIsOpen((prev) => !prev);
   };
 
-  // handleEditProduct 함수 수정
+  // 수정하기 버튼 클릭시. 폼을 열고, 수정할 상품으로 초기화
   const handleEditProduct = (product: Product) => {
     setEditingProduct({ ...product });
   };
 
-  // 새로운 핸들러 함수 추가
-  const handleProductNameUpdate = (productId: string, newName: string) => {
-    if (editingProduct && editingProduct.id === productId) {
+  // 수정하기 - 상품명 변경시 폼 업데잍트
+  const handleProductNameUpdate = (newName: string) => {
+    if (editingProduct) {
       const updatedProduct = { ...editingProduct, name: newName };
       setEditingProduct(updatedProduct);
     }
   };
 
-  // 새로운 핸들러 함수 추가
-  const handlePriceUpdate = (productId: string, newPrice: number) => {
-    if (editingProduct && editingProduct.id === productId) {
+  // 수정하기 - 가격 변경시 폼 업데이트
+  const handlePriceUpdate = (newPrice: number) => {
+    if (editingProduct) {
       const updatedProduct = { ...editingProduct, price: newPrice };
       setEditingProduct(updatedProduct);
     }
   };
 
-  // 수정 완료 핸들러 함수 추가
+  // 수정하기 - 재고 변경시 폼 업데이트
+  const handleStockUpdate = (newStock: number) => {
+    if (editingProduct) {
+      const newProduct = { ...editingProduct, stock: newStock };
+      setEditingProduct(newProduct);
+    }
+  };
+
+  // 수정완료 버튼 클릭시 폼을 닫고, 상품 업데이트
   const handleEditComplete = () => {
     if (editingProduct) {
       updateProduct(editingProduct);
@@ -52,25 +60,18 @@ export const ProductAccordion: React.FC<ProductAccordionProps> = ({
     }
   };
 
-  const handleStockUpdate = (productId: string, newStock: number) => {
-    const newProduct = { ...product, stock: newStock };
-    updateProduct(newProduct);
-    setEditingProduct(newProduct);
-  };
-
-  const handleAddDiscount = (productId: string) => {
+  const handleAddDiscount = () => {
     if (editingProduct) {
       const newProduct = {
         ...product,
         discounts: [...product.discounts, newDiscount],
       };
-      updateProduct(newProduct);
       setEditingProduct(newProduct);
       setNewDiscount({ quantity: 0, rate: 0 });
     }
   };
 
-  const handleRemoveDiscount = (productId: string, index: number) => {
+  const handleRemoveDiscount = (index: number) => {
     const newProduct = {
       ...product,
       discounts: product.discounts.filter((_, i) => i !== index),
@@ -97,9 +98,7 @@ export const ProductAccordion: React.FC<ProductAccordionProps> = ({
                 <input
                   type="text"
                   value={editingProduct.name}
-                  onChange={(e) =>
-                    handleProductNameUpdate(product.id, e.target.value)
-                  }
+                  onChange={(e) => handleProductNameUpdate(e.target.value)}
                   className="w-full p-2 border rounded"
                 />
               </div>
@@ -108,9 +107,7 @@ export const ProductAccordion: React.FC<ProductAccordionProps> = ({
                 <input
                   type="number"
                   value={editingProduct.price}
-                  onChange={(e) =>
-                    handlePriceUpdate(product.id, parseInt(e.target.value))
-                  }
+                  onChange={(e) => handlePriceUpdate(parseInt(e.target.value))}
                   className="w-full p-2 border rounded"
                 />
               </div>
@@ -119,9 +116,7 @@ export const ProductAccordion: React.FC<ProductAccordionProps> = ({
                 <input
                   type="number"
                   value={editingProduct.stock}
-                  onChange={(e) =>
-                    handleStockUpdate(product.id, parseInt(e.target.value))
-                  }
+                  onChange={(e) => handleStockUpdate(parseInt(e.target.value))}
                   className="w-full p-2 border rounded"
                 />
               </div>
@@ -138,7 +133,7 @@ export const ProductAccordion: React.FC<ProductAccordionProps> = ({
                       할인
                     </span>
                     <button
-                      onClick={() => handleRemoveDiscount(product.id, index)}
+                      onClick={() => handleRemoveDiscount(index)}
                       className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
                     >
                       삭제
@@ -171,7 +166,7 @@ export const ProductAccordion: React.FC<ProductAccordionProps> = ({
                     className="w-1/3 p-2 border rounded"
                   />
                   <button
-                    onClick={() => handleAddDiscount(product.id)}
+                    onClick={handleAddDiscount}
                     className="w-1/3 bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
                   >
                     할인 추가
