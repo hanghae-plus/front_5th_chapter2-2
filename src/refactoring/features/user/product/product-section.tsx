@@ -1,6 +1,7 @@
 import { getRemainingStock } from "../../../calculations/cart/calc-item";
 import { getMaxDiscount } from "../../../calculations/discount/calc-discount-rate";
 import { CartItem, Product } from "../../../entities";
+import { Button } from "../../../ui/button";
 import { ListWrapper } from "../../../ui/list-wrapper";
 import { Section } from "../../../ui/section";
 
@@ -47,7 +48,7 @@ export const ProductSection = ({ products, cart, addToCart }: Props) => {
                   ))}
                 </ul>
               )}
-              <button
+              <Button
                 onClick={() => addToCart(product)}
                 className={`w-full px-3 py-1 rounded ${
                   remainingStock > 0
@@ -57,7 +58,7 @@ export const ProductSection = ({ products, cart, addToCart }: Props) => {
                 disabled={remainingStock <= 0}
               >
                 {remainingStock > 0 ? "장바구니에 추가" : "품절"}
-              </button>
+              </Button>
             </div>
           );
         })}

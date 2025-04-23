@@ -2,6 +2,7 @@ import { Product } from "../../../entities";
 import { useToggle } from "../../../hooks";
 import { useEditProductAction } from "../../../hooks/product/useEditProductAction";
 import { useProductStore } from "../../../store/product-store";
+import { Button } from "../../../ui/button";
 import { ProductEditForm } from "./product-edit-form";
 
 interface Props {
@@ -25,13 +26,13 @@ export const ProductItem = (props: Props) => {
       data-testid={`product-${index + 1}`}
       className="bg-white p-4 rounded shadow"
     >
-      <button
+      <Button
         data-testid="toggle-button"
         onClick={() => toggleProductAccordion(product.id)}
         className="w-full text-left font-semibold"
       >
         {product.name} - {product.price}원 (재고: {product.stock})
-      </button>
+      </Button>
       {isOpen && (
         <div className="mt-2">
           {isEditing ? (
@@ -45,13 +46,13 @@ export const ProductItem = (props: Props) => {
                   </span>
                 </div>
               ))}
-              <button
+              <Button
                 data-testid="modify-button"
                 onClick={() => handleEditProduct(product)}
                 className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 mt-2"
               >
                 수정
-              </button>
+              </Button>
             </div>
           )}
         </div>

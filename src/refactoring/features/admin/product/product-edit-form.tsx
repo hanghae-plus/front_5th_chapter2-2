@@ -1,6 +1,7 @@
 import { Product } from "../../../entities";
 import { useEditProductAction } from "../../../hooks/product/useEditProductAction";
 import { useProductStore } from "../../../store/product-store";
+import { Button } from "../../../ui/button";
 import { DiscountEditForm } from "../discount/discount-edit-form";
 
 interface Props {
@@ -45,12 +46,12 @@ export const ProductEditForm = (props: Props) => {
       </div>
       {/* 할인 정보 수정 부분 */}
       <DiscountEditForm editingProduct={editingProduct} product={product} />
-      <button
+      <Button
         onClick={handleEditComplete}
         className="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600 mt-2"
       >
         수정 완료
-      </button>
+      </Button>
     </div>
   );
 };

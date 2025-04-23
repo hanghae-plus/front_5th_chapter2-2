@@ -1,4 +1,5 @@
 import { useProductStore } from "../../../store/product-store";
+import { Button } from "../../../ui/button";
 
 export const NewProductForm = () => {
   const { newProduct, updateNewProduct, handleAddNewProduct } = useProductStore();
@@ -42,12 +43,12 @@ export const NewProductForm = () => {
           className="w-full p-2 border rounded"
         />
       </div>
-      <button
+      <Button
         onClick={handleAddNewProduct}
         className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
       >
         추가
-      </button>
+      </Button>
     </div>
   );
 };

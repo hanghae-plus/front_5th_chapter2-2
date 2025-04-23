@@ -1,5 +1,6 @@
 import { Product } from "../../../entities";
 import { useDiscount } from "../../../hooks";
+import { Button } from "../../../ui/button";
 
 interface Props {
   editingProduct: Product;
@@ -19,12 +20,12 @@ export const DiscountEditForm = (props: Props) => {
           <span>
             {discount.quantity}개 이상 구매 시 {discount.rate * 100}% 할인
           </span>
-          <button
+          <Button
             onClick={() => handleRemoveDiscount(product.id, index)}
             className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
           >
             삭제
-          </button>
+          </Button>
         </div>
       ))}
       <div className="flex space-x-2">
@@ -52,12 +53,12 @@ export const DiscountEditForm = (props: Props) => {
           }
           className="w-1/3 p-2 border rounded"
         />
-        <button
+        <Button
           onClick={() => handleAddDiscount(product.id)}
           className="w-1/3 bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
         >
           할인 추가
-        </button>
+        </Button>
       </div>
     </div>
   );

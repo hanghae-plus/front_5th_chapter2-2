@@ -1,5 +1,6 @@
 import { CartItem } from "../../../entities";
 import { getMaxApplicableDiscount } from "../../../models/cart";
+import { Button } from "../../../ui/button";
 import { ListWrapper } from "../../../ui/list-wrapper";
 
 interface CartListProps {
@@ -36,24 +37,24 @@ export const CartList = (props: CartListProps) => {
               </span>
             </div>
             <div>
-              <button
+              <Button
                 onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
                 className="bg-gray-300 text-gray-800 px-2 py-1 rounded mr-1 hover:bg-gray-400"
               >
                 -
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
                 className="bg-gray-300 text-gray-800 px-2 py-1 rounded mr-1 hover:bg-gray-400"
               >
                 +
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={() => removeFromCart(item.product.id)}
                 className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
               >
                 삭제
-              </button>
+              </Button>
             </div>
           </div>
         );

@@ -1,4 +1,5 @@
 import { useCoupons } from "../../../hooks";
+import { Button } from "../../../ui/button";
 import { ListWrapper } from "../../../ui/list-wrapper";
 import { Section } from "../../../ui/section";
 
@@ -46,12 +47,12 @@ export const CouponManageSection = () => {
               className="w-full p-2 border rounded"
             />
           </div>
-          <button
+          <Button
             onClick={handleAddCoupon}
             className="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600"
           >
             쿠폰 추가
-          </button>
+          </Button>
         </div>
         <div>
           <h3 className="text-lg font-semibold mb-2">현재 쿠폰 목록</h3>

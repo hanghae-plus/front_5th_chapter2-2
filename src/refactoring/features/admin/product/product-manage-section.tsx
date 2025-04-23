@@ -1,4 +1,5 @@
 import { useProductStore } from "../../../store/product-store";
+import { Button } from "../../../ui/button";
 import { Section } from "../../../ui/section";
 import { NewProductForm } from "./new-product-form";
 import { ProductList } from "./product-list";
@@ -8,12 +9,12 @@ export const ProductManageSection = () => {
 
   return (
     <Section title="상품 관리">
-      <button
+      <Button
         onClick={toggleNewProductForm}
         className="bg-green-500 text-white px-4 py-2 rounded mb-4 hover:bg-green-600"
       >
         {showNewProductForm ? "취소" : "새 상품 추가"}
-      </button>
+      </Button>
       {showNewProductForm && <NewProductForm />}
       <ProductList />
     </Section>
