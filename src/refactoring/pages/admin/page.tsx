@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
-import { ProductsAdminSection } from './components/ProductsAdminSection.tsx';
-import { CouponSection } from './components/CouponSection.tsx';
+import { ProductsAdminSection, CouponSection } from './components';
 import { Coupon, Discount, Product } from '../../../types.ts';
 import PagesLayout from '../../components/layouts/PagesLayout.tsx';
 
