@@ -1,2 +1,2 @@
-export { ProductList } from './ProductList';
-export { CartList } from './CartList';
+export { ProductSection } from './ProductSection';
+export { CartSection } from './CartSection';

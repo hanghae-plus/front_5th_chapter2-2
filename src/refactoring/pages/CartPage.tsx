@@ -1,6 +1,6 @@
 import { Coupon, Product } from '../entities';
 import { useCart } from '../hooks';
-import { CartList, ProductList } from '../widgets';
+import { CartSection, ProductSection } from '../widgets';
 
 interface Props {
   products: Product[];
@@ -27,12 +27,12 @@ export const CartPage = ({ products, coupons }: Props) => {
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-6">장바구니</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <ProductList
+        <ProductSection
           products={products}
           getRemainingStock={getRemainingStock}
           addToCart={addToCart}
         />
-        <CartList
+        <CartSection
           cart={cart}
           coupons={coupons}
           calculateTotal={calculateTotal}
