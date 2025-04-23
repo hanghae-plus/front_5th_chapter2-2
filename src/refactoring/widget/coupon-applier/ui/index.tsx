@@ -1,5 +1,5 @@
 import { useCartContext } from "@/refactoring/entities/cart";
-import { useCouponContext } from "@/refactoring/entities/coupon/model/coupon-context";
+import { useCouponContext } from "@/refactoring/contexts/coupon-context";
 
 interface CouponApplierProps {}
 

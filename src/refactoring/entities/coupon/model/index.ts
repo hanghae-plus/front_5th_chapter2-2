@@ -1,2 +1,2 @@
 export * from "./use-coupon";
-export * from "./coupon-context";
+export * from "../../../contexts/coupon-context";

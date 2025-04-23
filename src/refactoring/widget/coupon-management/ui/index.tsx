@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { Coupon } from "@r/entities/coupon";
-import { useCouponContext } from "@/refactoring/entities/coupon/model/coupon-context";
+import { useCouponContext } from "@/refactoring/contexts/coupon-context";
 
 interface CouponManagementProps {}
 

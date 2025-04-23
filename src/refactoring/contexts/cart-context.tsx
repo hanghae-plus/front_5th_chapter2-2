@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react";
 
-import { useCart } from "./use-cart";
+import { useCart } from "../entities/cart/model/use-cart";
 
 const CartContext = createContext<ReturnType<typeof useCart> | null>(null);
 

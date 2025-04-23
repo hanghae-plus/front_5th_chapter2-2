@@ -1,2 +1,2 @@
 export * from "./use-cart";
-export * from "./cart-context";
+export * from "../../../contexts/cart-context";
