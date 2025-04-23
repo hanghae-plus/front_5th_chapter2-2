@@ -1,5 +1,5 @@
-import { useState } from "react";
 import { Coupon } from "../../../types";
+import { useCoupons } from "../../hooks";
 
 interface Props {
   coupons: Coupon[];
@@ -7,23 +7,7 @@ interface Props {
 }
 
 const CouponManage = ({ coupons, onCouponAdd }: Props) => {
-  const [newCoupon, setNewCoupon] = useState<Coupon>({
-    name: "",
-    code: "",
-    discountType: "percentage",
-    discountValue: 0,
-  });
-
-  /**새로운 쿠폰을 등록합니다. */
-  const handleAddCoupon = () => {
-    onCouponAdd(newCoupon); //newCoupon등록
-    setNewCoupon({
-      name: "",
-      code: "",
-      discountType: "percentage",
-      discountValue: 0,
-    });
-  };
+  const { newCoupon, setNewCoupon, handleAddCoupon } = useCoupons(coupons);
 
   return (
     <>
@@ -81,7 +65,7 @@ const CouponManage = ({ coupons, onCouponAdd }: Props) => {
             </div>
             {/* 쿠폰추가 버튼 */}
             <button
-              onClick={handleAddCoupon}
+              onClick={() => handleAddCoupon(onCouponAdd)}
               className="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600"
             >
               쿠폰 추가

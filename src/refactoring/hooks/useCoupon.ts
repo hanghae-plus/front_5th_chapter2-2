@@ -9,10 +9,30 @@ import { Coupon } from "../../types.ts";
  */
 export const useCoupons = (initialCoupons: Coupon[]) => {
   const [coupons, setCoupons] = useState<Coupon[]>(initialCoupons);
+  const [newCoupon, setNewCoupon] = useState<Coupon>({
+    name: "",
+    code: "",
+    discountType: "percentage",
+    discountValue: 0,
+  });
 
   const addCoupon = (newCoupon: Coupon) => {
     setCoupons((prevCoupons) => [...prevCoupons, newCoupon]);
   };
 
-  return { coupons, addCoupon };
+  const resetNewCoupon = () => {
+    setNewCoupon({
+      name: "",
+      code: "",
+      discountType: "percentage",
+      discountValue: 0,
+    });
+  };
+
+  const handleAddCoupon = (onCouponAdd: (newCoupon: Coupon) => void) => {
+    onCouponAdd(newCoupon);
+    resetNewCoupon();
+  };
+
+  return { coupons, newCoupon, addCoupon, setNewCoupon, handleAddCoupon };
 };
