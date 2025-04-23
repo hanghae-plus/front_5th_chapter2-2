@@ -61,7 +61,7 @@ export const calculateCartTotal = (
   };
 };
 
-function getCouponDiscount(
+export function getCouponDiscount(
   selectedCoupon: Coupon | null,
   totalAfterProductDiscount: number
 ) {
