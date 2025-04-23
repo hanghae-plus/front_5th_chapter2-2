@@ -48,9 +48,10 @@ export const calculateCartTotal = (
     const itemTotal = item.product.price * item.quantity;
     totalBeforeDiscount += itemTotal;
 
-    // 상품별 할인율 계산
-    const discount = getMaxApplicableDiscount(item);
-    const discountedTotal = itemTotal * (1 - discount);
+    // 상품별 할인율 계산 (calculateItemTotal)과 동일해보이네?
+    // const discount = getMaxApplicableDiscount(item);
+    // const discountedTotal = itemTotal * (1 - discount);
+    const discountedTotal = calculateItemTotal(item);
     totalAfterDiscount += discountedTotal;
 
   });
@@ -66,13 +67,8 @@ export const calculateCartTotal = (
       // 퍼센트 할인
       finalAfterDiscount = totalAfterDiscount * (1 - selectedCoupon.discountValue / 100);
     }
-
-
   }
-
   const totalDiscount = totalBeforeDiscount - finalAfterDiscount;
-
-  
 
   return {
     totalBeforeDiscount: Math.round(totalBeforeDiscount),

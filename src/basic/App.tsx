@@ -1,9 +1,10 @@
-import { useState } from 'react';
-import { Coupon, Product } from '../types.ts';
+import React, { useState } from 'react';
+import { Header } from './components/common/layout/Header';
 import { AdminPage, CartPage } from './components';
+import { Coupon, Product } from '../types.ts';
 import { initialCoupons, initialProducts } from './mocks/data.ts';
 
-const App = () => {
+export const App: React.FC = () => {
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const [coupons, setCoupons] = useState<Coupon[]>(initialCoupons);
   const [isAdmin, setIsAdmin] = useState(false);

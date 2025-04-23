@@ -1,19 +1,15 @@
 import { useState } from "react";
-import { Coupon } from "../../types";
+import { Coupon } from "../../../types";
 
 interface CouponAddFormProps {
-    handleAddCoupon: () => void;
+  newCoupon:Coupon;
+  setNewCoupon: (newCoupon:Coupon) => void;
+  handleAddCoupon: () => void;
 }
 
-export const CouponAddForm = ({handleAddCoupon}: CouponAddFormProps) => {
-    const [newCoupon, setNewCoupon] = useState<Coupon>({
-        name: '',
-        code: '',
-        discountType: 'amount',
-        discountValue: 0,
-    });
+export const CouponAddForm = ({newCoupon, setNewCoupon, handleAddCoupon}: CouponAddFormProps) => {
+
   return (
-    
       <div className="space-y-2 mb-4">
         <input
           type="text"

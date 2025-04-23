@@ -1,17 +1,13 @@
-import { useState } from "react";
-import { Product } from "../../types";
+import { Product } from "../../../types";
 
 interface ProductAddFormProps {
+    newProduct: Omit<Product, 'id'>;
+    setNewProduct: (newProduct: Omit<Product, 'id'>) => void;
     handleAddNewProduct: () => void;
 }
 
-export const ProductAddForm = ({handleAddNewProduct}: ProductAddFormProps) => {
-    const [newProduct, setNewProduct] = useState<Omit<Product, 'id'>>({
-        name: '',
-        price: 0,
-        stock: 0,
-        discounts: []
-      });
+export const ProductAddForm = ({newProduct, setNewProduct, handleAddNewProduct}: ProductAddFormProps) => {
+    
     return (
         <div className="bg-white p-4 rounded shadow mb-4">
               <h3 className="text-xl font-semibold mb-2">새 상품 추가</h3>
@@ -20,7 +16,7 @@ export const ProductAddForm = ({handleAddNewProduct}: ProductAddFormProps) => {
                 <input
                   id="productName"
                   type="text"
-                  value={newProduct.name}
+                  value={newProduct?.name}
                   onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
                   className="w-full p-2 border rounded"
                 />
@@ -30,7 +26,7 @@ export const ProductAddForm = ({handleAddNewProduct}: ProductAddFormProps) => {
                 <input
                   id="productPrice"
                   type="number"
-                  value={newProduct.price}
+                  value={newProduct?.price}
                   onChange={(e) => setNewProduct({ ...newProduct, price: parseInt(e.target.value) })}
                   className="w-full p-2 border rounded"
                 />
@@ -40,7 +36,7 @@ export const ProductAddForm = ({handleAddNewProduct}: ProductAddFormProps) => {
                 <input
                   id="productStock"
                   type="number"
-                  value={newProduct.stock}
+                  value={newProduct?.stock}
                   onChange={(e) => setNewProduct({ ...newProduct, stock: parseInt(e.target.value) })}
                   className="w-full p-2 border rounded"
                 />
