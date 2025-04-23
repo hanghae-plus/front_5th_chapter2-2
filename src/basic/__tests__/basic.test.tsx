@@ -2,10 +2,10 @@ import { act, fireEvent, render, renderHook, screen, within } from "@testing-lib
 import { beforeEach, describe, expect, test } from "vitest";
 import { AdminPage } from "../../refactoring/components/AdminPage";
 import { CartPage } from "../../refactoring/components/CartPage";
+import { CartItem, Coupon, Product } from "../../refactoring/entities";
 import { useCart, useCoupons, useProducts } from "../../refactoring/hooks";
 import * as cartUtils from "../../refactoring/models/cart";
 import { useCartStore } from "../../refactoring/store/cart-store";
-import { CartItem, Coupon, Product } from "../../types";
 
 const mockProducts: Product[] = [
   {
@@ -199,7 +199,7 @@ describe("basic > ", () => {
       expect(screen.queryByText("10개 이상 구매 시 10% 할인")).not.toBeInTheDocument();
       expect(screen.queryByText("5개 이상 구매 시 5% 할인")).toBeInTheDocument();
 
-      fireEvent.click(screen.getAllByText("삭제")[0]);
+      fireEvent.click(screen.getAllByText("삭제")[1]);
       expect(screen.queryByText("10개 이상 구매 시 10% 할인")).not.toBeInTheDocument();
       expect(screen.queryByText("5개 이상 구매 시 5% 할인")).not.toBeInTheDocument();
 

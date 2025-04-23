@@ -1,4 +1,4 @@
-import { CartItem, Coupon } from "@/refactoring/entities";
+import { CartItem, Coupon } from "../../entities";
 import { applyCouponDiscount } from "../coupon/apply-coupon";
 
 /**

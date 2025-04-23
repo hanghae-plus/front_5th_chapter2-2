@@ -1,25 +1,18 @@
-import { useState } from "react";
 import { Product } from "../../entities";
-import { useProducts } from "../../hooks/product/useProduct";
+import { useProductStore } from "../../store/product-store";
 
-export const useEditProduct = () => {
-  const { updateProduct } = useProducts();
-  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+export const useEditProductAction = () => {
+  const { updateProduct, editingProduct, updateEditingProduct } = useProductStore();
 
   const handleEditProduct = (product: Product) => {
-    setEditingProduct({ ...product });
-  };
-
-  // 업데이트
-  const updateEditingProduct = (product: Product) => {
-    setEditingProduct(product);
+    updateEditingProduct({ ...product });
   };
 
   // 이름 수정
   const handleProductNameUpdate = (productId: string, newName: string) => {
     if (editingProduct && editingProduct.id === productId) {
       const updatedProduct = { ...editingProduct, name: newName };
-      setEditingProduct(updatedProduct);
+      updateEditingProduct(updatedProduct);
     }
   };
 
@@ -27,7 +20,7 @@ export const useEditProduct = () => {
   const handlePriceUpdate = (productId: string, newPrice: number) => {
     if (editingProduct && editingProduct.id === productId) {
       const updatedProduct = { ...editingProduct, price: newPrice };
-      setEditingProduct(updatedProduct);
+      updateEditingProduct(updatedProduct);
     }
   };
 
@@ -35,13 +28,11 @@ export const useEditProduct = () => {
   const handleEditComplete = () => {
     if (editingProduct) {
       updateProduct(editingProduct);
-      setEditingProduct(null);
+      updateEditingProduct(null);
     }
   };
 
   return {
-    editingProduct,
-    updateEditingProduct,
     handleEditProduct,
     handleProductNameUpdate,
     handlePriceUpdate,

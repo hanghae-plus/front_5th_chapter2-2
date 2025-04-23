@@ -2,10 +2,11 @@ import { useState } from "react";
 import { AdminPage } from "./components/AdminPage.tsx";
 import { CartPage } from "./components/CartPage.tsx";
 
-import { useCoupons, useProducts } from "./hooks";
+import { useCoupons } from "./hooks";
+import { useProductStore } from "./store/product-store.ts";
 
 const App = () => {
-  const { products } = useProducts();
+  const { products } = useProductStore();
   const { coupons } = useCoupons();
   const [isAdmin, setIsAdmin] = useState(false);
 

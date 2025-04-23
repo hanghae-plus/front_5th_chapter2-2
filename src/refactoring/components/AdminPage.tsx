@@ -1,18 +1,14 @@
-import { useCoupons, useDiscount, useProducts } from "../hooks";
+import { useCoupons, useDiscount } from "../hooks";
 import { useToggle } from "../hooks/index.ts";
-import { useEditProduct } from "../hooks/product/useEditProduct.ts";
+import { useEditProductAction } from "../hooks/product/useEditProductAction.ts";
+import { useProductStore } from "../store/product-store.ts";
 
 export const AdminPage = () => {
   const { openToggle: openProductIds, handleToggleClick: toggleProductAccordion } =
     useToggle<string>();
 
-  const {
-    editingProduct,
-    handleEditProduct,
-    handleProductNameUpdate,
-    handlePriceUpdate,
-    handleEditComplete,
-  } = useEditProduct();
+  const { handleEditProduct, handleProductNameUpdate, handlePriceUpdate, handleEditComplete } =
+    useEditProductAction();
 
   const { newDiscount, updateNewDiscount, handleAddDiscount, handleRemoveDiscount } = useDiscount();
 
@@ -26,7 +22,8 @@ export const AdminPage = () => {
     showNewProductForm,
     toggleNewProductForm,
     handleStockUpdate,
-  } = useProducts();
+    editingProduct,
+  } = useProductStore();
 
   return (
     <div className="container mx-auto p-4">

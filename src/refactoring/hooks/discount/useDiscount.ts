@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Discount } from "../../entities";
-import { useEditProduct } from "../../hooks/product/useEditProduct";
-import { useProducts } from "../../hooks/product/useProduct";
+import { useProductStore } from "../../store/product-store";
 
 /**
  * 새로운 할인 항목을 입력하기 위한 상태를 관리하는 커스텀 훅
@@ -10,8 +9,7 @@ import { useProducts } from "../../hooks/product/useProduct";
 
 export const useDiscount = () => {
   const [newDiscount, setNewDiscount] = useState<Discount>({ quantity: 0, rate: 0 });
-  const { products, updateProduct } = useProducts();
-  const { editingProduct, updateEditingProduct } = useEditProduct();
+  const { products, updateProduct, editingProduct, updateEditingProduct } = useProductStore();
 
   const resetNewDiscount = () => {
     setNewDiscount({ quantity: 0, rate: 0 });
