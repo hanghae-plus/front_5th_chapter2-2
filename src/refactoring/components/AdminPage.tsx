@@ -236,8 +236,14 @@ export const AdminPage = ({
                     {editingProduct && editingProduct.id === product.id ? (
                       <div>
                         <div className="mb-4">
-                          <label className="block mb-1">상품명: </label>
+                          <label
+                            htmlFor={`update-product-name-${product.id}`}
+                            className="block mb-1"
+                          >
+                            상품명:
+                          </label>
                           <input
+                            id={`update-product-name-${product.id}`}
                             type="text"
                             value={editingProduct.name}
                             onChange={(e) =>

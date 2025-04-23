@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { describe, expect, test } from "vitest";
 import {
   act,
@@ -13,6 +13,10 @@ import { AdminPage } from "../../refactoring/components/AdminPage";
 import { CartItem, Coupon, Product } from "../../types";
 import { useCart, useCoupons, useProducts } from "../../refactoring/hooks";
 import * as cartUtils from "../../refactoring/models/cart";
+import AdminProvider, {
+  AdminActionContext,
+  AdminStateContext,
+} from "../../refactoring/context/AdminProvider";
 
 const mockProducts: Product[] = [
   {
@@ -81,10 +85,42 @@ const TestAdminPage = () => {
   );
 };
 
+const AdminProviderWithInitialAdmin = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
+  const [isAdmin, setIsAdmin] = useState(true); // 기본값을 true로 설정
+
+  const actionValue = useMemo(
+    () => ({
+      setIsAdmin,
+    }),
+    []
+  );
+
+  const stateValue = useMemo(
+    () => ({
+      isAdmin,
+    }),
+    [isAdmin]
+  );
+
+  return (
+    <AdminActionContext.Provider value={actionValue}>
+      <AdminStateContext.Provider value={stateValue}>
+        {children}
+      </AdminStateContext.Provider>
+    </AdminActionContext.Provider>
+  );
+};
+
 describe("basic > ", () => {
   describe("시나리오 테스트 > ", () => {
     test("장바구니 페이지 테스트 > ", async () => {
-      render(<CartPage products={mockProducts} coupons={mockCoupons} />);
+      render(<CartPage products={mockProducts} coupons={mockCoupons} />, {
+        wrapper: AdminProvider,
+      });
       const product1 = screen.getByTestId("product-p1");
       const product2 = screen.getByTestId("product-p2");
       const product3 = screen.getByTestId("product-p3");
@@ -164,7 +200,11 @@ describe("basic > ", () => {
     });
 
     test("관리자 페이지 테스트 > ", async () => {
-      render(<TestAdminPage />);
+      render(
+        <AdminProviderWithInitialAdmin>
+          <TestAdminPage />
+        </AdminProviderWithInitialAdmin>
+      );
 
       const $product1 = screen.getByTestId("product-1");
 

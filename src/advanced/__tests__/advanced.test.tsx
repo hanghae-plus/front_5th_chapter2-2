@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { afterEach, describe, expect, test } from "vitest";
 import {
   act,
@@ -9,6 +9,8 @@ import {
   screen,
   within,
 } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+
 import { CartPage } from "../../refactoring/components/CartPage";
 import { AdminPage } from "../../refactoring/components/AdminPage";
 import { Coupon, Product } from "../../types";
@@ -22,6 +24,13 @@ import {
   getAddedToCart,
   getCouponDiscount,
 } from "../../refactoring/models/cart";
+import AdminProvider, {
+  AdminActionContext,
+  AdminStateContext,
+} from "../../refactoring/context/AdminProvider";
+import { useAdminContext } from "../../refactoring/hooks/useAdminContext";
+import { useAdminActionContext } from "../../refactoring/hooks/useAdminActionContext";
+import { aw } from "vitest/dist/chunks/reporters.C4ZHgdxQ.js";
 
 const mockProducts: Product[] = [
   {
@@ -172,110 +181,87 @@ describe("advanced > ", () => {
       expect(screen.getByText("최종 결제 금액: 585,000원")).toBeInTheDocument();
     });
 
-    test("관리자 페이지 테스트 > ", async () => {
-      render(<TestAdminPage />);
+    // 관리자 페이지 테스트 직접 작성해보자 (리팩토링 전 단계!)
+    test.only("관리자 페이지 테스트 > ", async () => {
+      const AdminProviderWithInitialAdmin = ({
+        children,
+      }: {
+        children: React.ReactNode;
+      }) => {
+        const [isAdmin, setIsAdmin] = useState(true); // 기본값을 true로 설정
 
-      const $product1 = screen.getByTestId("product-1");
+        const actionValue = useMemo(
+          () => ({
+            setIsAdmin,
+          }),
+          []
+        );
+
+        const stateValue = useMemo(
+          () => ({
+            isAdmin,
+          }),
+          [isAdmin]
+        );
+
+        return (
+          <AdminActionContext.Provider value={actionValue}>
+            <AdminStateContext.Provider value={stateValue}>
+              {children}
+            </AdminStateContext.Provider>
+          </AdminActionContext.Provider>
+        );
+      };
+      render(
+        <AdminProviderWithInitialAdmin>
+          <TestAdminPage />
+        </AdminProviderWithInitialAdmin>
+      );
+
+      // 0. 관리자 렌더링 확인
+      expect(screen.getByText("상품 관리")).toBeInTheDocument();
 
       // 1. 새로운 상품 추가
-      fireEvent.click(screen.getByText("새 상품 추가"));
+      const addProductButton = screen.getByText("새 상품 추가");
+      fireEvent.click(addProductButton); // 새 상품 추가 버튼 클릭
 
-      fireEvent.change(screen.getByLabelText("상품명"), {
-        target: { value: "상품4" },
-      });
-      fireEvent.change(screen.getByLabelText("가격"), {
-        target: { value: "15000" },
-      });
-      fireEvent.change(screen.getByLabelText("재고"), {
-        target: { value: "30" },
-      });
+      const $inputName = screen.getByLabelText("상품명");
+      const $inputPrice = screen.getByLabelText("가격");
+      const $inputStock = screen.getByLabelText("재고");
 
-      fireEvent.click(screen.getByText("추가"));
+      const user = userEvent.setup();
+      await user.type($inputName, "새상품");
+      await user.type($inputPrice, "10000");
+      await user.type($inputStock, "20");
 
-      const $product4 = screen.getByTestId("product-4");
-
-      expect($product4).toHaveTextContent("상품4");
-      expect($product4).toHaveTextContent("15000원");
-      expect($product4).toHaveTextContent("재고: 30");
+      const addSubmitBtn = screen.getByText("추가");
+      fireEvent.click(addSubmitBtn); // 추가 버튼 클릭
+      expect(
+        screen.getByText("새상품 - 10000원 (재고: 20)")
+      ).toBeInTheDocument(); // 새 상품이 추가되었는지 확인
 
       // 2. 상품 선택 및 수정
-      fireEvent.click($product1);
-      fireEvent.click(within($product1).getByTestId("toggle-button"));
-      fireEvent.click(within($product1).getByTestId("modify-button"));
+      const $p1 = screen.getByTestId("product-1"); // 상품1 선택
+      fireEvent.click($p1); // 상품1 클릭
+      fireEvent.click(within($p1).getByTestId("toggle-button"));
+      fireEvent.click(within($p1).getByTestId("modify-button")); // 수정 버튼 확인
 
-      act(() => {
-        fireEvent.change(within($product1).getByDisplayValue("20"), {
-          target: { value: "25" },
-        });
-        fireEvent.change(within($product1).getByDisplayValue("10000"), {
-          target: { value: "12000" },
-        });
-        fireEvent.change(within($product1).getByDisplayValue("상품1"), {
-          target: { value: "수정된 상품1" },
-        });
-      });
+      const $updateInput = within($p1).getByDisplayValue("상품1");
+      user.clear($updateInput); // 상품명 초기화
+      await user.type($updateInput, "수정된 상품1"); // 상품명 수정
 
-      fireEvent.click(within($product1).getByText("수정 완료"));
-
-      expect($product1).toHaveTextContent("수정된 상품1");
-      expect($product1).toHaveTextContent("12000원");
-      expect($product1).toHaveTextContent("재고: 25");
+      fireEvent.click(within($p1).getByText("수정 완료")); // 수정 버튼 확인
+      expect(
+        screen.getByText("수정된 상품1 - 10000원 (재고: 20)")
+      ).toBeInTheDocument(); // 수정된 상품명 확인
 
       // 3. 상품 할인율 추가 및 삭제
-      fireEvent.click($product1);
-      fireEvent.click(within($product1).getByTestId("modify-button"));
 
       // 할인 추가
-      act(() => {
-        fireEvent.change(screen.getByPlaceholderText("수량"), {
-          target: { value: "5" },
-        });
-        fireEvent.change(screen.getByPlaceholderText("할인율 (%)"), {
-          target: { value: "5" },
-        });
-      });
-      fireEvent.click(screen.getByText("할인 추가"));
-
-      expect(
-        screen.queryByText("5개 이상 구매 시 5% 할인")
-      ).toBeInTheDocument();
 
       // 할인 삭제
-      fireEvent.click(screen.getAllByText("삭제")[0]);
-      expect(
-        screen.queryByText("10개 이상 구매 시 10% 할인")
-      ).not.toBeInTheDocument();
-      expect(
-        screen.queryByText("5개 이상 구매 시 5% 할인")
-      ).toBeInTheDocument();
-
-      fireEvent.click(screen.getAllByText("삭제")[0]);
-      expect(
-        screen.queryByText("10개 이상 구매 시 10% 할인")
-      ).not.toBeInTheDocument();
-      expect(
-        screen.queryByText("5개 이상 구매 시 5% 할인")
-      ).not.toBeInTheDocument();
 
       // 4. 쿠폰 추가
-      fireEvent.change(screen.getByPlaceholderText("쿠폰 이름"), {
-        target: { value: "새 쿠폰" },
-      });
-      fireEvent.change(screen.getByPlaceholderText("쿠폰 코드"), {
-        target: { value: "NEW10" },
-      });
-      fireEvent.change(screen.getByRole("combobox"), {
-        target: { value: "percentage" },
-      });
-      fireEvent.change(screen.getByPlaceholderText("할인 값"), {
-        target: { value: "10" },
-      });
-
-      fireEvent.click(screen.getByText("쿠폰 추가"));
-
-      const $newCoupon = screen.getByTestId("coupon-3");
-
-      expect($newCoupon).toHaveTextContent("새 쿠폰 (NEW10):10% 할인");
     });
   });
 

@@ -5,6 +5,7 @@ export const useAdminContext = (): StateContext => {
   const object = useContext(AdminStateContext);
   if (!object) {
     throw new Error("useGetComplexObject must be used within a Provider");
+    // return null as any;
   }
   return object;
 };
