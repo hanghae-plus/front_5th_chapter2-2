@@ -1,14 +1,10 @@
-interface OrderSummaryProps {
-  totalBeforeDiscount: number;
-  totalDiscount: number;
-  totalAfterDiscount: number;
-}
+import { useAtomValue } from "jotai";
+import { cartSummaryAtom } from "../../store/cart/atom";
 
-const OrderSummary = ({
-  totalBeforeDiscount,
-  totalDiscount,
-  totalAfterDiscount,
-}: OrderSummaryProps) => {
+const OrderSummary = () => {
+  const { totalBeforeDiscount, totalDiscount, totalAfterDiscount } =
+    useAtomValue(cartSummaryAtom);
+
   return (
     <div className="mt-6 bg-white p-4 rounded shadow">
       <h2 className="text-2xl font-semibold mb-2">주문 요약</h2>

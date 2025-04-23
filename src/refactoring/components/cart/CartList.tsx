@@ -1,17 +1,20 @@
-import { CartItem } from "../../../types";
+import { useAtomValue, useSetAtom } from "jotai";
 import { getAppliedDiscount } from "../../models/cart";
+import { cartItemsAtom } from "../../store/cart/atom";
+import {
+  removeFromCartAtom,
+  updateQuantityAtom,
+} from "../../store/cart/action";
 
-interface CartItemListProps {
-  cartItems: CartItem[];
-  updateQuantity: (productId: string, quantity: number) => void;
-  removeFromCart: (productId: string) => void;
-}
+const CartList = () => {
+  const cartItems = useAtomValue(cartItemsAtom);
+  const removeFromCart = useSetAtom(removeFromCartAtom);
+  const updateQuantityAction = useSetAtom(updateQuantityAtom);
 
-const CartList = ({
-  cartItems,
-  updateQuantity,
-  removeFromCart,
-}: CartItemListProps) => {
+  const updateQuantity = (productId: string, quantity: number) => {
+    updateQuantityAction({ productId, quantity });
+  };
+
   return (
     <>
       <h2 className="text-2xl font-semibold mb-4">장바구니 내역</h2>

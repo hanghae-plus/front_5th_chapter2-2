@@ -1,12 +1,14 @@
-import { CartItem, Product } from "../../../types";
+import { useAtomValue, useSetAtom } from "jotai";
 import { getMaxDiscount, getRemainingStock } from "../../models/cart";
+import { productsAtom } from "../../store/products/atom";
+import { cartItemsAtom } from "../../store/cart/atom";
+import { addToCartAtom } from "../../store/cart/action";
 
-interface ProductListProps {
-  products: Product[];
-  cart: CartItem[];
-  addToCart: (product: Product) => void;
-}
-const ProductList = ({ products, addToCart, cart }: ProductListProps) => {
+const ProductList = () => {
+  const products = useAtomValue(productsAtom);
+  const cart = useAtomValue(cartItemsAtom);
+  const addToCart = useSetAtom(addToCartAtom);
+
   return (
     <>
       <h2 className="text-2xl font-semibold mb-4">상품 목록</h2>
