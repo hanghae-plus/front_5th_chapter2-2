@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useProductsContext } from "../hooks";
+import { useProductsContext } from "../hooks/index.ts";
 import { Discount, Product } from "../../types.ts";
 
 export const Products = () => {
