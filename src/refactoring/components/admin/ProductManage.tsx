@@ -8,8 +8,6 @@ interface Props {
 }
 
 const ProductManage = ({ products, onProductAdd, onProductUpdate }: Props) => {
-  //새 상품 추가 폼 보여주는지 여부
-  //NOTE: not Entity
   const [showNewProductForm, setShowNewProductForm] = useState(false);
   //새 상품
   const [newProduct, setNewProduct] = useState<Omit<Product, "id">>({
@@ -25,7 +23,6 @@ const ProductManage = ({ products, onProductAdd, onProductUpdate }: Props) => {
     rate: 0,
   });
 
-  /** 새 상품을 추가합니다. */
   const handleAddNewProduct = () => {
     //시간으로 id 설정
     const productWithId = { ...newProduct, id: Date.now().toString() };

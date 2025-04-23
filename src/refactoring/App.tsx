@@ -53,7 +53,8 @@ const App = () => {
   //데이터, 액션, 액션
   const { products, updateProduct, addProduct } = useProducts(initialProducts);
   //데이터, 액션
-  const { coupons, addCoupon } = useCoupons(initialCoupons);
+  const { coupons, newCoupon, handleAddNewCoupon, setNewCoupon } =
+    useCoupons(initialCoupons);
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -73,9 +74,11 @@ const App = () => {
           <AdminPage
             products={products}
             coupons={coupons}
+            newCoupon={newCoupon}
             onProductUpdate={updateProduct}
             onProductAdd={addProduct}
-            onCouponAdd={addCoupon}
+            setNewCoupon={setNewCoupon}
+            handleAddNewCoupon={handleAddNewCoupon}
           />
         ) : (
           <CartPage products={products} coupons={coupons} />

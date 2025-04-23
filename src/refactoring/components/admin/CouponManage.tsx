@@ -1,22 +1,24 @@
 import { Coupon } from "../../../types";
-import { useCoupons } from "../../hooks";
 
 interface Props {
   coupons: Coupon[];
-  onCouponAdd: (newCoupon: Coupon) => void;
+  newCoupon: Coupon;
+  setNewCoupon: React.Dispatch<React.SetStateAction<Coupon>>;
+  handleAddNewCoupon: () => void;
 }
 
-const CouponManage = ({ coupons, onCouponAdd }: Props) => {
-  const { newCoupon, setNewCoupon, handleAddNewCoupon } = useCoupons(coupons);
-
+const CouponManage = ({
+  coupons,
+  newCoupon,
+  setNewCoupon,
+  handleAddNewCoupon,
+}: Props) => {
   return (
     <>
       <div>
         <h2 className="text-2xl font-semibold mb-4">쿠폰 관리</h2>
         <div className="bg-white p-4 rounded shadow">
-          {/* 쿠폰 추가 영역 */}
           <div className="space-y-2 mb-4">
-            {/* 쿠폰 이름과 코드 입력 */}
             <input
               type="text"
               placeholder="쿠폰 이름"
@@ -35,7 +37,6 @@ const CouponManage = ({ coupons, onCouponAdd }: Props) => {
               }
               className="w-full p-2 border rounded"
             />
-            {/* 할인율과 할인값 입력 */}
             <div className="flex gap-2">
               <select
                 value={newCoupon.discountType}
@@ -63,15 +64,13 @@ const CouponManage = ({ coupons, onCouponAdd }: Props) => {
                 className="w-full p-2 border rounded"
               />
             </div>
-            {/* 쿠폰추가 버튼 */}
             <button
-              onClick={() => handleAddNewCoupon(onCouponAdd)}
+              onClick={() => handleAddNewCoupon()}
               className="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600"
             >
               쿠폰 추가
             </button>
           </div>
-          {/* 현재 쿠폰 목록 */}
           <div>
             <h3 className="text-lg font-semibold mb-2">현재 쿠폰 목록</h3>
             <div className="space-y-2">

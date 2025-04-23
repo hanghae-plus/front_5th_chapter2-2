@@ -29,8 +29,8 @@ export const useCoupons = (initialCoupons: Coupon[]) => {
     });
   };
 
-  const handleAddNewCoupon = (onCouponAdd: (newCoupon: Coupon) => void) => {
-    onCouponAdd(newCoupon);
+  const handleAddNewCoupon = () => {
+    addCoupon(newCoupon);
     resetNewCoupon();
   };
 

@@ -55,7 +55,12 @@ const mockCoupons: Coupon[] = [
 const TestAdminPage = () => {
   const [products, setProducts] = useState<Product[]>(mockProducts);
   const [coupons, setCoupons] = useState<Coupon[]>(mockCoupons);
-
+  const [newCoupon, setNewCoupon] = useState<Coupon>({
+    name: "",
+    code: "",
+    discountType: "percentage",
+    discountValue: 0,
+  });
   const handleProductUpdate = (updatedProduct: Product) => {
     setProducts((prevProducts) =>
       prevProducts.map((p) =>
@@ -68,17 +73,35 @@ const TestAdminPage = () => {
     setProducts((prevProducts) => [...prevProducts, newProduct]);
   };
 
-  const handleCouponAdd = (newCoupon: Coupon) => {
+  // const handleCouponAdd = (newCoupon: Coupon) => {
+  //   setCoupons((prevCoupons) => [...prevCoupons, newCoupon]);
+  // };
+  const addCoupon = (newCoupon: Coupon) => {
     setCoupons((prevCoupons) => [...prevCoupons, newCoupon]);
+  };
+
+  const resetNewCoupon = () => {
+    setNewCoupon({
+      name: "",
+      code: "",
+      discountType: "percentage",
+      discountValue: 0,
+    });
+  };
+  const handleAddNewCoupon = () => {
+    addCoupon(newCoupon);
+    resetNewCoupon();
   };
 
   return (
     <AdminPage
       products={products}
       coupons={coupons}
+      newCoupon={newCoupon}
       onProductUpdate={handleProductUpdate}
       onProductAdd={handleProductAdd}
-      onCouponAdd={handleCouponAdd}
+      setNewCoupon={setNewCoupon}
+      handleAddNewCoupon={handleAddNewCoupon}
     />
   );
 };

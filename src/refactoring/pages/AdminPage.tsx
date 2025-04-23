@@ -5,17 +5,21 @@ import CouponManage from "../components/admin/CouponManage.tsx";
 interface Props {
   products: Product[];
   coupons: Coupon[];
+  newCoupon: Coupon;
   onProductUpdate: (updatedProduct: Product) => void;
   onProductAdd: (newProduct: Product) => void;
-  onCouponAdd: (newCoupon: Coupon) => void;
+  setNewCoupon: React.Dispatch<React.SetStateAction<Coupon>>;
+  handleAddNewCoupon: () => void;
 }
 
 export const AdminPage = ({
   products,
   coupons,
+  newCoupon,
   onProductUpdate,
   onProductAdd,
-  onCouponAdd,
+  setNewCoupon,
+  handleAddNewCoupon,
 }: Props) => {
   return (
     <div className="container mx-auto p-4">
@@ -26,7 +30,12 @@ export const AdminPage = ({
           onProductAdd={onProductAdd}
           onProductUpdate={onProductUpdate}
         />
-        <CouponManage coupons={coupons} onCouponAdd={onCouponAdd} />
+        <CouponManage
+          coupons={coupons}
+          newCoupon={newCoupon}
+          setNewCoupon={setNewCoupon}
+          handleAddNewCoupon={handleAddNewCoupon}
+        />
       </div>
     </div>
   );
