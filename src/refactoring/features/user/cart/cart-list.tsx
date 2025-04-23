@@ -1,5 +1,6 @@
 import { CartItem } from "../../../entities";
 import { getMaxApplicableDiscount } from "../../../models/cart";
+import { ListWrapper } from "../../../ui/list-wrapper";
 
 interface CartListProps {
   cart: CartItem[];
@@ -14,7 +15,7 @@ export const CartList = (props: CartListProps) => {
   const { updateQuantity, removeFromCart } = props.actions;
 
   return (
-    <div className="space-y-2">
+    <ListWrapper>
       {cart.map((item) => {
         const appliedDiscount = getMaxApplicableDiscount(item);
         return (
@@ -57,6 +58,6 @@ export const CartList = (props: CartListProps) => {
           </div>
         );
       })}
-    </div>
+    </ListWrapper>
   );
 };

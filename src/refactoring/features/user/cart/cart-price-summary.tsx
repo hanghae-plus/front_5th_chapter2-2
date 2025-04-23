@@ -1,7 +1,7 @@
-import { CardWithTitle } from "../../../\bui/card-with-title";
 import { CartItem } from "../../../entities";
 import { useSelectedCoupon } from "../../../hooks";
 import { calculateCartTotal } from "../../../models/cart";
+import { CardWithTitle } from "../../../ui/card-with-title";
 
 interface Props {
   cart: CartItem[];

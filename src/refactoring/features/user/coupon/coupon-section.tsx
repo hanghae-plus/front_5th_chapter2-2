@@ -1,5 +1,5 @@
-import { CardWithTitle } from "../../../\bui/card-with-title";
 import { useCoupons, useSelectedCoupon } from "../../../hooks";
+import { CardWithTitle } from "../../../ui/card-with-title";
 
 export const CouponSection = () => {
   const { coupons } = useCoupons();

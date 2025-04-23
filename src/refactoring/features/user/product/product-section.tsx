@@ -1,7 +1,8 @@
-import { Section } from "../../../\bui/section";
 import { getRemainingStock } from "../../../calculations/cart/calc-item";
 import { getMaxDiscount } from "../../../calculations/discount/calc-discount-rate";
 import { CartItem, Product } from "../../../entities";
+import { ListWrapper } from "../../../ui/list-wrapper";
+import { Section } from "../../../ui/section";
 
 interface Props {
   products: Product[];
@@ -12,7 +13,7 @@ interface Props {
 export const ProductSection = ({ products, cart, addToCart }: Props) => {
   return (
     <Section title="상품 목록">
-      <div className="space-y-2">
+      <ListWrapper>
         {products.map((product) => {
           const remainingStock = getRemainingStock(product, cart);
           return (
@@ -60,7 +61,7 @@ export const ProductSection = ({ products, cart, addToCart }: Props) => {
             </div>
           );
         })}
-      </div>
+      </ListWrapper>
     </Section>
   );
 };

@@ -1,5 +1,5 @@
-import { Section } from "../../../\bui/section";
 import { useProductStore } from "../../../store/product-store";
+import { Section } from "../../../ui/section";
 import { NewProductForm } from "./new-product-form";
 import { ProductList } from "./product-list";
 

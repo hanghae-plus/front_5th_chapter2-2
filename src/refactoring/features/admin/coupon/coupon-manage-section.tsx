@@ -1,5 +1,6 @@
-import { Section } from "../../../\bui/section";
 import { useCoupons } from "../../../hooks";
+import { ListWrapper } from "../../../ui/list-wrapper";
+import { Section } from "../../../ui/section";
 
 export const CouponManageSection = () => {
   const { coupons, newCoupon, updateNewCoupon, handleAddCoupon } = useCoupons();
@@ -54,7 +55,7 @@ export const CouponManageSection = () => {
         </div>
         <div>
           <h3 className="text-lg font-semibold mb-2">현재 쿠폰 목록</h3>
-          <div className="space-y-2">
+          <ListWrapper>
             {coupons.map((coupon, index) => (
               <div
                 key={index}
@@ -68,7 +69,7 @@ export const CouponManageSection = () => {
                 할인
               </div>
             ))}
-          </div>
+          </ListWrapper>
         </div>
       </div>
     </Section>

@@ -1,5 +1,5 @@
-import { Section } from "../../../\bui/section";
 import { CartItem } from "../../../entities";
+import { Section } from "../../../ui/section";
 import { CouponSection } from "../coupon/coupon-section";
 import { CartList } from "./cart-list";
 import { CartPriceSummary } from "./cart-price-summary";
