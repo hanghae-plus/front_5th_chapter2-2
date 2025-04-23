@@ -11,7 +11,7 @@ const ProductList = (props: ProductListProps) => {
   const { products, onAddToCart, getRemainingStock } = props;
 
   return (
-    <>
+    <div className="space-y-2">
       {products.map((product) => {
         return (
           <ProductListItem
@@ -22,7 +22,7 @@ const ProductList = (props: ProductListProps) => {
           />
         );
       })}
-    </>
+    </div>
   );
 };
 

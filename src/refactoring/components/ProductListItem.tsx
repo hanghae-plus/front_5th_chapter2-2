@@ -9,7 +9,7 @@ interface ProductListItemProps {
   remainingStock: number;
 }
 
-const ProductListItem = memo((props: ProductListItemProps) => {
+const ProductListItem = (props: ProductListItemProps) => {
   const { product, remainingStock, onAddToCart } = props;
 
   const handleAddToCart = useCallback(() => {
@@ -63,6 +63,6 @@ const ProductListItem = memo((props: ProductListItemProps) => {
       </button>
     </div>
   );
-});
+};
 
-export default ProductListItem;
+export default memo(ProductListItem);
