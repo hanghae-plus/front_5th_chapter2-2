@@ -1,25 +1,21 @@
-import { useAtomValue, useSetAtom } from "jotai";
-import { couponsAtom } from "../../store/coupons/atom";
-import { selectedCouponAtom } from "../../store/cart/atom";
-import { applyCouponAtom } from "../../store/cart/action";
+import { Coupon } from "../../../types";
 
-const CouponSelector = () => {
-  const coupons = useAtomValue(couponsAtom);
-  const selectedCoupon = useAtomValue(selectedCouponAtom);
-  const applyCoupon = useSetAtom(applyCouponAtom);
+interface CouponSelectorProps {
+  coupons: Coupon[];
+  selectedCoupon: Coupon | null;
+  applyCoupon: (coupon: Coupon) => void;
+}
 
+const CouponSelector = ({
+  coupons,
+  selectedCoupon,
+  applyCoupon,
+}: CouponSelectorProps) => {
   return (
     <div className="mt-6 bg-white p-4 rounded shadow">
       <h2 className="text-2xl font-semibold mb-2">쿠폰 적용</h2>
       <select
-        onChange={(e) => {
-          const value = e.target.value;
-          if (value === "") {
-            applyCoupon(null);
-          } else {
-            applyCoupon(coupons[parseInt(value)]);
-          }
-        }}
+        onChange={(e) => applyCoupon(coupons[parseInt(e.target.value)])}
         className="w-full p-2 border rounded mb-2"
         value={
           selectedCoupon
