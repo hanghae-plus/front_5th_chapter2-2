@@ -1,5 +1,14 @@
 import { NavHeaderProps } from './NavHeader';
 
+/**
+ * todo
+ * 토글도 나누기?
+ *
+ * isA: boolean
+ * onToggle : () => void
+ * toggleTexts : string[] // 배열 길이가 2 밖에 안되는데 이렇게 타입을 받는지 맞는가?
+ *
+ */
 const TogglePageButton = ({ isAdmin, onToggle }: NavHeaderProps) => {
   return (
     <button
