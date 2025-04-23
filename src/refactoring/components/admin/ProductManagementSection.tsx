@@ -1,7 +1,8 @@
 // components/admin/product/ProductManagementSection.tsx
-import { useState } from "react";
-import { Product, Discount } from "../../../types";
+import { Product } from "../../../types";
 import { SectionLayout } from "../common";
+import { useProductManagement } from "../../hooks";
+import { CreateProductForm } from "./CreateProductForm";
 
 interface ProductManagementSectionProps {
   products: Product[];
@@ -14,96 +15,16 @@ export const ProductManagementSection = ({
   onProductUpdate,
   onProductAdd,
 }: ProductManagementSectionProps) => {
-  // 상태 관리
-  const [openProductIds, setOpenProductIds] = useState<Set<string>>(new Set());
-  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
-  const [showNewProductForm, setShowNewProductForm] = useState(false);
-  const [newProduct, setNewProduct] = useState<Omit<Product, "id">>({
-    name: "",
-    price: 0,
-    stock: 0,
-    discounts: [],
-  });
-  const [newDiscount, setNewDiscount] = useState<Discount>({
-    quantity: 0,
-    rate: 0,
-  });
+  const { accordion, productEdit, discount, productCreate } =
+    useProductManagement({ onProductUpdate, onProductAdd });
 
-  // 핸들러 함수들
-  const toggleProductAccordion = (productId: string) => {
-    setOpenProductIds((prev) => {
-      const newSet = new Set(prev);
-      if (newSet.has(productId)) {
-        newSet.delete(productId);
-      } else {
-        newSet.add(productId);
-      }
-      return newSet;
-    });
-  };
-
-  const handleEditProduct = (product: Product) => {
-    setEditingProduct({ ...product });
-  };
-
-  const handleEditComplete = () => {
-    if (editingProduct) {
-      onProductUpdate(editingProduct);
-      setEditingProduct(null);
-    }
-  };
-
-  const handleProductNameUpdate = (productId: string, newName: string) => {
-    if (editingProduct && editingProduct.id === productId) {
-      setEditingProduct({ ...editingProduct, name: newName });
-    }
-  };
-
-  const handlePriceUpdate = (productId: string, newPrice: number) => {
-    if (editingProduct && editingProduct.id === productId) {
-      setEditingProduct({ ...editingProduct, price: newPrice });
-    }
-  };
-
-  const handleStockUpdate = (productId: string, newStock: number) => {
-    if (editingProduct && editingProduct.id === productId) {
-      setEditingProduct({ ...editingProduct, stock: newStock });
-    }
-  };
-
-  const handleAddDiscount = (productId: string) => {
-    if (editingProduct && editingProduct.id === productId) {
-      setEditingProduct({
-        ...editingProduct,
-        discounts: [...editingProduct.discounts, newDiscount],
-      });
-      setNewDiscount({ quantity: 0, rate: 0 });
-    }
-  };
-
-  const handleRemoveDiscount = (productId: string, index: number) => {
-    if (editingProduct && editingProduct.id === productId) {
-      setEditingProduct({
-        ...editingProduct,
-        discounts: editingProduct.discounts.filter((_, i) => i !== index),
-      });
-    }
-  };
-
-  const handleAddNewProduct = () => {
-    const productWithId = {
-      ...newProduct,
-      id: Date.now().toString(),
-    };
-    onProductAdd(productWithId);
-    setNewProduct({
-      name: "",
-      price: 0,
-      stock: 0,
-      discounts: [],
-    });
-    setShowNewProductForm(false);
-  };
+  const {
+    showNewProductForm,
+    setShowNewProductForm,
+    newProduct,
+    setNewProduct,
+    handleAddNewProduct,
+  } = productCreate;
 
   return (
     <SectionLayout title="상품 관리">
@@ -113,74 +34,12 @@ export const ProductManagementSection = ({
       >
         {showNewProductForm ? "취소" : "새 상품 추가"}
       </button>
-      {showNewProductForm && (
-        <div className="bg-white p-4 rounded shadow mb-4">
-          <h3 className="text-xl font-semibold mb-2">새 상품 추가</h3>
-          <div className="mb-2">
-            <label
-              htmlFor="productName"
-              className="block text-sm font-medium text-gray-700"
-            >
-              상품명
-            </label>
-            <input
-              id="productName"
-              type="text"
-              value={newProduct.name}
-              onChange={(e) =>
-                setNewProduct({ ...newProduct, name: e.target.value })
-              }
-              className="w-full p-2 border rounded"
-            />
-          </div>
-          <div className="mb-2">
-            <label
-              htmlFor="productPrice"
-              className="block text-sm font-medium text-gray-700"
-            >
-              가격
-            </label>
-            <input
-              id="productPrice"
-              type="number"
-              value={newProduct.price}
-              onChange={(e) =>
-                setNewProduct({
-                  ...newProduct,
-                  price: parseInt(e.target.value),
-                })
-              }
-              className="w-full p-2 border rounded"
-            />
-          </div>
-          <div className="mb-2">
-            <label
-              htmlFor="productStock"
-              className="block text-sm font-medium text-gray-700"
-            >
-              재고
-            </label>
-            <input
-              id="productStock"
-              type="number"
-              value={newProduct.stock}
-              onChange={(e) =>
-                setNewProduct({
-                  ...newProduct,
-                  stock: parseInt(e.target.value),
-                })
-              }
-              className="w-full p-2 border rounded"
-            />
-          </div>
-          <button
-            onClick={handleAddNewProduct}
-            className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
-          >
-            추가
-          </button>
-        </div>
-      )}
+      <CreateProductForm
+        formData={newProduct}
+        setFormData={setNewProduct}
+        handleSubmit={handleAddNewProduct}
+        showNewProductForm={showNewProductForm}
+      />
       <div className="space-y-2">
         {products.map((product, index) => (
           <div
@@ -190,22 +49,27 @@ export const ProductManagementSection = ({
           >
             <button
               data-testid="toggle-button"
-              onClick={() => toggleProductAccordion(product.id)}
+              onClick={() => accordion.toggle(product.id)}
               className="w-full text-left font-semibold"
             >
               {product.name} - {product.price}원 (재고: {product.stock})
             </button>
-            {openProductIds.has(product.id) && (
+            {accordion.isOpen(product.id) && (
               <div className="mt-2">
-                {editingProduct && editingProduct.id === product.id ? (
+                {productEdit.editingProduct &&
+                productEdit.editingProduct.id === product.id ? (
                   <div>
                     <div className="mb-4">
                       <label className="block mb-1">상품명: </label>
                       <input
                         type="text"
-                        value={editingProduct.name}
+                        value={productEdit.editingProduct.name}
                         onChange={(e) =>
-                          handleProductNameUpdate(product.id, e.target.value)
+                          productEdit.handleFieldUpdate(
+                            product.id,
+                            "name",
+                            e.target.value
+                          )
                         }
                         className="w-full p-2 border rounded"
                       />
@@ -214,10 +78,11 @@ export const ProductManagementSection = ({
                       <label className="block mb-1">가격: </label>
                       <input
                         type="number"
-                        value={editingProduct.price}
+                        value={productEdit.editingProduct.price}
                         onChange={(e) =>
-                          handlePriceUpdate(
+                          productEdit.handleFieldUpdate(
                             product.id,
+                            "price",
                             parseInt(e.target.value)
                           )
                         }
@@ -228,10 +93,11 @@ export const ProductManagementSection = ({
                       <label className="block mb-1">재고: </label>
                       <input
                         type="number"
-                        value={editingProduct.stock}
+                        value={productEdit.editingProduct.stock}
                         onChange={(e) =>
-                          handleStockUpdate(
+                          productEdit.handleFieldUpdate(
                             product.id,
+                            "stock",
                             parseInt(e.target.value)
                           )
                         }
@@ -239,7 +105,7 @@ export const ProductManagementSection = ({
                       />
                     </div>
                     {/* 할인 정보 수정 부분 */}
-                    <div>
+                    {/* <div>
                       <h4 className="text-lg font-semibold mb-2">할인 정보</h4>
                       {editingProduct.discounts.map((discount, index) => (
                         <div
@@ -292,9 +158,9 @@ export const ProductManagementSection = ({
                           할인 추가
                         </button>
                       </div>
-                    </div>
+                    </div> */}
                     <button
-                      onClick={handleEditComplete}
+                      onClick={productEdit.handleEditComplete}
                       className="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600 mt-2"
                     >
                       수정 완료
@@ -312,7 +178,7 @@ export const ProductManagementSection = ({
                     ))}
                     <button
                       data-testid="modify-button"
-                      onClick={() => handleEditProduct(product)}
+                      onClick={() => productEdit.handleEditProduct(product)}
                       className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 mt-2"
                     >
                       수정
