@@ -1,9 +1,19 @@
 import { useState } from "react";
-import { useProductsContext } from "../hooks/index.ts";
 import { Discount, Product } from "../../types.ts";
 
-export const Products = () => {
-  const { products, updateProduct: onProductUpdate } = useProductsContext();
+interface Props {
+    product: Product;
+    index: number;
+    onProductUpdate: (product: Product) => void;
+    getProductById: (productId: string) => Product | undefined;
+}
+
+export const AdminProduct = ({
+    product, 
+    index, 
+    onProductUpdate,
+    getProductById,
+}: Props) => {
   const [openProductIds, setOpenProductIds] = useState<Set<string>>(new Set());
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [newDiscount, setNewDiscount] = useState<Discount>({
@@ -53,7 +63,7 @@ export const Products = () => {
   };
 
   const handleStockUpdate = (productId: string, newStock: number) => {
-    const updatedProduct = products.find((p) => p.id === productId);
+    const updatedProduct = getProductById(productId);
     if (updatedProduct) {
       const newProduct = { ...updatedProduct, stock: newStock };
       onProductUpdate(newProduct);
@@ -62,7 +72,7 @@ export const Products = () => {
   };
 
   const handleAddDiscount = (productId: string) => {
-    const updatedProduct = products.find((p) => p.id === productId);
+    const updatedProduct = getProductById(productId);
     if (updatedProduct && editingProduct) {
       const newProduct = {
         ...updatedProduct,
@@ -75,7 +85,7 @@ export const Products = () => {
   };
 
   const handleRemoveDiscount = (productId: string, index: number) => {
-    const updatedProduct = products.find((p) => p.id === productId);
+    const updatedProduct = getProductById(productId);
     if (updatedProduct) {
       const newProduct = {
         ...updatedProduct,
@@ -87,9 +97,7 @@ export const Products = () => {
   };
 
   return (
-    <div className="space-y-2">
-      {products.map((product, index) => (
-        <div
+    <div
           key={product.id}
           data-testid={`product-${index + 1}`}
           className="bg-white p-4 rounded shadow"
@@ -222,7 +230,5 @@ export const Products = () => {
             </div>
           )}
         </div>
-      ))}
-    </div>
   );
 };

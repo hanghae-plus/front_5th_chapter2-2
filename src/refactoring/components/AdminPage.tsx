@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Coupon, Product } from "../../types.ts";
 import { useProductsContext } from "../hooks";
-import { Products } from "./AdminProducts.tsx";
+import { AdminProductList } from "./AdminProductList.tsx";
 
 interface Props {
   coupons: Coupon[];
@@ -126,7 +126,7 @@ export const AdminPage = ({ coupons, onCouponAdd }: Props) => {
               </button>
             </div>
           )}
-          <Products />
+          <AdminProductList />
         </div>
         <div>
           <h2 className="text-2xl font-semibold mb-4">쿠폰 관리</h2>
