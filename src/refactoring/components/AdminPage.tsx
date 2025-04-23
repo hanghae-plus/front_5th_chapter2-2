@@ -358,7 +358,9 @@ export const AdminPage = ({ products, coupons, onProductUpdate, onProductAdd, on
                   }
                 >
                   {selectList.map((item) => (
-                    <CustomSelect.Option value={item.value}>{item.text}</CustomSelect.Option>
+                    <CustomSelect.Option key={item.value} value={item.value}>
+                      {item.text}
+                    </CustomSelect.Option>
                   ))}
                 </CustomSelect.Root>
                 <input
