@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Discount, Product } from "../../../types";
+import { initialNewProducts } from "../../constants";
 
 interface Props {
   products: Product[];
@@ -9,13 +10,8 @@ interface Props {
 
 const ProductManage = ({ products, onProductAdd, onProductUpdate }: Props) => {
   const [showNewProductForm, setShowNewProductForm] = useState(false);
-  //새 상품
-  const [newProduct, setNewProduct] = useState<Omit<Product, "id">>({
-    name: "",
-    price: 0,
-    stock: 0,
-    discounts: [],
-  });
+  const [newProduct, setNewProduct] =
+    useState<Omit<Product, "id">>(initialNewProducts);
   const [openProductIds, setOpenProductIds] = useState<Set<string>>(new Set());
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [newDiscount, setNewDiscount] = useState<Discount>({
@@ -27,12 +23,7 @@ const ProductManage = ({ products, onProductAdd, onProductUpdate }: Props) => {
     //시간으로 id 설정
     const productWithId = { ...newProduct, id: Date.now().toString() };
     onProductAdd(productWithId); //전역적으로 새로운 상품을 추가
-    setNewProduct({
-      name: "",
-      price: 0,
-      stock: 0,
-      discounts: [],
-    });
+    setNewProduct(initialNewProducts);
     setShowNewProductForm(false); //새 상품 추가 후, 폼 닫기
   };
 

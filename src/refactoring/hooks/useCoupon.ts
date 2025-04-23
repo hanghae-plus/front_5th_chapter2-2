@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Coupon } from "../../types.ts";
+import { initialNewCoupon } from "../constants/coupon.ts";
 
 /**
  * 엔티티(쿠폰)을 다루는 훅
@@ -9,24 +10,14 @@ import { Coupon } from "../../types.ts";
  */
 export const useCoupons = (initialCoupons: Coupon[]) => {
   const [coupons, setCoupons] = useState<Coupon[]>(initialCoupons);
-  const [newCoupon, setNewCoupon] = useState<Coupon>({
-    name: "",
-    code: "",
-    discountType: "percentage",
-    discountValue: 0,
-  });
+  const [newCoupon, setNewCoupon] = useState<Coupon>(initialNewCoupon);
 
   const addCoupon = (newCoupon: Coupon) => {
     setCoupons((prevCoupons) => [...prevCoupons, newCoupon]);
   };
 
   const resetNewCoupon = () => {
-    setNewCoupon({
-      name: "",
-      code: "",
-      discountType: "percentage",
-      discountValue: 0,
-    });
+    setNewCoupon(initialNewCoupon);
   };
 
   const handleAddNewCoupon = () => {
