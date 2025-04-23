@@ -7,19 +7,43 @@ export const useCart = () => {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
 
-  const addToCart = (product: Product) => {};
+  const addToCart = (product: Product) => {
+    if (product.stock <= 0) return;
 
-  const removeFromCart = (productId: string) => {};
+    setCart(prevCart => {
+      const existingIndex = prevCart.findIndex(item => item.product.id === product.id);
 
-  const updateQuantity = (productId: string, newQuantity: number) => {};
+      if (existingIndex >= 0) {
+        const updatedCart = [...prevCart];
+        const existingItem = updatedCart[existingIndex];
 
-  const applyCoupon = (coupon: Coupon) => {};
+        const newQuantity = Math.min(existingItem.quantity + 1, product.stock);
 
-  const calculateTotal = () => ({
-    totalBeforeDiscount: 0,
-    totalAfterDiscount: 0,
-    totalDiscount: 0,
-  });
+        updatedCart[existingIndex] = {
+          ...existingItem,
+          quantity: newQuantity,
+        };
+
+        return updatedCart;
+      } else {
+        return [...prevCart, { product, quantity: 1 }];
+      }
+    });
+  };
+
+  const removeFromCart = (productId: string) => {
+    setCart(prevCart => prevCart.filter(item => item.product.id !== productId));
+  };
+
+  const updateQuantity = (productId: string, newQuantity: number) => {
+    setCart(prevCart => updateCartItemQuantity(prevCart, productId, newQuantity));
+  };
+
+  const applyCoupon = (coupon: Coupon) => {
+    setSelectedCoupon(coupon);
+  };
+
+  const calculateTotal = () => calculateCartTotal(cart, selectedCoupon);
 
   return {
     cart,

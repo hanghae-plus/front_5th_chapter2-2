@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Product } from "../../types.ts";
+import {useState} from "react";
+import {Product} from "../../types.ts";
 import {initialProducts} from "../data/InitialInfo.tsx";
 
 export const useProducts = (initialData: Product[] = initialProducts) => {
