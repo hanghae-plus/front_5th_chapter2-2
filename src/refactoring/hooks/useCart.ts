@@ -1,7 +1,11 @@
 // useCart.ts
 import { useState } from 'react';
 import { CartItem, Coupon, Product } from '../../types';
-import { calculateCartTotal, updateCartItemQuantity } from '../models/cart';
+import {
+  calculateCartTotal,
+  calculateItemTotal,
+  updateCartItemQuantity,
+} from '../models/cart';
 
 export const useCart = () => {
   const [cart, setCart] = useState<CartItem[]>([]);
@@ -26,12 +30,7 @@ export const useCart = () => {
   const removeFromCart = (productId: string) => {};
 
   const updateQuantity = (productId: string, newQuantity: number) => {
-    const updatedCart = cart.map((item) => {
-      if (item.product.id === productId) {
-        return { ...item, quantity: newQuantity };
-      }
-      return item;
-    });
+    const updatedCart = updateCartItemQuantity(cart, productId, newQuantity);
     setCart(updatedCart);
   };
 
@@ -39,47 +38,7 @@ export const useCart = () => {
     setSelectedCoupon(coupon);
   };
 
-  const calculateTotal = () => {
-    let totalBeforeDiscount = 0;
-    let totalAfterDiscount = 0;
-
-    totalBeforeDiscount = cart.reduce((acc, item) => {
-      const { price } = item.product;
-      const { quantity } = item;
-      return acc + price * quantity;
-    }, 0);
-
-    totalAfterDiscount = cart.reduce((acc, item) => {
-      const { price } = item.product;
-      const { quantity } = item;
-      const discount = item.product.discounts.reduce((maxDiscount, d) => {
-        return quantity >= d.quantity && d.rate > maxDiscount
-          ? d.rate
-          : maxDiscount;
-      }, 0);
-      return acc + price * quantity * (1 - discount);
-    }, 0);
-
-    let totalDiscount = totalBeforeDiscount - totalAfterDiscount;
-
-    if (selectedCoupon) {
-      if (selectedCoupon.discountType === 'amount') {
-        totalAfterDiscount = Math.max(
-          0,
-          totalAfterDiscount - selectedCoupon.discountValue
-        );
-      } else {
-        totalAfterDiscount *= 1 - selectedCoupon.discountValue / 100;
-      }
-      totalDiscount = totalBeforeDiscount - totalAfterDiscount;
-    }
-
-    return {
-      totalBeforeDiscount: Math.round(totalBeforeDiscount),
-      totalAfterDiscount: Math.round(totalAfterDiscount),
-      totalDiscount: Math.round(totalDiscount),
-    };
-  };
+  const calculateTotal = () => calculateCartTotal(cart, selectedCoupon);
 
   return {
     cart,
