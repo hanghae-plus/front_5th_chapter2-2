@@ -5,24 +5,21 @@ import { useCouponContext } from "@/refactoring/entities/coupon/model/coupon-con
 
 interface CouponManagementProps {}
 
+const initialCoupon: Coupon = {
+  name: "",
+  code: "",
+  discountType: "percentage",
+  discountValue: 0,
+};
+
 export const CouponManagement: React.FC<CouponManagementProps> = ({}) => {
   const { coupons, addCoupon } = useCouponContext();
 
-  const [newCoupon, setNewCoupon] = useState<Coupon>({
-    name: "",
-    code: "",
-    discountType: "percentage",
-    discountValue: 0,
-  });
+  const [newCoupon, setNewCoupon] = useState<Coupon>(initialCoupon);
 
   const handleAddCoupon = () => {
     addCoupon(newCoupon);
-    setNewCoupon({
-      name: "",
-      code: "",
-      discountType: "percentage",
-      discountValue: 0,
-    });
+    setNewCoupon(initialCoupon);
   };
 
   return (
