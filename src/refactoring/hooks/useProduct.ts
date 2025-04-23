@@ -1,28 +1,17 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { Product } from '../../types.ts';
+import { updateProductList } from '../utils/productUtils.ts';
 
 export const useProducts = (initialProducts: Product[]) => {
   const [products, setProducts] = useState<Product[]>(initialProducts);
 
-  function updateProduct(product: Partial<Product>) {
-    setProducts((prevProducts) => {
-      const targetIndex = prevProducts.findIndex((p) => p.id === product.id);
-      if (targetIndex === -1) {
-        throw new Error(`Product with id ${product.id} not found`);
-      } else {
-        const updatedProducts = [...prevProducts];
-        updatedProducts[targetIndex] = {
-          ...updatedProducts[targetIndex],
-          ...product,
-        };
-        return updatedProducts;
-      }
-    });
-  }
+  const updateProduct = useCallback((product: Product) => {
+    setProducts((prevProducts) => updateProductList(prevProducts, product));
+  }, []);
 
-  function addProduct(newProduct: Product) {
+  const addProduct = useCallback((newProduct: Product) => {
     setProducts((prevProducts) => [...prevProducts, newProduct]);
-  }
+  }, []);
 
   return {
     products,
