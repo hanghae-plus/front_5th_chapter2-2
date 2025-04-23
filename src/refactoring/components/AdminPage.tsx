@@ -3,6 +3,7 @@ import { Coupon, Discount, Product } from '../../types.ts';
 import Container from './Container.tsx';
 import ContainerTitle from './ContainerTitle.tsx';
 import CustomButton from '../../refactoring/components/CustomButton';
+import CustomSelect from './\bCustomSelect.tsx';
 
 interface Props {
   products: Product[];
@@ -11,6 +12,11 @@ interface Props {
   onProductAdd: (newProduct: Product) => void;
   onCouponAdd: (newCoupon: Coupon) => void;
 }
+
+const selectList = [
+  { value: 'amount', text: '금액(원)' },
+  { value: 'percentage', text: '할인율(%)' },
+];
 
 export const AdminPage = ({ products, coupons, onProductUpdate, onProductAdd, onCouponAdd }: Props) => {
   const [openProductIds, setOpenProductIds] = useState<Set<string>>(new Set());
@@ -342,7 +348,7 @@ export const AdminPage = ({ products, coupons, onProductUpdate, onProductAdd, on
                 className="w-full p-2 border rounded"
               />
               <div className="flex gap-2">
-                <select
+                <CustomSelect.Root
                   value={newCoupon.discountType}
                   onChange={(e) =>
                     setNewCoupon({
@@ -350,11 +356,11 @@ export const AdminPage = ({ products, coupons, onProductUpdate, onProductAdd, on
                       discountType: e.target.value as 'amount' | 'percentage',
                     })
                   }
-                  className="w-full p-2 border rounded"
                 >
-                  <option value="amount">금액(원)</option>
-                  <option value="percentage">할인율(%)</option>
-                </select>
+                  {selectList.map((item) => (
+                    <CustomSelect.Option value={item.value}>{item.text}</CustomSelect.Option>
+                  ))}
+                </CustomSelect.Root>
                 <input
                   type="number"
                   placeholder="할인 값"

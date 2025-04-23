@@ -1,5 +1,6 @@
 import { CartItem, Coupon, Product } from '../../types.ts';
 import { useCart } from '../hooks';
+import CustomSelect from './\bCustomSelect.tsx';
 import Container from './Container.tsx';
 import ContainerTitle from './ContainerTitle.tsx';
 import CustomButton from './CustomButton.tsx';
@@ -124,19 +125,17 @@ export const CartPage = ({ products, coupons }: Props) => {
 
           <Container className="mt-6 p-4">
             <ContainerTitle title="쿠폰 적용" mb="2" />
+            <CustomSelect.Root onChange={(e) => applyCoupon(coupons[parseInt(e.target.value)])}>
+              <CustomSelect.Option value="">쿠폰 선택</CustomSelect.Option>
 
-            <select
-              onChange={(e) => applyCoupon(coupons[parseInt(e.target.value)])}
-              className="w-full p-2 border rounded mb-2"
-            >
-              <option value="">쿠폰 선택</option>
               {coupons.map((coupon, index) => (
-                <option key={coupon.code} value={index}>
+                <CustomSelect.Option key={coupon.code} value={index}>
                   {coupon.name} -{' '}
                   {coupon.discountType === 'amount' ? `${coupon.discountValue}원` : `${coupon.discountValue}%`}
-                </option>
+                </CustomSelect.Option>
               ))}
-            </select>
+            </CustomSelect.Root>
+
             {selectedCoupon && (
               <p className="text-green-600">
                 적용된 쿠폰: {selectedCoupon.name}(
