@@ -2,9 +2,10 @@ import { describe, expect, test } from "vitest";
 import { act, fireEvent, render, screen, within } from "@testing-library/react";
 import CartPage from "../../refactoring/pages/cart";
 import AdminPage from "../../refactoring/pages/admin";
-import type { CouponItem, Product } from "../../refactoring/types";
+import type { CartItem, CouponItem, Product } from "../../refactoring/types";
 import { useSetAtom } from "jotai";
 import { setCouponsAtom, setProductsAtom } from "../../refactoring/state";
+import { getMaxDiscount, getRemainingStock } from "../../refactoring/utils";
 
 const mockProducts: Product[] = [
   {
@@ -249,13 +250,57 @@ describe("advanced > ", () => {
     });
   });
 
-  describe("자유롭게 작성해보세요.", () => {
+  describe("", () => {
     test("새로운 유틸 함수를 만든 후에 테스트 코드를 작성해서 실행해보세요", () => {
       expect(true).toBe(false);
     });
+  });
 
-    test("새로운 hook 함수를 만든 후에 테스트 코드를 작성해서 실행해보세요", () => {
-      expect(true).toBe(false);
+  describe("getRemainingStock 함수 테스트", () => {
+    const product: Product = {
+      id: "p1",
+      name: "상품1",
+      price: 1000,
+      stock: 5,
+      discounts: [],
+    };
+
+    test("카트에 아무것도 없으면 전체 재고를 반환한다", () => {
+      const remaining = getRemainingStock(product, []);
+      expect(remaining).toBe(5);
+    });
+
+    test("카트에 담긴 수량만큼 재고가 차감되어야 한다", () => {
+      const cart: CartItem[] = [
+        { product, quantity: 2 },
+        { product: { ...product, id: "p2", stock: 10 }, quantity: 3 },
+      ];
+      const remaining = getRemainingStock(product, cart);
+      expect(remaining).toBe(3);
+    });
+  });
+
+  describe("getMaxDiscount 함수 테스트", () => {
+    test("빈 배열을 넘기면 0을 반환한다", () => {
+      expect(getMaxDiscount([])).toBe(0);
+    });
+
+    test("여러 할인율 중 최댓값을 반환한다", () => {
+      const discounts = [
+        { quantity: 1, rate: 0.05 },
+        { quantity: 5, rate: 0.1 },
+        { quantity: 10, rate: 0.2 },
+        { quantity: 3, rate: 0.15 },
+      ];
+      expect(getMaxDiscount(discounts)).toBe(0.2);
+    });
+
+    test("모두 동일한 할인율이면 그 값을 반환한다", () => {
+      const discounts = [
+        { quantity: 2, rate: 0.1 },
+        { quantity: 4, rate: 0.1 },
+      ];
+      expect(getMaxDiscount(discounts)).toBe(0.1);
     });
   });
 });
