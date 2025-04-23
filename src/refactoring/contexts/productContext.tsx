@@ -10,15 +10,18 @@ interface ProductContextValue {
   addProduct: (newProduct: Product) => void;
 }
 
-const ProductContext = createContext<ProductContextValue | null>(null);
+const ProductContext = createContext<ProductContextValue | undefined>(
+  undefined,
+);
 
 interface ProductProviderProps {
   children: React.ReactNode;
+  initialProducts?: Product[];
 }
 
 export const ProductProvider: React.FC<ProductProviderProps> = (props) => {
-  const { children } = props;
-  const { products, updateProduct, addProduct } = useProducts(DEFAULT_PRODUCTS);
+  const { children, initialProducts = DEFAULT_PRODUCTS } = props;
+  const { products, updateProduct, addProduct } = useProducts(initialProducts);
 
   return (
     <ProductContext.Provider value={{ products, updateProduct, addProduct }}>
