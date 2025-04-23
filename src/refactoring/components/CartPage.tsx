@@ -1,6 +1,8 @@
 import { CartItem, Coupon, Product } from '../../types.ts';
 import { useCart } from '../hooks';
 import Container from './Container.tsx';
+import ContainerTitle from './ContainerTitle.tsx';
+import CustomButton from './CustomButton.tsx';
 
 interface Props {
   products: Product[];
@@ -38,7 +40,7 @@ export const CartPage = ({ products, coupons }: Props) => {
       <h1 className="text-3xl font-bold mb-6">장바구니</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <h2 className="text-2xl font-semibold mb-4">상품 목록</h2>
+          <ContainerTitle title="상품 목록" mb="4" />
           <div className="space-y-2">
             {products.map((product) => {
               const remainingStock = getRemainingStock(product);
@@ -84,7 +86,7 @@ export const CartPage = ({ products, coupons }: Props) => {
           </div>
         </div>
         <div>
-          <h2 className="text-2xl font-semibold mb-4">장바구니 내역</h2>
+          <ContainerTitle title="장바구니 내역" mb="4" />
 
           <div className="space-y-2">
             {cart.map((item) => {
@@ -102,24 +104,18 @@ export const CartPage = ({ products, coupons }: Props) => {
                     </span>
                   </div>
                   <div>
-                    <button
+                    <CustomButton
                       onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
-                      className="bg-gray-300 text-gray-800 px-2 py-1 rounded mr-1 hover:bg-gray-400"
-                    >
-                      -
-                    </button>
-                    <button
+                      label="-"
+                      variant="bg-gray"
+                    />
+
+                    <CustomButton
                       onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
-                      className="bg-gray-300 text-gray-800 px-2 py-1 rounded mr-1 hover:bg-gray-400"
-                    >
-                      +
-                    </button>
-                    <button
-                      onClick={() => removeFromCart(item.product.id)}
-                      className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
-                    >
-                      삭제
-                    </button>
+                      label="+"
+                      variant="bg-gray"
+                    />
+                    <CustomButton onClick={() => removeFromCart(item.product.id)} label="삭제" variant="bg-red" />
                   </div>
                 </Container>
               );
@@ -127,7 +123,8 @@ export const CartPage = ({ products, coupons }: Props) => {
           </div>
 
           <Container className="mt-6 p-4">
-            <h2 className="text-2xl font-semibold mb-2">쿠폰 적용</h2>
+            <ContainerTitle title="쿠폰 적용" mb="2" />
+
             <select
               onChange={(e) => applyCoupon(coupons[parseInt(e.target.value)])}
               className="w-full p-2 border rounded mb-2"
@@ -152,7 +149,7 @@ export const CartPage = ({ products, coupons }: Props) => {
           </Container>
 
           <Container className="mt-6 p-4">
-            <h2 className="text-2xl font-semibold mb-2">주문 요약</h2>
+            <ContainerTitle title="주문 요약" mb="2" />
             <div className="space-y-1">
               <p>상품 금액: {totalBeforeDiscount.toLocaleString()}원</p>
               <p className="text-green-600">할인 금액: {totalDiscount.toLocaleString()}원</p>

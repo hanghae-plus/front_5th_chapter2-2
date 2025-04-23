@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Coupon, Discount, Product } from '../../types.ts';
 import Container from './Container.tsx';
+import ContainerTitle from './ContainerTitle.tsx';
+import CustomButton from '../../refactoring/components/CustomButton';
 
 interface Props {
   products: Product[];
@@ -135,13 +137,13 @@ export const AdminPage = ({ products, coupons, onProductUpdate, onProductAdd, on
       <h1 className="text-3xl font-bold mb-6">관리자 페이지</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <h2 className="text-2xl font-semibold mb-4">상품 관리</h2>
-          <button
+          <ContainerTitle title="상품 관리" mb="4" />
+          <CustomButton
+            label={showNewProductForm ? '취소' : '새 상품 추가'}
             onClick={() => setShowNewProductForm(!showNewProductForm)}
-            className="bg-green-500 text-white px-4 py-2 rounded mb-4 hover:bg-green-600"
-          >
-            {showNewProductForm ? '취소' : '새 상품 추가'}
-          </button>
+            variant="bg-green"
+            className="px-4 py-2 mb-4"
+          />
           {showNewProductForm && (
             <Container className="p-4 mb-4">
               <h3 className="text-xl font-semibold mb-2">새 상품 추가</h3>
@@ -191,12 +193,12 @@ export const AdminPage = ({ products, coupons, onProductUpdate, onProductAdd, on
                   className="w-full p-2 border rounded"
                 />
               </div>
-              <button
+              <CustomButton
+                label="추가"
                 onClick={handleAddNewProduct}
-                className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
-              >
-                추가
-              </button>
+                variant="bg-blue"
+                className="w-full px-2 py-2 mb-2"
+              />
             </Container>
           )}
           <div className="space-y-2">
@@ -248,12 +250,11 @@ export const AdminPage = ({ products, coupons, onProductUpdate, onProductAdd, on
                               <span>
                                 {discount.quantity}개 이상 구매 시 {discount.rate * 100}% 할인
                               </span>
-                              <button
+                              <CustomButton
+                                label="삭제"
                                 onClick={() => handleRemoveDiscount(product.id, index)}
-                                className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
-                              >
-                                삭제
-                              </button>
+                                variant="bg-red"
+                              />
                             </div>
                           ))}
                           <div className="flex space-x-2">
@@ -281,20 +282,22 @@ export const AdminPage = ({ products, coupons, onProductUpdate, onProductAdd, on
                               }
                               className="w-1/3 p-2 border rounded"
                             />
-                            <button
+
+                            <CustomButton
+                              label="할인 추가"
                               onClick={() => handleAddDiscount(product.id)}
-                              className="w-1/3 bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
-                            >
-                              할인 추가
-                            </button>
+                              variant="bg-blue"
+                              className="w-1/3 py-2 px-2"
+                            />
                           </div>
                         </div>
-                        <button
+
+                        <CustomButton
+                          label="수정 완료"
                           onClick={handleEditComplete}
-                          className="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600 mt-2"
-                        >
-                          수정 완료
-                        </button>
+                          variant="bg-green"
+                          className="mt-2"
+                        />
                       </div>
                     ) : (
                       <div>
@@ -321,7 +324,7 @@ export const AdminPage = ({ products, coupons, onProductUpdate, onProductAdd, on
           </div>
         </div>
         <div>
-          <h2 className="text-2xl font-semibold mb-4">쿠폰 관리</h2>
+          <ContainerTitle title="쿠폰 관리" mb="4" />
           <Container className="p-4">
             <div className="space-y-2 mb-4">
               <input
@@ -365,12 +368,12 @@ export const AdminPage = ({ products, coupons, onProductUpdate, onProductAdd, on
                   className="w-full p-2 border rounded"
                 />
               </div>
-              <button
+              <CustomButton
+                label="쿠폰 추가"
                 onClick={handleAddCoupon}
-                className="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600"
-              >
-                쿠폰 추가
-              </button>
+                className="w-full px-2 py-2"
+                variant="bg-green"
+              />
             </div>
             <div>
               <h3 className="text-lg font-semibold mb-2">현재 쿠폰 목록</h3>
