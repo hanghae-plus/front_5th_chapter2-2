@@ -1,8 +1,8 @@
 import { useState } from "react";
 
 import { Product, Discount, useProductContext } from "@r/entities/product";
-import { useForm } from "@/refactoring/shared/hooks/use-form";
-import { useDiscounts } from "@/refactoring/shared/hooks/use-discounts";
+import { useForm } from "@/refactoring/hooks/use-form";
+import { useDiscounts } from "@/refactoring/hooks/use-discounts";
 
 interface ProductAccordionProps extends React.HTMLProps<HTMLDivElement> {
   product: Product;
