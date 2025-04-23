@@ -2,12 +2,7 @@ import { useState } from "react";
 import { AdminPage } from "./components/AdminPage.tsx";
 import { CartPage } from "./components/CartPage.tsx";
 
-import { useCoupons } from "./hooks";
-import { useProductStore } from "./store/product-store.ts";
-
 const App = () => {
-  const { products } = useProductStore();
-  const { coupons } = useCoupons();
   const [isAdmin, setIsAdmin] = useState(false);
 
   return (
@@ -23,9 +18,7 @@ const App = () => {
           </button>
         </div>
       </nav>
-      <main className="container mx-auto mt-6">
-        {isAdmin ? <AdminPage /> : <CartPage products={products} coupons={coupons} />}
-      </main>
+      <main className="container mx-auto mt-6">{isAdmin ? <AdminPage /> : <CartPage />}</main>
     </div>
   );
 };
