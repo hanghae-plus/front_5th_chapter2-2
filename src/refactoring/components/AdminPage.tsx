@@ -3,7 +3,9 @@ import { Coupon, Discount, Product } from '../../types.ts';
 import Container from './Container.tsx';
 import ContainerTitle from './ContainerTitle.tsx';
 import CustomButton from '../../refactoring/components/CustomButton';
-import CustomSelect from './\bCustomSelect.tsx';
+import CustomSelect from './CustomSelect.tsx';
+import TextInput from './TextInput.tsx';
+import NumberInput from './NumberInput.tsx';
 
 interface Props {
   products: Product[];
@@ -157,21 +159,18 @@ export const AdminPage = ({ products, coupons, onProductUpdate, onProductAdd, on
                 <label htmlFor="productName" className="block text-sm font-medium text-gray-700">
                   상품명
                 </label>
-                <input
+                <TextInput
                   id="productName"
-                  type="text"
                   value={newProduct.name}
                   onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
-                  className="w-full p-2 border rounded"
                 />
               </div>
               <div className="mb-2">
                 <label htmlFor="productPrice" className="block text-sm font-medium text-gray-700">
                   가격
                 </label>
-                <input
+                <NumberInput
                   id="productPrice"
-                  type="number"
                   value={newProduct.price}
                   onChange={(e) =>
                     setNewProduct({
@@ -179,16 +178,14 @@ export const AdminPage = ({ products, coupons, onProductUpdate, onProductAdd, on
                       price: parseInt(e.target.value),
                     })
                   }
-                  className="w-full p-2 border rounded"
                 />
               </div>
               <div className="mb-2">
                 <label htmlFor="productStock" className="block text-sm font-medium text-gray-700">
                   재고
                 </label>
-                <input
+                <NumberInput
                   id="productStock"
-                  type="number"
                   value={newProduct.stock}
                   onChange={(e) =>
                     setNewProduct({
@@ -196,7 +193,6 @@ export const AdminPage = ({ products, coupons, onProductUpdate, onProductAdd, on
                       stock: parseInt(e.target.value),
                     })
                   }
-                  className="w-full p-2 border rounded"
                 />
               </div>
               <CustomButton
@@ -223,29 +219,23 @@ export const AdminPage = ({ products, coupons, onProductUpdate, onProductAdd, on
                       <div>
                         <div className="mb-4">
                           <label className="block mb-1">상품명: </label>
-                          <input
-                            type="text"
+                          <TextInput
                             value={editingProduct.name}
                             onChange={(e) => handleProductNameUpdate(product.id, e.target.value)}
-                            className="w-full p-2 border rounded"
                           />
                         </div>
                         <div className="mb-4">
                           <label className="block mb-1">가격: </label>
-                          <input
-                            type="number"
+                          <NumberInput
                             value={editingProduct.price}
                             onChange={(e) => handlePriceUpdate(product.id, parseInt(e.target.value))}
-                            className="w-full p-2 border rounded"
                           />
                         </div>
                         <div className="mb-4">
                           <label className="block mb-1">재고: </label>
-                          <input
-                            type="number"
+                          <NumberInput
                             value={editingProduct.stock}
                             onChange={(e) => handleStockUpdate(product.id, parseInt(e.target.value))}
-                            className="w-full p-2 border rounded"
                           />
                         </div>
                         {/* 할인 정보 수정 부분 */}
@@ -264,8 +254,7 @@ export const AdminPage = ({ products, coupons, onProductUpdate, onProductAdd, on
                             </div>
                           ))}
                           <div className="flex space-x-2">
-                            <input
-                              type="number"
+                            <NumberInput
                               placeholder="수량"
                               value={newDiscount.quantity}
                               onChange={(e) =>
@@ -276,8 +265,7 @@ export const AdminPage = ({ products, coupons, onProductUpdate, onProductAdd, on
                               }
                               className="w-1/3 p-2 border rounded"
                             />
-                            <input
-                              type="number"
+                            <NumberInput
                               placeholder="할인율 (%)"
                               value={newDiscount.rate * 100}
                               onChange={(e) =>
@@ -288,7 +276,6 @@ export const AdminPage = ({ products, coupons, onProductUpdate, onProductAdd, on
                               }
                               className="w-1/3 p-2 border rounded"
                             />
-
                             <CustomButton
                               label="할인 추가"
                               onClick={() => handleAddDiscount(product.id)}
@@ -297,7 +284,6 @@ export const AdminPage = ({ products, coupons, onProductUpdate, onProductAdd, on
                             />
                           </div>
                         </div>
-
                         <CustomButton
                           label="수정 완료"
                           onClick={handleEditComplete}
@@ -333,19 +319,15 @@ export const AdminPage = ({ products, coupons, onProductUpdate, onProductAdd, on
           <ContainerTitle title="쿠폰 관리" mb="4" />
           <Container className="p-4">
             <div className="space-y-2 mb-4">
-              <input
-                type="text"
+              <TextInput
                 placeholder="쿠폰 이름"
                 value={newCoupon.name}
                 onChange={(e) => setNewCoupon({ ...newCoupon, name: e.target.value })}
-                className="w-full p-2 border rounded"
               />
-              <input
-                type="text"
+              <TextInput
                 placeholder="쿠폰 코드"
                 value={newCoupon.code}
                 onChange={(e) => setNewCoupon({ ...newCoupon, code: e.target.value })}
-                className="w-full p-2 border rounded"
               />
               <div className="flex gap-2">
                 <CustomSelect.Root
@@ -363,8 +345,7 @@ export const AdminPage = ({ products, coupons, onProductUpdate, onProductAdd, on
                     </CustomSelect.Option>
                   ))}
                 </CustomSelect.Root>
-                <input
-                  type="number"
+                <NumberInput
                   placeholder="할인 값"
                   value={newCoupon.discountValue}
                   onChange={(e) =>
@@ -373,7 +354,6 @@ export const AdminPage = ({ products, coupons, onProductUpdate, onProductAdd, on
                       discountValue: parseInt(e.target.value),
                     })
                   }
-                  className="w-full p-2 border rounded"
                 />
               </div>
               <CustomButton
