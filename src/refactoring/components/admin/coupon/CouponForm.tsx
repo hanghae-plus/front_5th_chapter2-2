@@ -1,7 +1,9 @@
 import { useState } from "react"
 import { Coupon } from "../../../../types.ts"
+import { useCouponContext } from "../../../context/CouponContext.tsx"
 
-export default function CouponForm({ onCouponAdd }: { onCouponAdd: (newCoupon: Coupon) => void }) {
+export default function CouponForm() {
+  const { addCoupon } = useCouponContext()
   const [newCoupon, setNewCoupon] = useState<Coupon>({
     name: "",
     code: "",
@@ -9,7 +11,7 @@ export default function CouponForm({ onCouponAdd }: { onCouponAdd: (newCoupon: C
     discountValue: 0,
   })
   const handleAddCoupon = () => {
-    onCouponAdd(newCoupon)
+    addCoupon(newCoupon)
     setNewCoupon({
       name: "",
       code: "",

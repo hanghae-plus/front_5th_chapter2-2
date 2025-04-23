@@ -1,14 +1,14 @@
 import { Coupon } from "../../../types.ts"
+import { useCouponContext } from "../../context/CouponContext.tsx"
 
 export default function CouponSelector({
-  coupons,
   selectedCoupon,
   applyCoupon,
 }: {
-  coupons: Coupon[]
   selectedCoupon: Coupon | null
   applyCoupon: (coupon: Coupon) => void
 }) {
+  const { coupons } = useCouponContext()
   return (
     <div className="mt-6 bg-white p-4 rounded shadow">
       <h2 className="text-2xl font-semibold mb-2">쿠폰 적용</h2>

@@ -1,17 +1,10 @@
-import { Coupon, Product } from "../../types.ts"
 import { useCart } from "../hooks"
-import ProductCard from "./cart/ProductCard.tsx"
 import CartLineItem from "./cart/CartLineItem.tsx"
 import CouponSelector from "./cart/CouponSelector.tsx"
 import OrderSummary from "./cart/OrderSummary.tsx"
 import ProductList from "./cart/ProductList.tsx"
 
-interface Props {
-  products: Product[]
-  coupons: Coupon[]
-}
-
-export const CartPage = ({ products, coupons }: Props) => {
+export const CartPage = () => {
   const { cart, addToCart, removeFromCart, updateQuantity, applyCoupon, calculateTotal, selectedCoupon } = useCart()
 
   const { totalBeforeDiscount, totalAfterDiscount, totalDiscount } = calculateTotal()
@@ -21,7 +14,7 @@ export const CartPage = ({ products, coupons }: Props) => {
       <h1 className="text-3xl font-bold mb-6">장바구니</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* 상품 목록 */}
-        <ProductList products={products} cart={cart} addToCart={addToCart} />
+        <ProductList cart={cart} addToCart={addToCart} />
 
         {/* 장바구니 내역 */}
         <div>
@@ -39,7 +32,7 @@ export const CartPage = ({ products, coupons }: Props) => {
           </div>
 
           {/* 쿠폰 적용 */}
-          <CouponSelector coupons={coupons} selectedCoupon={selectedCoupon} applyCoupon={applyCoupon} />
+          <CouponSelector selectedCoupon={selectedCoupon} applyCoupon={applyCoupon} />
 
           {/* 주문 요약 */}
           <OrderSummary

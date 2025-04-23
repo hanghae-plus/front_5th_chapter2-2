@@ -1,13 +1,9 @@
 import { useState } from "react"
 import { Discount, Product } from "../../../../types.ts"
+import { useProductContext } from "../../../context/ProductContext.tsx"
 
-export default function ProductList({
-  products,
-  onProductUpdate,
-}: {
-  products: Product[]
-  onProductUpdate: (updatedProduct: Product) => void
-}) {
+export default function ProductList() {
+  const { products, updateProduct } = useProductContext()
   const [openProductIds, setOpenProductIds] = useState<Set<string>>(new Set())
   const [editingProduct, setEditingProduct] = useState<Product | null>(null)
   const [newDiscount, setNewDiscount] = useState<Discount>({ quantity: 0, rate: 0 })
@@ -48,7 +44,7 @@ export default function ProductList({
   // 수정 완료 핸들러 함수 추가
   const handleEditComplete = () => {
     if (editingProduct) {
-      onProductUpdate(editingProduct)
+      updateProduct(editingProduct)
       setEditingProduct(null)
     }
   }
@@ -57,7 +53,7 @@ export default function ProductList({
     const updatedProduct = products.find((p) => p.id === productId)
     if (updatedProduct) {
       const newProduct = { ...updatedProduct, stock: newStock }
-      onProductUpdate(newProduct)
+      updateProduct(newProduct)
       setEditingProduct(newProduct)
     }
   }
@@ -69,7 +65,7 @@ export default function ProductList({
         ...updatedProduct,
         discounts: [...updatedProduct.discounts, newDiscount],
       }
-      onProductUpdate(newProduct)
+      updateProduct(newProduct)
       setEditingProduct(newProduct)
       setNewDiscount({ quantity: 0, rate: 0 })
     }
@@ -82,7 +78,7 @@ export default function ProductList({
         ...updatedProduct,
         discounts: updatedProduct.discounts.filter((_, i) => i !== index),
       }
-      onProductUpdate(newProduct)
+      updateProduct(newProduct)
       setEditingProduct(newProduct)
     }
   }

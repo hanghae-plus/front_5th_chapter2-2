@@ -1,15 +1,9 @@
 import ProductCard from "./ProductCard.tsx"
 import { Cart, Product } from "../../../types.ts"
+import { useProductContext } from "../../context/ProductContext.tsx"
 
-export default function ProductList({
-  products,
-  cart,
-  addToCart,
-}: {
-  products: Product[]
-  cart: Cart
-  addToCart: (product: Product) => void
-}) {
+export default function ProductList({ cart, addToCart }: { cart: Cart; addToCart: (product: Product) => void }) {
+  const { products } = useProductContext()
   return (
     <div>
       <h2 className="text-2xl font-semibold mb-4">상품 목록</h2>

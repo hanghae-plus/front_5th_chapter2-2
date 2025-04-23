@@ -1,13 +1,13 @@
 import { useState } from "react"
 import { Product } from "../../../../types.ts"
+import { useProductContext } from "../../../context/ProductContext.tsx"
 
 export default function NewProductForm({
-  onProductAdd,
   setShowNewProductForm,
 }: {
-  onProductAdd: (newProduct: Product) => void
   setShowNewProductForm: React.Dispatch<React.SetStateAction<boolean>>
 }) {
+  const { addProduct } = useProductContext()
   const [newProduct, setNewProduct] = useState<Omit<Product, "id">>({
     name: "",
     price: 0,
@@ -17,7 +17,7 @@ export default function NewProductForm({
 
   const handleAddNewProduct = () => {
     const productWithId = { ...newProduct, id: Date.now().toString() }
-    onProductAdd(productWithId)
+    addProduct(productWithId)
     setNewProduct({
       name: "",
       price: 0,

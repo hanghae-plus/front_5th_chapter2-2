@@ -1,19 +1,10 @@
 import { useState } from "react"
-import { Coupon, Discount, Product } from "../../types.ts"
 import ProductList from "./admin/product/ProductList.tsx"
 import NewProductForm from "./admin/product/NewProductForm.tsx"
 import CouponForm from "./admin/coupon/CouponForm.tsx"
 import CouponList from "./admin/coupon/CouponList.tsx"
 
-interface Props {
-  products: Product[]
-  coupons: Coupon[]
-  onProductUpdate: (updatedProduct: Product) => void
-  onProductAdd: (newProduct: Product) => void
-  onCouponAdd: (newCoupon: Coupon) => void
-}
-
-export const AdminPage = ({ products, coupons, onProductUpdate, onProductAdd, onCouponAdd }: Props) => {
+export const AdminPage = () => {
   /** 상품 등록 폼 노출 유무 */
   const [showNewProductForm, setShowNewProductForm] = useState(false)
 
@@ -31,21 +22,19 @@ export const AdminPage = ({ products, coupons, onProductUpdate, onProductAdd, on
             {showNewProductForm ? "취소" : "새 상품 추가"}
           </button>
           {/* 상품 등록 폼 */}
-          {showNewProductForm && (
-            <NewProductForm onProductAdd={onProductAdd} setShowNewProductForm={setShowNewProductForm} />
-          )}
+          {showNewProductForm && <NewProductForm setShowNewProductForm={setShowNewProductForm} />}
           {/* 상품 목록 */}
-          <ProductList products={products} onProductUpdate={onProductUpdate} />
+          <ProductList />
         </div>
         {/* 쿠폰 관리 영역 */}
         <div>
           <h2 className="text-2xl font-semibold mb-4">쿠폰 관리</h2>
           <div className="bg-white p-4 rounded shadow">
             {/* 쿠폰 등록 폼 */}
-            <CouponForm onCouponAdd={onCouponAdd} />
+            <CouponForm />
 
             {/* 쿠폰 목록 */}
-            <CouponList coupons={coupons} />
+            <CouponList />
           </div>
         </div>
       </div>

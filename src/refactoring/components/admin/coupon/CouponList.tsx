@@ -1,6 +1,7 @@
-import { Coupon } from "../../../../types.ts"
+import { useCouponContext } from "../../../context/CouponContext.tsx"
 
-export default function CouponList({ coupons }: { coupons: Coupon[] }) {
+export default function CouponList() {
+  const { coupons } = useCouponContext()
   return (
     <div>
       <h3 className="text-lg font-semibold mb-2">현재 쿠폰 목록</h3>
