@@ -1,4 +1,4 @@
-import { CartItem } from "../../entities";
+import { CartItem } from "../../../entities";
 import { CouponSection } from "../coupon/coupon-section";
 import { CartList } from "./cart-list";
 import { CartPriceSummary } from "./cart-price-summary";

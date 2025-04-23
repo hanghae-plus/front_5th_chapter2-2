@@ -1,6 +1,6 @@
-import { getRemainingStock } from "../../calculations/cart/calc-item";
-import { getMaxDiscount } from "../../calculations/discount/calc-discount-rate";
-import { CartItem, Product } from "../../entities";
+import { getRemainingStock } from "../../../calculations/cart/calc-item";
+import { getMaxDiscount } from "../../../calculations/discount/calc-discount-rate";
+import { CartItem, Product } from "../../../entities";
 
 interface Props {
   products: Product[];
@@ -8,7 +8,7 @@ interface Props {
   addToCart: (product: Product) => void;
 }
 
-export const ProductList = ({ products, cart, addToCart }: Props) => {
+export const ProductSection = ({ products, cart, addToCart }: Props) => {
   return (
     <div>
       <h2 className="text-2xl font-semibold mb-4">상품 목록</h2>

@@ -1,4 +1,4 @@
-import { useCoupons, useSelectedCoupon } from "../../hooks";
+import { useCoupons, useSelectedCoupon } from "../../../hooks";
 
 export const CouponSection = () => {
   const { coupons } = useCoupons();

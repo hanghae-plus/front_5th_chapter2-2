@@ -1,6 +1,6 @@
-import { CartItem } from "../../entities";
-import { useSelectedCoupon } from "../../hooks";
-import { calculateCartTotal } from "../../models/cart";
+import { CartItem } from "../../../entities";
+import { useSelectedCoupon } from "../../../hooks";
+import { calculateCartTotal } from "../../../models/cart";
 
 interface Props {
   cart: CartItem[];
