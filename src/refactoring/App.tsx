@@ -1,15 +1,11 @@
-import { useState } from "react";
 import { CartPage } from "./pages/CartPage.tsx";
 import { AdminPage } from "./pages/AdminPage.tsx";
-import { useCoupons, useProducts } from "./hooks";
+import { useAdmin, useCoupons, useProducts } from "./hooks";
 import { initialProducts, initialCoupons } from "./constants";
 
 const App = () => {
   //액션, 계산, 데이터
-  const [isAdmin, setIsAdmin] = useState(false);
-  const toggleIsAdmin = () => {
-    setIsAdmin(!isAdmin);
-  };
+  const { isAdmin, toggleIsAdmin } = useAdmin();
 
   const { products, updateProduct, addProduct } = useProducts(initialProducts);
   const { coupons, newCoupon, handleAddNewCoupon, setNewCoupon } =
