@@ -1,13 +1,11 @@
-import { useCallback } from 'react';
 import { useCart } from '../hooks';
-import type { Coupon } from '../../types';
-import { getAppliedDiscount } from '../utils/discountUtils.ts';
 import { useProductContext } from '../contexts/productContext.tsx';
 import { useCouponContext } from '../contexts/couponContext.tsx';
 
 import ProductList from './ProductList.tsx';
-import OptionSelector from '../ui/OptionSelector.tsx';
 import OrderSummary from './OrderSummary.tsx';
+import CartList from './CartList.tsx';
+import CouponSelector from './CouponSelector.tsx';
 
 export const CartPage = () => {
   const { products } = useProductContext();
@@ -27,10 +25,15 @@ export const CartPage = () => {
   const { totalBeforeDiscount, totalAfterDiscount, totalDiscount } =
     calculateTotal();
 
-  const getOptionLabel = useCallback((option: Coupon) => {
-    const unit = option.discountType === 'amount' ? '원' : '%';
-    return `${option.name} - ${option.discountValue}${unit}`;
-  }, []);
+  const handleIncrease = (id: string) =>
+    updateQuantity(id, getQuantityById(id) + 1);
+
+  const handleDecrease = (id: string) =>
+    updateQuantity(id, getQuantityById(id) - 1);
+
+  const getQuantityById = (id: string) => {
+    return cart.find((info) => info.product.id === id)?.quantity ?? 0;
+  };
 
   return (
     <div className="container mx-auto p-4">
@@ -38,85 +41,26 @@ export const CartPage = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <h2 className="text-2xl font-semibold mb-4">상품 목록</h2>
-          <div className="space-y-2">
-            <ProductList
-              products={products}
-              onAddToCart={addToCart}
-              getRemainingStock={getRemainingStock}
-            />
-          </div>
+          <ProductList
+            products={products}
+            onAddToCart={addToCart}
+            getRemainingStock={getRemainingStock}
+          />
         </div>
+
         <div>
           <h2 className="text-2xl font-semibold mb-4">장바구니 내역</h2>
-
-          <div className="space-y-2">
-            {/* CartList */}
-            {cart.map((item) => {
-              const appliedDiscount = getAppliedDiscount(item);
-              return (
-                <div
-                  key={item.product.id}
-                  className="flex justify-between items-center bg-white p-3 rounded shadow"
-                >
-                  <div>
-                    <span className="font-semibold">{item.product.name}</span>
-                    <br />
-                    <span className="text-sm text-gray-600">
-                      {item.product.price}원 x {item.quantity}
-                      {appliedDiscount > 0 && (
-                        <span className="text-green-600 ml-1">
-                          ({(appliedDiscount * 100).toFixed(0)}% 할인 적용)
-                        </span>
-                      )}
-                    </span>
-                  </div>
-                  <div>
-                    <button
-                      onClick={() =>
-                        updateQuantity(item.product.id, item.quantity - 1)
-                      }
-                      className="bg-gray-300 text-gray-800 px-2 py-1 rounded mr-1 hover:bg-gray-400"
-                    >
-                      -
-                    </button>
-                    <button
-                      onClick={() =>
-                        updateQuantity(item.product.id, item.quantity + 1)
-                      }
-                      className="bg-gray-300 text-gray-800 px-2 py-1 rounded mr-1 hover:bg-gray-400"
-                    >
-                      +
-                    </button>
-                    <button
-                      onClick={() => removeFromCart(item.product.id)}
-                      className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
-                    >
-                      삭제
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-
-          <div className="mt-6 bg-white p-4 rounded shadow">
-            <h2 className="text-2xl font-semibold mb-2">쿠폰 적용</h2>
-            <OptionSelector
-              options={coupons}
-              placeholder="쿠폰 선택"
-              renderLabel={getOptionLabel}
-              onOptionChange={applyCoupon}
-            />
-            {selectedCoupon && (
-              <p className="text-green-600">
-                적용된 쿠폰: {selectedCoupon.name}(
-                {selectedCoupon.discountType === 'amount'
-                  ? `${selectedCoupon.discountValue}원`
-                  : `${selectedCoupon.discountValue}%`}{' '}
-                할인)
-              </p>
-            )}
-          </div>
+          <CartList
+            cart={cart}
+            onIncrease={handleIncrease}
+            onDecrease={handleDecrease}
+            onRemove={removeFromCart}
+          />
+          <CouponSelector
+            coupons={coupons}
+            selectedCoupon={selectedCoupon}
+            onSelect={applyCoupon}
+          />
           <OrderSummary
             totalBeforeDiscount={totalBeforeDiscount}
             totalDiscount={totalDiscount}
