@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { describe, expect, test } from "vitest";
 import {
   act,
@@ -11,8 +10,26 @@ import {
 import CartPage from "../../refactoring/pages/cart";
 import AdminPage from "../../refactoring/pages/admin";
 import type { CartItem, CouponItem, Product } from "../../refactoring/types";
-import { useCart, useCoupons, useProducts } from "../../refactoring/hooks";
 import * as cartUtils from "../../refactoring/models/cart";
+import { useAtomValue, useSetAtom } from "jotai";
+
+import {
+  addCouponAtom,
+  addProductAtom,
+  addToCartAtom,
+  applyCouponAtom,
+  calculateTotalPriceAtom,
+  cartAtom,
+  couponsAtom,
+  productsAtom,
+  removeFromCartAtom,
+  selectedCouponAtom,
+  setCartAtom,
+  setCouponsAtom,
+  setProductsAtom,
+  updateProductAtom,
+  updateQuantityAtom,
+} from "../../refactoring/state";
 
 const mockProducts: Product[] = [
   {
@@ -53,38 +70,25 @@ const mockCoupons: CouponItem[] = [
 ];
 
 const TestAdminPage = () => {
-  const [products, setProducts] = useState<Product[]>(mockProducts);
-  const [coupons, setCoupons] = useState<CouponItem[]>(mockCoupons);
+  const setProducts = useSetAtom(setProductsAtom);
+  const setCoupons = useSetAtom(setCouponsAtom);
+  setProducts(mockProducts);
+  setCoupons(mockCoupons);
+  return <AdminPage />;
+};
 
-  const handleProductUpdate = (updatedProduct: Product) => {
-    setProducts((prevProducts) =>
-      prevProducts.map((p) => (p.id === updatedProduct.id ? updatedProduct : p))
-    );
-  };
-
-  const handleProductAdd = (newProduct: Product) => {
-    setProducts((prevProducts) => [...prevProducts, newProduct]);
-  };
-
-  const handleCouponAdd = (newCoupon: CouponItem) => {
-    setCoupons((prevCoupons) => [...prevCoupons, newCoupon]);
-  };
-
-  return (
-    <AdminPage
-      products={products}
-      coupons={coupons}
-      onProductUpdate={handleProductUpdate}
-      onProductAdd={handleProductAdd}
-      onCouponAdd={handleCouponAdd}
-    />
-  );
+const TestCartPage = () => {
+  const setProducts = useSetAtom(setProductsAtom);
+  const setCoupons = useSetAtom(setCouponsAtom);
+  setProducts(mockProducts);
+  setCoupons(mockCoupons);
+  return <CartPage />;
 };
 
 describe("basic > ", () => {
   describe("시나리오 테스트 > ", () => {
     test("장바구니 페이지 테스트 > ", async () => {
-      render(<CartPage products={mockProducts} coupons={mockCoupons} />);
+      render(<TestCartPage />);
       const product1 = screen.getByTestId("product-p1");
       const product2 = screen.getByTestId("product-p2");
       const product3 = screen.getByTestId("product-p3");
@@ -276,19 +280,31 @@ describe("basic > ", () => {
     ];
 
     test("특정 제품으로 초기화할 수 있다.", () => {
-      const { result } = renderHook(() => useProducts(initialProducts));
-      expect(result.current.products).toEqual(initialProducts);
+      renderHook(() => {
+        const setProducts = useSetAtom(setProductsAtom);
+        setProducts(initialProducts);
+      });
+      const { result } = renderHook(() => useAtomValue(productsAtom));
+
+      expect(result.current).toEqual(initialProducts);
     });
 
     test("제품을 업데이트할 수 있다.", () => {
-      const { result } = renderHook(() => useProducts(initialProducts));
-      const updatedProduct = { ...initialProducts[0], name: "Updated Product" };
-
-      act(() => {
-        result.current.updateProduct(updatedProduct);
+      renderHook(() => {
+        const setProducts = useSetAtom(setProductsAtom);
+        setProducts(initialProducts);
       });
 
-      expect(result.current.products[0]).toEqual({
+      const updatedProduct = { ...initialProducts[0], name: "Updated Product" };
+
+      renderHook(() => {
+        const updateProduct = useSetAtom(updateProductAtom);
+        updateProduct(updatedProduct);
+      });
+
+      const { result } = renderHook(() => useAtomValue(productsAtom));
+
+      expect(result.current[0]).toEqual({
         discounts: [],
         id: "1",
         name: "Updated Product",
@@ -298,7 +314,10 @@ describe("basic > ", () => {
     });
 
     test("새로운 제품을 추가할 수 있다.", () => {
-      const { result } = renderHook(() => useProducts(initialProducts));
+      renderHook(() => {
+        const setProducts = useSetAtom(setProductsAtom);
+        setProducts(initialProducts);
+      });
       const newProduct: Product = {
         id: "2",
         name: "New Product",
@@ -306,24 +325,34 @@ describe("basic > ", () => {
         stock: 5,
         discounts: [],
       };
-
-      act(() => {
-        result.current.addProduct(newProduct);
+      renderHook(() => {
+        const addProduct = useSetAtom(addProductAtom);
+        addProduct(newProduct);
       });
 
-      expect(result.current.products).toHaveLength(2);
-      expect(result.current.products[1]).toEqual(newProduct);
+      const { result } = renderHook(() => useAtomValue(productsAtom));
+
+      expect(result.current).toHaveLength(2);
+      expect(result.current[1]).toEqual(newProduct);
     });
   });
 
   describe("useCoupons > ", () => {
     test("쿠폰을 초기화할 수 있다.", () => {
-      const { result } = renderHook(() => useCoupons(mockCoupons));
-      expect(result.current.coupons).toEqual(mockCoupons);
+      renderHook(() => {
+        const setCoupons = useSetAtom(setCouponsAtom);
+        setCoupons(mockCoupons);
+      });
+      const { result } = renderHook(() => useAtomValue(couponsAtom));
+      expect(result.current).toEqual(mockCoupons);
     });
 
     test("쿠폰을 추가할 수 있다", () => {
-      const { result } = renderHook(() => useCoupons(mockCoupons));
+      renderHook(() => {
+        const setCoupons = useSetAtom(setCouponsAtom);
+        setCoupons(mockCoupons);
+      });
+
       const newCoupon: CouponItem = {
         name: "New Coupon",
         code: "NEWCODE",
@@ -331,12 +360,15 @@ describe("basic > ", () => {
         discountValue: 5000,
       };
 
-      act(() => {
-        result.current.addCoupon(newCoupon);
+      renderHook(() => {
+        const addCoupon = useSetAtom(addCouponAtom);
+        addCoupon(newCoupon);
       });
 
-      expect(result.current.coupons).toHaveLength(3);
-      expect(result.current.coupons[2]).toEqual(newCoupon);
+      const { result } = renderHook(() => useAtomValue(couponsAtom));
+
+      expect(result.current).toHaveLength(3);
+      expect(result.current[2]).toEqual(newCoupon);
     });
   });
 
@@ -455,64 +487,75 @@ describe("basic > ", () => {
     };
 
     test("장바구니에 제품을 추가해야 합니다", () => {
-      const { result } = renderHook(() => useCart());
-
-      act(() => {
-        result.current.addToCart(testProduct);
+      renderHook(() => {
+        const setProducts = useSetAtom(setCartAtom);
+        setProducts([]);
+        const setCart = useSetAtom(addToCartAtom);
+        setCart(testProduct);
       });
+      const { result } = renderHook(() => useAtomValue(cartAtom));
+      console.log("result.currentcart!!", result.current);
 
-      expect(result.current.cart).toHaveLength(1);
-      expect(result.current.cart[0]).toEqual({
+      expect(result.current).toHaveLength(1);
+      expect(result.current[0]).toEqual({
         product: testProduct,
         quantity: 1,
       });
     });
 
     test("장바구니에서 제품을 제거해야 합니다", () => {
-      const { result } = renderHook(() => useCart());
-
-      act(() => {
-        result.current.addToCart(testProduct);
-        result.current.removeFromCart(testProduct.id);
+      renderHook(() => {
+        const setCart = useSetAtom(addToCartAtom);
+        setCart(testProduct);
+        const removeFromCart = useSetAtom(removeFromCartAtom);
+        removeFromCart(testProduct.id);
       });
+      const { result } = renderHook(() => useAtomValue(cartAtom));
 
-      expect(result.current.cart).toHaveLength(0);
+      expect(result.current).toHaveLength(0);
     });
 
     test("제품 수량을 업데이트해야 합니다", () => {
-      const { result } = renderHook(() => useCart());
-
-      act(() => {
-        result.current.addToCart(testProduct);
-        result.current.updateQuantity(testProduct.id, 5);
+      renderHook(() => {
+        const setCart = useSetAtom(addToCartAtom);
+        setCart(testProduct);
+        const updateQuantity = useSetAtom(updateQuantityAtom);
+        updateQuantity({ productId: testProduct.id, quantity: 5 });
       });
-      console.log("result.current.cart", result.current.cart);
-      expect(result.current.cart[0].quantity).toBe(5);
+      const { result } = renderHook(() => useAtomValue(cartAtom));
+
+      expect(result.current[0].quantity).toBe(5);
     });
 
     test("쿠폰을 적용해야지", () => {
-      const { result } = renderHook(() => useCart());
-
-      act(() => {
-        result.current.applyCoupon(testCoupon);
+      renderHook(() => {
+        const setCart = useSetAtom(addToCartAtom);
+        setCart(testProduct);
+        const applyCoupon = useSetAtom(applyCouponAtom);
+        applyCoupon(testCoupon);
       });
+      const { result } = renderHook(() => useAtomValue(selectedCouponAtom));
 
-      expect(result.current.selectedCoupon).toEqual(testCoupon);
+      expect(result.current).toEqual(testCoupon);
     });
 
     test("합계를 정확하게 계산해야 합니다", () => {
-      const { result } = renderHook(() => useCart());
-
-      act(() => {
-        result.current.addToCart(testProduct);
-        result.current.updateQuantity(testProduct.id, 2);
-        result.current.applyCoupon(testCoupon);
+      renderHook(() => {
+        const setCart = useSetAtom(addToCartAtom);
+        setCart(testProduct);
+        const updateQuantity = useSetAtom(updateQuantityAtom);
+        updateQuantity({ productId: testProduct.id, quantity: 2 });
+        const applyCoupon = useSetAtom(applyCouponAtom);
+        applyCoupon(testCoupon);
       });
 
-      const total = result.current.calculateTotal();
-      expect(total.totalBeforeDiscount).toBe(200);
-      expect(total.totalAfterDiscount).toBe(180);
-      expect(total.totalDiscount).toBe(20);
+      const { result } = renderHook(() =>
+        useAtomValue(calculateTotalPriceAtom)
+      );
+
+      expect(result.current.totalBeforeDiscount).toBe(200);
+      expect(result.current.totalAfterDiscount).toBe(180);
+      expect(result.current.totalDiscount).toBe(20);
     });
   });
 });

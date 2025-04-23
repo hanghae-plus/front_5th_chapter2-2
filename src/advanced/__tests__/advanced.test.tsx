@@ -1,9 +1,10 @@
-import { useState } from "react";
 import { describe, expect, test } from "vitest";
 import { act, fireEvent, render, screen, within } from "@testing-library/react";
 import CartPage from "../../refactoring/pages/cart";
 import AdminPage from "../../refactoring/pages/admin";
-import type { CartItem, CouponItem, Product } from "../../refactoring/types";
+import type { CouponItem, Product } from "../../refactoring/types";
+import { useSetAtom } from "jotai";
+import { setCouponsAtom, setProductsAtom } from "../../refactoring/state";
 
 const mockProducts: Product[] = [
   {
@@ -44,38 +45,25 @@ const mockCoupons: CouponItem[] = [
 ];
 
 const TestAdminPage = () => {
-  const [products, setProducts] = useState<Product[]>(mockProducts);
-  const [coupons, setCoupons] = useState<CouponItem[]>(mockCoupons);
+  const setProducts = useSetAtom(setProductsAtom);
+  const setCoupons = useSetAtom(setCouponsAtom);
+  setProducts(mockProducts);
+  setCoupons(mockCoupons);
+  return <AdminPage />;
+};
 
-  const handleProductUpdate = (updatedProduct: Product) => {
-    setProducts((prevProducts) =>
-      prevProducts.map((p) => (p.id === updatedProduct.id ? updatedProduct : p))
-    );
-  };
-
-  const handleProductAdd = (newProduct: Product) => {
-    setProducts((prevProducts) => [...prevProducts, newProduct]);
-  };
-
-  const handleCouponAdd = (newCoupon: CouponItem) => {
-    setCoupons((prevCoupons) => [...prevCoupons, newCoupon]);
-  };
-
-  return (
-    <AdminPage
-      products={products}
-      coupons={coupons}
-      onProductUpdate={handleProductUpdate}
-      onProductAdd={handleProductAdd}
-      onCouponAdd={handleCouponAdd}
-    />
-  );
+const TestCartPage = () => {
+  const setProducts = useSetAtom(setProductsAtom);
+  const setCoupons = useSetAtom(setCouponsAtom);
+  setProducts(mockProducts);
+  setCoupons(mockCoupons);
+  return <CartPage />;
 };
 
 describe("advanced > ", () => {
   describe("시나리오 테스트 > ", () => {
     test("장바구니 페이지 테스트 > ", async () => {
-      render(<CartPage products={mockProducts} coupons={mockCoupons} />);
+      render(<TestCartPage />);
       const product1 = screen.getByTestId("product-p1");
       const product2 = screen.getByTestId("product-p2");
       const product3 = screen.getByTestId("product-p3");

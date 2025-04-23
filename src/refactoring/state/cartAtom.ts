@@ -7,6 +7,10 @@ export const cartAtom = atom<CartItem[]>([]);
 export const selectedCouponAtom = atom<CouponItem | null>(null);
 
 // — Cart actions —
+export const setCartAtom = atom(null, (get, set, cart: CartItem[]) => {
+  set(cartAtom, cart);
+});
+
 export const addToCartAtom = atom(null, (get, set, product: Product) => {
   const cart = get(cartAtom);
   const remain = getRemainingStock(product, cart);
