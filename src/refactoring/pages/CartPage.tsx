@@ -1,9 +1,9 @@
 import { CartItem, Coupon, Product } from '../../types.ts';
 import { useCart } from '../hooks';
-import CustomSelect from './CustomSelect.tsx';
-import Container from './Container.tsx';
-import ContainerTitle from './ContainerTitle.tsx';
-import CustomButton from './CustomButton.tsx';
+import CustomSelect from '../components/CustomSelect.tsx';
+import Container from '../components/Container.tsx';
+import ContainerTitle from '../components/ContainerTitle.tsx';
+import CustomButton from '../components/CustomButton.tsx';
 
 interface Props {
   products: Product[];

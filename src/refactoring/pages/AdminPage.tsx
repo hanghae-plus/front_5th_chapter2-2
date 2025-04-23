@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { Coupon, Discount, Product } from '../../types.ts';
-import Container from './Container.tsx';
-import ContainerTitle from './ContainerTitle.tsx';
-import CustomButton from '../../refactoring/components/CustomButton';
-import CustomSelect from './CustomSelect.tsx';
-import TextInput from './TextInput.tsx';
-import NumberInput from './NumberInput.tsx';
+import Container from '../components/Container.tsx';
+import ContainerTitle from '../components//ContainerTitle.tsx';
+import CustomButton from '../components/CustomButton';
+import CustomSelect from '../components/CustomSelect.tsx';
+import TextInput from '../components/TextInput.tsx';
+import NumberInput from '../components/NumberInput.tsx';
 
 interface Props {
   products: Product[];
