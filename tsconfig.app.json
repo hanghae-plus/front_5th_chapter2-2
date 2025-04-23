@@ -17,8 +17,8 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "paths": {
-      "@/*": ["./src/*"],
-      "@r/*": ["./src/refactoring/*"]
+      "@r/*": ["./src/refactoring/*"],
+      "@/*": ["./src/*"]
     },
 
     /* Linting */

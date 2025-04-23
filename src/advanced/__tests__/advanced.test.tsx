@@ -1,11 +1,12 @@
 import { describe, expect, test } from "vitest";
 import { act, fireEvent, render, screen, within } from "@testing-library/react";
 
-import { AdminPage, CartPage } from "@/refactoring/pages";
-
-import { Product, ProductProvider } from "@r/entities/product";
-import { Coupon, CouponProvider } from "@r/entities/coupon";
-import { CartProvider } from "@r/entities/cart";
+import { AdminPage, CartPage } from "@r/pages";
+import { Product } from "@r/model/product/types";
+import { Coupon } from "@r/model/coupon/types";
+import { ProductProvider } from "@r/model/product/product-context";
+import { CouponProvider } from "@r/model/coupon/coupon-context";
+import { CartProvider } from "@r/model/cart/cart-context";
 
 const mockProducts: Product[] = [
   {

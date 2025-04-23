@@ -9,11 +9,16 @@ import {
 } from "@testing-library/react";
 import { AdminPage, CartPage } from "@/refactoring/pages";
 
-import * as cartUtils from "@r/entities/cart/lib";
-
-import { Product, ProductProvider, useProducts } from "@r/entities/product";
-import { Coupon, useCoupons, CouponProvider } from "@r/entities/coupon";
-import { CartItem, useCart, CartProvider } from "@r/entities/cart";
+import * as cartUtils from "@r/model/cart/lib";
+import { Product } from "@r/model/product/types";
+import { Coupon } from "@r/model/coupon/types";
+import { ProductProvider } from "@r/model/product/product-context";
+import { CouponProvider } from "@r/model/coupon/coupon-context";
+import { CartProvider } from "@r/model/cart/cart-context";
+import { useProducts } from "@r/model/product/use-product";
+import { useCoupons } from "@r/model/coupon/use-coupon";
+import { CartItem } from "@r/model/cart/types";
+import { useCart } from "@r/model/cart/use-cart";
 
 const mockProducts: Product[] = [
   {

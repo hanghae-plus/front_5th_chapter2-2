@@ -5,9 +5,9 @@ import { AdminPage, CartPage } from "@/refactoring/pages";
 import { initialCoupons } from "@r/mock/initial-coupons";
 import { initialProducts } from "@r/mock/initial-products";
 
-import { CouponProvider } from "@r/entities/coupon";
-import { ProductProvider } from "@r/entities/product";
-import { CartProvider } from "@r/entities/cart";
+import { ProductProvider } from "@r/model/product/product-context";
+import { CouponProvider } from "@r/model/coupon/coupon-context";
+import { CartProvider } from "@r/model/cart/cart-context";
 
 const App = () => {
   const [isAdmin, setIsAdmin] = useState(false);

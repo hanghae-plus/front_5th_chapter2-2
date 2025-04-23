@@ -1,6 +1,7 @@
-import { ProductList } from "@r/features/product-list";
-
-import { CartList, CouponApplier, OrderSummary } from "@r/widget";
+import { CartList } from "@r/components/cart-list";
+import { CouponApplier } from "@r/components/coupon-applier";
+import { OrderSummary } from "@r/components/order-summary";
+import { ProductList } from "@r/components/product-list";
 
 interface Props {}
 
