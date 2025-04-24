@@ -3,12 +3,23 @@ import path from "path";
 import { defineConfig } from "vite";
 import { defineConfig as defineTestConfig, mergeConfig } from "vitest/config";
 
+const isCI = process.env.CI === "true";
+
 export default mergeConfig(
   defineConfig({
+    base: isCI ? "" : "/front_5th_chapter2-2/",
     plugins: [react()],
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "./src"),
+      },
+    },
+    build: {
+      rollupOptions: {
+        input: {
+          main: path.resolve(__dirname, "index.refactoring.html"),
+          origin: path.resolve(__dirname, "index.origin.html"),
+        },
       },
     },
   }),
