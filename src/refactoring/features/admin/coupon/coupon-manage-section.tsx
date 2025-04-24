@@ -2,6 +2,7 @@ import { CouponInputForm } from "../../../entities/coupon/coupon-input-form";
 import { useCoupons } from "../../../hooks";
 import { ListWrapper } from "../../../ui/list-wrapper";
 import { Section } from "../../../ui/section";
+import { formatCurrency, formatPercent } from "../../../utils/formatter";
 
 export const CouponManageSection = () => {
   const { coupons, newCoupon, updateNewCoupon, handleAddCoupon } = useCoupons();
@@ -20,9 +21,9 @@ export const CouponManageSection = () => {
               >
                 {coupon.name} ({coupon.code}):
                 {coupon.discountType === "amount"
-                  ? `${coupon.discountValue}원`
-                  : `${coupon.discountValue}%`}{" "}
-                할인
+                  ? formatCurrency(coupon.discountValue)
+                  : formatPercent(coupon.discountValue)}
+                {""} 할인
               </div>
             ))}
           </ListWrapper>

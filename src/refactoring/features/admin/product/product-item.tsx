@@ -3,6 +3,7 @@ import { useToggle } from "../../../hooks";
 import { useEditProductAction } from "../../../hooks/product/useEditProductAction";
 import { useProductStore } from "../../../store/product-store";
 import { Button } from "../../../ui/button";
+import { formatCurrency } from "../../../utils/formatter";
 import { rateToPercent } from "../../../utils/percentUtils";
 import { ProductEditForm } from "./product-edit-form";
 
@@ -32,7 +33,7 @@ export const ProductItem = (props: Props) => {
         onClick={() => toggleProductAccordion(product.id)}
         className="w-full text-left font-semibold"
       >
-        {product.name} - {product.price}원 (재고: {product.stock})
+        {product.name} - {formatCurrency(product.price)} (재고: {product.stock})
       </Button>
       {isOpen && (
         <div className="mt-2">
