@@ -1,5 +1,4 @@
 import type { Product } from "../../../types";
-
 interface ProductToggleButtonProps {
   product: Product;
   setOpenProductIds: React.Dispatch<React.SetStateAction<Set<string>>>;

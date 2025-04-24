@@ -1,5 +1,4 @@
 import type { Discount } from "../../../types";
-
 interface DiscountInfoProps {
   discount: Discount;
 }

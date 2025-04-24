@@ -1,5 +1,4 @@
 import { useProductForm } from "../../../hooks";
-
 interface NewProductFormProps {
   setShowNewProductForm: (show: boolean) => void;
 }
