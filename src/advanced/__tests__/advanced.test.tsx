@@ -13,6 +13,7 @@ import { AdminPage } from '../../refactoring/pages/AdminPage';
 import { Coupon, Discount, Product } from '../../types';
 import { useCart } from '../../refactoring/hooks';
 import { useDiscount } from '../../refactoring/hooks/useDiscount';
+import { isNegative, percentageToDecimal } from '../../refactoring/utils';
 
 const mockProducts: Product[] = [
   {
@@ -272,9 +273,37 @@ describe('advanced > ', () => {
     });
   });
 
-  describe('자유롭게 작성해보세요.', () => {
-    test('새로운 유틸 함수를 만든 후에 테스트 코드를 작성해서 실행해보세요', () => {
-      expect(true).toBe(false);
+  describe('유틸 함수 > ', () => {
+    describe('isNegative', () => {
+      test('음수 값을 넣으면 true를 반환해야 한다', () => {
+        expect(isNegative(-1)).toBe(true);
+        expect(isNegative(-0.1)).toBe(true);
+      });
+
+      test('0 또는 양수 값을 넣으면 false를 반환해야 한다', () => {
+        expect(isNegative(0)).toBe(false);
+        expect(isNegative(10)).toBe(false);
+      });
+    });
+
+    describe('percentageToDecimal', () => {
+      test('백분율을 소수로 올바르게 변환해야 한다 (22% → 0.22)', () => {
+        expect(percentageToDecimal(22)).toBeCloseTo(0.22);
+      });
+
+      test('0%는 0으로 변환되어야 한다', () => {
+        expect(percentageToDecimal(0)).toBe(0);
+      });
+
+      test('100%는 1로 변환되어야 한다', () => {
+        expect(percentageToDecimal(100)).toBe(1);
+      });
+
+      test('음수 백분율을 넣으면 오류를 발생시켜야 한다', () => {
+        expect(() => percentageToDecimal(-5)).toThrow(
+          '0보다 작은 값은 백분율로 변환할 수 없습니다.',
+        );
+      });
     });
   });
 

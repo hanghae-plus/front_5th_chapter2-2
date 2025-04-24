@@ -1,4 +1,5 @@
 import { CartItem, Coupon, Product } from '../../types';
+import { percentageToDecimal } from '../utils';
 import { getMaxDiscount } from './discount';
 
 // 단일 상품 가격 계산 (최대 할인 적용)
@@ -62,7 +63,7 @@ const calculateCouponDiscount = (
 
   return coupon.discountType === 'amount'
     ? coupon.discountValue
-    : (totalAfterDiscount * coupon.discountValue) / 100;
+    : totalAfterDiscount * percentageToDecimal(coupon.discountValue);
 };
 
 // 상품 추가 또는 수량 업데이트

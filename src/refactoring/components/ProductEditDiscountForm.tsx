@@ -1,5 +1,6 @@
 import { Product } from '../../types';
 import { useDiscount } from '../hooks/useDiscount';
+import { percentageToDecimal } from '../utils';
 
 interface Props {
   id: string;
@@ -54,7 +55,7 @@ export default function ProductEditDiscountForm({
           onChange={(e) =>
             setNewDiscount({
               ...newDiscount,
-              rate: parseInt(e.target.value) / 100,
+              rate: percentageToDecimal(parseInt(e.target.value)),
             })
           }
           className="w-1/3 p-2 border rounded"

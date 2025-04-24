@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Coupon, Discount, Product } from '../../types';
+import { percentageToDecimal } from '../../refactoring/utils';
 
 interface Props {
   products: Product[];
@@ -244,7 +245,7 @@ export const AdminPage = ({ products, coupons, onProductUpdate, onProductAdd, on
                               type="number"
                               placeholder="할인율 (%)"
                               value={newDiscount.rate * 100}
-                              onChange={(e) => setNewDiscount({ ...newDiscount, rate: parseInt(e.target.value) / 100 })}
+                              onChange={(e) => setNewDiscount({ ...newDiscount, rate: percentageToDecimal(parseInt(e.target.value)) })}
                               className="w-1/3 p-2 border rounded"
                             />
                             <button
