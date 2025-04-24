@@ -1,6 +1,6 @@
 import { useState, ChangeEvent } from 'react';
 import type { Product } from '../../../../types';
-import LabeledInput from '../../../ui/LabeledInput';
+import LabeledInput from '../../ui/LabeledInput';
 
 import { DEFAULT_FORM } from '../../../constants';
 
