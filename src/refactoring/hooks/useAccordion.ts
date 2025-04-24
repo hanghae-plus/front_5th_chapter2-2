@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export const useProductAccordion = () => {
+export const useAccordion = () => {
   const [openProductIds, setOpenProductIds] = useState<Set<string>>(new Set());
 
   const toggleProductAccordion = (productId: string) => {

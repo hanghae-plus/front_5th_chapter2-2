@@ -1,4 +1,4 @@
-import { useProductAccordion } from "@/refactoring/hooks";
+import { useAccordion } from "@/refactoring/hooks/useAccordion";
 import ProductItem from "./ProductItem";
 import { Product } from "@/types.ts";
 
@@ -8,7 +8,7 @@ interface Props {
 }
 
 const ProductList = ({ products, onProductUpdate }: Props) => {
-  const { openProductIds, toggleProductAccordion } = useProductAccordion();
+  const { openProductIds, toggleProductAccordion } = useAccordion();
 
   return (
     <div className="space-y-2">
