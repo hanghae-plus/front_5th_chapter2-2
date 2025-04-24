@@ -2,7 +2,7 @@ import EditProductForm from "./EditProductForm.tsx";
 import { Product } from "../../../types.ts";
 import { useState } from "react";
 
-export default function ProductItem({
+export default function AdminProductItem({
   product,
   onProductUpdate,
   testId,
@@ -35,11 +35,7 @@ export default function ProductItem({
   };
 
   return (
-    <div
-      key={product.id}
-      data-testid={testId}
-      className="bg-white p-4 rounded shadow"
-    >
+    <div data-testid={testId} className="bg-white p-4 rounded shadow">
       <button
         data-testid="toggle-button"
         onClick={() => toggleProductAccordion(product.id)}

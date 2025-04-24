@@ -3,7 +3,7 @@ import { Coupon, Product } from "../../types.ts";
 import NewProductForm from "./admin/NewProductForm.tsx";
 import CouponList from "./admin/CouponList.tsx";
 import NewCouponForm from "./admin/NewCouponForm.tsx";
-import ProductItem from "./admin/ProductItem.tsx";
+import AdminProductItem from "./admin/AdminProductItem.tsx";
 
 interface Props {
   products: Product[];
@@ -42,7 +42,7 @@ export const AdminPage = ({
 
           <div className="space-y-2">
             {products.map((product, index) => (
-              <ProductItem
+              <AdminProductItem
                 key={product.id}
                 product={product}
                 testId={`product-${index + 1}`}
