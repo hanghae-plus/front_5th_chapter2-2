@@ -1,8 +1,8 @@
-import { ProductContainer } from "../components/ProductContainer.tsx";
+import { ProductContainer } from "../components/Cart/ProductContainer.tsx";
 import { useProductContext } from "../Providers/ProductProvider.tsx";
-import TotalContainer from "../components/TotalContainer.tsx";
-import CouponContainer from "../components/CouponContainer.tsx";
-import CartContainer from "../components/CartContainer.tsx";
+import TotalContainer from "../components/Cart/TotalContainer.tsx";
+import CouponContainer from "../components/Cart/CouponContainer.tsx";
+import CartContainer from "../components/Cart/CartContainer.tsx";
 import { CartProvider } from "../Providers/CartContext.tsx";
 
 export const CartPage = () => {
