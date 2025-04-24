@@ -1,5 +1,5 @@
 import { Product } from "../../../../types";
-import { Button } from "../../common";
+import { Button, Text } from "../../common";
 
 interface ProductManagementItemViewProps {
   product: Product;
@@ -14,9 +14,9 @@ export const ProductManagementItemView = ({
     <div>
       {product.discounts.map((discount, index) => (
         <div key={index} className="mb-2">
-          <span>
+          <Text>
             {discount.quantity}개 이상 구매 시 {discount.rate * 100}% 할인
-          </span>
+          </Text>
         </div>
       ))}
       <Button

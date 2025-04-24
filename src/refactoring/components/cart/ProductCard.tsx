@@ -1,5 +1,5 @@
 import { Product } from "../../../types";
-import { Button } from "../common";
+import { Button, Text } from "../common";
 
 interface ProductCardProps {
   product: Product;
@@ -20,23 +20,17 @@ export const ProductCard = ({
       className="bg-white p-3 rounded shadow"
     >
       <div className="flex justify-between items-center mb-2">
-        <span className="font-semibold">{product.name}</span>
-        <span className="text-gray-600">
-          {product.price.toLocaleString()}원
-        </span>
+        <Text weight="semibold">{product.name}</Text>
+        <Text color="gray">{product.price.toLocaleString()}원</Text>
       </div>
       <div className="text-sm text-gray-500 mb-2">
-        <span
-          className={`font-medium ${
-            remainingStock > 0 ? "text-green-600" : "text-red-600"
-          }`}
-        >
+        <Text weight="medium" color={remainingStock > 0 ? "green" : "red"}>
           재고: {remainingStock}개
-        </span>
+        </Text>
         {product.discounts.length > 0 && (
-          <span className="ml-2 font-medium text-blue-600">
+          <Text weight="medium" color="blue" className="ml-2">
             최대 {(getMaxDiscount(product.discounts) * 100).toFixed(0)}% 할인
-          </span>
+          </Text>
         )}
       </div>
       {product.discounts.length > 0 && (

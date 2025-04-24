@@ -1,5 +1,5 @@
 import { CartItem } from "../../../types";
-import { Button } from "../common";
+import { Button, Text } from "../common";
 
 interface CartItemCardProps {
   item: CartItem;
@@ -17,16 +17,16 @@ export const CartItemCard = ({
   return (
     <div className="flex justify-between items-center bg-white p-3 rounded shadow">
       <div>
-        <span className="font-semibold">{item.product.name}</span>
+        <Text className="font-semibold">{item.product.name}</Text>
         <br />
-        <span className="text-sm text-gray-600">
+        <Text size="sm" color="gray">
           {item.product.price}원 x {item.quantity}
           {appliedDiscount > 0 && (
-            <span className="text-green-600 ml-1">
+            <Text color="green" className="ml-1">
               ({(appliedDiscount * 100).toFixed(0)}% 할인 적용)
-            </span>
+            </Text>
           )}
-        </span>
+        </Text>
       </div>
       <div>
         <Button
