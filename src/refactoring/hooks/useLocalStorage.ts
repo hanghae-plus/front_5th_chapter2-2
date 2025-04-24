@@ -1,13 +1,15 @@
 import { useState } from "react";
-import { LocalStorage } from "../../types";
+import { CartItem, LocalStorage, Product, Discount, Coupon } from "../../types";
 import { getLocalStorage, setLocalStorage, removeLocalStorage } from "./lib/localStorage";
+
+type Item = CartItem | Product | Discount | Coupon
 
 export const useLocalStorage = (key: LocalStorage[keyof LocalStorage]) => {
   const [storage, _setStorage] = useState(() => getLocalStorage(key));
 
   removeLocalStorage(key);
 
-  const setStorage = <NewItem>(
+  const setStorage = <NewItem extends Item>(
     param: ((prevItem: NewItem[]) => NewItem[]) | NewItem[] | []
   ) => {
     if (typeof param === "function") {
