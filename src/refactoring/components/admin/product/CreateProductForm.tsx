@@ -14,12 +14,14 @@ export const CreateProductForm = () => {
       <CreateProductFormInput
         id="productName"
         label="상품명"
+        field="name"
         value={newProduct.name}
         onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
       />
       <CreateProductFormInput
         id="productPrice"
         label="가격"
+        field="price"
         type="number"
         value={newProduct.price}
         onChange={(e) =>
@@ -29,6 +31,7 @@ export const CreateProductForm = () => {
       <CreateProductFormInput
         id="productStock"
         label="재고"
+        field="stock"
         type="number"
         value={newProduct.stock}
         onChange={(e) =>

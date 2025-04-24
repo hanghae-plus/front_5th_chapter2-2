@@ -12,11 +12,13 @@ export const CouponForm = ({ coupon, onChange, onSubmit }: CouponFormProps) => {
   return (
     <div className="space-y-2 mb-4">
       <CouponFormInput
+        field="name"
         placeholder="쿠폰 이름"
         value={coupon.name}
         onChange={(e) => onChange({ ...coupon, name: e.target.value })}
       />
       <CouponFormInput
+        field="code"
         placeholder="쿠폰 코드"
         value={coupon.code}
         onChange={(e) => onChange({ ...coupon, code: e.target.value })}
@@ -36,6 +38,7 @@ export const CouponForm = ({ coupon, onChange, onSubmit }: CouponFormProps) => {
           ]}
         />
         <CouponFormInput
+          field="discountValue"
           type="number"
           placeholder="할인 값"
           value={coupon.discountValue}
