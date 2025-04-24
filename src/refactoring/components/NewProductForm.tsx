@@ -2,7 +2,7 @@ import { Product } from "../../types";
 
 interface NewProductFormTypeProps {
   product: Omit<Product, "id">;
-  onChange: (updated: Omit<Product, "id">) => void;
+  onChange: (field: keyof Omit<Product, "id">, value: string | number) => void;
   onSubmit: () => void;
 }
 
@@ -25,7 +25,7 @@ export const NewProductForm = ({
           id="productName"
           type="text"
           value={product.name}
-          onChange={(e) => onChange({ ...product, name: e.target.value })}
+          onChange={(e) => onChange("name", e.target.value)}
           className="w-full p-2 border rounded"
         />
       </div>
@@ -40,12 +40,7 @@ export const NewProductForm = ({
           id="productPrice"
           type="number"
           value={product.price}
-          onChange={(e) =>
-            onChange({
-              ...product,
-              price: parseInt(e.target.value),
-            })
-          }
+          onChange={(e) => onChange("price", e.target.value)}
           className="w-full p-2 border rounded"
         />
       </div>
@@ -60,12 +55,7 @@ export const NewProductForm = ({
           id="productStock"
           type="number"
           value={product.stock}
-          onChange={(e) =>
-            onChange({
-              ...product,
-              stock: parseInt(e.target.value),
-            })
-          }
+          onChange={(e) => onChange("stock", e.target.value)}
           className="w-full p-2 border rounded"
         />
       </div>

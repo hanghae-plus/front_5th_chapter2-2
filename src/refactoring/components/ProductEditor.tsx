@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Product, Discount } from "../../types";
+import { useForm } from "../hooks";
 
 interface ProductEditorTypeProps {
   product: Product;
@@ -17,33 +18,29 @@ export const ProductEditor = ({
   onUpdate,
 }: ProductEditorTypeProps) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [localProduct, setLocalProduct] = useState<Product>({ ...product });
   const [newDiscount, setNewDiscount] = useState<Discount>({
     quantity: 0,
     rate: 0,
   });
 
-  const handleInputChange = (field: keyof Product, value: string | number) => {
-    setLocalProduct({ ...localProduct, [field]: value });
-  };
+  const { values: editProduct, handleChange } = useForm<Product>({
+    ...product,
+  });
 
   const handleAddDiscount = () => {
-    setLocalProduct({
-      ...localProduct,
-      discounts: [...localProduct.discounts, newDiscount],
-    });
+    handleChange("discounts", [...editProduct.discounts, newDiscount]);
     setNewDiscount({ quantity: 0, rate: 0 });
   };
 
   const handleRemoveDiscount = (index: number) => {
-    const updatedDiscounts = localProduct.discounts.filter(
+    const updatedDiscounts = editProduct.discounts.filter(
       (_, i) => i !== index,
     );
-    setLocalProduct({ ...localProduct, discounts: updatedDiscounts });
+    handleChange("discounts", updatedDiscounts);
   };
 
   const handleEditComplete = () => {
-    onUpdate(localProduct);
+    onUpdate(editProduct);
     setIsEditing(false);
   };
 
@@ -67,8 +64,8 @@ export const ProductEditor = ({
                 <label className="block mb-1">상품명: </label>
                 <input
                   type="text"
-                  value={localProduct.name}
-                  onChange={(e) => handleInputChange("name", e.target.value)}
+                  value={editProduct.name}
+                  onChange={(e) => handleChange("name", e.target.value)}
                   className="w-full p-2 border rounded"
                 />
               </div>
@@ -76,9 +73,9 @@ export const ProductEditor = ({
                 <label className="block mb-1">가격: </label>
                 <input
                   type="number"
-                  value={localProduct.price}
+                  value={editProduct.price}
                   onChange={(e) =>
-                    handleInputChange("price", parseInt(e.target.value))
+                    handleChange("price", parseInt(e.target.value))
                   }
                   className="w-full p-2 border rounded"
                 />
@@ -87,16 +84,16 @@ export const ProductEditor = ({
                 <label className="block mb-1">재고: </label>
                 <input
                   type="number"
-                  value={localProduct.stock}
+                  value={editProduct.stock}
                   onChange={(e) =>
-                    handleInputChange("stock", parseInt(e.target.value))
+                    handleChange("stock", parseInt(e.target.value))
                   }
                   className="w-full p-2 border rounded"
                 />
               </div>
               <div>
                 <h4 className="text-lg font-semibold mb-2">할인 정보</h4>
-                {localProduct.discounts.map((discount, idx) => (
+                {editProduct.discounts.map((discount, idx) => (
                   <div
                     key={idx}
                     className="flex justify-between items-center mb-2"

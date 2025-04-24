@@ -4,7 +4,16 @@ import { NewProductForm } from "./NewProductForm.tsx";
 import { CouponManager } from "./CouponManager.tsx";
 import { ProductEditor } from "./ProductEditor.tsx";
 
+import { useForm } from "../hooks/useForm.ts";
+
 import { Coupon, Product } from "../../types.ts";
+
+const INITIAL_PRODUCT_STATE = {
+  name: "",
+  price: 0,
+  stock: 0,
+  discounts: [],
+};
 
 interface Props {
   products: Product[];
@@ -30,12 +39,11 @@ export const AdminPage = ({
     discountValue: 0,
   });
   const [showNewProductForm, setShowNewProductForm] = useState(false);
-  const [newProduct, setNewProduct] = useState<Omit<Product, "id">>({
-    name: "",
-    price: 0,
-    stock: 0,
-    discounts: [],
-  });
+  const {
+    values: newProduct,
+    handleChange,
+    reset,
+  } = useForm<Omit<Product, "id">>(INITIAL_PRODUCT_STATE);
 
   const toggleProductAccordion = (productId: string) => {
     setOpenProductIds((prev) => {
@@ -58,12 +66,7 @@ export const AdminPage = ({
   const handleAddNewProduct = () => {
     const productWithId = { ...newProduct, id: Date.now().toString() };
     onProductAdd(productWithId);
-    setNewProduct({
-      name: "",
-      price: 0,
-      stock: 0,
-      discounts: [],
-    });
+    reset();
     setShowNewProductForm(false);
   };
 
@@ -82,7 +85,7 @@ export const AdminPage = ({
           {showNewProductForm && (
             <NewProductForm
               product={newProduct}
-              onChange={setNewProduct}
+              onChange={handleChange}
               onSubmit={handleAddNewProduct}
             />
           )}
