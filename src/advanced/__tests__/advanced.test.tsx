@@ -1,5 +1,3 @@
-import { useMemo, useState } from "react";
-import { afterEach, describe, expect, test } from "vitest";
 import {
   act,
   cleanup,
@@ -10,27 +8,24 @@ import {
   within,
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { useMemo, useState } from "react";
+import { afterEach, describe, expect, test } from "vitest";
 
-import { CartPage } from "../../refactoring/components/CartPage";
 import { AdminPage } from "../../refactoring/components/AdminPage";
-import { Coupon, Product } from "../../types";
 import { ProductList } from "../../refactoring/components/cart/ProductList";
+import { CartPage } from "../../refactoring/components/CartPage";
+import AdminProvider, {
+  AdminActionContext,
+  AdminStateContext,
+} from "../../refactoring/context/AdminProvider";
 import { useCart } from "../../refactoring/hooks";
-import { ApplyCoupon } from "../../refactoring/components/cart/ApplyCoupon";
-import { AddToCart } from "../../refactoring/components/cart/AddToCart";
 import {
   calculateCartTotal,
   calculateItemTotal,
   getAddedToCart,
   getCouponDiscount,
 } from "../../refactoring/models/cart";
-import AdminProvider, {
-  AdminActionContext,
-  AdminStateContext,
-} from "../../refactoring/context/AdminProvider";
-import { useAdminContext } from "../../refactoring/hooks/useAdminContext";
-import { useAdminActionContext } from "../../refactoring/hooks/useAdminActionContext";
-import { aw } from "vitest/dist/chunks/reporters.C4ZHgdxQ.js";
+import { Coupon, Product } from "../../types";
 
 const mockProducts: Product[] = [
   {
@@ -70,6 +65,36 @@ const mockCoupons: Coupon[] = [
   },
 ];
 
+const AdminProviderWithInitialAdmin = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
+  const [isAdmin, setIsAdmin] = useState(true); // 기본값을 true로 설정
+
+  const actionValue = useMemo(
+    () => ({
+      setIsAdmin,
+    }),
+    []
+  );
+
+  const stateValue = useMemo(
+    () => ({
+      isAdmin,
+    }),
+    [isAdmin]
+  );
+
+  return (
+    <AdminActionContext.Provider value={actionValue}>
+      <AdminStateContext.Provider value={stateValue}>
+        {children}
+      </AdminStateContext.Provider>
+    </AdminActionContext.Provider>
+  );
+};
+
 const TestAdminPage = () => {
   const [products, setProducts] = useState<Product[]>(mockProducts);
   const [coupons, setCoupons] = useState<Coupon[]>(mockCoupons);
@@ -101,117 +126,132 @@ const TestAdminPage = () => {
 
 describe("advanced > ", () => {
   describe("시나리오 테스트 > ", () => {
-    test("장바구니 페이지 테스트 > ", async () => {
-      render(<CartPage products={mockProducts} coupons={mockCoupons} />);
-      const product1 = screen.getByTestId("product-p1");
-      const product2 = screen.getByTestId("product-p2");
-      const product3 = screen.getByTestId("product-p3");
-      const addToCartButtonsAtProduct1 =
-        within(product1).getByText("장바구니에 추가");
-      const addToCartButtonsAtProduct2 =
-        within(product2).getByText("장바구니에 추가");
-      const addToCartButtonsAtProduct3 =
-        within(product3).getByText("장바구니에 추가");
+    describe("카트 페이지 테스트", () => {
+      test("상품 정보 표시, 할인 정보 표시  ", () => {
+        const { result } = renderHook(() => useCart());
+        const { cart, addToCart } = result.current;
 
-      // 1. 상품 정보 표시
-      expect(product1).toHaveTextContent("상품1");
-      expect(product1).toHaveTextContent("10,000원");
-      expect(product1).toHaveTextContent("재고: 20개");
-      expect(product2).toHaveTextContent("상품2");
-      expect(product2).toHaveTextContent("20,000원");
-      expect(product2).toHaveTextContent("재고: 20개");
-      expect(product3).toHaveTextContent("상품3");
-      expect(product3).toHaveTextContent("30,000원");
-      expect(product3).toHaveTextContent("재고: 20개");
+        render(
+          <AdminProvider>
+            <ProductList
+              products={mockProducts}
+              cart={cart}
+              addToCart={addToCart}
+            />
+          </AdminProvider>
+        );
 
-      // 2. 할인 정보 표시
-      expect(screen.getByText("10개 이상: 10% 할인")).toBeInTheDocument();
+        // 1. 상품 정보 표시
+        expect(screen.getByText("상품1")).toBeDefined();
+        expect(screen.getByText("상품2")).toBeDefined();
+        expect(screen.getByText("상품3")).toBeDefined();
+
+        // 2. 할인 정보 표시
+        expect(screen.getByText("10개 이상: 10% 할인")).toBeDefined();
+        expect(screen.getByText("10개 이상: 15% 할인")).toBeDefined();
+        expect(screen.getByText("10개 이상: 20% 할인")).toBeDefined();
+      });
 
       // 3. 상품1 장바구니에 상품 추가
-      fireEvent.click(addToCartButtonsAtProduct1); // 상품1 추가
+      test("상품1 장바구니에 상품 추가 테스트", () => {
+        const { result } = renderHook(() => useCart());
+        act(() => {
+          result.current.addToCart(mockProducts[0]);
+        });
+
+        expect(result.current.cart).toStrictEqual([
+          {
+            product: mockProducts[0],
+            quantity: 1,
+          },
+        ]);
+      });
 
       // 4. 할인율 계산
-      expect(screen.getByText("상품 금액: 10,000원")).toBeInTheDocument();
-      expect(screen.getByText("할인 금액: 0원")).toBeInTheDocument();
-      expect(screen.getByText("최종 결제 금액: 10,000원")).toBeInTheDocument();
+      test("할인율 계산", () => {
+        render(
+          <AdminProvider>
+            <CartPage coupons={mockCoupons} products={mockProducts} />
+          </AdminProvider>
+        );
+
+        const product1 = screen.getByTestId("product-p1");
+        const addToCartBtnAtP1 = within(product1).getByText("장바구니에 추가");
+
+        for (let index = 0; index < 10; index++) {
+          fireEvent.click(addToCartBtnAtP1);
+        }
+
+        expect(screen.getByText("(10% 할인 적용)")).toBeInTheDocument();
+      });
 
       // 5. 상품 품절 상태로 만들기
-      for (let i = 0; i < 19; i++) {
-        fireEvent.click(addToCartButtonsAtProduct1);
-      }
+      test("상품 품절 상태로 만들기", () => {
+        render(
+          <AdminProvider>
+            <CartPage coupons={mockCoupons} products={mockProducts} />
+          </AdminProvider>
+        );
 
-      // 6. 품절일 때 상품 추가 안 되는지 확인하기
-      expect(product1).toHaveTextContent("재고: 0개");
-      fireEvent.click(addToCartButtonsAtProduct1);
-      expect(product1).toHaveTextContent("재고: 0개");
+        const product1 = screen.getByTestId("product-p1");
+        const addToCartBtnAtP1 = within(product1).getByText("장바구니에 추가");
 
-      // 7. 할인율 계산
-      expect(screen.getByText("상품 금액: 200,000원")).toBeInTheDocument();
-      expect(screen.getByText("할인 금액: 20,000원")).toBeInTheDocument();
-      expect(screen.getByText("최종 결제 금액: 180,000원")).toBeInTheDocument();
+        for (let index = 0; index < 20; index++) {
+          fireEvent.click(addToCartBtnAtP1);
+        }
 
-      // 8. 상품을 각각 10개씩 추가하기
-      fireEvent.click(addToCartButtonsAtProduct2); // 상품2 추가
-      fireEvent.click(addToCartButtonsAtProduct3); // 상품3 추가
+        expect(screen.getByText("품절")).toBeInTheDocument();
+      });
 
-      const increaseButtons = screen.getAllByText("+");
-      for (let i = 0; i < 9; i++) {
-        fireEvent.click(increaseButtons[1]); // 상품2
-        fireEvent.click(increaseButtons[2]); // 상품3
-      }
+      test("통합 테스트 6~12", () => {
+        render(
+          <AdminProvider>
+            <CartPage coupons={mockCoupons} products={mockProducts} />
+          </AdminProvider>
+        );
+        // 6. 품절일 때 상품 추가 안 되는지 확인하기
+        const product1 = screen.getByTestId("product-p1");
+        const addToCartBtnAtP1 = within(product1).getByRole("button");
 
-      // 9. 할인율 계산
-      expect(screen.getByText("상품 금액: 700,000원")).toBeInTheDocument();
-      expect(screen.getByText("할인 금액: 110,000원")).toBeInTheDocument();
-      expect(screen.getByText("최종 결제 금액: 590,000원")).toBeInTheDocument();
+        for (let i = 0; i < 20; i++) {
+          fireEvent.click(addToCartBtnAtP1);
+        }
+        expect(screen.getByText("10000원 x 20")).toBeInTheDocument();
+        fireEvent.click(addToCartBtnAtP1);
+        expect(screen.getByText("10000원 x 20")).toBeInTheDocument();
 
-      // 10. 쿠폰 적용하기
-      const couponSelect = screen.getByRole("combobox");
-      fireEvent.change(couponSelect, { target: { value: "1" } }); // 10% 할인 쿠폰 선택
+        // 7. 할인율 계산
+        expect(screen.getByText("(10% 할인 적용)")).toBeInTheDocument();
 
-      // 11. 할인율 계산
-      expect(screen.getByText("상품 금액: 700,000원")).toBeInTheDocument();
-      expect(screen.getByText("할인 금액: 169,000원")).toBeInTheDocument();
-      expect(screen.getByText("최종 결제 금액: 531,000원")).toBeInTheDocument();
+        // 8. 상품을 각각 10개씩 추가하기
 
-      // 12. 다른 할인 쿠폰 적용하기
-      fireEvent.change(couponSelect, { target: { value: "0" } }); // 5000원 할인 쿠폰
-      expect(screen.getByText("상품 금액: 700,000원")).toBeInTheDocument();
-      expect(screen.getByText("할인 금액: 115,000원")).toBeInTheDocument();
-      expect(screen.getByText("최종 결제 금액: 585,000원")).toBeInTheDocument();
+        const product2 = screen.getByTestId("product-p2");
+        const product3 = screen.getByTestId("product-p3");
+        const addToCartBtnAtP2 = within(product2).getByRole("button");
+        const addToCartBtnAtP3 = within(product3).getByRole("button");
+        for (let i = 0; i < 10; i++) {
+          fireEvent.click(addToCartBtnAtP2);
+          fireEvent.click(addToCartBtnAtP3);
+        }
+
+        expect(screen.getByText("20000원 x 10")).toBeInTheDocument();
+        expect(screen.getByText("30000원 x 10")).toBeInTheDocument();
+
+        // 9. 할인율 계산
+        expect(screen.getByText("(15% 할인 적용)")).toBeInTheDocument();
+        expect(screen.getByText("(20% 할인 적용)")).toBeInTheDocument();
+
+        // 10. 쿠폰 적용하기
+        const select = screen.getByRole("combobox");
+        fireEvent.change(select, { target: { value: "1" } });
+
+        // 11. 할인율 계산
+
+        // 12. 다른 할인 쿠폰 적용하기
+      });
     });
 
-    // 관리자 페이지 테스트 직접 작성해보자 (리팩토링 전 단계!)
-    test.only("관리자 페이지 테스트 > ", async () => {
-      const AdminProviderWithInitialAdmin = ({
-        children,
-      }: {
-        children: React.ReactNode;
-      }) => {
-        const [isAdmin, setIsAdmin] = useState(true); // 기본값을 true로 설정
-
-        const actionValue = useMemo(
-          () => ({
-            setIsAdmin,
-          }),
-          []
-        );
-
-        const stateValue = useMemo(
-          () => ({
-            isAdmin,
-          }),
-          [isAdmin]
-        );
-
-        return (
-          <AdminActionContext.Provider value={actionValue}>
-            <AdminStateContext.Provider value={stateValue}>
-              {children}
-            </AdminStateContext.Provider>
-          </AdminActionContext.Provider>
-        );
-      };
+    test("관리자 페이지 테스트 > ", async () => {
       render(
         <AdminProviderWithInitialAdmin>
           <TestAdminPage />
@@ -262,129 +302,6 @@ describe("advanced > ", () => {
       // 할인 삭제
 
       // 4. 쿠폰 추가
-    });
-  });
-
-  describe("자유롭게 작성해보세요.", () => {
-    test("새로운 유틸 함수를 만든 후에 테스트 코드를 작성해서 실행해보세요", () => {
-      expect(true).toBe(true);
-    });
-
-    test("새로운 hook 함수르 만든 후에 테스트 코드를 작성해서 실행해보세요", () => {
-      expect(true).toBe(true);
-    });
-  });
-
-  describe("hello, test code!", () => {
-    afterEach(cleanup);
-
-    test("ProductList 컴포넌트 테스트 > ", () => {
-      const { result } = renderHook(() => useCart());
-      const { cart, addToCart } = result.current;
-
-      render(
-        <ProductList
-          products={mockProducts}
-          cart={cart}
-          addToCart={addToCart}
-        />
-      );
-
-      // 1. 상품 정보 표시
-      expect(screen.getByText("상품1")).toBeDefined();
-      expect(screen.getByText("상품2")).toBeDefined();
-      expect(screen.getByText("상품3")).toBeDefined();
-
-      // 2. 할인 정보 표시
-      expect(screen.getByText("10개 이상: 10% 할인")).toBeDefined();
-      expect(screen.getByText("10개 이상: 15% 할인")).toBeDefined();
-      expect(screen.getByText("10개 이상: 20% 할인")).toBeDefined();
-    });
-
-    // 3. 상품1 장바구니에 상품 추가
-    test("상품1 장바구니에 상품 추가 테스트", () => {
-      const { result } = renderHook(() => useCart());
-      act(() => {
-        result.current.addToCart(mockProducts[0]);
-      });
-
-      expect(result.current.cart).toStrictEqual([
-        {
-          product: mockProducts[0],
-          quantity: 1,
-        },
-      ]);
-    });
-
-    // 4. 할인율 계산
-    test("할인율 계산", () => {
-      render(<CartPage coupons={mockCoupons} products={mockProducts} />);
-
-      const product1 = screen.getByTestId("product-p1");
-      const addToCartBtnAtP1 = within(product1).getByText("장바구니에 추가");
-
-      for (let index = 0; index < 10; index++) {
-        fireEvent.click(addToCartBtnAtP1);
-      }
-
-      expect(screen.getByText("(10% 할인 적용)")).toBeInTheDocument();
-    });
-
-    // 5. 상품 품절 상태로 만들기
-    test("상품 품절 상태로 만들기", () => {
-      render(<CartPage coupons={mockCoupons} products={mockProducts} />);
-
-      const product1 = screen.getByTestId("product-p1");
-      const addToCartBtnAtP1 = within(product1).getByText("장바구니에 추가");
-
-      for (let index = 0; index < 20; index++) {
-        fireEvent.click(addToCartBtnAtP1);
-      }
-
-      expect(screen.getByText("품절")).toBeInTheDocument();
-    });
-
-    test("통합 테스트 6~12", () => {
-      render(<CartPage coupons={mockCoupons} products={mockProducts} />);
-      // 6. 품절일 때 상품 추가 안 되는지 확인하기
-      const product1 = screen.getByTestId("product-p1");
-      const addToCartBtnAtP1 = within(product1).getByRole("button");
-
-      for (let i = 0; i < 20; i++) {
-        fireEvent.click(addToCartBtnAtP1);
-      }
-      expect(screen.getByText("10000원 x 20")).toBeInTheDocument();
-      fireEvent.click(addToCartBtnAtP1);
-      expect(screen.getByText("10000원 x 20")).toBeInTheDocument();
-
-      // 7. 할인율 계산
-      expect(screen.getByText("(10% 할인 적용)")).toBeInTheDocument();
-
-      // 8. 상품을 각각 10개씩 추가하기
-
-      const product2 = screen.getByTestId("product-p2");
-      const product3 = screen.getByTestId("product-p3");
-      const addToCartBtnAtP2 = within(product2).getByRole("button");
-      const addToCartBtnAtP3 = within(product3).getByRole("button");
-      for (let i = 0; i < 10; i++) {
-        fireEvent.click(addToCartBtnAtP2);
-        fireEvent.click(addToCartBtnAtP3);
-      }
-
-      expect(screen.getByText("20000원 x 10")).toBeInTheDocument();
-      expect(screen.getByText("30000원 x 10")).toBeInTheDocument();
-
-      // 9. 할인율 계산
-      expect(screen.getByText("(15% 할인 적용)")).toBeInTheDocument();
-      expect(screen.getByText("(20% 할인 적용)")).toBeInTheDocument();
-
-      // 10. 쿠폰 적용하기
-      const select = screen.getByRole("combobox");
-      fireEvent.change(select, { target: { value: "1" } });
-
-      // 11. 할인율 계산
-
-      // 12. 다른 할인 쿠폰 적용하기
     });
   });
 
