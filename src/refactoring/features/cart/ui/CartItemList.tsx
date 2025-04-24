@@ -1,22 +1,8 @@
-import { CartItem } from '../../../entities';
+import { getAppliedDiscount } from '../../../entities';
 import { useCartContext } from '../model/contexts/CartProvider';
 
-interface CartItemListProps {}
-
-export const CartItemList = ({}: CartItemListProps) => {
+export const CartItemList = () => {
   const { cart, removeFromCart, updateQuantity } = useCartContext();
-
-  const getAppliedDiscount = (item: CartItem) => {
-    const { discounts } = item.product;
-    const { quantity } = item;
-    let appliedDiscount = 0;
-    for (const discount of discounts) {
-      if (quantity >= discount.quantity) {
-        appliedDiscount = Math.max(appliedDiscount, discount.rate);
-      }
-    }
-    return appliedDiscount;
-  };
 
   return (
     <div className="space-y-2">
