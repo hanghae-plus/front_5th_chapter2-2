@@ -17,8 +17,8 @@ const CouponSelector = (props: CouponSelectorProps) => {
   };
 
   return (
-    <div className="bg-white p-4 rounded shadow space-y-2">
-      <h2 className="text-2xl font-semibold">쿠폰 적용</h2>
+    <div className="mt-6 bg-white p-4 rounded shadow">
+      <h2 className="text-2xl font-semibold mb-2">쿠폰 적용</h2>
       <OptionSelector
         options={coupons}
         placeholder="쿠폰 선택"
