@@ -1,11 +1,14 @@
-import { Product } from "../../types";
-import { useCart } from "../hooks/useCart";
+import { CartItem, Product } from "../../types";
 
-const ProductList = ({ products }: { products: Product[] }) => {
-  const { cart, addToCart } = useCart();
+interface ProductListProps {
+  products: Product[];
+  cartItems: CartItem[];
+  onAddToCart: (product: Product) => void;
+}
 
+const ProductList = ({ products, cartItems, onAddToCart }: ProductListProps) => {
   const getRemainingStock = (product: Product) => {
-    const cartItem = cart.find((item) => item.product.id === product.id);
+    const cartItem = cartItems.find((item) => item.product.id === product.id);
     return product.stock - (cartItem?.quantity || 0);
   };
 
@@ -57,7 +60,7 @@ const ProductList = ({ products }: { products: Product[] }) => {
                 </ul>
               )}
               <button
-                onClick={() => addToCart(product)}
+                onClick={() => onAddToCart(product)}
                 className={`w-full px-3 py-1 rounded ${
                   remainingStock > 0
                     ? "bg-blue-500 text-white hover:bg-blue-600"

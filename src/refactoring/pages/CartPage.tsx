@@ -10,7 +10,7 @@ interface Props {
 }
 
 export const CartPage = ({ products, coupons }: Props) => {
-  const { cart, removeFromCart, updateQuantity } = useCart();
+  const { cart, removeFromCart, updateQuantity, addToCart, calculateTotal, applyCoupon, selectedCoupon } = useCart();
 
   const getAppliedDiscount = (item: CartItem) => {
     const { discounts } = item.product;
@@ -30,7 +30,7 @@ export const CartPage = ({ products, coupons }: Props) => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <h2 className="text-2xl font-semibold mb-4">장바구니 내역</h2>
-          <ProductList products={products} />
+          <ProductList products={products} cartItems={cart} onAddToCart={addToCart} />
           <div className="space-y-2">
             {cart.map((item) => {
               const appliedDiscount = getAppliedDiscount(item);
@@ -79,8 +79,8 @@ export const CartPage = ({ products, coupons }: Props) => {
               );
             })}
           </div>
-          <OrderSummary />
-          <ApplyCoupon coupons={coupons} />
+          <OrderSummary cartTotal={calculateTotal()} />
+          <ApplyCoupon coupons={coupons} onApplyCoupon={applyCoupon} selectedCoupon={selectedCoupon} />
         </div>
       </div>
     </div>
