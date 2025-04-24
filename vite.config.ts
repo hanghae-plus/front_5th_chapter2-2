@@ -11,6 +11,13 @@ export default mergeConfig(
         "#src": resolve(__dirname, "src"),
       },
     },
+    build: {
+      rollupOptions: {
+        input: {
+          main: resolve(__dirname, "index.refactoring.html"),
+        },
+      },
+    },
   }),
   defineTestConfig({
     test: {
