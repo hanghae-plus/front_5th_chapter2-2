@@ -1,7 +1,6 @@
-import { useState } from "react";
 import { Product } from "../../../types";
-import { initialNewProducts } from "../../constants";
 import { useProductForm } from "../../hooks/entities/product/useProductForm";
+import { useNewProduct } from "../../hooks/entities/product/useNewProduct";
 
 interface Props {
   onProductAdd: (newProduct: Product) => void;
@@ -10,17 +9,7 @@ interface Props {
 const ProductAdd = ({ onProductAdd }: Props) => {
   const { showNewProductForm, setShowNewProductForm, handleProductFormToggle } =
     useProductForm();
-
-  const [newProduct, setNewProduct] =
-    useState<Omit<Product, "id">>(initialNewProducts);
-
-  const handleAddNewProduct = () => {
-    //시간으로 id 설정
-    const productWithId = { ...newProduct, id: Date.now().toString() };
-    onProductAdd(productWithId); //전역적으로 새로운 상품을 추가
-    setNewProduct(initialNewProducts);
-    setShowNewProductForm(false); //새 상품 추가 후, 폼 닫기
-  };
+  const { newProduct, setNewProduct, handleAddNewProduct } = useNewProduct();
 
   return (
     <>
@@ -92,7 +81,12 @@ const ProductAdd = ({ onProductAdd }: Props) => {
             />
           </div>
           <button
-            onClick={handleAddNewProduct}
+            onClick={() =>
+              handleAddNewProduct({
+                onProductAdd,
+                setShowNewProductForm,
+              })
+            }
             className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
           >
             추가
