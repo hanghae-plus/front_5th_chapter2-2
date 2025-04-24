@@ -1,16 +1,11 @@
 import { CartItem } from '../../../entities';
+import { useCartContext } from '../model/contexts/CartProvider';
 
-interface CartItemListProps {
-  cart: CartItem[];
-  removeFromCart: (productId: string) => void;
-  updateQuantity: (productId: string, newQuantity: number) => void;
-}
+interface CartItemListProps {}
 
-export const CartItemList = ({
-  cart,
-  removeFromCart,
-  updateQuantity,
-}: CartItemListProps) => {
+export const CartItemList = ({}: CartItemListProps) => {
+  const { cart, removeFromCart, updateQuantity } = useCartContext();
+
   const getAppliedDiscount = (item: CartItem) => {
     const { discounts } = item.product;
     const { quantity } = item;

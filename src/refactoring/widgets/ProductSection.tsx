@@ -1,17 +1,18 @@
 import { Product } from '../entities';
-import { ProductItem } from '../features/cart';
+import { ProductItem, useCartContext } from '../features/cart';
+
 import { useProductContext } from '../shared';
 
-interface ProductSectionProps {
-  getRemainingStock: (product: Product) => number;
-  addToCart: (product: Product) => void;
-}
+interface ProductSectionProps {}
 
-export const ProductSection = ({
-  getRemainingStock,
-  addToCart,
-}: ProductSectionProps) => {
+export const ProductSection = ({}: ProductSectionProps) => {
   const { products } = useProductContext();
+  const { addToCart, cart } = useCartContext();
+
+  const getRemainingStock = (product: Product) => {
+    const cartItem = cart.find((item) => item.product.id === product.id);
+    return product.stock - (cartItem?.quantity || 0);
+  };
 
   return (
     <div>

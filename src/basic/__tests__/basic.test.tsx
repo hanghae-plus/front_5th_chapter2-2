@@ -10,9 +10,14 @@ import {
 } from '@testing-library/react';
 import { CartPage, AdminPage } from '../../refactoring/pages';
 import { CartItem, Coupon, Product } from '../../types';
-import { useCart, useCoupons, useProducts } from '../../refactoring/hooks';
 import * as cartUtils from '../../refactoring/models/cart';
-import { CouponContext, ProductContext } from '../../refactoring/shared';
+import {
+  CouponContext,
+  ProductContext,
+  useCoupons,
+  useProducts,
+} from '../../refactoring/shared';
+import { CartProvider, useCart } from '../../refactoring/features/cart';
 
 const mockProducts: Product[] = [
   {
@@ -104,7 +109,9 @@ describe('basic > ', () => {
     test('장바구니 페이지 테스트 > ', async () => {
       render(
         <MockProvider>
-          <CartPage />
+          <CartProvider>
+            <CartPage />
+          </CartProvider>
         </MockProvider>
       );
       const product1 = screen.getByTestId('product-p1');

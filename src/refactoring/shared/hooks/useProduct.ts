@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Product } from '../entities';
+import { Product } from '../../entities';
 
 export const useProducts = (initialProducts: Product[]) => {
   const [products, setProducts] = useState<Product[]>(initialProducts);

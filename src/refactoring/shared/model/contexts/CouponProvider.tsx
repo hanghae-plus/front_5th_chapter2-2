@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react';
 import { Coupon } from '../../../entities';
-import { useCoupons } from '../../../hooks';
+import { useCoupons } from '../../hooks/useCoupon';
 
 export interface CouponContextType {
   coupons: Coupon[];

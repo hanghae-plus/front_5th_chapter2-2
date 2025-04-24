@@ -9,3 +9,5 @@ export {
   useCouponContext,
   CouponContext,
 } from './model/contexts/CouponProvider';
+export { useCoupons } from './hooks/useCoupon';
+export { useProducts } from './hooks/useProduct';

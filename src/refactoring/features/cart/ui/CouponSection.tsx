@@ -1,16 +1,11 @@
-import { Coupon } from '../../../entities';
 import { useCouponContext } from '../../../shared';
+import { useCartContext } from '../model/contexts/CartProvider';
 
-interface CouponSectionProps {
-  applyCoupon: (coupon: Coupon) => void;
-  selectedCoupon: Coupon | null;
-}
+interface CouponSectionProps {}
 
-export const CouponSection = ({
-  applyCoupon,
-  selectedCoupon,
-}: CouponSectionProps) => {
+export const CouponSection = ({}: CouponSectionProps) => {
   const { coupons } = useCouponContext();
+  const { applyCoupon, selectedCoupon } = useCartContext();
 
   return (
     <div className="mt-6 bg-white p-4 rounded shadow">

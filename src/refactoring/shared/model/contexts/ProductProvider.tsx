@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react';
 import { Product } from '../../../entities';
-import { useProducts } from '../../../hooks';
+import { useProducts } from '../../hooks/useProduct';
 
 export interface ProductContextType {
   products: Product[];

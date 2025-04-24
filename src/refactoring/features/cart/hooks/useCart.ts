@@ -4,8 +4,8 @@ import {
   calculateCartTotal,
   calculateItemTotal,
   updateCartItemQuantity,
-} from '../models/cart';
-import { CartItem, Coupon, Product } from '../entities';
+} from '../../../models/cart';
+import { CartItem, Coupon, Product } from '../../../entities';
 
 export const useCart = () => {
   const [cart, setCart] = useState<CartItem[]>([]);
