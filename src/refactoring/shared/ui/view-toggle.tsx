@@ -49,16 +49,24 @@ export const ToggleViewOnShow = ({
 
 interface ToggleTriggerProps extends React.ComponentProps<"button"> {
   children: React.ReactNode;
+  handleClick?: () => void;
 }
 
 export const ViewToggleTrigger = ({
   children,
+  handleClick,
   ...props
 }: ToggleTriggerProps) => {
   const { toggleView } = useViewToggleContext();
 
   return (
-    <button onClick={toggleView} {...props}>
+    <button
+      onClick={() => {
+        handleClick?.();
+        toggleView();
+      }}
+      {...props}
+    >
       {children}
     </button>
   );
