@@ -1,5 +1,5 @@
 import { Button, Text } from "../../common";
-import { Product, Discount } from "../../../../types";
+import { Product } from "../../../../types";
 import { useProductManagement } from "../../../contexts/ProductManagementContext";
 
 interface ProductManagementItemDiscountProps {

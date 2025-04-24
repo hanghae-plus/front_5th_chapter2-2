@@ -1,4 +1,3 @@
-// src/refactoring/contexts/ProductManagementContext.tsx
 import { createContext, useContext, ReactNode } from "react";
 import { Product } from "../../types";
 import { useAccordion } from "../hooks/common/useAccordion";
