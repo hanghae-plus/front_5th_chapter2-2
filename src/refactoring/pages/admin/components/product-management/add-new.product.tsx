@@ -2,10 +2,14 @@ import React, { useState } from "react";
 
 import { useProductContext } from "@r/model/product/product-context";
 import { Product } from "@r/model/product/types";
+import { useForm } from "@r/hooks/use-form";
+import { Input } from "@r/shared/ui/input";
 
 interface AddNewProductProps {}
 
-const initialProduct: Omit<Product, "id"> = {
+type ProductBody = Omit<Product, "id">;
+
+const initialProductBody: Omit<Product, "id"> = {
   name: "",
   price: 0,
   stock: 0,
@@ -16,13 +20,14 @@ export const AddNewProduct: React.FC<AddNewProductProps> = () => {
   const { addProduct } = useProductContext();
 
   const [showNewProductForm, setShowNewProductForm] = useState(false);
-  const [newProduct, setNewProduct] =
-    useState<Omit<Product, "id">>(initialProduct);
+
+  const { formValues, handleFormChange, handleFormReset } =
+    useForm<ProductBody>(initialProductBody);
 
   const handleAddNewProduct = () => {
     const productId = Date.now().toString();
-    addProduct({ ...newProduct, id: productId });
-    setNewProduct(initialProduct);
+    addProduct({ ...formValues, id: productId });
+    handleFormReset();
   };
 
   return (
@@ -43,13 +48,11 @@ export const AddNewProduct: React.FC<AddNewProductProps> = () => {
             >
               상품명
             </label>
-            <input
+            <Input
               id="productName"
-              type="text"
-              value={newProduct.name}
-              onChange={(e) =>
-                setNewProduct({ ...newProduct, name: e.target.value })
-              }
+              value={formValues.name}
+              name="name"
+              onChange={handleFormChange}
               className="w-full p-2 border rounded"
             />
           </div>
@@ -60,16 +63,12 @@ export const AddNewProduct: React.FC<AddNewProductProps> = () => {
             >
               가격
             </label>
-            <input
+            <Input
               id="productPrice"
               type="number"
-              value={newProduct.price}
-              onChange={(e) =>
-                setNewProduct({
-                  ...newProduct,
-                  price: parseInt(e.target.value),
-                })
-              }
+              value={formValues.price}
+              name="price"
+              onChange={handleFormChange}
               className="w-full p-2 border rounded"
             />
           </div>
@@ -80,16 +79,12 @@ export const AddNewProduct: React.FC<AddNewProductProps> = () => {
             >
               재고
             </label>
-            <input
+            <Input
               id="productStock"
               type="number"
-              value={newProduct.stock}
-              onChange={(e) =>
-                setNewProduct({
-                  ...newProduct,
-                  stock: parseInt(e.target.value),
-                })
-              }
+              value={formValues.stock}
+              name="stock"
+              onChange={handleFormChange}
               className="w-full p-2 border rounded"
             />
           </div>
