@@ -30,7 +30,7 @@ const DiscountForm = ({
       <div className="flex flex-wrap gap-2 mb-2">
         <input
           type="number"
-          placeholder="구매 수량"
+          placeholder="수량"
           value={newDiscount.quantity}
           onChange={handleQuantityChange}
           className="flex-1 p-2 border rounded"

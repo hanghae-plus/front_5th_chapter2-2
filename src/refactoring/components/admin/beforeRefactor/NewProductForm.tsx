@@ -15,8 +15,11 @@ const NewProductForm = ({
     <div className="bg-white p-4 rounded shadow mb-4">
       <h3 className="text-lg font-semibold mb-2">새 상품 추가</h3>
       <div className="mb-2">
-        <label className="block mb-1">상품명:</label>
+        <label htmlFor="productName" className="block mb-1">
+          상품명
+        </label>
         <input
+          id="productName"
           type="text"
           value={newProduct.name}
           onChange={(e) => updateNewProduct("name", e.target.value)}
@@ -24,8 +27,11 @@ const NewProductForm = ({
         />
       </div>
       <div className="mb-2">
-        <label className="block mb-1">가격:</label>
+        <label htmlFor="productPrice" className="block mb-1">
+          가격
+        </label>
         <input
+          id="productPrice"
           type="number"
           value={newProduct.price}
           onChange={(e) => updateNewProduct("price", parseInt(e.target.value))}
@@ -33,8 +39,11 @@ const NewProductForm = ({
         />
       </div>
       <div className="mb-4">
-        <label className="block mb-1">재고:</label>
+        <label htmlFor="productStock" className="block mb-1">
+          재고
+        </label>
         <input
+          id="productStock"
           type="number"
           value={newProduct.stock}
           onChange={(e) => updateNewProduct("stock", parseInt(e.target.value))}
