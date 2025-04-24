@@ -1,6 +1,6 @@
 import { Coupon } from '../../../types';
-import CartCouponApplied from './CartCouponApplied';
-import CartCouponSelectBox from './CartCouponSelectBox';
+import CartCouponApplied from './CouponApplied';
+import CartCouponSelectBox from './CouponSelectBox';
 
 interface Props {
   coupons: Coupon[];

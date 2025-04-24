@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { initialCoupons, initialProducts } from '../mock/data';
 import { useCoupons } from '../hooks/useCoupon';
 import { useProducts } from '../hooks/useProduct';
-import { CartPage } from '../components/CartPage';
-import { AdminPage } from '../components/AdminPage';
+import { CartPage } from '../pages/CartPage';
+import { AdminPage } from '../pages/AdminPage';
 
 const App = () => {
   const { products, updateProduct, addProduct } = useProducts(initialProducts);

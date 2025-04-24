@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { Coupon, Discount, Product } from '../../types.ts';
-import CouponManagement from './admin/CouponManagement.tsx';
-import ProductAddForm from './admin/ProductAddForm.tsx';
-import ProductEdit from './admin/ProductEdit.tsx';
-import ProductEditDiscount from './admin/ProductEditDiscount.tsx';
-import ProductToggleListItem from './admin/ProductToggleListItem.tsx';
+import CouponManagement from '../components/coupon/CouponManagement.tsx';
+import ProductAddForm from '../components/product/ProductAddForm.tsx';
+import ProductEdit from '../components/product/ProductEdit.tsx';
+import ProductEditDiscount from '../components/product/ProductEditDiscount.tsx';
+import ProductToggleListItem from '../components/product/ProductToggleListItem.tsx';
 interface Props {
   products: Product[];
   coupons: Coupon[];
