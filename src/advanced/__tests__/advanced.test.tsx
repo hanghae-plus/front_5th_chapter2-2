@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { describe, expect, test } from 'vitest';
-import { act, fireEvent, render, screen, within } from '@testing-library/react';
+import { act, fireEvent, render, screen, within, renderHook } from '@testing-library/react';
 import { CartPage } from '../../refactoring/components/CartPage';
 import { AdminPage } from "../../refactoring/components/AdminPage";
 import { Coupon, Product } from '../../types';
+import { useLocalStorage } from '../../refactoring/hooks/useLocalStorage';
 
 const mockProducts: Product[] = [
   {
@@ -79,7 +80,7 @@ describe('advanced > ', () => {
 
     test('장바구니 페이지 테스트 > ', async () => {
 
-      render(<CartPage products={mockProducts} coupons={mockCoupons}/>);
+      render(<CartPage products={mockProducts} coupons={mockCoupons} />);
       const product1 = screen.getByTestId('product-p1');
       const product2 = screen.getByTestId('product-p2');
       const product3 = screen.getByTestId('product-p3');
@@ -157,7 +158,7 @@ describe('advanced > ', () => {
     });
 
     test('관리자 페이지 테스트 > ', async () => {
-      render(<TestAdminPage/>);
+      render(<TestAdminPage />);
 
 
       const $product1 = screen.getByTestId('product-1');
@@ -231,14 +232,53 @@ describe('advanced > ', () => {
     })
   })
 
-  describe('자유롭게 작성해보세요.', () => {
-    test('새로운 유틸 함수를 만든 후에 테스트 코드를 작성해서 실행해보세요', () => {
-      expect(true).toBe(false);
-    })
+  describe('useLocalStorage', () => {
+    const key = 'test-key';
 
-    test('새로운 hook 함수르 만든 후에 테스트 코드를 작성해서 실행해보세요', () => {
-      expect(true).toBe(false);
-    })
-  })
+    beforeEach(() => {
+      localStorage.clear(); // 테스트 전 로컬스토리지 초기화
+    });
+
+    test('초기값을 로컬스토리지에 저장하지 않은 경우 초기값 반환', () => {
+      const { result } = renderHook(() =>
+        useLocalStorage(key, '기본값')
+      );
+
+      expect(result.current[0]).toBe('기본값');
+    });
+
+    test('로컬스토리지에 값이 있을 경우 해당 값을 반환', () => {
+      localStorage.setItem(key, JSON.stringify('저장된값'));
+
+      const { result } = renderHook(() =>
+        useLocalStorage(key, '기본값')
+      );
+
+      expect(result.current[0]).toBe('저장된값');
+    });
+
+    test('값이 변경되면 로컬스토리지에 반영된다', () => {
+      const { result } = renderHook(() =>
+        useLocalStorage(key, '초기값')
+      );
+
+      act(() => {
+        result.current[1]('새로운값');
+      });
+
+      expect(localStorage.getItem(key)).toBe(JSON.stringify('새로운값'));
+      expect(result.current[0]).toBe('새로운값');
+    });
+
+    test('JSON 파싱 오류 발생 시 초기값을 반환한다', () => {
+      localStorage.setItem(key, 'invalid-json');
+
+      const { result } = renderHook(() =>
+        useLocalStorage(key, '기본값')
+      );
+
+      expect(result.current[0]).toBe('기본값');
+    });
+  });
 })
 
