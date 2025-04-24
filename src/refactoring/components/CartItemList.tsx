@@ -11,17 +11,20 @@ interface CartItemProps {
 
 const CartItemList = ({ items, onUpdateQuantity, onRemove }: CartItemProps) => {
     return (
-        <div className="space-y-2">
-            {items.map((item) => {
-                return (
-                    <CartItemCard
-                        item={item}
-                        onUpdateQuantity={onUpdateQuantity}
-                        onRemove={onRemove}
-                    />
-                );
-            })}
-        </div>
+        <>
+            <h2 className="text-2xl font-semibold mb-4">장바구니 내역</h2>
+            <div className="space-y-2">
+                {items.map((item) => {
+                    return (
+                        <CartItemCard
+                            item={item}
+                            onUpdateQuantity={onUpdateQuantity}
+                            onRemove={onRemove}
+                        />
+                    );
+                })}
+            </div>
+        </>
     );
 };
 
