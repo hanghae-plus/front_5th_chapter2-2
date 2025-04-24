@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CartItem, Coupon, Product } from "../../types";
+import { CartItem, Coupon, Product } from "../types";
 import { calculateCartTotal, updateCartItemQuantity } from "../models/cart";
 
 // 장바구니 상태를 관리하는 커스텀 훅
