@@ -1,5 +1,5 @@
-import {  Coupon, Product } from '../../types.ts';
-import { useCart } from '../hooks';
+import { Coupon, Product } from '../../types.ts';
+import { useCart, useDiscount } from '../hooks';
 
 interface Props {
     products: Product[];
@@ -14,11 +14,11 @@ export const CartPage = ({ products, coupons }: Props) => {
         updateQuantity,
         applyCoupon,
         calculateTotal,
-        calculateMaxDiscount,
         calculateRemainingStock,
-        calculateDiscount,
         selectedCoupon,
     } = useCart();
+
+    const { calculateMaxDiscount, calculateDiscount } = useDiscount();
 
     const { totalBeforeDiscount, totalAfterDiscount, totalDiscount } = calculateTotal();
 
