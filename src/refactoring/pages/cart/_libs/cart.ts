@@ -1,4 +1,4 @@
-import type { ICartItem, ICoupon } from "#src/types";
+import type { ICartItem, ICoupon, IProduct } from "#src/types";
 
 /**
  * 상품 총액 계산
@@ -91,4 +91,15 @@ export const updateCartItemQuantity = (cartItems: ICartItem[], productId: string
     .filter((cartItem) => cartItem.quantity > 0);
 
   return updatedCart;
+};
+
+/** 장바구니 상품 추가 */
+export const addCartItem = (cartItems: ICartItem[], product: IProduct) => {
+  const exCartItem = cartItems.find((item) => item.product.id === product.id);
+
+  if (exCartItem) {
+    return updateCartItemQuantity(cartItems, product.id, exCartItem.quantity + 1);
+  }
+
+  return [...cartItems, { product, quantity: 1 }];
 };

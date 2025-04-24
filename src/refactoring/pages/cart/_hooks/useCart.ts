@@ -1,19 +1,14 @@
 // useCart.ts
 import { useCallback, useContext } from "react";
 import type { ICoupon, IProduct } from "#src/types";
-import { calculateCartTotal, updateCartItemQuantity } from "#src/refactoring/pages/cart/_libs/cart";
+import { addCartItem, calculateCartTotal, updateCartItemQuantity } from "#src/refactoring/pages/cart/_libs/cart";
 import { CartContext } from "#src/refactoring/pages/cart/providers/CartProvider";
 
 export const useCart = () => {
   const { cart, setCart, selectedCoupon, setSelectedCoupon } = useContext(CartContext);
 
   const addToCart = useCallback((product: IProduct) => {
-    setCart((prev) => {
-      const exProduct = prev.find((item) => item.product.id === product.id);
-      if (!exProduct) return [...prev, { product, quantity: 1 }];
-
-      return prev.map((item) => (item.product.id === product.id ? { ...item, quantity: item.quantity + 1 } : item));
-    });
+    setCart((prev) => addCartItem(prev, product));
   }, []);
 
   const removeFromCart = useCallback((productId: string) => {
