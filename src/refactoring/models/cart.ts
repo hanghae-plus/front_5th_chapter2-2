@@ -1,4 +1,5 @@
 import { CartItem, Coupon, Discount, Product } from '../../types';
+import { isAmountDiscount } from '../lib';
 
 export const getRemainingStock = (product: Product, cart: CartItem[]) => {
   const cartItem = cart.find((item) => item.product.id === product.id);
@@ -63,7 +64,7 @@ export const getTotalAfterDiscount = (cart: CartItem[], selectedCoupon: Coupon |
     return itemsAfterDiscount;
   }
 
-  if (selectedCoupon.discountType === 'amount') {
+  if (isAmountDiscount(selectedCoupon.discountType)) {
     // 상품 가격이 음수가 되는 경우 0으로 보정
     return Math.max(0, itemsAfterDiscount - selectedCoupon.discountValue);
   }

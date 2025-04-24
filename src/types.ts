@@ -22,3 +22,12 @@ export interface Coupon {
   discountType: 'amount' | 'percentage';
   discountValue: number;
 }
+
+export type StringOption = string;
+
+export interface ObjectOption {
+  value: string;
+  label: string;
+}
+
+export type SelectOption = StringOption | ObjectOption;
