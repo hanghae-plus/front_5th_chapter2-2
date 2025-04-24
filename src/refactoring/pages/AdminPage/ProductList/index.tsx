@@ -36,17 +36,32 @@ export const ProductList = () => {
     <ListContainer>
       {products.map((product, index) => (
         <div key={product.id} data-testid={`product-${index + 1}`} className="bg-white p-4 rounded shadow">
-          <button data-testid="toggle-button" onClick={() => toggleProductAccordion(product.id)} className="w-full text-left font-semibold">
+          <button
+            data-testid="toggle-button"
+            onClick={() => toggleProductAccordion(product.id)}
+            className="w-full text-left font-semibold"
+          >
             {product.name} - {product.price}원 (재고: {product.stock})
           </button>
           {openProductIds.has(product.id) && (
             <div className="mt-2">
               {editingProduct && editingProduct.id === product.id ? (
                 <div>
-                  <ModifyProduct product={product} editingProduct={editingProduct} setEditingProduct={setEditingProduct} />
+                  <ModifyProduct
+                    product={product}
+                    editingProduct={editingProduct}
+                    setEditingProduct={setEditingProduct}
+                  />
                   {/* 할인 정보 수정 부분 */}
-                  <AddDiscount product={product} editingProduct={editingProduct} setEditingProduct={setEditingProduct} />
-                  <button onClick={handleEditComplete} className="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600 mt-2">
+                  <AddDiscount
+                    product={product}
+                    editingProduct={editingProduct}
+                    setEditingProduct={setEditingProduct}
+                  />
+                  <button
+                    onClick={handleEditComplete}
+                    className="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600 mt-2"
+                  >
                     수정 완료
                   </button>
                 </div>

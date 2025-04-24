@@ -21,7 +21,11 @@ export const DiscountList = ({ product, setEditingProduct }: Props) => {
           </span>
         </div>
       ))}
-      <button data-testid="modify-button" onClick={() => handleEditProduct(product)} className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 mt-2">
+      <button
+        data-testid="modify-button"
+        onClick={() => handleEditProduct(product)}
+        className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 mt-2"
+      >
         수정
       </button>
     </div>

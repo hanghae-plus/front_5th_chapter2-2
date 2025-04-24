@@ -50,7 +50,10 @@ export const AddDiscount = ({ product, editingProduct, setEditingProduct }: Prop
           <span>
             {discount.quantity}개 이상 구매 시 {discount.rate * 100}% 할인
           </span>
-          <button onClick={() => handleRemoveDiscount(product.id, index)} className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600">
+          <button
+            onClick={() => handleRemoveDiscount(product.id, index)}
+            className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
+          >
             삭제
           </button>
         </div>
@@ -80,7 +83,10 @@ export const AddDiscount = ({ product, editingProduct, setEditingProduct }: Prop
           }
           className="w-1/3 p-2 border rounded"
         />
-        <button onClick={() => handleAddDiscount(product.id)} className="w-1/3 bg-blue-500 text-white p-2 rounded hover:bg-blue-600">
+        <button
+          onClick={() => handleAddDiscount(product.id)}
+          className="w-1/3 bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+        >
           할인 추가
         </button>
       </div>

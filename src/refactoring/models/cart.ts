@@ -37,7 +37,11 @@ const _calculateCartTotalWithoutCoupon = (cart: CartItem[]) => {
 };
 
 // 쿠폰 유무, 타입에 따른 할인액 계산 내부함수
-const _calculateCouponDiscountValue = (selectedCoupon: Coupon | null, totalBeforeDiscount: number, totalDiscount: number) => {
+const _calculateCouponDiscountValue = (
+  selectedCoupon: Coupon | null,
+  totalBeforeDiscount: number,
+  totalDiscount: number
+) => {
   if (!selectedCoupon) return 0;
   else if (selectedCoupon.discountType === DISCOUNT_TYPE.AMOUNT) return selectedCoupon.discountValue;
   else return (totalBeforeDiscount - totalDiscount) * (selectedCoupon.discountValue / 100); // DISCOUNT_TYPE.PERCENTAGE

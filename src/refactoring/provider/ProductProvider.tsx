@@ -5,7 +5,13 @@ import { createContext, ReactNode, useContext } from "react";
 type ProductContextType = ReturnType<typeof useProducts>;
 const ProductContext = createContext<ProductContextType | null>(null);
 
-export const ProductProvider = ({ products = initialProducts, children }: { products?: Product[]; children: ReactNode }) => {
+export const ProductProvider = ({
+  products = initialProducts,
+  children,
+}: {
+  products?: Product[];
+  children: ReactNode;
+}) => {
   const value = useProducts(products);
   return <ProductContext.Provider value={value}>{children}</ProductContext.Provider>;
 };
