@@ -1,4 +1,5 @@
-import { Coupon } from "@r/entities/coupon";
+import { Coupon } from "@r/model/coupon/types";
+
 
 export const initialCoupons: Coupon[] = [
   {

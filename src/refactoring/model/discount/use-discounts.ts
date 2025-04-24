@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Discount } from "@r/entities/product";
+import { Discount } from "./types";
 
 export const useDiscounts = (initialDiscounts: Discount[]) => {
   const [discounts, setDiscounts] = useState<Discount[]>(initialDiscounts);

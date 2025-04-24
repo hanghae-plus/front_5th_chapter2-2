@@ -1,4 +1,4 @@
-import { Product } from "@r/entities/product";
+import { Product } from "@r/model/product/types";
 
 export const initialProducts: Product[] = [
   {
