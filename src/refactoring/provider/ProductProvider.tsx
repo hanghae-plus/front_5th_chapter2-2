@@ -30,10 +30,12 @@ export const ProductProvider = ({
 
 export const useProductContext = () => {
   const context = useContext(ProductContext);
+
   if (!context) {
     throw new Error(
       "useProducts는 반드시 ProductProvider 내부에 위치해야합니다.",
     );
   }
+
   return context;
 };

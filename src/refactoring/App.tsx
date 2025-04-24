@@ -9,7 +9,7 @@ const App = () => {
   //액션, 계산, 데이터
   const { isAdmin, toggleIsAdmin } = useAdmin();
 
-  const { products, updateProduct, addProduct } = useProducts(initialProducts);
+  const { products } = useProducts(initialProducts);
 
   const { coupons, newCoupon, handleAddNewCoupon, setNewCoupon } =
     useCoupons(initialCoupons);
@@ -21,11 +21,8 @@ const App = () => {
         <main className="container mx-auto mt-6">
           {isAdmin ? (
             <AdminPage
-              products={products}
               coupons={coupons}
               newCoupon={newCoupon}
-              onProductUpdate={updateProduct}
-              onProductAdd={addProduct}
               setNewCoupon={setNewCoupon}
               handleAddNewCoupon={handleAddNewCoupon}
             />

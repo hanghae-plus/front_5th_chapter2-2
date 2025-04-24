@@ -35,10 +35,12 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
 export const useCartContext = () => {
   const context = useContext(CartContext);
+
   if (!context) {
     throw new Error(
       "useCartContext는 반드시 CartProvider에 위치하여야 합니다.",
     );
   }
+
   return context;
 };
