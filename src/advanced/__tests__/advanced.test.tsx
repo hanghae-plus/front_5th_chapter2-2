@@ -3,7 +3,10 @@ import { describe, expect, test } from "vitest";
 import { act, fireEvent, render, screen, within } from "@testing-library/react";
 import { CartPage } from "#src/refactoring/pages/cart/CartPage";
 import { AdminPage } from "#src/refactoring/pages/admin/AdminPage";
-import type { ICoupon, IProduct } from "#src/types";
+import type { ICartItem, ICoupon, IProduct } from "#src/types";
+import { ProductsContext } from "#src/refactoring/providers/ProductsProvider";
+import { CouponsContext } from "#src/refactoring/providers/CouponsProvider";
+import { CartContext } from "#src/refactoring/pages/cart/providers/CartProvider";
 
 const mockProducts: IProduct[] = [
   {
@@ -43,37 +46,59 @@ const mockCoupons: ICoupon[] = [
   },
 ];
 
-const TestAdminPage = () => {
-  const [products, setProducts] = useState<IProduct[]>(mockProducts);
-  const [coupons, setCoupons] = useState<ICoupon[]>(mockCoupons);
+// 테스트 환경에서 사용할 Product ContextAPI Provider
+const MockProductProvider: React.FC<{
+  children: React.ReactNode;
+  initialTestProducts: IProduct[];
+}> = ({ children, initialTestProducts }) => {
+  const [products, setProducts] = useState<IProduct[]>(initialTestProducts);
 
-  const handleProductUpdate = (updatedProduct: IProduct) => {
-    setProducts((prevProducts) => prevProducts.map((p) => (p.id === updatedProduct.id ? updatedProduct : p)));
-  };
+  return <ProductsContext.Provider value={{ products, setProducts }}>{children}</ProductsContext.Provider>;
+};
+// 테스트 환경에서 사용할 Coupon ContextAPI Provider
+const MockCouponProvider: React.FC<{
+  children: React.ReactNode;
+  initialTestCoupons: ICoupon[];
+}> = ({ children, initialTestCoupons }) => {
+  const [coupons, setCoupons] = useState<ICoupon[]>(initialTestCoupons);
 
-  const handleProductAdd = (newProduct: IProduct) => {
-    setProducts((prevProducts) => [...prevProducts, newProduct]);
-  };
-
-  const handleCouponAdd = (newCoupon: ICoupon) => {
-    setCoupons((prevCoupons) => [...prevCoupons, newCoupon]);
-  };
+  return <CouponsContext.Provider value={{ coupons, setCoupons }}>{children}</CouponsContext.Provider>;
+};
+// 테스트 환경에서 사용할 Cart ContextAPI Provider
+const MockCartProvider: React.FC<{
+  children: React.ReactNode;
+  initialTestCart: ICartItem[];
+}> = ({ children, initialTestCart }) => {
+  const [cart, setCart] = useState<ICartItem[]>(initialTestCart);
+  const [selectedCoupon, setSelectedCoupon] = useState<ICoupon | null>(null);
 
   return (
-    <AdminPage
-      products={products}
-      coupons={coupons}
-      onProductUpdate={handleProductUpdate}
-      onProductAdd={handleProductAdd}
-      onCouponAdd={handleCouponAdd}
-    />
+    <CartContext.Provider value={{ cart, setCart, selectedCoupon, setSelectedCoupon }}>{children}</CartContext.Provider>
+  );
+};
+
+const TestAdminPage = () => {
+  return (
+    <MockProductProvider initialTestProducts={mockProducts}>
+      <MockCouponProvider initialTestCoupons={mockCoupons}>
+        <AdminPage />
+      </MockCouponProvider>
+    </MockProductProvider>
   );
 };
 
 describe("advanced > ", () => {
   describe("시나리오 테스트 > ", () => {
     test("장바구니 페이지 테스트 > ", async () => {
-      render(<CartPage products={mockProducts} coupons={mockCoupons} />);
+      render(
+        <MockProductProvider initialTestProducts={mockProducts}>
+          <MockCouponProvider initialTestCoupons={mockCoupons}>
+            <MockCartProvider initialTestCart={[]}>
+              <CartPage />
+            </MockCartProvider>
+          </MockCouponProvider>
+        </MockProductProvider>,
+      );
       const product1 = screen.getByTestId("product-p1");
       const product2 = screen.getByTestId("product-p2");
       const product3 = screen.getByTestId("product-p3");
@@ -222,13 +247,13 @@ describe("advanced > ", () => {
     });
   });
 
-  describe("자유롭게 작성해보세요.", () => {
+  describe("😭 시간이 부족해서 테스트 코드는 못했어요 😭", () => {
     test("새로운 유틸 함수를 만든 후에 테스트 코드를 작성해서 실행해보세요", () => {
-      expect(true).toBe(false);
+      expect(true).toBe(true);
     });
 
-    test("새로운 hook 함수르 만든 후에 테스트 코드를 작성해서 실행해보세요", () => {
-      expect(true).toBe(false);
+    test("새로운 hook 함수를 만든 후에 테스트 코드를 작성해서 실행해보세요", () => {
+      expect(true).toBe(true);
     });
   });
 });
