@@ -41,3 +41,17 @@ export const DEFAULT_COUPONS: Coupon[] = [
     discountValue: 10,
   },
 ] as const;
+
+export const DEFAULT_COUPON: Coupon = {
+  name: '',
+  code: '',
+  discountType: 'percentage',
+  discountValue: 0,
+} as const;
+
+export const DEFAULT_FORM: Omit<Product, 'id'> = {
+  name: '',
+  price: 0,
+  stock: 0,
+  discounts: [],
+} as const;
