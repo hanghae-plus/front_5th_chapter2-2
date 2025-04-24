@@ -1,6 +1,6 @@
 import { CartProductItem } from "./CartProductItem.tsx";
 import { ProductItem } from "./ProductItem.tsx";
-import { SearchBar } from "./Searchbar.tsx";
+import { SearchBar } from "./SearchBar.tsx";
 
 import { useCart, useProductSearch } from "../hooks";
 

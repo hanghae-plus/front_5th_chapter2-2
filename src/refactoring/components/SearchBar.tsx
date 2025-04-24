@@ -2,11 +2,11 @@ import { useMemo } from "react";
 
 import { debounce } from "../utils";
 
-interface Props {
+interface SearchBarTypeProps {
   onSearch: (query: string) => void;
 }
 
-export const SearchBar = ({ onSearch }: Props) => {
+export const SearchBar = ({ onSearch }: SearchBarTypeProps) => {
   const debouncedSearch = useMemo(() => debounce(onSearch, 400), [onSearch]);
 
   return (
