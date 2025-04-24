@@ -1,6 +1,6 @@
 import { Product } from "../../../../types";
-import { useProductAccordion } from "../../../hooks/useProductAccordion";
-import ProductItem from "./ProductItem";
+import { useProductAccordion } from "../../../hooks/useProductAccordion.ts";
+import ProductItem from "./ProductItem.tsx";
 
 interface Props {
   products: Product[];
