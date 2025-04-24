@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { useProductContext } from '../../contexts/productContext';
-import { useCouponContext } from '../../contexts/couponContext';
+import { useProductContext } from '@/contexts/productContext';
+import { useCouponContext } from '@/contexts/couponContext';
 
 import ProductList from './productSection/ProductList';
 import NewProductForm from './productSection/NewProductForm';

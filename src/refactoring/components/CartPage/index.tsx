@@ -1,6 +1,6 @@
-import { useCart } from '../../hooks';
-import { useProductContext } from '../../contexts/productContext.tsx';
-import { useCouponContext } from '../../contexts/couponContext.tsx';
+import { useCart } from '@/hooks';
+import { useProductContext } from '@/contexts/productContext.tsx';
+import { useCouponContext } from '@/contexts/couponContext.tsx';
 
 import ProductList from './productSection/ProductList.tsx';
 import OrderSummary from './cartSection/OrderSummary.tsx';

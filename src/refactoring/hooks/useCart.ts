@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import type { CartItem, Coupon, Product } from '../../types';
+import type { CartItem, Coupon, Product } from '@/types';
 
 import {
   calculateCartTotal,

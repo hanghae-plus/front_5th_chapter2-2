@@ -1,5 +1,5 @@
-import type { Coupon } from '../../../../types';
-import OptionSelector from '../../ui/OptionSelector';
+import type { Coupon } from '@/types';
+import OptionSelector from '@/components/ui/OptionSelector';
 
 interface CouponSelectorProps {
   coupons: Coupon[];

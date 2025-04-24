@@ -1,4 +1,4 @@
-import { CartItem, Product } from '../../types';
+import type { CartItem, Product } from '@/types';
 
 export const updateCartItemQuantity = (
   cart: CartItem[],

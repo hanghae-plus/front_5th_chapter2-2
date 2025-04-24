@@ -1,8 +1,8 @@
 import React, { createContext, useContext } from 'react';
-import type { Coupon } from '../../types';
+import type { Coupon } from '@/types';
 
-import { useCoupons } from '../hooks';
-import { DEFAULT_COUPONS } from '../constants';
+import { useCoupons } from '@/hooks';
+import { DEFAULT_COUPONS } from '@/constants';
 
 interface CouponContextValue {
   coupons: Coupon[];

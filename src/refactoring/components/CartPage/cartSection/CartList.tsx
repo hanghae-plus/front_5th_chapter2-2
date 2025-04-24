@@ -1,6 +1,7 @@
-import type { CartItem } from '../../../../types.ts';
+import type { CartItem } from '@/types';
+import { getAppliedDiscount } from '@/utils';
+
 import CartListItem from './CartListItem.tsx';
-import { getAppliedDiscount } from '../../../utils/discountUtils.ts';
 
 interface CartListProps {
   cart: CartItem[];

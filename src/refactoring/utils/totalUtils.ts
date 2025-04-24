@@ -1,4 +1,4 @@
-import { CartItem, Coupon } from '../../types';
+import { CartItem, Coupon } from '@/types';
 import { calculateItemDiscountTotal } from './discountUtils';
 
 export const calculateItemTotal = (item: CartItem): number => {

@@ -1,8 +1,8 @@
 import React, { createContext, useContext } from 'react';
-import type { Product } from '../../types';
+import type { Product } from '@/types';
 
-import { useProducts } from '../hooks';
-import { DEFAULT_PRODUCTS } from '../constants';
+import { useProducts } from '@/hooks';
+import { DEFAULT_PRODUCTS } from '@/constants';
 
 interface ProductContextValue {
   products: Product[];

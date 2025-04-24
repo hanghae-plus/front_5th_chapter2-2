@@ -1,7 +1,7 @@
 import { useState, ChangeEvent } from 'react';
 
-import type { Coupon } from '../../../../types';
-import { DEFAULT_COUPON } from '../../../constants';
+import type { Coupon } from '@/types';
+import { DEFAULT_COUPON } from '@/constants';
 
 interface CouponFormProps {
   onSubmit: (coupon: Coupon) => void;
