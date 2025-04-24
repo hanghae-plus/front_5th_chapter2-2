@@ -1,9 +1,11 @@
-import { CartItem, Coupon, Product } from "../../types.ts";
-import { useCart } from "../hooks";
-import CartItemList from "./CartItemList.tsx";
-import ProductList from "./ProductList.tsx";
-import CouponSelector from "./CouponSelector.tsx";
-import OrderSummary from "./OrderSummary.tsx";
+import { CartItem, Coupon, Product } from "../../../types.ts";
+import { useCart } from "../../hooks";
+import CartItemList from "./cartItems/CartItemList.tsx";
+import ProductList from "./product/ProductList.tsx";
+
+// 왜 뒤에 .tsx확장자를 제거해야지 오류가 안뜨는거지 ?
+import CouponSelector from "./CouponSelector";
+import OrderSummary from "./OrderSummary";
 
 interface Props {
     products: Product[];
