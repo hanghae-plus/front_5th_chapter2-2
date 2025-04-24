@@ -10,6 +10,15 @@ import { AdminPage } from '@/components/AdminPage/index.tsx';
 import { ProductProvider } from '@/contexts/productContext';
 import { CouponProvider } from '@/contexts/couponContext';
 
+import './models/cart.test';
+import './models/product.test';
+import './models/discount.test';
+import './models/total.test';
+
+import './hooks/useCart.test';
+import './hooks/useProducts.test';
+import './hooks/useCoupons.test';
+
 const mockProducts: Product[] = [
   {
     id: 'p1',
@@ -63,6 +72,9 @@ const TestAdminPage = () => {
 
 describe('advanced > ', () => {
   describe('시나리오 테스트 > ', () => {
+    beforeEach(() => {
+      localStorage.clear();
+    });
     test('장바구니 페이지 테스트 > ', async () => {
       render(
         <ProductProvider initialProducts={mockProducts}>
@@ -256,14 +268,5 @@ describe('advanced > ', () => {
       expect($newCoupon).toHaveTextContent('새 쿠폰 (NEW10):10% 할인');
     });
   });
-
-  describe('자유롭게 작성해보세요.', () => {
-    test('새로운 유틸 함수를 만든 후에 테스트 코드를 작성해서 실행해보세요', () => {
-      expect(true).toBe(false);
-    });
-
-    test('새로운 hook 함수르 만든 후에 테스트 코드를 작성해서 실행해보세요', () => {
-      expect(true).toBe(false);
-    });
-  });
+  // 별도 파일에서 테스트 작성함!
 });
