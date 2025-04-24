@@ -20,11 +20,13 @@ export const CreateProductForm = ({
     <div className="bg-white p-4 rounded shadow mb-4">
       <h3 className="text-xl font-semibold mb-2">새 상품 추가</h3>
       <FormInput
+        id="productName"
         label="상품명"
         value={formData.name}
         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
       />
       <FormInput
+        id="productPrice"
         label="가격"
         type="number"
         value={formData.price}
@@ -33,6 +35,7 @@ export const CreateProductForm = ({
         }
       />
       <FormInput
+        id="productStock"
         label="재고"
         type="number"
         value={formData.stock}
