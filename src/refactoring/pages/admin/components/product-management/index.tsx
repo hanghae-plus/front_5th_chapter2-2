@@ -1,6 +1,6 @@
 import { useProductContext } from "@r/model/product/product-context";
-import { AddNewProduct } from "./add-new.product";
-import { ProductAccordion } from "./product-accordion";
+import { AddNewProduct } from "./add-item";
+import { ProductAccordion } from "./product-item";
 
 interface ProductManagementProps {}
 

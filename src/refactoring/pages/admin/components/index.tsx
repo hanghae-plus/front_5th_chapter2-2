@@ -1,4 +1,4 @@
-export * from "./product-management/add-new.product";
+export * from "./product-management/add-item";
 export * from "./coupon-management";
-export * from "./product-management/product-accordion";
+export * from "./product-management/product-item";
 export * from "./product-management";
