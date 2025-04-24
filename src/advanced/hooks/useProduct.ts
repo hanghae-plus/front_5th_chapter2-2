@@ -1,8 +1,11 @@
-import { useState } from 'react';
-import { Product } from '../types';
+import { Product } from '../../refactoring/types';
+import { useLocalStorageState } from './useLocalStorage.ts';
 
 export const useProducts = (initialProducts: Product[]) => {
-  const [products, setProducts] = useState<Product[]>(initialProducts); // 초기화
+  const [products, setProducts] = useLocalStorageState<Product[]>(
+    'products',
+    initialProducts
+  ); // 초기화
 
   // 제품을 업데이트할 수 있다.
   const updateProduct = (updateProduct: Product) => {

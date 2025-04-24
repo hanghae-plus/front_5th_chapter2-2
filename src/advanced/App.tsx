@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { CartPage } from './pages/CartPage.tsx';
-import { AdminPage } from './pages/AdminPage.tsx';
-import { useCoupons, useProducts } from './hooks';
-import { Coupons, Products } from './data/index.ts';
+import { CartPage } from '../refactoring/pages/CartPage.tsx';
+import { AdminPage } from '../refactoring/pages/AdminPage.tsx';
+import { useCoupons, useProducts } from '../advanced/hooks';
+import { Coupons, Products } from '../refactoring/data';
 
 const App = () => {
   const { products, updateProduct, addProduct } = useProducts(Products);
