@@ -1,6 +1,6 @@
 import { Discount, Product } from "../../../../types";
 import { Button, Text } from "../../common";
-
+import { ProductManagementItemEditInput } from "./ProductManagementItemEditInput";
 interface ProductManagementItemEditProps {
   editingProduct: Product | null;
   handleFieldUpdate: <K extends keyof Product>(
@@ -30,39 +30,30 @@ export const ProductManagementItemEdit = ({
 
   return (
     <div>
-      <div className="mb-4">
-        <label className="block mb-1">상품명: </label>
-        <input
-          type="text"
-          value={editingProduct.name}
-          onChange={(e) =>
-            handleFieldUpdate(product.id, "name", e.target.value)
-          }
-          className="w-full p-2 border rounded"
-        />
-      </div>
-      <div className="mb-4">
-        <label className="block mb-1">가격: </label>
-        <input
-          type="number"
-          value={editingProduct.price}
-          onChange={(e) =>
-            handleFieldUpdate(product.id, "price", parseInt(e.target.value))
-          }
-          className="w-full p-2 border rounded"
-        />
-      </div>
-      <div className="mb-4">
-        <label className="block mb-1">재고: </label>
-        <input
-          type="number"
-          value={editingProduct.stock}
-          onChange={(e) =>
-            handleFieldUpdate(product.id, "stock", parseInt(e.target.value))
-          }
-          className="w-full p-2 border rounded"
-        />
-      </div>
+      <ProductManagementItemEditInput
+        editingProduct={editingProduct}
+        handleFieldUpdate={handleFieldUpdate}
+        productId={product.id}
+        field="name"
+        label="상품명"
+        type="text"
+      />
+      <ProductManagementItemEditInput
+        editingProduct={editingProduct}
+        handleFieldUpdate={handleFieldUpdate}
+        productId={product.id}
+        field="price"
+        label="가격"
+        type="number"
+      />
+      <ProductManagementItemEditInput
+        editingProduct={editingProduct}
+        handleFieldUpdate={handleFieldUpdate}
+        productId={product.id}
+        field="stock"
+        label="재고"
+        type="number"
+      />
       {/* 할인 정보 수정 부분 */}
       <div>
         <h4 className="text-lg font-semibold mb-2">할인 정보</h4>
