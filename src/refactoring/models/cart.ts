@@ -1,36 +1,39 @@
-import { CartItem, Coupon } from "../../types";
+import { CartItem, Coupon, Product } from '../../types';
 
 export const calculateItemTotal = (item: CartItem) => {
   return item.product.price * item.quantity * (1 - getMaxApplicableDiscount(item));
 };
 
 export const getMaxApplicableDiscount = (item: CartItem) => {
-  const applicableDiscounts = item.product.discounts.filter((discount) => discount.quantity <= item.quantity);
+  const applicableDiscounts = item.product.discounts.filter(
+    discount => discount.quantity <= item.quantity
+  );
   return applicableDiscounts.reduce((max, discount) => Math.max(max, discount.rate), 0);
 };
 
-export const calculateCartTotal = (
-  cart: CartItem[],
-  selectedCoupon: Coupon | null
-) => {
+export const calculateCartTotal = (cart: CartItem[], selectedCoupon: Coupon | null) => {
+  const totalBeforeDiscount = cart.reduce(
+    (sum, item) => sum + item.product.price * item.quantity,
+    0
+  );
+  const itemTotal = cart.reduce((sum, item) => sum + calculateItemTotal(item), 0);
 
-  let totalBeforeDiscount = cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
-  let totalAfterDiscount = cart.reduce((sum, item) => sum + calculateItemTotal(item), 0);
-  let totalDiscount = totalBeforeDiscount - totalAfterDiscount;
-  if(selectedCoupon) {
-    if(selectedCoupon.discountType === 'amount') {
-      totalAfterDiscount = Math.max(0, totalAfterDiscount - selectedCoupon.discountValue);
-    } else {
-      totalAfterDiscount *= (1 - selectedCoupon.discountValue / 100);
-    }
-    totalDiscount = totalBeforeDiscount - totalAfterDiscount;
+  const discountedTotal = selectedCoupon
+    ? selectedCoupon.discountType === 'amount'
+      ? Math.max(0, itemTotal - selectedCoupon.discountValue)
+      : itemTotal * (1 - selectedCoupon.discountValue / 100)
+    : itemTotal;
 
-  }
   return {
     totalBeforeDiscount,
-    totalAfterDiscount,
-    totalDiscount,
+    totalAfterDiscount: discountedTotal,
+    totalDiscount: totalBeforeDiscount - discountedTotal
   };
+};
+
+export const getRemainingStock = (cart: CartItem[], product: Product) => {
+  const cartItem = cart.find(item => item.product.id === product.id);
+  return product.stock - (cartItem?.quantity || 0);
 };
 
 export const updateCartItemQuantity = (
@@ -38,15 +41,12 @@ export const updateCartItemQuantity = (
   productId: string,
   newQuantity: number
 ): CartItem[] => {
-
-  const updatedCart = cart.map((item)=> {
-    if (item.product.id === productId) {
-      const maxQuantity = item.product.stock;
-      const updatedQuantity = Math.max(0, Math.min(newQuantity, maxQuantity));
-      return updatedQuantity > 0 ? { ...item, quantity: updatedQuantity } : null;
-    }
-    return item;
-  }).filter((item): item is CartItem => item !== null);
-
-  return updatedCart;
+  return cart
+    .map(item => {
+      if (item.product.id !== productId) return item;
+      const updatedQuantity = Math.max(0, Math.min(newQuantity, item.product.stock));
+      if (updatedQuantity === 0) return null;
+      return { ...item, quantity: updatedQuantity };
+    })
+    .filter((item): item is CartItem => item !== null);
 };
