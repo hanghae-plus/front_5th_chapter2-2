@@ -1,7 +1,7 @@
 import { Product } from "../../../types";
-import { useProductAccordion } from "../../hooks/useProductAccordion";
-import { useDiscount } from "../../hooks/useDiscount";
-import { useEditProduct } from "../../hooks/useEditProduct";
+import { useProductAccordion } from "../../hooks/entities/product/useProductAccordion";
+import { useDiscount } from "../../hooks/entities/discount/useDiscount";
+import { useEditProduct } from "../../hooks/entities/product/useEditProduct";
 
 interface Props {
   products: Product[];
