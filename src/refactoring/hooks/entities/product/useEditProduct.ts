@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { Product } from "../../../../types";
+import { useProductContext } from "../../../provider/ProductProvider";
 
-interface Props {
-  products: Product[];
-  onProductUpdate: (updatedProduct: Product) => void;
-}
+// interface Props {
+//   products: Product[];
+//   updateProduct: (updatedProduct: Product) => void;
+// }
 
-export const useEditProduct = ({ products, onProductUpdate }: Props) => {
+export const useEditProduct = () => {
+  const { products, updateProduct } = useProductContext();
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
 
   /** 상품의 이름을 업데이트합니다.*/
@@ -33,7 +35,7 @@ export const useEditProduct = ({ products, onProductUpdate }: Props) => {
 
     const newProduct = { ...updatedProduct, stock: newStock };
 
-    onProductUpdate(newProduct);
+    updateProduct(newProduct);
     setEditingProduct(newProduct);
   };
 
@@ -48,7 +50,7 @@ export const useEditProduct = ({ products, onProductUpdate }: Props) => {
       discounts: updatedProduct.discounts.filter((_, i) => i !== index),
     };
 
-    onProductUpdate(newProduct);
+    updateProduct(newProduct);
     setEditingProduct(newProduct);
   };
 
@@ -61,7 +63,7 @@ export const useEditProduct = ({ products, onProductUpdate }: Props) => {
   const handleEditComplete = () => {
     if (!editingProduct) return;
 
-    onProductUpdate(editingProduct);
+    updateProduct(editingProduct);
     setEditingProduct(null);
   };
 

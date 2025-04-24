@@ -1,17 +1,14 @@
-import { Product } from "../../../types";
 import { useProductAccordion } from "../../hooks/entities/product/useProductAccordion";
 import { useDiscount } from "../../hooks/entities/discount/useDiscount";
 import { useEditProduct } from "../../hooks/entities/product/useEditProduct";
+import { useProductContext } from "../../provider/ProductProvider";
 
-interface Props {
-  products: Product[];
-  onProductUpdate: (updatedProduct: Product) => void;
-}
-
-const ProductList = ({ products, onProductUpdate }: Props) => {
+const ProductList = () => {
   const { openProductIds, toggleProductAccordion } = useProductAccordion();
 
   const { newDiscount, setNewDiscount, handleAddDiscount } = useDiscount();
+
+  const { products, updateProduct } = useProductContext();
 
   const {
     editingProduct,
@@ -22,7 +19,7 @@ const ProductList = ({ products, onProductUpdate }: Props) => {
     handleRemoveDiscount,
     handleEditComplete,
     handleEditProduct,
-  } = useEditProduct({ products, onProductUpdate });
+  } = useEditProduct();
 
   return (
     <div className="space-y-2">
@@ -129,7 +126,7 @@ const ProductList = ({ products, onProductUpdate }: Props) => {
                             products,
                             productId: product.id,
                             editingProduct,
-                            onProductUpdate,
+                            updateProduct,
                             setEditingProduct,
                           })
                         }

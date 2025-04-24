@@ -2,18 +2,12 @@ import { Product } from "../../../types";
 import ProductList from "./ProductList";
 import ProductAdd from "./ProductAdd";
 
-interface Props {
-  products: Product[];
-  onProductAdd: (newProduct: Product) => void;
-  onProductUpdate: (updatedProduct: Product) => void;
-}
-
-const ProductManage = ({ products, onProductUpdate }: Props) => {
+const ProductManage = () => {
   return (
     <div>
       <h2 className="text-2xl font-semibold mb-4">상품 관리</h2>
       <ProductAdd />
-      <ProductList products={products} onProductUpdate={onProductUpdate} />
+      <ProductList />
     </div>
   );
 };

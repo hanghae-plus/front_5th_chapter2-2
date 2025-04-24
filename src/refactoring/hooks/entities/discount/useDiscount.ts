@@ -5,7 +5,7 @@ interface handleProps {
   products: Product[];
   productId: string;
   editingProduct: Product | null;
-  onProductUpdate: (updatedProduct: Product) => void;
+  updateProduct: (updatedProduct: Product) => void;
   setEditingProduct: React.Dispatch<React.SetStateAction<Product | null>>;
 }
 
@@ -20,7 +20,7 @@ export const useDiscount = () => {
     products,
     productId,
     editingProduct,
-    onProductUpdate,
+    updateProduct,
     setEditingProduct,
   }: handleProps) => {
     const updatedProduct = products.find((p) => p.id === productId);
@@ -31,7 +31,7 @@ export const useDiscount = () => {
         discounts: [...updatedProduct.discounts, newDiscount],
       };
 
-      onProductUpdate(newProduct);
+      updateProduct(newProduct);
       setEditingProduct(newProduct);
       setNewDiscount({ quantity: 0, rate: 0 });
     }
