@@ -24,13 +24,6 @@ export default function useProductEditForm({
     setEditingProduct((prev) => ({ ...prev, stock: newStock }))
   }
 
-  const handleDiscountUpdate = (updatedDiscounts: Discount[]) => {
-    setEditingProduct((prev) => ({
-      ...prev,
-      discounts: updatedDiscounts,
-    }))
-  }
-
   const handleSaveChanges = () => {
     updateProduct(editingProduct)
     onEditComplete()

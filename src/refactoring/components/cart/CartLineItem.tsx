@@ -3,6 +3,7 @@ import { CartItem } from "../../../types.ts"
 import { getAppliedDiscount } from "../../models/cart.ts"
 import Button from "../ui/Button.tsx"
 import { useCartContext } from "../../context/CartContext.tsx"
+import { formatPercentage } from "../../utils"
 
 export default function CartLineItem({ item }: { item: CartItem }) {
   const { removeFromCart, updateQuantity } = useCartContext()
@@ -16,7 +17,7 @@ export default function CartLineItem({ item }: { item: CartItem }) {
         <span className="text-sm text-gray-600">
           {item.product.price}원 x {item.quantity}
           {appliedDiscount > 0 && (
-            <span className="text-green-600 ml-1">({(appliedDiscount * 100).toFixed(0)}% 할인 적용)</span>
+            <span className="text-green-600 ml-1">({formatPercentage(appliedDiscount)} 할인 적용)</span>
           )}
         </span>
       </div>

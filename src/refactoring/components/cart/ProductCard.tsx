@@ -4,6 +4,7 @@ import { getRemainingStock } from "../../models/cart.ts"
 import { calculateProductMaxDiscountRate } from "../../models/product.ts"
 import Button from "../ui/Button.tsx"
 import { useCartContext } from "../../context/CartContext.tsx"
+import { formatPercentage } from "../../utils"
 
 export default function ProductCard({ product, cart }: { product: Product; cart: Cart }) {
   const { addToCart } = useCartContext()
@@ -22,7 +23,7 @@ export default function ProductCard({ product, cart }: { product: Product; cart:
         </span>
         {product.discounts.length > 0 && (
           <span className="ml-2 font-medium text-blue-600">
-            최대 {(calculateProductMaxDiscountRate(product) * 100).toFixed(0)}% 할인
+            최대 {formatPercentage(calculateProductMaxDiscountRate(product))} 할인
           </span>
         )}
       </div>
@@ -31,7 +32,7 @@ export default function ProductCard({ product, cart }: { product: Product; cart:
         <ul className="list-disc list-inside text-sm text-gray-500 mb-2">
           {product.discounts.map((discount, index) => (
             <li key={index}>
-              {discount.quantity}개 이상: {(discount.rate * 100).toFixed(0)}% 할인
+              {discount.quantity}개 이상: {formatPercentage(discount.rate)} 할인
             </li>
           ))}
         </ul>

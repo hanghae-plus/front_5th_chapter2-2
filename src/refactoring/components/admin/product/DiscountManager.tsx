@@ -3,6 +3,7 @@ import { useProductContext } from "../../../context/ProductContext.tsx"
 import { useDiscountManager } from "../../../hooks/useDiscountManager.ts"
 import Button from "../../ui/Button.tsx"
 import Input, { InputType } from "../../ui/Input.tsx"
+import { formatPercentage } from "../../../utils"
 
 interface IDiscountManager {
   product: Product
@@ -21,7 +22,7 @@ export default function DiscountManager({ product }: IDiscountManager) {
       {product.discounts.map((discount, index) => (
         <div key={index} className="flex justify-between items-center mb-2">
           <span>
-            {discount.quantity}개 이상 구매 시 {discount.rate * 100}% 할인
+            {discount.quantity}개 이상 구매 시 {formatPercentage(discount.rate)} 할인
           </span>
           <Button
             onClick={() => handleRemoveDiscount(index)}

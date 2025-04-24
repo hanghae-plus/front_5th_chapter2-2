@@ -1,5 +1,6 @@
 import { Product } from "../../../../types.ts"
 import Button from "../../ui/Button.tsx"
+import { formatPercentage } from "../../../utils"
 interface IProductDetail {
   product: Product
   onEdit: () => void
@@ -11,7 +12,7 @@ export default function ProductDetail({ product, onEdit }: IProductDetail) {
       {product.discounts.map((discount, index) => (
         <div key={index} className="mb-2">
           <span>
-            {discount.quantity}개 이상 구매 시 {discount.rate * 100}% 할인
+            {discount.quantity}개 이상 구매 시: {formatPercentage(discount.rate)} 할인
           </span>
         </div>
       ))}
