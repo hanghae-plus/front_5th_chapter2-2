@@ -8,8 +8,8 @@ import {
   screen,
   within,
 } from "@testing-library/react";
-import { CartPage } from "../../refactoring/components/CartPage";
-import { AdminPage } from "../../refactoring/components/AdminPage";
+import { CartPage } from "../../refactoring/components/page/CartPage";
+import { AdminPage } from "../../refactoring/components/page/AdminPage";
 import { CartItem, Coupon, Product } from "../../types";
 import { useCart, useCoupons, useProducts } from "../../refactoring/hooks";
 import * as cartUtils from "../../refactoring/models/cart";
@@ -121,7 +121,7 @@ describe("basic > ", () => {
       for (let i = 0; i < 19; i++) {
         fireEvent.click(addToCartButtonsAtProduct1);
       }
-
+      
       // 6. 품절일 때 상품 추가 안 되는지 확인하기
       expect(product1).toHaveTextContent("재고: 0개");
       fireEvent.click(addToCartButtonsAtProduct1);
