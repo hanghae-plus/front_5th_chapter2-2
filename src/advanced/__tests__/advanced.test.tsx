@@ -239,10 +239,6 @@ describe('advanced > ', () => {
   }));
 
   describe('자유롭게 작성해보세요.', () => {
-    // test('새로운 유틸 함수를 만든 후에 테스트 코드를 작성해서 실행해보세요', () => {
-    //   expect(true).toBe(false);
-    // })
-
     test('수량 알맞게 업데이트', () => {
       const updateCart = updateCartItemQuantity(mockCart, 'p1', 5);
 
@@ -262,7 +258,7 @@ describe('advanced > ', () => {
       ])
     })
 
-    test('새로운 hook 함수르 만든 후에 테스트 코드를 작성해서 실행해보세요', () => {
+    test('관리자 페이지 - 상품 상세 토글', () => {
       const { result } = renderHook(() => {
         const [set, setSet] = useState<Set<string>>(new Set());
         const toggle = useSetToggle(setSet);
