@@ -1,1 +1,1 @@
-export { CartItemView } from "./cart-item-view/CartItemView";
+export { CartItemView } from "./cart-item/CartItemView";

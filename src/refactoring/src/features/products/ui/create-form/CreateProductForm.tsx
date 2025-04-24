@@ -2,11 +2,13 @@ import { useState } from "react";
 import { Product } from "../../../../entities/product/types";
 import { useProducts } from "../../hooks";
 
-interface ProductFormProps {
+interface CreateProductFormProps {
   setShowNewProductForm: (show: boolean) => void;
 }
 
-export const ProductForm = ({ setShowNewProductForm }: ProductFormProps) => {
+export const CreateProductForm = ({
+  setShowNewProductForm,
+}: CreateProductFormProps) => {
   const { addProduct } = useProducts();
   const [newProduct, setNewProduct] = useState<Omit<Product, "id">>({
     name: "",

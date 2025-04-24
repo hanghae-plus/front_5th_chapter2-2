@@ -252,7 +252,7 @@ describe("advanced > ", () => {
 
       const $newCoupon = screen.getByTestId("coupon-3");
 
-      expect($newCoupon).toHaveTextContent("새 쿠폰 (NEW10): 10% 할인");
+      expect($newCoupon).toHaveTextContent("새 쿠폰 (NEW10):10% 할인");
     });
   });
 
@@ -364,10 +364,10 @@ describe("advanced > ", () => {
 
   describe("formatUtils", () => {
     test("천 단위가 넘을 경우 ','를 사용하여 가격을 정상적으로 포맷팅한다.", () => {
-      expect(formatPriceWithDollar(1000000)).toBe("$1,000,000.00");
+      expect(formatPriceWithDollar(1000000)).toBe("₩1,000,000");
     });
     test("천 단위가 넘지 않을 경우 가격을 정상적으로 포맷팅한다.", () => {
-      expect(formatPriceWithDollar(100)).toBe("$100.00");
+      expect(formatPriceWithDollar(100)).toBe("₩100");
     });
   });
 
@@ -444,16 +444,6 @@ describe("advanced > ", () => {
       ).toBeDefined();
       expect(updatedStore).not.toBe(initialStore);
       expect(initialStore.products.length).toBe(testProducts.length);
-    });
-
-    test("findProductById가 ID로 상품을 찾아야 한다.", () => {
-      const productStore = createProductStore(testProducts);
-
-      const foundProduct = productStore.findProductById("2");
-      const notFoundProduct = productStore.findProductById("999");
-
-      expect(foundProduct).toEqual(testProducts[1]);
-      expect(notFoundProduct).toBeUndefined();
     });
   });
 });

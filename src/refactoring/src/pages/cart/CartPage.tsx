@@ -1,10 +1,10 @@
 import { useCart } from "../../features/cart/hooks";
-import { useProducts } from "../../features/products/hooks";
 import { CommonContainer } from "../../shared/ui";
 import { CartContainer } from "../../widgets/cart/ui";
 import { ProductList } from "../../widgets/products/ui";
 
 export const CartPage = () => {
+  // * Context API 사용으로 빼는게 나을듯..
   const {
     cart,
     addToCart,
@@ -14,11 +14,10 @@ export const CartPage = () => {
     selectedCoupon,
     calculateTotal,
   } = useCart();
-  const { products } = useProducts();
 
   return (
     <CommonContainer title="장바구니">
-      <ProductList products={products} cart={cart} addToCart={addToCart} />
+      <ProductList cart={cart} addToCart={addToCart} />
       <CartContainer
         cart={cart}
         updateQuantity={updateQuantity}

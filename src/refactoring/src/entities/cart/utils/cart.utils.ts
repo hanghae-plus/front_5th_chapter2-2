@@ -1,5 +1,5 @@
-import { CartItem } from "../../entities/cart/types";
-import { Coupon } from "../../entities/coupon/types";
+import { Coupon } from "../../coupon/types";
+import { CartItem } from "../types";
 
 export const calculateItemTotal = (item: CartItem) => {
   const { product, quantity } = item;

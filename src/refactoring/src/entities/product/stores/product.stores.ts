@@ -8,7 +8,6 @@ export interface ProductStore {
   addProduct: (newProduct: Product) => ProductStore;
   updateProduct: (updatedProduct: Product) => ProductStore;
   removeProduct: (productId: string) => ProductStore;
-  findProductById: (id: string) => Product | undefined;
 }
 
 export const createProductStore = (
@@ -44,10 +43,6 @@ export const createProductStore = (
         products.filter((product) => product.id !== productId),
         selectedProductId,
       );
-    },
-
-    findProductById: (id: string) => {
-      return products.find((product) => product.id === id);
     },
   };
 };

@@ -3,7 +3,7 @@ import { Product } from "../../../../entities/product/types";
 import { DiscountView } from "../../../../entities/product/ui";
 import { useProducts } from "../../../../features/products/hooks";
 import {
-  ProductForm,
+  CreateProductForm,
   UpdateProductForm,
 } from "../../../../features/products/ui";
 import { ContentBox } from "../../../../shared/ui";
@@ -46,7 +46,7 @@ export const ProductManagementContainer = () => {
         {showNewProductForm ? "취소" : "새 상품 추가"}
       </button>
       {showNewProductForm && (
-        <ProductForm setShowNewProductForm={setShowNewProductForm} />
+        <CreateProductForm setShowNewProductForm={setShowNewProductForm} />
       )}
 
       <div className="space-y-2">

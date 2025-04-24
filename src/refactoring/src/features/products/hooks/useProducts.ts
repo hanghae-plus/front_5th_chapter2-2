@@ -9,7 +9,7 @@ export const useProducts = () => {
     throw new Error("useProducts must be used within a ProductsProvider");
   }
 
-  const { products, selectedProductId } = store;
+  const { products } = store;
 
   const addProduct = (newProduct: Product): void => {
     store.addProduct(newProduct);
@@ -23,21 +23,10 @@ export const useProducts = () => {
     store.removeProduct(productId);
   };
 
-  const findProductById = (id: string): Product | undefined => {
-    return store.findProductById(id);
-  };
-
-  const setSelectedProductId = (id: string): void => {
-    store.setSelectedProductId(id);
-  };
-
   return {
     products,
-    selectedProductId,
-    setSelectedProductId,
     addProduct,
     updateProduct,
     removeProduct,
-    findProductById,
   };
 };

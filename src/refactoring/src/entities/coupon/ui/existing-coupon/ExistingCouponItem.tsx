@@ -1,9 +1,9 @@
 import { HTMLAttributes } from "react";
-import { Coupon } from "../types";
+import { Coupon } from "../../types";
 
 interface Props extends Coupon, HTMLAttributes<HTMLDivElement> {}
 
-export const CouponView: React.FC<Props> = ({
+export const ExistingCouponItem: React.FC<Props> = ({
   name,
   code,
   discountType,
@@ -12,8 +12,10 @@ export const CouponView: React.FC<Props> = ({
 }: Props) => {
   return (
     <div {...props}>
-      {name} ({code}):{" "}
-      {discountType === "amount" ? `${discountValue}원` : `${discountValue}%`}{" "}
+      {name} ({code}):
+      {discountType === "amount"
+        ? `${discountValue}원`
+        : `${discountValue}%`}{" "}
       할인
     </div>
   );

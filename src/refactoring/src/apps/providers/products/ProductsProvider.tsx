@@ -29,19 +29,16 @@ export const ProductsProvider = ({
     updateProduct: (updatedProduct: Product) => {
       setProducts((prevProducts) =>
         prevProducts.map((product) =>
-          product.id === updatedProduct.id ? updatedProduct : product
-        )
+          product.id === updatedProduct.id ? updatedProduct : product,
+        ),
       );
       return store;
     },
     removeProduct: (productId: string) => {
       setProducts((prevProducts) =>
-        prevProducts.filter((product) => product.id !== productId)
+        prevProducts.filter((product) => product.id !== productId),
       );
       return store;
-    },
-    findProductById: (id: string) => {
-      return products.find((product) => product.id === id);
     },
   };
 
