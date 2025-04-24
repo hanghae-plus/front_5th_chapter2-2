@@ -1,33 +1,55 @@
 // useCart.ts
-import { useState } from "react";
-import { CartItem, Coupon, Product } from "../../types";
-import { calculateCartTotal, updateCartItemQuantity } from "../models/cart";
+import { useState } from 'react';
+import { CartItem, Coupon, Product } from '../../types';
+import { addNewCartItem, calculateCartTotal, getRemainingStock, updateCartItemQuantity } from '../models/cart';
 
 export const useCart = () => {
-  const [cart, setCart] = useState<CartItem[]>([]);
-  const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
+    const [cart, setCart] = useState<CartItem[]>([]);
+    const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
 
-  const addToCart = (product: Product) => {};
+    const addToCart = (product: Product) => {
+        const hasStock = product.stock > 0;
+        if (!hasStock) return;
 
-  const removeFromCart = (productId: string) => {};
+        const cartItem = cart.find((item) => item.product.id === product.id);
+        if (cartItem) {
+            const addedQuantity = cartItem.quantity + 1;
+            const newCart = updateCartItemQuantity(cart, product.id, addedQuantity);
+            setCart(newCart);
+        } else {
+            const newCart = addNewCartItem(cart, product);
+            setCart(newCart);
+        }
+    };
 
-  const updateQuantity = (productId: string, newQuantity: number) => {};
+    const removeFromCart = (productId: string) => {
+        setCart((prevCart) => prevCart.filter((item) => item.product.id !== productId));
+    };
 
-  const applyCoupon = (coupon: Coupon) => {};
+    const updateQuantity = (productId: string, newQuantity: number) => {
+        setCart((prevCart) => updateCartItemQuantity(prevCart, productId, newQuantity));
+    };
 
-  const calculateTotal = () => ({
-    totalBeforeDiscount: 0,
-    totalAfterDiscount: 0,
-    totalDiscount: 0,
-  });
+    const applyCoupon = (coupon: Coupon) => {
+        setSelectedCoupon(coupon);
+    };
 
-  return {
-    cart,
-    addToCart,
-    removeFromCart,
-    updateQuantity,
-    applyCoupon,
-    calculateTotal,
-    selectedCoupon,
-  };
+    const calculateTotal = () => {
+        return calculateCartTotal(cart, selectedCoupon);
+    };
+
+    const calculateRemainingStock = (product: Product) => {
+        return getRemainingStock(cart, product);
+    };
+
+    return {
+        cart,
+        addToCart,
+        removeFromCart,
+        updateQuantity,
+        applyCoupon,
+        calculateTotal,
+        calculateRemainingStock,
+        selectedCoupon,
+    };
 };
