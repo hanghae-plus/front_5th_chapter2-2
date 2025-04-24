@@ -13,11 +13,12 @@ import type { CartItem, CouponItem, Product } from "../../refactoring/types";
 import { useAtomValue, useSetAtom } from "jotai";
 import {
   couponsAtom,
+  productsAtom,
   setCouponsAtom,
   setProductsAtom,
 } from "../../refactoring/state";
 import { getMaxDiscount, getRemainingStock } from "../../refactoring/utils";
-import { useCouponForm } from "../../refactoring/hooks";
+import { useCouponForm, useProductForm } from "../../refactoring/hooks";
 
 const mockProducts: Product[] = [
   {
@@ -295,6 +296,46 @@ describe("advanced > ", () => {
       expect(couponResult.current).toHaveLength(3);
       expect(couponResult.current[2]).toEqual(newCouponItem);
       expect(result.current.newCoupon).toEqual(defaultCoupon);
+    });
+  });
+
+  describe("useProductForm hook", () => {
+    test("상품을 추가할 수 있다.", () => {
+      renderHook(() => {
+        const setProducts = useSetAtom(setProductsAtom);
+        setProducts(mockProducts);
+      });
+      const { result } = renderHook(() =>
+        useProductForm({
+          setShowNewProductForm: () => {},
+        })
+      );
+
+      const defaultProduct: Omit<Product, "id"> = {
+        name: "",
+        price: 0,
+        stock: 0,
+        discounts: [],
+      };
+
+      const newProductItem: Omit<Product, "id"> = {
+        name: "상품5",
+        price: 15000,
+        stock: 30,
+        discounts: [],
+      };
+
+      act(() => result.current.setNewProduct(newProductItem));
+
+      act(() => result.current.handleAddNewProduct());
+
+      const { result: productResult } = renderHook(() =>
+        useAtomValue(productsAtom)
+      );
+
+      expect(productResult.current).toHaveLength(4);
+      expect(productResult.current[3]).toMatchObject(newProductItem);
+      expect(result.current.newProduct).toEqual(defaultProduct);
     });
   });
 
