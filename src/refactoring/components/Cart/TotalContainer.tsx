@@ -1,4 +1,4 @@
-import { useCartContext } from "../Providers/CartContext";
+import { useCartContext } from "../../Providers/CartContext";
 
 const TotalContainer = () => {
   const { calculateTotal } = useCartContext();

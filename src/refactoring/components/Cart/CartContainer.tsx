@@ -1,23 +1,13 @@
-import { CartItem } from "../../types";
-import { useCartContext } from "../Providers/CartContext";
+import { getMaxApplicableDiscount } from "../../models/cart";
+import { useCartContext } from "../../Providers/CartContext";
 
 const CartList = () => {
   const { cart, updateQuantity, removeFromCart } = useCartContext();
-  const getAppliedDiscount = (item: CartItem) => {
-    const { discounts } = item.product;
-    const { quantity } = item;
-    let appliedDiscount = 0;
-    for (const discount of discounts) {
-      if (quantity >= discount.quantity) {
-        appliedDiscount = Math.max(appliedDiscount, discount.rate);
-      }
-    }
-    return appliedDiscount;
-  };
+
   return (
     <div className="space-y-2">
       {cart.map((item) => {
-        const appliedDiscount = getAppliedDiscount(item);
+        const appliedDiscount = getMaxApplicableDiscount(item);
         return (
           <div
             key={item.product.id}

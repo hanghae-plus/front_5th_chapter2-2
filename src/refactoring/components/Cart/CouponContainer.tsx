@@ -1,5 +1,5 @@
-import { useCouponContext } from "../Providers/CouponProvider";
-import { useCartContext } from "../Providers/CartContext";
+import { useCouponContext } from "../../Providers/CouponProvider";
+import { useCartContext } from "../../Providers/CartContext";
 
 const CouponList = () => {
   const { applyCoupon, selectedCoupon } = useCartContext();

@@ -1,7 +1,7 @@
-import { Product } from "../../types";
-import { useCartContext } from "../Providers/CartContext";
-import { getMaxDiscount } from "../utils/getMaxDiscount";
-import { getRemainingStock } from "../utils/getRemainingStock";
+import { Product } from "../../../types"
+import { useCartContext } from "../../Providers/CartContext";
+import { getMaxDiscount } from "../../utils/getMaxDiscount";
+import { getRemainingStock } from "../../utils/getRemainingStock";
 
 export const ProductContainer = ({
   products,
