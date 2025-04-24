@@ -6,11 +6,13 @@ export const useProducts = (initialProducts: Product[]) => {
 
   const updateProduct = useCallback((targetProduct: Product) => {
     setProducts((prevProducts) => {
-      const filteredProducts = prevProducts.filter((product) => product.id !== targetProduct.id);
-      return [
-        ...filteredProducts,
-        targetProduct,
-      ]
+      const index = prevProducts.findIndex((product) => product.id === targetProduct.id);
+      if (index !== -1) {
+        const updatedProducts = [...prevProducts];
+        updatedProducts[index] = targetProduct;
+        return updatedProducts;
+      }
+      return [...prevProducts, targetProduct];
     });
   }, []);
 
