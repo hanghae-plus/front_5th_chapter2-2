@@ -1,6 +1,5 @@
-import { Button } from "../../ui/button";
-import { Input } from "../../ui/input";
-import { percentToRate, rateToPercent } from "../../utils/percentUtils";
+import { Button, Input } from "@refactoring/ui";
+import { percentToRate, rateToPercent } from "@refactoring/utils";
 
 type DiscountInput = {
   quantity: number;

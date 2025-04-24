@@ -1,4 +1,4 @@
-import { CartItem, Product } from "../../entities";
+import { CartItem, Product } from "@refactoring/entities";
 
 /**
  * 장바구니에 담긴 수량을 고려해, 남은 재고를 계산하는 순수 함수

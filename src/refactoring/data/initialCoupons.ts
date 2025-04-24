@@ -1,4 +1,4 @@
-import { Coupon } from "../entities";
+import { Coupon } from "@refactoring/entities";
 
 export const initialCoupons: Coupon[] = [
   {

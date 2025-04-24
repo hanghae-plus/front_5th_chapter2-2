@@ -1,4 +1,4 @@
-import { Product } from "../entities";
+import { Product } from "@refactoring/entities";
 
 export const initialProducts: Product[] = [
   {

@@ -1,4 +1,4 @@
-import { Coupon } from "../../entities";
+import { Coupon } from "@refactoring/entities";
 
 /**
  * 쿠폰을 적용하여 최종 결제 금액을 계산하는 함수

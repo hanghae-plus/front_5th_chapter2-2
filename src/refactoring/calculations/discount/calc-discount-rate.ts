@@ -1,4 +1,4 @@
-import { CartItem, Discount } from "../../entities";
+import { CartItem, Discount } from "@refactoring/entities";
 
 /**
  * 주어진 할인 조건 배열에서 가장 높은 할인율(rate)을 계산하는 순수함수

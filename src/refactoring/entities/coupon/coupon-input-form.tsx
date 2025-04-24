@@ -1,5 +1,4 @@
-import { Button } from "../../ui/button";
-import { Input } from "../../ui/input";
+import { Button, Input } from "@refactoring/ui";
 
 type CouponInput = {
   name: string;
