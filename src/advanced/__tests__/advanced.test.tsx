@@ -29,8 +29,8 @@ const mockProduct1: Product = {
   price: 100,
   stock: 10,
   discounts: [
-    { quantity: 2, rate: 10 },
-    { quantity: 5, rate: 20 },
+    { quantity: 2, rate: 0.1 },
+    { quantity: 5, rate: 0.2 },
   ],
 };
 const mockProduct2: Product = {
@@ -38,7 +38,7 @@ const mockProduct2: Product = {
   name: "Product 2",
   price: 200,
   stock: 5,
-  discounts: [{ quantity: 3, rate: 15 }],
+  discounts: [{ quantity: 3, rate: 0.15 }],
 };
 
 const mockCoupon: Coupon = {
@@ -326,7 +326,7 @@ describe("advanced > ", () => {
       test("적용 가능한 최대 할인율 반환", () => {
         const item: CartItem = { product: mockProduct1, quantity: 3 };
         const maxDiscount = getMaxApplicableDiscount(item);
-        expect(maxDiscount).toBe(10); // 수량 3일 때 10% 할인 적용 가능
+        expect(maxDiscount).toBe(0.1); // 수량 3일 때 10% 할인 적용 가능
       });
 
       test("수량이 충분하지 않으면 할인율 0 반환", () => {
@@ -338,7 +338,7 @@ describe("advanced > ", () => {
       test("가장 높은 할인율 반환", () => {
         const item: CartItem = { product: mockProduct1, quantity: 5 };
         const maxDiscount = getMaxApplicableDiscount(item);
-        expect(maxDiscount).toBe(20); // 수량 5일 때 20% 할인 적용 가능
+        expect(maxDiscount).toBe(0.2); // 수량 5일 때 20% 할인 적용 가능
       });
     });
 
@@ -346,7 +346,7 @@ describe("advanced > ", () => {
       test("할인 적용된 항목 총액 계산", () => {
         const item: CartItem = { product: mockProduct1, quantity: 2 };
         const total = calculateItemTotal(item);
-        expect(total).toBe(180); // 100 * 2 * (1 - 10/100)
+        expect(total).toBe(180); // 100 * 2 * (1 - 0.1)
       });
 
       test("할인 없는 경우 원래 가격 반환", () => {
@@ -459,7 +459,7 @@ describe("advanced > ", () => {
       test("최대 할인율 반환", () => {
         const discounts = mockProduct1.discounts;
         const maxDiscount = getMaxDiscount(discounts);
-        expect(maxDiscount).toBe(20); // 20%가 최대 할인율
+        expect(maxDiscount).toBe(0.2);
       });
 
       test("빈 배열일 경우 0 반환", () => {
@@ -477,7 +477,7 @@ describe("advanced > ", () => {
       test("적용된 할인율 반환", () => {
         const item: CartItem = { product: mockProduct1, quantity: 3 };
         const appliedDiscount = getAppliedDiscount(item);
-        expect(appliedDiscount).toBe(10); // 수량 3일 때 10% 할인 적용
+        expect(appliedDiscount).toBe(0.1); // 수량 3일 때 10% 할인 적용
       });
 
       test("수량이 충분하지 않으면 할인율 0 반환", () => {
@@ -489,7 +489,7 @@ describe("advanced > ", () => {
       test("가장 높은 적용 가능한 할인율 반환", () => {
         const item: CartItem = { product: mockProduct1, quantity: 6 };
         const appliedDiscount = getAppliedDiscount(item);
-        expect(appliedDiscount).toBe(20); // 수량 6일 때 20% 할인 적용
+        expect(appliedDiscount).toBe(0.2); // 수량 6일 때 20% 할인 적용
       });
 
       test("mockProducts로 적용된 할인율 확인", () => {
