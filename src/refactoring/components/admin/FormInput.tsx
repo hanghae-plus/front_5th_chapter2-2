@@ -1,5 +1,5 @@
 interface FormInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  label?: string;
+  label: string;
 }
 
 export const FormInput = ({
@@ -8,16 +8,14 @@ export const FormInput = ({
   ...props
 }: FormInputProps) => {
   return (
-    <div className="mb-4">
-      {label && (
-        <label className="block mb-1">
-          {label}
-          <input
-            className={`w-full p-2 border rounded ${className}`}
-            {...props}
-          />
-        </label>
-      )}
+    <div className="mb-2">
+      <label
+        htmlFor={props.id}
+        className="block text-sm font-medium text-gray-700"
+      >
+        {label}
+      </label>
+      <input className={`w-full p-2 border rounded ${className}`} {...props} />
     </div>
   );
 };
