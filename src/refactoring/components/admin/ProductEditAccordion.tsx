@@ -32,12 +32,12 @@ export function ProductEditAccordion({
 					<ProductEditForm
 						product={product}
 						onProductUpdate={onProductUpdate}
-						onComplete={() => setIsEditing(false)}
+						onEditComplete={() => setIsEditing(false)}
 					/>
 				) : (
 					<ProductEditAccordion.ProductInfo
 						discounts={product.discounts}
-						onStartEdit={() => setIsEditing(true)}
+						onEditStart={() => setIsEditing(true)}
 					/>
 				)}
 			</AccordionContent>
@@ -47,10 +47,10 @@ export function ProductEditAccordion({
 
 ProductEditAccordion.ProductInfo = ({
 	discounts,
-	onStartEdit,
+	onEditStart,
 }: {
 	discounts: Discount[];
-	onStartEdit: () => void;
+	onEditStart: () => void;
 }) => {
 	return (
 		<div>
@@ -61,7 +61,7 @@ ProductEditAccordion.ProductInfo = ({
 					</span>
 				</div>
 			))}
-			<Button color="blue" data-testid="modify-button" onClick={onStartEdit}>
+			<Button color="blue" data-testid="modify-button" onClick={onEditStart}>
 				수정
 			</Button>
 		</div>

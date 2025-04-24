@@ -20,13 +20,13 @@ const formSchema = z.object({
 interface UseProductEditFormProps {
 	product: Product;
 	onProductUpdate: (updatedProduct: Product) => void;
-	onComplete: () => void;
+	onEditComplete: () => void;
 }
 
 export const useProductEditForm = ({
 	product,
 	onProductUpdate,
-	onComplete,
+	onEditComplete,
 }: UseProductEditFormProps) => {
 	const form = useForm<z.infer<typeof formSchema>>({
 		defaultValues: {
@@ -49,7 +49,7 @@ export const useProductEditForm = ({
 	const handleEditComplete = () => {
 		const updatedProduct = getValues();
 		onProductUpdate(updatedProduct);
-		onComplete();
+		onEditComplete();
 	};
 
 	const handleAddDiscount = () => {
