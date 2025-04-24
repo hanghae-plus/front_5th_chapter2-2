@@ -43,6 +43,7 @@ export function useLocalStorage<T>(
   };
 
   useEffect(() => {
+    // * Returns the key of the storage item being changed. => 같은 도메인 내 다른 탭/창에서 로컬 스토리지가 변경되었을 때 발생하는 이벤트
     const handleStorageChange = (event: StorageEvent) => {
       if (event.key === key && event.newValue) {
         setStoredValue(JSON.parse(event.newValue));

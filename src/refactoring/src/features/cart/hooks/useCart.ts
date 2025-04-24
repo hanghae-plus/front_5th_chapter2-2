@@ -1,4 +1,3 @@
-// /src/widgets/cart/hooks/useCart.ts 파일에 추가
 import { useState } from "react";
 import { CartItem } from "../../../entities/cart/types";
 import { Coupon } from "../../../entities/coupon/types";
@@ -37,12 +36,10 @@ export const useCart = () => {
 
   const updateQuantity = (productId: string, newQuantity: number) => {
     setCart((prevCart) => {
-      // 수량이 0 이하면 항목 제거
       if (newQuantity <= 0) {
         return prevCart.filter((item) => item.product.id !== productId);
       }
 
-      // 수량 업데이트 (재고 범위 내에서)
       return prevCart.map((item) => {
         if (item.product.id === productId) {
           const limitedQuantity = Math.min(newQuantity, item.product.stock);

@@ -1,7 +1,7 @@
+import { useCart } from "../../features/cart/hooks";
+import { useProducts } from "../../features/products/hooks";
 import { CommonContainer } from "../../shared/ui";
-import { useCart } from "../../widgets/cart/hooks";
 import { CartContainer } from "../../widgets/cart/ui";
-import { useProducts } from "../../widgets/products/hooks";
 import { ProductList } from "../../widgets/products/ui";
 
 export const CartPage = () => {

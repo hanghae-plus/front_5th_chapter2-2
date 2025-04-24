@@ -1,5 +1,6 @@
 import { CartItem } from "../../../../entities/cart/types";
 import { Product } from "../../../../entities/product/types";
+import { DiscountListView } from "../../../../entities/product/ui";
 import { ContentBox } from "../../../../shared/ui";
 
 export const ProductList = ({
@@ -52,16 +53,7 @@ export const ProductList = ({
                   </span>
                 )}
               </div>
-              {product.discounts.length > 0 && (
-                <ul className="list-disc list-inside text-sm text-gray-500 mb-2">
-                  {product.discounts.map((discount, index) => (
-                    <li key={index}>
-                      {discount.quantity}개 이상:{" "}
-                      {(discount.rate * 100).toFixed(0)}% 할인
-                    </li>
-                  ))}
-                </ul>
-              )}
+              <DiscountListView discounts={product.discounts} />
               <button
                 onClick={() => addToCart(product)}
                 className={`w-full px-3 py-1 rounded ${

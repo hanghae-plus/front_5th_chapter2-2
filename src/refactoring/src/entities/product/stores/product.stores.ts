@@ -4,43 +4,46 @@ import { Product } from "../types";
 export interface ProductStore {
   products: Product[];
   selectedProductId: string;
-  setSelectedProductId: (id: string) => void;
-  addProduct: (newProduct: Product) => void;
-  updateProduct: (updatedProduct: Product) => void;
-  removeProduct: (productId: string) => void;
+  setSelectedProductId: (id: string) => ProductStore;
+  addProduct: (newProduct: Product) => ProductStore;
+  updateProduct: (updatedProduct: Product) => ProductStore;
+  removeProduct: (productId: string) => ProductStore;
   findProductById: (id: string) => Product | undefined;
 }
 
 export const createProductStore = (
   initialProducts: Product[],
+  initialSelectedProductId: string = "",
 ): ProductStore => {
-  let products = [...initialProducts];
-  let selectedProductId = "";
+  const products = [...initialProducts];
+  const selectedProductId = initialSelectedProductId;
 
   return {
     products,
     selectedProductId,
 
     setSelectedProductId: (id: string) => {
-      selectedProductId = id;
-      return createProductStore(products);
+      return createProductStore(products, id);
     },
 
     addProduct: (newProduct: Product) => {
-      products = [...products, newProduct];
-      return createProductStore(products);
+      return createProductStore([...products, newProduct], selectedProductId);
     },
 
     updateProduct: (updatedProduct: Product) => {
-      products = products.map((product) =>
-        product.id === updatedProduct.id ? updatedProduct : product,
+      return createProductStore(
+        products.map((product) =>
+          product.id === updatedProduct.id ? updatedProduct : product,
+        ),
+        selectedProductId,
       );
-      return createProductStore(products);
     },
 
     removeProduct: (productId: string) => {
-      products = products.filter((product) => product.id !== productId);
-      return createProductStore(products);
+      return createProductStore(
+        products.filter((product) => product.id !== productId),
+        selectedProductId,
+      );
     },
 
     findProductById: (id: string) => {

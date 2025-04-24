@@ -1,1 +1,5 @@
-export { ProductContextStore } from "./product.stores";
+export {
+  createProductStore,
+  ProductStoreContext,
+  type ProductStore,
+} from "./product.stores";

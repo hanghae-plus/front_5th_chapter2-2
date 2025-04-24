@@ -1,5 +1,3 @@
-import { useState } from "react";
-import { describe, expect, test } from "vitest";
 import {
   act,
   fireEvent,
@@ -8,11 +6,15 @@ import {
   screen,
   within,
 } from "@testing-library/react";
-import { CartPage } from "../../refactoring/components/CartPage";
+import { useState } from "react";
+import { describe, expect, test } from "vitest";
 import { AdminPage } from "../../refactoring/components/AdminPage";
-import { CartItem, Coupon, Product } from "../../types";
+import { CartPage } from "../../refactoring/components/CartPage";
 import { useCart, useCoupons, useProducts } from "../../refactoring/hooks";
 import * as cartUtils from "../../refactoring/models/cart";
+import { CartItem } from "../../refactoring/src/entities/cart/types";
+import { Coupon } from "../../refactoring/src/entities/coupon/types";
+import { Product } from "../../refactoring/src/entities/product/types";
 
 const mockProducts: Product[] = [
   {
@@ -58,7 +60,9 @@ const TestAdminPage = () => {
 
   const handleProductUpdate = (updatedProduct: Product) => {
     setProducts((prevProducts) =>
-      prevProducts.map((p) => (p.id === updatedProduct.id ? updatedProduct : p))
+      prevProducts.map((p) =>
+        p.id === updatedProduct.id ? updatedProduct : p,
+      ),
     );
   };
 
@@ -228,24 +232,24 @@ describe("basic > ", () => {
       fireEvent.click(screen.getByText("할인 추가"));
 
       expect(
-        screen.queryByText("5개 이상 구매 시 5% 할인")
+        screen.queryByText("5개 이상 구매 시 5% 할인"),
       ).toBeInTheDocument();
 
       // 할인 삭제
       fireEvent.click(screen.getAllByText("삭제")[0]);
       expect(
-        screen.queryByText("10개 이상 구매 시 10% 할인")
+        screen.queryByText("10개 이상 구매 시 10% 할인"),
       ).not.toBeInTheDocument();
       expect(
-        screen.queryByText("5개 이상 구매 시 5% 할인")
+        screen.queryByText("5개 이상 구매 시 5% 할인"),
       ).toBeInTheDocument();
 
       fireEvent.click(screen.getAllByText("삭제")[0]);
       expect(
-        screen.queryByText("10개 이상 구매 시 10% 할인")
+        screen.queryByText("10개 이상 구매 시 10% 할인"),
       ).not.toBeInTheDocument();
       expect(
-        screen.queryByText("5개 이상 구매 시 5% 할인")
+        screen.queryByText("5개 이상 구매 시 5% 할인"),
       ).not.toBeInTheDocument();
 
       // 4. 쿠폰 추가

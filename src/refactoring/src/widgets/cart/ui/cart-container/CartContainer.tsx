@@ -2,7 +2,7 @@ import { CartItem } from "../../../../entities/cart/types";
 import { Coupon } from "../../../../entities/coupon/types";
 import { useCoupon } from "../../../../features/coupon/hooks";
 
-interface Props {
+interface CartContainerProps {
   cart: CartItem[];
   updateQuantity: (productId: string, newQuantity: number) => void;
   removeFromCart: (productId: string) => void;
@@ -15,7 +15,7 @@ interface Props {
   };
 }
 
-export const CartContainer: React.FC<Props> = ({
+export const CartContainer: React.FC<CartContainerProps> = ({
   cart,
   updateQuantity,
   removeFromCart,
