@@ -1,5 +1,5 @@
 import { CartItem as CartItemType } from '../../../types';
-import { getQuantityDiscount } from '../../utils/getQuantityDiscount';
+import { getQuantityDiscount } from '../../models/cart';
 
 interface Props {
   cart: CartItemType;

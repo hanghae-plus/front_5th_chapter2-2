@@ -22,3 +22,14 @@ export interface Coupon {
   discountType: 'amount' | 'percentage';
   discountValue: number;
 }
+
+export interface CouponDiscountProps {
+  coupon: Coupon | null;
+  beforeAppliedCoupon: number;
+}
+
+export interface TotalDiscountProps {
+  cart: CartItem[];
+  coupon: Coupon | null;
+  totalBeforeDiscount: number;
+}
