@@ -1,4 +1,4 @@
-import { useForm } from "@r/hooks/use-form";
+import { useForm } from "@r/shared/hooks/use-form";
 import { Discount } from "@r/model/discount/types";
 import { useDiscounts } from "@r/model/discount/use-discounts";
 import { useProductContext } from "@r/model/product/product-context";
