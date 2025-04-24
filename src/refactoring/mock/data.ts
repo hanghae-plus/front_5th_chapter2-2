@@ -1,4 +1,5 @@
-import { Coupon, Product } from '../../types';
+import { Coupon } from '../models/coupon/types';
+import { Product } from '../models/product/types';
 
 export const initialProducts: Product[] = [
   {

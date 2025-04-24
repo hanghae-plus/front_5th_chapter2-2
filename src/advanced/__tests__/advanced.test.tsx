@@ -1,9 +1,10 @@
+import { act, fireEvent, render, screen, within } from '@testing-library/react';
 import { useState } from 'react';
 import { describe, expect, test } from 'vitest';
-import { act, fireEvent, render, screen, within } from '@testing-library/react';
-import { CartPage } from '../../refactoring/pages/CartPage';
+import { Coupon } from '../../refactoring/models/coupon/types';
+import { Product } from '../../refactoring/models/product/types';
 import { AdminPage } from '../../refactoring/pages/AdminPage';
-import { Coupon, Product } from '../../types';
+import { CartPage } from '../../refactoring/pages/CartPage';
 
 const mockProducts: Product[] = [
   {
