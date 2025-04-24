@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { describe, expect, test } from 'vitest';
-import { act, fireEvent, render, screen, within } from '@testing-library/react';
+import { act, fireEvent, render, screen, within, renderHook } from '@testing-library/react';
 import { CartPage } from '../../refactoring/components/CartPage';
 import { AdminPage } from "../../refactoring/components/AdminPage";
-import { Coupon, Product } from '../../types';
+import { Coupon, Product, CartItem } from '../../types';
+import { updateCartItemQuantity } from '../../refactoring/models/cart'
+import { useSetToggle } from '../../refactoring/hooks/toggleAccordion'
 
 const mockProducts: Product[] = [
   {
@@ -231,13 +233,47 @@ describe('advanced > ', () => {
     })
   })
 
+  const mockCart: CartItem[] = mockProducts.map(product => ({
+    product,
+    quantity: 1,
+  }));
+
   describe('자유롭게 작성해보세요.', () => {
-    test('새로운 유틸 함수를 만든 후에 테스트 코드를 작성해서 실행해보세요', () => {
-      expect(true).toBe(false);
+    // test('새로운 유틸 함수를 만든 후에 테스트 코드를 작성해서 실행해보세요', () => {
+    //   expect(true).toBe(false);
+    // })
+
+    test('수량 알맞게 업데이트', () => {
+      const updateCart = updateCartItemQuantity(mockCart, 'p1', 5);
+
+      expect(updateCart).toEqual([
+        {
+          product: mockProducts[0],
+          quantity: 5,
+        },
+        {
+          product: mockProducts[1],
+          quantity: 1,
+        },
+        {
+          product: mockProducts[2],
+          quantity: 1,
+        },
+      ])
     })
 
     test('새로운 hook 함수르 만든 후에 테스트 코드를 작성해서 실행해보세요', () => {
-      expect(true).toBe(false);
+      const { result } = renderHook(() => {
+        const [set, setSet] = useState<Set<string>>(new Set());
+        const toggle = useSetToggle(setSet);
+        return { set, toggle };
+      });
+
+      act(() => {
+        result.current.toggle('apple');
+      });
+
+      expect(result.current.set.has('apple')).toBe(true);
     })
   })
 })

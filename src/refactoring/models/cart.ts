@@ -48,21 +48,25 @@ export const calculateCartTotal = (
   };
 };
 
+// updateQuantity 라는 함수 안에, item,productId,newQuantity 파라미터 명시.(타입스크립트니까 타입도 함께)
+const updateQuantity = (
+  item: CartItem,
+  productId: string,
+  newQuantity: number
+): CartItem | null => {
+  if (item.product.id !== productId) return item; // 다른 상품이면 수량 업데이트 x
+  const maxQty = item.product.stock; // 재고수량
+  const qty = Math.min(newQuantity, maxQty);
+
+  return qty > 0 ? { ...item, quantity: qty } : null; // 수량이 0 아래면 null 반환.
+}
+
 export const updateCartItemQuantity = (
   cart: CartItem[],
   productId: string,
   newQuantity: number
 ): CartItem[] => {
   return cart
-    .map((item) => {
-      if (item.product.id === productId) {
-        const maxQty = item.product.stock;
-        const qty = Math.min(newQuantity, maxQty);
-        return qty > 0
-          ? { ...item, quantity: qty }
-          : null; // 수량이 0이면 제거
-      }
-      return item;
-    })
-    .filter((item): item is CartItem => item !== null); // null 제거
-};
+  .map(item => updateQuantity(item, productId, newQuantity))
+  .filter((item): item is CartItem => item !== null);
+}

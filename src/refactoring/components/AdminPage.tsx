@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Coupon, Discount, Product } from '../../types.ts';
+import { useSetToggle } from '../hooks/toggleAccordion.ts'
 
 interface Props {
   products: Product[];
@@ -27,17 +28,21 @@ export const AdminPage = ({ products, coupons, onProductUpdate, onProductAdd, on
     discounts: []
   });
 
-  const toggleProductAccordion = (productId: string) => {
-    setOpenProductIds(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(productId)) {
-        newSet.delete(productId);
-      } else {
-        newSet.add(productId);
-      }
-      return newSet;
-    });
-  };
+  // 상품 상세 토글 (기존)
+  // const toggleProductAccordion = (productId: string) => {
+  //   setOpenProductIds(prev => {
+  //     const newSet = new Set(prev);
+  //     if (newSet.has(productId)) {
+  //       newSet.delete(productId);
+  //     } else {
+  //       newSet.add(productId);
+  //     }
+  //     return newSet;
+  //   });
+  // };
+
+  // 상품 상세 토글(새로운 훅)
+  const toggleProductAccordion = useSetToggle(setOpenProductIds);
 
   // handleEditProduct 함수 수정
   const handleEditProduct = (product: Product) => {
