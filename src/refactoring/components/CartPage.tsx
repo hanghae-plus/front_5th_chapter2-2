@@ -1,5 +1,10 @@
-import { CartItem, Coupon, Product } from '../../types.ts';
+import { Coupon, Product } from '../../types.ts';
 import { useCart } from "../hooks";
+import {
+  getMaxDiscount,
+  getRemainingStock,
+  getAppliedDiscount,
+} from "../utils/cart";
 
 interface Props {
   products: Product[];
@@ -14,41 +19,21 @@ export const CartPage = ({ products, coupons }: Props) => {
     updateQuantity,
     applyCoupon,
     calculateTotal,
-    selectedCoupon
+    selectedCoupon,
   } = useCart();
 
-  const getMaxDiscount = (discounts: { quantity: number; rate: number }[]) => {
-    return discounts.reduce((max, discount) => Math.max(max, discount.rate), 0);
-  };
-
-  const getRemainingStock = (product: Product) => {
-    const cartItem = cart.find(item => item.product.id === product.id);
-    return product.stock - (cartItem?.quantity || 0);
-  };
-
-  const { totalBeforeDiscount, totalAfterDiscount, totalDiscount } = calculateTotal()
-
-  const getAppliedDiscount = (item: CartItem) => {
-    const { discounts } = item.product;
-    const { quantity } = item;
-    let appliedDiscount = 0;
-    for (const discount of discounts) {
-      if (quantity >= discount.quantity) {
-        appliedDiscount = Math.max(appliedDiscount, discount.rate);
-      }
-    }
-    return appliedDiscount;
-  };
+  const { totalBeforeDiscount, totalAfterDiscount, totalDiscount } = calculateTotal();
 
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-6">장바구니</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* 상품 목록 */}
         <div>
           <h2 className="text-2xl font-semibold mb-4">상품 목록</h2>
           <div className="space-y-2">
             {products.map(product => {
-              const remainingStock = getRemainingStock(product);
+              const remainingStock = getRemainingStock(product, cart);
               return (
                 <div key={product.id} data-testid={`product-${product.id}`} className="bg-white p-3 rounded shadow">
                   <div className="flex justify-between items-center mb-2">
@@ -90,9 +75,10 @@ export const CartPage = ({ products, coupons }: Props) => {
             })}
           </div>
         </div>
+
+        {/* 장바구니 내역 */}
         <div>
           <h2 className="text-2xl font-semibold mb-4">장바구니 내역</h2>
-
           <div className="space-y-2">
             {cart.map(item => {
               const appliedDiscount = getAppliedDiscount(item);
@@ -100,15 +86,15 @@ export const CartPage = ({ products, coupons }: Props) => {
                 <div key={item.product.id} className="flex justify-between items-center bg-white p-3 rounded shadow">
                   <div>
                     <span className="font-semibold">{item.product.name}</span>
-                    <br/>
+                    <br />
                     <span className="text-sm text-gray-600">
-                  {item.product.price}원 x {item.quantity}
+                      {item.product.price.toLocaleString()}원 x {item.quantity}
                       {appliedDiscount > 0 && (
                         <span className="text-green-600 ml-1">
-                      ({(appliedDiscount * 100).toFixed(0)}% 할인 적용)
-                    </span>
+                          ({(appliedDiscount * 100).toFixed(0)}% 할인 적용)
+                        </span>
                       )}
-                </span>
+                    </span>
                   </div>
                   <div>
                     <button
@@ -135,6 +121,7 @@ export const CartPage = ({ products, coupons }: Props) => {
             })}
           </div>
 
+          {/* 쿠폰 선택 */}
           <div className="mt-6 bg-white p-4 rounded shadow">
             <h2 className="text-2xl font-semibold mb-2">쿠폰 적용</h2>
             <select
@@ -156,6 +143,7 @@ export const CartPage = ({ products, coupons }: Props) => {
             )}
           </div>
 
+          {/* 주문 요약 */}
           <div className="mt-6 bg-white p-4 rounded shadow">
             <h2 className="text-2xl font-semibold mb-2">주문 요약</h2>
             <div className="space-y-1">
