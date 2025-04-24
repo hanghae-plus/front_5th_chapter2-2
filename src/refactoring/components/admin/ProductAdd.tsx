@@ -1,13 +1,15 @@
 import { useState } from "react";
 import { Product } from "../../../types";
 import { initialNewProducts } from "../../constants";
+import { useProductForm } from "../../hooks/entities/product/useProductForm";
 
 interface Props {
   onProductAdd: (newProduct: Product) => void;
 }
 
 const ProductAdd = ({ onProductAdd }: Props) => {
-  const [showNewProductForm, setShowNewProductForm] = useState(false);
+  const { showNewProductForm, setShowNewProductForm, handleProductFormToggle } =
+    useProductForm();
 
   const [newProduct, setNewProduct] =
     useState<Omit<Product, "id">>(initialNewProducts);
@@ -23,7 +25,7 @@ const ProductAdd = ({ onProductAdd }: Props) => {
   return (
     <>
       <button
-        onClick={() => setShowNewProductForm(!showNewProductForm)}
+        onClick={handleProductFormToggle}
         className="bg-green-500 text-white px-4 py-2 rounded mb-4 hover:bg-green-600"
       >
         {showNewProductForm ? "취소" : "새 상품 추가"}
