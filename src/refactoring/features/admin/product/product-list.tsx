@@ -7,7 +7,7 @@ export const ProductList = () => {
   return (
     <ListWrapper>
       {products.map((product, index) => (
-        <ProductItem product={product} index={index} />
+        <ProductItem key={product.id} product={product} index={index} />
       ))}
     </ListWrapper>
   );

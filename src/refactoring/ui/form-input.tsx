@@ -1,9 +1,10 @@
 type FormInputProps = {
-  id: string;
+  id?: string;
   label: string;
   type?: string;
   value: string | number;
   wrapperClassName?: string;
+  labelClassName?: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
@@ -14,9 +15,10 @@ export const FormInput = ({
   value,
   onChange,
   wrapperClassName,
+  labelClassName,
 }: FormInputProps) => (
   <div className={wrapperClassName}>
-    <label htmlFor={id} className="block text-sm font-medium text-gray-700">
+    <label htmlFor={id} className={labelClassName}>
       {label}
     </label>
     <input
