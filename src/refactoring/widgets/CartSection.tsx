@@ -1,5 +1,5 @@
 import { CartItem, Coupon } from '../entities';
-import { CartItemList, CouponSection, OrderSummary } from '../features/cart/ui';
+import { CartItemList, CouponSection, OrderSummary } from '../features/cart';
 
 interface CartSectionProps {
   cart: CartItem[];

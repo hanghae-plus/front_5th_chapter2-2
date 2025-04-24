@@ -1,5 +1,5 @@
 import { Product } from '../entities';
-import { ProductItem } from '../features/cart/ui';
+import { ProductItem } from '../features/cart';
 
 interface ProductSectionProps {
   products: Product[];

@@ -1,5 +1,5 @@
 import { Coupon } from '../entities';
-import { CouponList, NewCouponForm } from '../features/admin/ui';
+import { CouponList, NewCouponForm } from '../features/admin';
 
 interface CouponManagerProps {
   coupons: Coupon[];

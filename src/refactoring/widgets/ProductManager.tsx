@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Product } from '../entities';
-import { NewProductForm, ProductList } from '../features/admin/ui';
+import { NewProductForm, ProductList } from '../features/admin';
 
 interface ProductManagerProps {
   products: Product[];
