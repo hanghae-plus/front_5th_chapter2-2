@@ -1,6 +1,5 @@
 import React, { createContext, useContext } from "react";
 import { useCoupons } from "../hooks";
-import { initialCoupons } from "../constants";
 import { Coupon } from "../../types";
 
 interface CouponContext {
@@ -13,9 +12,15 @@ interface CouponContext {
 
 const CouponContext = createContext<CouponContext | null>(null);
 
-export const CouponProvider = ({ children }: { children: React.ReactNode }) => {
+export const CouponProvider = ({
+  children,
+  intialCoupons,
+}: {
+  children: React.ReactNode;
+  intialCoupons: Coupon[];
+}) => {
   const { coupons, newCoupon, addCoupon, setNewCoupon, handleAddNewCoupon } =
-    useCoupons(initialCoupons);
+    useCoupons(intialCoupons);
 
   return (
     <CouponContext.Provider

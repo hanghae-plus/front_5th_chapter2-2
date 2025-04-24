@@ -1,18 +1,22 @@
-import { CartPage } from "./pages/CartPage.tsx";
-import { AdminPage } from "./pages/AdminPage.tsx";
-import { useAdmin, useCoupons } from "./hooks";
-import { initialProducts, initialCoupons } from "./constants";
-import Nav from "./layout/Nav.tsx";
+//provider
 import { CartProvider } from "./provider/CartProvider.tsx";
 import { ProductProvider } from "./provider/ProductProvider.tsx";
 import { CouponProvider } from "./provider/CouponProvider.tsx";
+//components
+import { CartPage } from "./pages/CartPage.tsx";
+import { AdminPage } from "./pages/AdminPage.tsx";
+import Nav from "./layout/Nav.tsx";
+//hooks
+import { useAdmin } from "./hooks";
+//constants
+import { initialCoupons, initialProducts } from "./constants";
+
 const App = () => {
-  //액션, 계산, 데이터
   const { isAdmin, toggleIsAdmin } = useAdmin();
 
   return (
     <ProductProvider initialProducts={initialProducts}>
-      <CouponProvider>
+      <CouponProvider intialCoupons={initialCoupons}>
         <div className="min-h-screen bg-gray-100">
           <Nav isAdmin={isAdmin} toggleIsAdmin={toggleIsAdmin} />
           <main className="container mx-auto mt-6">

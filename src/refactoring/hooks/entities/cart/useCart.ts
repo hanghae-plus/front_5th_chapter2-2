@@ -40,6 +40,7 @@ export const useCart = () => {
       }
       return [...prevCart, { product, quantity: 1 }];
     });
+    // 장바구니 추가 됨 ->
   };
 
   /**장바구니에서 상품을 삭제합니다 */

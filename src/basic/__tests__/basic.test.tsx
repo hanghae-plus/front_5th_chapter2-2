@@ -14,6 +14,8 @@ import { CartItem, Coupon, Product } from "../../types";
 import { useCart, useCoupons, useProducts } from "../../refactoring/hooks";
 import * as cartUtils from "../../refactoring/models/cart";
 import { ProductProvider } from "../../refactoring/provider/ProductProvider";
+import { CouponProvider } from "../../refactoring/provider/CouponProvider";
+import { CartProvider } from "../../refactoring/provider/CartProvider";
 
 const mockProducts: Product[] = [
   {
@@ -97,9 +99,10 @@ const TestAdminPage = () => {
   //   resetNewCoupon();
   // };
 
+  //FIXME: 프로바이더 적용
   return (
     <ProductProvider initialProducts={products}>
-      <CouponProvider initialCoupons={coupons}>
+      <CouponProvider intialCoupons={coupons}>
         <AdminPage />
       </CouponProvider>
     </ProductProvider>
@@ -109,7 +112,19 @@ const TestAdminPage = () => {
 describe("basic > ", () => {
   describe("시나리오 테스트 > ", () => {
     test("장바구니 페이지 테스트 > ", async () => {
-      render(<CartPage products={mockProducts} coupons={mockCoupons} />);
+      //FIXME: 프로바이더 적용
+
+      // render(<CartPage products={mockProducts} coupons={mockCoupons} />);
+      render(
+        <ProductProvider initialProducts={mockProducts}>
+          <CouponProvider intialCoupons={mockCoupons}>
+            <CartProvider>
+              <CartPage />
+            </CartProvider>
+          </CouponProvider>
+        </ProductProvider>,
+      );
+
       const product1 = screen.getByTestId("product-p1");
       const product2 = screen.getByTestId("product-p2");
       const product3 = screen.getByTestId("product-p3");

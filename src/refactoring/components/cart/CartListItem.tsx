@@ -7,6 +7,7 @@ import { useCartContext } from "../../provider/CartProvider";
 
 const CartListItem = ({ item }: { item: CartItem }) => {
   const { updateQuantity, removeFromCart } = useCartContext();
+
   const appliedDiscount = getMaxApplicableDiscount(item);
 
   return (

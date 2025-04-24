@@ -4,6 +4,9 @@ import { act, fireEvent, render, screen, within } from "@testing-library/react";
 import { CartPage } from "../../refactoring/pages/CartPage";
 import { AdminPage } from "../../refactoring/pages/AdminPage";
 import { Coupon, Product } from "../../types";
+import { ProductProvider } from "../../refactoring/provider/ProductProvider";
+import { CouponProvider } from "../../refactoring/provider/CouponProvider";
+import { CartProvider } from "../../refactoring/provider/CartProvider";
 
 const mockProducts: Product[] = [
   {
@@ -44,59 +47,77 @@ const mockCoupons: Coupon[] = [
 ];
 
 const TestAdminPage = () => {
-  const [products, setProducts] = useState<Product[]>(mockProducts);
-  const [coupons, setCoupons] = useState<Coupon[]>(mockCoupons);
-  const [newCoupon, setNewCoupon] = useState<Coupon>({
-    name: "",
-    code: "",
-    discountType: "percentage",
-    discountValue: 0,
-  });
-  const handleProductUpdate = (updatedProduct: Product) => {
-    setProducts((prevProducts) =>
-      prevProducts.map((p) =>
-        p.id === updatedProduct.id ? updatedProduct : p,
-      ),
-    );
-  };
+  const [products] = useState<Product[]>(mockProducts);
+  const [coupons] = useState<Coupon[]>(mockCoupons);
 
-  const handleProductAdd = (newProduct: Product) => {
-    setProducts((prevProducts) => [...prevProducts, newProduct]);
-  };
-  const addCoupon = (newCoupon: Coupon) => {
-    setCoupons((prevCoupons) => [...prevCoupons, newCoupon]);
-  };
+  // const [newCoupon, setNewCoupon] = useState<Coupon>({
+  //   name: "",
+  //   code: "",
+  //   discountType: "percentage",
+  //   discountValue: 0,
+  // });
+  // const handleProductUpdate = (updatedProduct: Product) => {
+  //   setProducts((prevProducts) =>
+  //     prevProducts.map((p) =>
+  //       p.id === updatedProduct.id ? updatedProduct : p,
+  //     ),
+  //   );
+  // };
 
-  const resetNewCoupon = () => {
-    setNewCoupon({
-      name: "",
-      code: "",
-      discountType: "percentage",
-      discountValue: 0,
-    });
-  };
-  const handleAddNewCoupon = () => {
-    addCoupon(newCoupon);
-    resetNewCoupon();
-  };
+  // const handleProductAdd = (newProduct: Product) => {
+  //   setProducts((prevProducts) => [...prevProducts, newProduct]);
+  // };
+  // const addCoupon = (newCoupon: Coupon) => {
+  //   setCoupons((prevCoupons) => [...prevCoupons, newCoupon]);
+  // };
+
+  // const resetNewCoupon = () => {
+  //   setNewCoupon({
+  //     name: "",
+  //     code: "",
+  //     discountType: "percentage",
+  //     discountValue: 0,
+  //   });
+  // };
+  // const handleAddNewCoupon = () => {
+  //   addCoupon(newCoupon);
+  //   resetNewCoupon();
+  // };
 
   return (
-    <AdminPage
-      products={products}
-      coupons={coupons}
-      newCoupon={newCoupon}
-      onProductUpdate={handleProductUpdate}
-      onProductAdd={handleProductAdd}
-      setNewCoupon={setNewCoupon}
-      handleAddNewCoupon={handleAddNewCoupon}
-    />
+    <ProductProvider initialProducts={products}>
+      <CouponProvider intialCoupons={coupons}>
+        <AdminPage />
+      </CouponProvider>
+    </ProductProvider>
+
+    // <AdminPage
+    //   products={products}
+    //   coupons={coupons}
+    //   newCoupon={newCoupon}
+    //   onProductUpdate={handleProductUpdate}
+    //   onProductAdd={handleProductAdd}
+    //   setNewCoupon={setNewCoupon}
+    //   handleAddNewCoupon={handleAddNewCoupon}
+    // />
   );
 };
 
 describe("advanced > ", () => {
   describe("시나리오 테스트 > ", () => {
     test("장바구니 페이지 테스트 > ", async () => {
-      render(<CartPage products={mockProducts} coupons={mockCoupons} />);
+      //FiXME:
+      render(
+        <ProductProvider initialProducts={mockProducts}>
+          <CouponProvider intialCoupons={mockCoupons}>
+            <CartProvider>
+              <CartPage />
+            </CartProvider>
+          </CouponProvider>
+        </ProductProvider>,
+      );
+      // render(<CartPage products={mockProducts} coupons={mockCoupons} />);
+
       const product1 = screen.getByTestId("product-p1");
       const product2 = screen.getByTestId("product-p2");
       const product3 = screen.getByTestId("product-p3");

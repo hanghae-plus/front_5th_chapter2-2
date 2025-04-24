@@ -1,11 +1,12 @@
 import CartList from "../components/cart/CartList.tsx";
 import ProductList from "../components/product/ProductList.tsx";
-import { useCart } from "../hooks";
+import { useCartContext } from "../provider/CartProvider.tsx";
 import { useCouponContext } from "../provider/CouponProvider.tsx";
 
 export const CartPage = () => {
-  const { selectedCoupon, applyCoupon, calculateTotal } = useCart();
+  const { selectedCoupon, applyCoupon, calculateTotal } = useCartContext();
   const { coupons } = useCouponContext();
+
   const { totalBeforeDiscount, totalAfterDiscount, totalDiscount } =
     calculateTotal();
 
