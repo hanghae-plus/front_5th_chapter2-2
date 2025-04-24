@@ -1,5 +1,4 @@
 import { CartItem, Coupon } from '../../types';
-import { calculateItemOriginalTotal } from './priceUtils';
 import { calculateItemDiscountTotal } from './discountUtils';
 
 export const calculateItemTotal = (item: CartItem): number => {
@@ -37,4 +36,10 @@ export const calculateCartTotal = (
     totalAfterDiscount: Math.round(totalAfterDiscount),
     totalDiscount: Math.round(totalDiscount),
   };
+};
+
+const calculateItemOriginalTotal = (item: CartItem): number => {
+  const { price } = item.product;
+  const { quantity } = item;
+  return price * quantity;
 };
