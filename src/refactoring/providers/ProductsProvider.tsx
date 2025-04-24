@@ -1,5 +1,6 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import type { IProduct } from "#src/types";
+import useLocalStorage from "#src/refactoring/hooks/useLocalStorage";
 
 const initialProducts: IProduct[] = [
   {
@@ -37,7 +38,12 @@ export const ProductsContext = createContext<{
 });
 
 const ProductsProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const [products, setProducts] = useState<IProduct[]>(initialProducts);
+  const [localStorageProducts, setProductsToLocalStorage] = useLocalStorage<IProduct[]>("products");
+  const [products, setProducts] = useState<IProduct[]>(localStorageProducts ?? initialProducts);
+
+  useEffect(() => {
+    setProductsToLocalStorage(products);
+  }, [products, setProductsToLocalStorage]);
 
   return <ProductsContext.Provider value={{ products, setProducts }}>{children}</ProductsContext.Provider>;
 };

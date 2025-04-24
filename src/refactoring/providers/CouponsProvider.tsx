@@ -1,5 +1,6 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import type { ICoupon } from "#src/types";
+import useLocalStorage from "#src/refactoring/hooks/useLocalStorage";
 
 const initialCoupons: ICoupon[] = [
   {
@@ -25,7 +26,12 @@ export const CouponsContext = createContext<{
 });
 
 const CouponsProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const [coupons, setCoupons] = useState<ICoupon[]>(initialCoupons);
+  const [localStorageCoupons, setCouponsToLocalStorage] = useLocalStorage<ICoupon[]>("coupons");
+  const [coupons, setCoupons] = useState<ICoupon[]>(localStorageCoupons ?? initialCoupons);
+
+  useEffect(() => {
+    setCouponsToLocalStorage(coupons);
+  }, [coupons, setCouponsToLocalStorage]);
 
   return <CouponsContext.Provider value={{ coupons, setCoupons }}>{children}</CouponsContext.Provider>;
 };
