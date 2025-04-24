@@ -1,7 +1,8 @@
 import { CartProductItem } from "./CartProductItem.tsx";
 import { ProductItem } from "./ProductItem.tsx";
+import { SearchBar } from "./Searchbar.tsx";
 
-import { useCart } from "../hooks";
+import { useCart, useProductSearch } from "../hooks";
 
 import { Coupon, Product } from "../../types.ts";
 
@@ -21,6 +22,8 @@ export const CartPage = ({ products, coupons }: Props) => {
     selectedCoupon,
   } = useCart();
 
+  const { filtered, setQuery } = useProductSearch(products);
+
   const { totalBeforeDiscount, totalAfterDiscount, totalDiscount } =
     calculateTotal();
 
@@ -30,8 +33,9 @@ export const CartPage = ({ products, coupons }: Props) => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <h2 className="text-2xl font-semibold mb-4">상품 목록</h2>
+          <SearchBar onSearch={setQuery} />
           <div className="space-y-2">
-            {products.map((product) => {
+            {filtered.map((product) => {
               return (
                 <ProductItem
                   key={`product-${product.id}`}

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { describe, expect, test } from "vitest";
+import { describe, expect, test, vi } from "vitest";
 import {
   act,
   fireEvent,
@@ -12,6 +12,7 @@ import { CartPage } from "../../refactoring/components/CartPage";
 import { AdminPage } from "../../refactoring/components/AdminPage";
 import { Coupon, Product } from "../../types";
 import { useForm } from "../../refactoring/hooks";
+import { debounce } from "../../refactoring/utils";
 
 const mockProducts: Product[] = [
   {
@@ -273,7 +274,25 @@ describe("advanced > ", () => {
 
   describe("자유롭게 작성해보세요.", () => {
     test("새로운 유틸 함수를 만든 후에 테스트 코드를 작성해서 실행해보세요", () => {
-      expect(true).toBe(false);
+      vi.useFakeTimers(); // 타이머 mocking
+
+      const mockFn = vi.fn();
+      const debouncedFn = debounce(mockFn, 300);
+
+      debouncedFn();
+      debouncedFn();
+      debouncedFn();
+
+      // 바로 실행되지 않아야 함
+      expect(mockFn).not.toBeCalled();
+
+      // 타이머만 실행
+      vi.advanceTimersByTime(300);
+
+      // 마지막 호출만 반영되어야 함
+      expect(mockFn).toHaveBeenCalledTimes(1);
+
+      vi.useRealTimers(); // 원상복구
     });
 
     test("새로운 hook 함수르 만든 후에 테스트 코드를 작성해서 실행해보세요", () => {
