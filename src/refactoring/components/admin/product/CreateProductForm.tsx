@@ -1,5 +1,5 @@
 import { Product } from "../../../../types";
-import { FormInput } from "./FormInput";
+import { ProductFormInput } from "./ProductFormInput";
 import { Button } from "../../common";
 
 interface CreateProductFormProps {
@@ -20,13 +20,13 @@ export const CreateProductForm = ({
   return (
     <div className="bg-white p-4 rounded shadow mb-4">
       <h3 className="text-xl font-semibold mb-2">새 상품 추가</h3>
-      <FormInput
+      <ProductFormInput
         id="productName"
         label="상품명"
         value={formData.name}
         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
       />
-      <FormInput
+      <ProductFormInput
         id="productPrice"
         label="가격"
         type="number"
@@ -35,7 +35,7 @@ export const CreateProductForm = ({
           setFormData({ ...formData, price: Number(e.target.value) })
         }
       />
-      <FormInput
+      <ProductFormInput
         id="productStock"
         label="재고"
         type="number"

@@ -1,12 +1,13 @@
-interface FormInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface ProductFormInputProps
+  extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;
 }
 
-export const FormInput = ({
+export const ProductFormInput = ({
   label,
   className = "",
   ...props
-}: FormInputProps) => {
+}: ProductFormInputProps) => {
   return (
     <div className="mb-2">
       <label
