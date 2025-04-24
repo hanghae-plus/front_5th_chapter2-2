@@ -1,12 +1,10 @@
-import { Coupon, Product } from '../entities';
+import { Product } from '../entities';
 import { useCart } from '../hooks';
 import { CartSection, ProductSection } from '../widgets';
 
-interface Props {
-  coupons: Coupon[];
-}
+interface Props {}
 
-export const CartPage = ({ coupons }: Props) => {
+export const CartPage = ({}: Props) => {
   const {
     cart,
     addToCart,
@@ -32,7 +30,6 @@ export const CartPage = ({ coupons }: Props) => {
         />
         <CartSection
           cart={cart}
-          coupons={coupons}
           calculateTotal={calculateTotal}
           removeFromCart={removeFromCart}
           updateQuantity={updateQuantity}

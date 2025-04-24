@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { Coupon } from '../../../entities';
+import { useCouponContext } from '../../../shared';
 
-interface NewCouponFormProps {
-  onCouponAdd: (newCoupon: Coupon) => void;
-}
+interface NewCouponFormProps {}
 
-export const NewCouponForm = ({ onCouponAdd }: NewCouponFormProps) => {
+export const NewCouponForm = ({}: NewCouponFormProps) => {
+  const { addCoupon: onCouponAdd } = useCouponContext();
+
   const [newCoupon, setNewCoupon] = useState<Coupon>({
     name: '',
     code: '',

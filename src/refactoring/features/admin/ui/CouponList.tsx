@@ -1,10 +1,10 @@
-import { Coupon } from '../../../entities';
+import { useCouponContext } from '../../../shared';
 
-interface CouponListProps {
-  coupons: Coupon[];
-}
+interface CouponListProps {}
 
-export const CouponList = ({ coupons }: CouponListProps) => {
+export const CouponList = ({}: CouponListProps) => {
+  const { coupons } = useCouponContext();
+
   return (
     <div>
       <h3 className="text-lg font-semibold mb-2">현재 쿠폰 목록</h3>

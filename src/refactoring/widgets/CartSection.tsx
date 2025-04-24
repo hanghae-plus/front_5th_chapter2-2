@@ -12,7 +12,6 @@ interface CartSectionProps {
   updateQuantity: (productId: string, newQuantity: number) => void;
   applyCoupon: (coupon: Coupon) => void;
   selectedCoupon: Coupon | null;
-  coupons: Coupon[];
 }
 
 export const CartSection = ({
@@ -21,7 +20,7 @@ export const CartSection = ({
   removeFromCart,
   updateQuantity,
   selectedCoupon,
-  coupons,
+
   applyCoupon,
 }: CartSectionProps) => {
   const { totalBeforeDiscount, totalAfterDiscount, totalDiscount } =
@@ -36,7 +35,6 @@ export const CartSection = ({
         updateQuantity={updateQuantity}
       />
       <CouponSection
-        coupons={coupons}
         applyCoupon={applyCoupon}
         selectedCoupon={selectedCoupon}
       />
