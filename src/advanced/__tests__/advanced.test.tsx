@@ -12,12 +12,14 @@ import { CartPage } from "../../refactoring/components/CartPage";
 import { AdminPage } from "../../refactoring/components/AdminPage";
 import { CartItem, Coupon, Product } from "../../types";
 import {
-  getLocalStorage,
-  setLocalStorage,
-  removeLocalStorage,
   useLocalStorage,
   addToCartOnExistItem,
 } from "../../refactoring/hooks";
+import {
+  getLocalStorage,
+  setLocalStorage,
+  removeLocalStorage,
+} from "../../refactoring/hooks/lib/localStorage"
 import { ProductsProvider } from "../../refactoring/providers";
 
 const mockProducts: Product[] = [
@@ -310,11 +312,11 @@ describe("advanced > ", () => {
     test("useLocalStorage hook 테스트", () => {
       const { result } = renderHook(() => useLocalStorage("cart"));
       act(() => {
-        result.current.setCart(
+        result.current.setStorage(
           mockProducts.map((product) => ({ product, quantity: 3 }))
         );
       });
-      expect(result.current.cart).toHaveLength(3);
+      expect(result.current.storage).toHaveLength(3);
     });
   });
 });

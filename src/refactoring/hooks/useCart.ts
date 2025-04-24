@@ -16,7 +16,7 @@ export const addToCartOnExistItem = (
 };
 
 export const useCart = () => {
-  const { cart, setCart } = useLocalStorage("cart");
+  const { storage: cart, setStorage: setCart } = useLocalStorage("cart");
   const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
 
   const getRemainingStock = (product: Product) => {

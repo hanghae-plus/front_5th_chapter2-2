@@ -1,3 +1,4 @@
+import { Discount } from './types';
 export interface Product {
   id: string;
   name: string;
@@ -22,3 +23,10 @@ export interface Coupon {
   discountType: "amount" | "percentage";
   discountValue: number;
 }
+
+export type LocalStorage = {
+  CART: "cart";
+  PRODUCT: "product";
+  DISCOUNT: "discount";
+  COUPON: "coupon";
+};
