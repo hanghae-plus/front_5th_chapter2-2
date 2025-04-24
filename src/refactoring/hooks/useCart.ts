@@ -1,7 +1,6 @@
 // useCart.ts
 import { useState } from "react";
 import { CartItem, Coupon, Product } from "../../types";
-import { calculateCartTotal, updateCartItemQuantity } from "../models/cart";
 
 export const useCart = () => {
   const [cart, setCart] = useState<CartItem[]>([]);
@@ -51,6 +50,23 @@ export const useCart = () => {
     setSelectedCoupon(coupon);
   };
 
+  const getMaxDiscount = (discounts: { quantity: number; rate: number }[]) => {
+    return discounts.reduce((max, discount) => Math.max(max, discount.rate), 0);
+  };
+
+  //계산
+  const getAppliedDiscount = (item: CartItem) => {
+    const { discounts } = item.product;
+    const { quantity } = item;
+    let appliedDiscount = 0;
+    for (const discount of discounts) {
+      if (quantity >= discount.quantity) {
+        appliedDiscount = Math.max(appliedDiscount, discount.rate);
+      }
+    }
+    return appliedDiscount;
+  };
+
   const calculateTotal = () => {
     let totalBeforeDiscount = 0;
     let totalAfterDiscount = 0;
@@ -79,13 +95,6 @@ export const useCart = () => {
       totalDiscount = totalBeforeDiscount - totalAfterDiscount;
     }
 
-    console.log(`
-      ===== 최종 계산 =====
-      총 상품 금액: ${Math.round(totalBeforeDiscount)}
-      총 할인 금액: ${Math.round(totalDiscount)}
-      최종 결제 금액: ${Math.round(totalAfterDiscount)}
-    `);
-
     return {
       totalBeforeDiscount: Math.round(totalBeforeDiscount),
       totalAfterDiscount: Math.round(totalAfterDiscount),
@@ -96,10 +105,13 @@ export const useCart = () => {
   return {
     cart,
     addToCart,
+    getRemainingStock,
+    getMaxDiscount,
     removeFromCart,
     updateQuantity,
     applyCoupon,
     calculateTotal,
     selectedCoupon,
+    getAppliedDiscount
   };
 };

@@ -1,17 +1,20 @@
+import { Dispatch, SetStateAction } from "react";
+import { initialCoupons } from "../../../basic/mocks/data";
 import { Coupon } from "../../../types";
+import { useCoupons } from "../../hooks";
 
 interface CouponApplySectionProps {
-    coupons: Coupon[];
-    applyCoupon: (coupon: Coupon) => void;
     selectedCoupon: Coupon | null;
+    setSelectedCoupon: Dispatch<SetStateAction<Coupon | null>>;
 }
 
-export const CouponApplySection = ({coupons, applyCoupon, selectedCoupon}: CouponApplySectionProps) => {
+export const CouponApplySection = ({ selectedCoupon, setSelectedCoupon}: CouponApplySectionProps) => {
+    const { coupons } = useCoupons(initialCoupons);
     return (
         <div className="mt-6 bg-white p-4 rounded shadow">
             <h2 className="text-2xl font-semibold mb-2">쿠폰 적용</h2>
             <select
-              onChange={(e) => applyCoupon(coupons[parseInt(e.target.value)])}
+              onChange={(e) => setSelectedCoupon(coupons[parseInt(e.target.value)])}
               className="w-full p-2 border rounded mb-2"
             >
               <option value="">쿠폰 선택</option>

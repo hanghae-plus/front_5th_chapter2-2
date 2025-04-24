@@ -28,7 +28,7 @@ export const getMaxApplicableDiscount = (item: CartItem) => {
   if (!item) return 0;
 
   const { product, quantity } = item;
-  const { price, discounts } = product;
+  const { discounts } = product;
 
   const discountRate = maxDiscount(discounts, quantity);
 
@@ -48,9 +48,6 @@ export const calculateCartTotal = (
     const itemTotal = item.product.price * item.quantity;
     totalBeforeDiscount += itemTotal;
 
-    // 상품별 할인율 계산 (calculateItemTotal)과 동일해보이네?
-    // const discount = getMaxApplicableDiscount(item);
-    // const discountedTotal = itemTotal * (1 - discount);
     const discountedTotal = calculateItemTotal(item);
     totalAfterDiscount += discountedTotal;
 
@@ -105,3 +102,16 @@ export const updateCartItemQuantity = (
     };
   });
 };
+
+  //계산
+  export const getAppliedDiscount = (item: CartItem) => {
+    const { discounts } = item.product;
+    const { quantity } = item;
+    let appliedDiscount = 0;
+    for (const discount of discounts) {
+      if (quantity >= discount.quantity) {
+        appliedDiscount = Math.max(appliedDiscount, discount.rate);
+      }
+    }
+    return appliedDiscount;
+  };

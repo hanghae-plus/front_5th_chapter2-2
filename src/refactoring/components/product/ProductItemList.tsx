@@ -1,14 +1,16 @@
-import { Discount, Product } from "../../../types";
+import { Dispatch, SetStateAction } from "react";
+import { CartItem, Discount, Product } from "../../../types";
+import { useCartOperations } from "../../hooks/useCartOperations";
 
 
 interface ProductItemListProps {
     products: Product[];
-    getRemainingStock: (product: Product) => number;
-    getMaxDiscount: (discounts: Discount[]) => number;
-    addToCart: (product: Product) => void;
+    cart: CartItem[];
+    setCart: Dispatch<SetStateAction<CartItem[]>>;
 }
 
-export const ProductItemList = ({products, getRemainingStock, getMaxDiscount, addToCart}: ProductItemListProps) => {
+export const ProductItemList = ({products,cart, setCart}: ProductItemListProps) => {
+  const { getRemainingStock, addToCart, getMaxDiscount } = useCartOperations({ cart, setCart });
     return (
         <div>
           <h2 className="text-2xl font-semibold mb-4">상품 목록</h2>

@@ -1,12 +1,15 @@
+import { Dispatch, SetStateAction } from "react";
 import { CartItem } from "../../../types";
+import { useCartItems } from "../../hooks/useCartItem";
+
 
 interface CartItemListProps {
     cart: CartItem[];
-    getAppliedDiscount: (item: CartItem) => number;
-    updateQuantity: (productId: string, quantity: number) => void;
-    removeFromCart: (productId: string) => void;
+    setCart: Dispatch<SetStateAction<CartItem[]>>;
 }
-export const CartItemList = ({cart, getAppliedDiscount, updateQuantity, removeFromCart}: CartItemListProps) => {
+
+export const CartItemList = ({ cart, setCart }: CartItemListProps) => {
+    const { getAppliedDiscount, updateQuantity, removeFromCart } = useCartItems({cart, setCart});
     return (
         <div className="space-y-2">
             {cart.map(item => {

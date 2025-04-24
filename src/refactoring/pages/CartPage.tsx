@@ -1,9 +1,9 @@
+import { useState } from 'react';
 import { CartItem, Coupon, Product } from '../../types.ts';
 import { CartItemList } from '../components/cart/CartItemList.tsx';
 import { CouponApplySection } from '../components/coupon/CouponApplySection.tsx';
 import { OrderSummary } from '../components/order/OrderSummary.tsx';
 import { ProductItemList } from '../components/product/ProductItemList.tsx';
-import { useCart } from "../hooks/index.ts";
 
 interface Props {
   products: Product[];
@@ -11,49 +11,22 @@ interface Props {
 }
 
 export const CartPage = ({ products, coupons }: Props) => {
-  const {
-    cart,
-    addToCart,
-    removeFromCart,
-    updateQuantity,
-    applyCoupon,
-    calculateTotal,
-    selectedCoupon
-  } = useCart();
-
-  const getMaxDiscount = (discounts: { quantity: number; rate: number }[]) => {
-    return discounts.reduce((max, discount) => Math.max(max, discount.rate), 0);
-  };
-
-  const getRemainingStock = (product: Product) => {
-    const cartItem = cart.find(item => item.product.id === product.id);
-    return product.stock - (cartItem?.quantity || 0);
-  };
-
-  const { totalBeforeDiscount, totalAfterDiscount, totalDiscount } = calculateTotal()
-
-  const getAppliedDiscount = (item: CartItem) => {
-    const { discounts } = item.product;
-    const { quantity } = item;
-    let appliedDiscount = 0;
-    for (const discount of discounts) {
-      if (quantity >= discount.quantity) {
-        appliedDiscount = Math.max(appliedDiscount, discount.rate);
-      }
-    }
-    return appliedDiscount;
-  };
+  const [cart, setCart] = useState<CartItem[]>([]);
+  const [selectedCoupon , setSelectedCoupon] = useState<Coupon | null>(null);
+  
 
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-6">장바구니</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <ProductItemList products={products} getRemainingStock={getRemainingStock} getMaxDiscount={getMaxDiscount} addToCart={addToCart} />
+        {/* products가 드릴링 된다고 볼 수 있을듯 */}
+        <ProductItemList products={products} cart={cart} setCart={setCart} />
         <div>
           <h2 className="text-2xl font-semibold mb-4">장바구니 내역</h2>
-          <CartItemList cart={cart} getAppliedDiscount={getAppliedDiscount} updateQuantity={updateQuantity} removeFromCart={removeFromCart} />
-          <CouponApplySection coupons={coupons} applyCoupon={applyCoupon} selectedCoupon={selectedCoupon} />
-          <OrderSummary totalBeforeDiscount={totalBeforeDiscount} totalDiscount={totalDiscount} totalAfterDiscount={totalAfterDiscount} />
+          <CartItemList cart={cart} setCart={setCart}/>
+          {/* 쿠폰도 역시 동일! */}
+          <CouponApplySection selectedCoupon={selectedCoupon} setSelectedCoupon={setSelectedCoupon}/>
+          <OrderSummary cart={cart} selectedCoupon={selectedCoupon} />
         </div>
       </div>
     </div>
