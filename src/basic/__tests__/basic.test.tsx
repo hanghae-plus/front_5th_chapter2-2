@@ -57,11 +57,7 @@ const mockCoupons: Coupon[] = [
 
 const TestAdminPage = () => {
   const [products, _] = useState<Product[]>(mockProducts);
-  const [coupons, setCoupons] = useState<Coupon[]>(mockCoupons);
-
-  const handleCouponAdd = (newCoupon: Coupon) => {
-    setCoupons((prevCoupons) => [...prevCoupons, newCoupon]);
-  };
+  const [coupons, __] = useState<Coupon[]>(mockCoupons);
 
   /**
    * !! product, coupon를 context로 관리하기 때문에, 테스트 코드를 수정했습니다.
