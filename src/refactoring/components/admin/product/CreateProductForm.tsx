@@ -23,7 +23,7 @@ export const CreateProductForm = () => {
         type="number"
         value={newProduct.price}
         onChange={(e) =>
-          setNewProduct({ ...newProduct, price: Number(e.target.value) })
+          setNewProduct({ ...newProduct, price: parseInt(e.target.value) })
         }
       />
       <CreateProductFormInput
@@ -32,7 +32,7 @@ export const CreateProductForm = () => {
         type="number"
         value={newProduct.stock}
         onChange={(e) =>
-          setNewProduct({ ...newProduct, stock: Number(e.target.value) })
+          setNewProduct({ ...newProduct, stock: parseInt(e.target.value) })
         }
       />
       <Button
