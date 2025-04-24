@@ -3,7 +3,7 @@ import { Product } from "../../../../types";
 import { initialNewProducts } from "../../../constants";
 
 interface handleProps {
-  onProductAdd: (newProduct: Product) => void;
+  addProduct: (newProduct: Product) => void;
   setShowNewProductForm: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -12,13 +12,13 @@ export const useNewProduct = () => {
     useState<Omit<Product, "id">>(initialNewProducts);
 
   const handleAddNewProduct = ({
-    onProductAdd,
+    addProduct,
     setShowNewProductForm,
   }: handleProps) => {
     //시간으로 id 설정
     const productWithId = { ...newProduct, id: Date.now().toString() };
 
-    onProductAdd(productWithId); //전역적으로 새로운 상품을 추가
+    addProduct(productWithId); //전역적으로 새로운 상품을 추가
     setNewProduct(initialNewProducts);
     setShowNewProductForm(false); //새 상품 추가 후, 폼 닫기
   };

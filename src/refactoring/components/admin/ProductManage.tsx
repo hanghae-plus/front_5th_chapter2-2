@@ -8,11 +8,11 @@ interface Props {
   onProductUpdate: (updatedProduct: Product) => void;
 }
 
-const ProductManage = ({ products, onProductAdd, onProductUpdate }: Props) => {
+const ProductManage = ({ products, onProductUpdate }: Props) => {
   return (
     <div>
       <h2 className="text-2xl font-semibold mb-4">상품 관리</h2>
-      <ProductAdd onProductAdd={onProductAdd} />
+      <ProductAdd />
       <ProductList products={products} onProductUpdate={onProductUpdate} />
     </div>
   );

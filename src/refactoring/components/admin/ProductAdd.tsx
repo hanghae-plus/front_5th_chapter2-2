@@ -1,15 +1,12 @@
-import { Product } from "../../../types";
 import { useProductForm } from "../../hooks/entities/product/useProductForm";
 import { useNewProduct } from "../../hooks/entities/product/useNewProduct";
+import { useProductContext } from "../../provider/ProductProvider";
 
-interface Props {
-  onProductAdd: (newProduct: Product) => void;
-}
-
-const ProductAdd = ({ onProductAdd }: Props) => {
+const ProductAdd = () => {
   const { showNewProductForm, setShowNewProductForm, handleProductFormToggle } =
     useProductForm();
   const { newProduct, setNewProduct, handleAddNewProduct } = useNewProduct();
+  const { addProduct } = useProductContext();
 
   return (
     <>
@@ -83,7 +80,7 @@ const ProductAdd = ({ onProductAdd }: Props) => {
           <button
             onClick={() =>
               handleAddNewProduct({
-                onProductAdd,
+                addProduct,
                 setShowNewProductForm,
               })
             }
