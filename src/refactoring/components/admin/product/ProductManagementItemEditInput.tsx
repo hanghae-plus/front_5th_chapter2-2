@@ -1,12 +1,7 @@
 import { Product } from "../../../../types";
+import { useProductManagement } from "../../../contexts/ProductManagementContext";
 
 interface ProductManagementItemEditInputProps {
-  editingProduct: Product;
-  handleFieldUpdate: <K extends keyof Product>(
-    productId: string,
-    field: K,
-    value: Product[K]
-  ) => void;
   productId: string;
   label: string;
   field: "name" | "price" | "stock";
@@ -14,13 +9,14 @@ interface ProductManagementItemEditInputProps {
 }
 
 export const ProductManagementItemEditInput = ({
-  editingProduct,
-  handleFieldUpdate,
   productId,
   field,
   label,
   type = "number",
 }: ProductManagementItemEditInputProps) => {
+  const { editingProduct, handleFieldUpdate } = useProductManagement();
+  if (!editingProduct) return null;
+
   return (
     <div className="mb-4">
       <label className="block mb-1">{label}: </label>

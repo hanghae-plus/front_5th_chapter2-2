@@ -1,15 +1,15 @@
 import { Product } from "../../../../types";
 import { Button, Text } from "../../common";
-
+import { useProductManagement } from "../../../contexts/ProductManagementContext";
 interface ProductManagementItemViewProps {
   product: Product;
-  handleEditProduct: (product: Product) => void;
 }
 
 export const ProductManagementItemView = ({
   product,
-  handleEditProduct,
 }: ProductManagementItemViewProps) => {
+  const { handleEditProduct } = useProductManagement();
+
   return (
     <div>
       {product.discounts.map((discount, index) => (

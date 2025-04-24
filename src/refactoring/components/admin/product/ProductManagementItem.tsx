@@ -1,4 +1,4 @@
-import { Product, Discount } from "../../../../types";
+import { Product } from "../../../../types";
 import { ProductManagementItemEdit } from "./ProductManagementItemEdit";
 import { ProductManagementItemView } from "./ProductManagementItemView";
 import { Button } from "../../common";
@@ -13,18 +13,7 @@ export const ProductManagementItem = ({
   product,
   index,
 }: ProductManagementItemProps) => {
-  const {
-    isOpen,
-    toggle,
-    editingProduct,
-    handleFieldUpdate,
-    handleDiscountRemove,
-    handleDiscountAdd,
-    newDiscount,
-    setNewDiscount,
-    handleEditComplete,
-    handleEditProduct,
-  } = useProductManagement();
+  const { isOpen, toggle, editingProduct } = useProductManagement();
 
   return (
     <div
@@ -43,21 +32,9 @@ export const ProductManagementItem = ({
       {isOpen(product.id) && (
         <div className="mt-2">
           {editingProduct && editingProduct.id === product.id ? (
-            <ProductManagementItemEdit
-              editingProduct={editingProduct}
-              handleFieldUpdate={handleFieldUpdate}
-              product={product}
-              handleDiscountRemove={handleDiscountRemove}
-              handleDiscountAdd={handleDiscountAdd}
-              newDiscount={newDiscount}
-              setNewDiscount={setNewDiscount}
-              handleEditComplete={handleEditComplete}
-            />
+            <ProductManagementItemEdit product={product} />
           ) : (
-            <ProductManagementItemView
-              product={product}
-              handleEditProduct={handleEditProduct}
-            />
+            <ProductManagementItemView product={product} />
           )}
         </div>
       )}
