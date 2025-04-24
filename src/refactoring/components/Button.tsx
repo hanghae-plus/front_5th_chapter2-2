@@ -1,13 +1,25 @@
-interface ButtonProps {
+import { ButtonHTMLAttributes } from "react";
+
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   onClick: () => void;
   className: string;
-  disabled: boolean;
   text: string;
 }
 
-export const Button = ({ onClick, className, disabled, text }: ButtonProps) => {
+export const Button = ({
+  onClick,
+  className,
+  disabled = false,
+  text,
+  ...rest
+}: ButtonProps) => {
   return (
-    <button onClick={onClick} className={className} disabled={disabled}>
+    <button
+      onClick={onClick}
+      className={className}
+      disabled={disabled}
+      {...rest}
+    >
       {text}
     </button>
   );

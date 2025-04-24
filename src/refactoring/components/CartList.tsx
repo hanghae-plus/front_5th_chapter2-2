@@ -55,7 +55,6 @@ export const CartList = ({
                   updateQuantity(item.product.id, item.quantity - 1)
                 }
                 className={updateQuantityButtonClassName}
-                disabled={false}
                 text={"-"}
               />
               <Button
@@ -63,13 +62,11 @@ export const CartList = ({
                   updateQuantity(item.product.id, item.quantity + 1)
                 }
                 className={updateQuantityButtonClassName}
-                disabled={false}
                 text={"+"}
               />
               <Button
                 onClick={() => removeFromCart(item.product.id)}
                 className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
-                disabled={false}
                 text={"삭제"}
               />
             </div>

@@ -65,7 +65,6 @@ const App = () => {
           <Button
             onClick={() => setIsAdmin(!isAdmin)}
             className="bg-white text-blue-600 px-4 py-2 rounded hover:bg-blue-100"
-            disabled={false}
             text={isAdmin ? "장바구니 페이지로" : "관리자 페이지로"}
           />
         </div>
