@@ -1,7 +1,14 @@
 // useCart.ts
 import { useState } from 'react';
-import { CartItem, Coupon, Product } from '../../types';
-import { addNewCartItem, calculateCartTotal, updateCartItemQuantity } from '../models/cart';
+import { CartItem, Coupon, Discount, Product } from '../../types';
+import {
+    addNewCartItem,
+    calculateCartTotal,
+    getAppliedDiscount,
+    getMaxDiscount,
+    getRemainingStock,
+    updateCartItemQuantity,
+} from '../models/cart';
 
 export const useCart = () => {
     const [cart, setCart] = useState<CartItem[]>([]);
@@ -15,7 +22,7 @@ export const useCart = () => {
         if (cartItem) {
             const addedQuantity = cartItem.quantity + 1;
             const newCart = updateCartItemQuantity(cart, product.id, addedQuantity);
-            setCart(newCart)
+            setCart(newCart);
         } else {
             const newCart = addNewCartItem(cart, product);
             setCart(newCart);
@@ -38,6 +45,18 @@ export const useCart = () => {
         return calculateCartTotal(cart, selectedCoupon);
     };
 
+    const calculateMaxDiscount = (discounts: Discount[]) => {
+        return getMaxDiscount(discounts);
+    };
+
+    const calculateRemainingStock = (product: Product) => {
+        return getRemainingStock(cart, product);
+    };
+
+    const calculateDiscount = (item: CartItem) => {
+        return getAppliedDiscount(item);
+    };
+
     return {
         cart,
         addToCart,
@@ -45,6 +64,9 @@ export const useCart = () => {
         updateQuantity,
         applyCoupon,
         calculateTotal,
+        calculateMaxDiscount,
+        calculateRemainingStock,
+        calculateDiscount,
         selectedCoupon,
     };
 };
