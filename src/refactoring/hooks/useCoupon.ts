@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Coupon } from '../../types.ts';
-import { getInitialCoupon } from '../utils/couponUtils.ts';
+import { getInitialCoupon } from '../models/coupon.ts';
 
 // 쿠폰 목록을 관리하는 커스텀 훅
 export const useCoupons = (initialCoupons: Coupon[]) => {

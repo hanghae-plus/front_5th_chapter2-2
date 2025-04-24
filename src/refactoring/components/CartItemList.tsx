@@ -1,5 +1,5 @@
 import { CartItem } from '../../types';
-import { getAppliedDiscount } from '../utils/cartUtils';
+import { getMaxApplicableDiscount } from '../models/cart';
 
 interface Props {
   cart: CartItem[];
@@ -17,7 +17,7 @@ export default function CartItemList({
       <h2 className="text-2xl font-semibold mb-4">장바구니 내역</h2>
       <div className="space-y-2">
         {cart.map((item) => {
-          const appliedDiscount = getAppliedDiscount(item);
+          const appliedDiscount = getMaxApplicableDiscount(item);
           return (
             <div
               key={item.product.id}

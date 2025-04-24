@@ -1,4 +1,10 @@
-import { Product } from '../../types';
+import { CartItem, Product } from '../../types';
+
+// 재고 계산하기
+export const getRemainingStock = (product: Product, cart: CartItem[]) => {
+  const cartItem = cart.find((item) => item.product.id === product.id);
+  return product.stock - (cartItem?.quantity || 0);
+};
 
 // 상품이 수정 중인지 여부를 반환
 export const isEditingProduct = (
