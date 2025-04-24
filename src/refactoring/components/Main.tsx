@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import NavigationHeader from './NavigationHeader.tsx';
+import NavigationHeader from './common/NavigationHeader.tsx';
 import CartPage from './CartPage';
 import AdminPage from './AdminPage';
 
