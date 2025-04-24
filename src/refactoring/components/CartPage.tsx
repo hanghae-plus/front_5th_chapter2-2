@@ -19,6 +19,9 @@ export const CartPage = ({ products, coupons }: Props) => {
     removeFromCart,
   } = useCart();
 
+  const { totalBeforeDiscount, totalAfterDiscount, totalDiscount } =
+    calculateTotal();
+
   // 장바구니에 담긴 상품의 총 금액을 계산하는 함수
   const getMaxDiscount = (discounts: { quantity: number; rate: number }[]) => {
     return discounts.reduce((max, discount) => Math.max(max, discount.rate), 0);
@@ -28,16 +31,6 @@ export const CartPage = ({ products, coupons }: Props) => {
   const getRemainingStock = (product: Product) => {
     const cartItem = cart.find((item) => item.product.id === product.id);
     return product.stock - (cartItem?.quantity || 0);
-  };
-
-  // 장바구니에 담긴 상품의 총 금액을 계산하는 함수
-  const { totalBeforeDiscount, totalAfterDiscount, totalDiscount } =
-    calculateTotal();
-
-  // 쿠폰 선택 시 적용시키는 이벤트 핸들러
-  const handleCouponChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedCoupon = coupons[parseInt(e.target.value)];
-    applyCoupon(selectedCoupon);
   };
 
   // Select-option 의 쿠폰 상품을 포맷팅하는 함수
@@ -56,6 +49,12 @@ export const CartPage = ({ products, coupons }: Props) => {
     return `${name} (${value} 할인)`;
   };
 
+  // 쿠폰 선택 시 적용시키는 이벤트 핸들러
+  const handleCouponChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedCoupon = coupons[parseInt(e.target.value)];
+    applyCoupon(selectedCoupon);
+  };
+
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-6">장바구니</h1>
@@ -66,16 +65,16 @@ export const CartPage = ({ products, coupons }: Props) => {
           <div className="space-y-2">
             {products.map((product) => {
               const remainingStock = getRemainingStock(product);
-              const maxDiscountRate = (
-                getMaxDiscount(product.discounts) * 100
-              ).toFixed(0);
+              const maxDiscountRate = parseInt(
+                (getMaxDiscount(product.discounts) * 100).toFixed(0),
+              );
 
               return (
                 <CartProductItem
                   key={product.id}
                   product={product}
                   remainingStock={remainingStock}
-                  maxDiscountRate={parseInt(maxDiscountRate)}
+                  maxDiscountRate={maxDiscountRate}
                   onAddToCart={() => addToCart(product)}
                 />
               );
@@ -106,11 +105,15 @@ export const CartPage = ({ products, coupons }: Props) => {
               className="w-full p-2 border rounded mb-2"
             >
               <option value="">쿠폰 선택</option>
-              {coupons.map((coupon, index) => (
-                <option key={coupon.code} value={index}>
-                  {coupon.name} - {formatOptionPrice(coupon)}
-                </option>
-              ))}
+              {coupons.map((coupon, index) => {
+                const { code, name } = coupon;
+
+                return (
+                  <option key={code} value={index}>
+                    {name} - {formatOptionPrice(coupon)}
+                  </option>
+                );
+              })}
             </select>
             {selectedCoupon && (
               <p className="text-green-600">
