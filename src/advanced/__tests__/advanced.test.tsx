@@ -1,10 +1,15 @@
 import { act, fireEvent, render, renderHook, screen, within } from "@testing-library/react";
-import { beforeEach, describe, expect, test } from "vitest";
+import { beforeEach, describe, expect, test, vi } from "vitest";
 import { Coupon, Product } from "../../refactoring/entities";
-import { useCoupons } from "../../refactoring/hooks";
+import { useCoupons, useToggle } from "../../refactoring/hooks";
+import { useDiscountCalculator } from "../../refactoring/hooks/discount/useDiscountCalculator";
 import { AdminPage } from "../../refactoring/pages/AdminPage";
 import { CartPage } from "../../refactoring/pages/CartPage";
 import { useProductStore } from "../../refactoring/store/product-store";
+import { Button } from "../../refactoring/ui/button";
+import { formatCurrency, formatPercent } from "../../refactoring/utils/formatter";
+import { percentToRate, rateToPercent } from "../../refactoring/utils/percentUtils";
+import { CartItem } from "../../types";
 
 const mockProducts: Product[] = [
   {
@@ -27,6 +32,18 @@ const mockProducts: Product[] = [
     price: 30000,
     stock: 20,
     discounts: [{ quantity: 10, rate: 0.2 }],
+  },
+];
+const mockCart: CartItem[] = [
+  {
+    quantity: 1,
+    product: {
+      id: "p1",
+      name: "상품1",
+      price: 10000,
+      stock: 20,
+      discounts: [{ quantity: 10, rate: 0.1 }],
+    },
   },
 ];
 const mockCoupons: Coupon[] = [
@@ -213,13 +230,104 @@ describe("advanced > ", () => {
     });
   });
 
-  describe("자유롭게 작성해보세요.", () => {
-    test("새로운 유틸 함수를 만든 후에 테스트 코드를 작성해서 실행해보세요", () => {
-      expect(true).toBe(false);
+  describe("자유롭게 작성해본 테스트 코드", () => {
+    /** 유틸 함수 테스트 */
+    test("formatCurrency는 숫자를 한국 통화 형식으로 변환한다", () => {
+      expect(formatCurrency(1000000)).toBe("1,000,000원");
     });
 
-    test("새로운 hook 함수르 만든 후에 테스트 코드를 작성해서 실행해보세요", () => {
-      expect(true).toBe(false);
+    test("formatCurrency는 단위를 지정할 수 있다", () => {
+      expect(formatCurrency(100, "달러")).toBe("100달러");
+    });
+
+    test("formatPercent는 숫자 뒤에 %를 붙인다", () => {
+      expect(formatPercent(10)).toBe("10%");
+      expect(formatPercent(3.14)).toBe("3.14%");
+    });
+
+    test("0.1을 10으로 변환한다", () => {
+      expect(rateToPercent(0.1)).toBe(10);
+    });
+    test("0을 0으로 변환한다", () => {
+      expect(rateToPercent(0)).toBe(0);
+    });
+
+    test("10을 0.1로 변환한다", () => {
+      expect(percentToRate(10)).toBeCloseTo(0.1);
+    });
+
+    test("15을 0.15으로 변환한다", () => {
+      expect(percentToRate(15)).toBeCloseTo(0.15);
+    });
+    /** 커스텀 훅 테스트*/
+    test("선택된 쿠폰과 카트에 따라 계산 결과가 바뀐다", () => {
+      const { result } = renderHook(() => useDiscountCalculator(mockCart, mockCoupons[0]));
+
+      const { totalBeforeDiscount, totalAfterDiscount, totalDiscount } = result.current;
+
+      expect(totalBeforeDiscount).toBe(10000);
+      expect(totalAfterDiscount).toBe(5000);
+      expect(totalDiscount).toBe(5000);
+    });
+
+    test("초기값이 비어있는 Set일 때, 아이템을 토글하면 추가된다", () => {
+      const { result } = renderHook(() => useToggle<string>());
+
+      act(() => {
+        result.current.handleToggleClick("item1");
+      });
+
+      expect(result.current.openToggle.has("item1")).toBe(true);
+    });
+
+    test("이미 있는 아이템을 다시 토글하면 제거된다", () => {
+      const { result } = renderHook(() => useToggle<string>(new Set(["item1"])));
+
+      act(() => {
+        result.current.handleToggleClick("item1");
+      });
+
+      expect(result.current.openToggle.has("item1")).toBe(false);
+    });
+
+    test("여러 개의 아이템을 토글할 수 있다", () => {
+      const { result } = renderHook(() => useToggle<string>());
+
+      act(() => {
+        result.current.handleToggleClick("item1");
+        result.current.handleToggleClick("item2");
+      });
+
+      expect(result.current.openToggle.has("item1")).toBe(true);
+      expect(result.current.openToggle.has("item2")).toBe(true);
+    });
+    /**Button 공통 컴포넌트 테스트  */
+    test("Button 공통 컴포넌트에서 children으로 전달된 텍스트가 렌더링된다", () => {
+      render(<Button>Click me</Button>);
+      expect(screen.getByText("Click me")).toBeInTheDocument();
+    });
+
+    test("Button 공통 컴포넌트에서 onClick 핸들러가 호출된다", () => {
+      const handleClick = vi.fn();
+      render(<Button onClick={handleClick}>Click</Button>);
+      fireEvent.click(screen.getByText("Click"));
+      expect(handleClick).toHaveBeenCalledTimes(1);
+    });
+
+    test("disabled가 true일 경우 클릭해도 onClick이 호출되지 않는다", () => {
+      const handleClick = vi.fn();
+      render(
+        <Button onClick={handleClick} disabled>
+          Disabled
+        </Button>,
+      );
+      fireEvent.click(screen.getByText("Disabled"));
+      expect(handleClick).not.toHaveBeenCalled();
+    });
+
+    test("className이 제대로 적용된다", () => {
+      render(<Button className="bg-red-500">Styled</Button>);
+      expect(screen.getByText("Styled")).toHaveClass("bg-red-500");
     });
   });
 });
