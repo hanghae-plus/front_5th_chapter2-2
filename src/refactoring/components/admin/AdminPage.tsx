@@ -2,6 +2,16 @@ import { useState } from "react";
 import { Coupon, Discount, Product } from "../../../types.ts";
 
 import DiscountManager from "./ProductManagement/DiscountManager.tsx";
+import ProductNameInput from "./ProductManagement/ProductNameInput.tsx";
+import ProductPriceInput from "./ProductManagement/ProductPriceInput.tsx";
+import ProductStockInput from "./ProductManagement/ProductStockInput.tsx";
+
+import { ProductNameHandler } from "./ProductManagement/ProductNameHandler.ts";
+import { ProductPriceHandler } from "./ProductManagement/ProductPriceHandler.ts";
+import { ProductStockHandler } from "./ProductManagement/ProductStockHandlers.ts";
+
+// const { editingProduct, setEditingProduct, handleProductNameUpdate } =
+//     useProductNameHandler();
 
 interface Props {
     products: Product[];
@@ -40,6 +50,20 @@ export const AdminPage = ({
         discounts: [],
     });
 
+    const { handleProductNameUpdate } = ProductNameHandler(
+        editingProduct,
+        setEditingProduct
+    );
+    const { handlePriceUpdate } = ProductPriceHandler(
+        editingProduct,
+        setEditingProduct
+    );
+    const { handleStockUpdate } = ProductStockHandler(
+        products,
+        setEditingProduct,
+        onProductUpdate
+    );
+
     // 상품 클릭 시
     const toggleProductAccordion = (productId: string) => {
         console.log("toggleProductAccordion click");
@@ -59,22 +83,6 @@ export const AdminPage = ({
         setEditingProduct({ ...product });
     };
 
-    // 새로운 핸들러 함수 추가
-    const handleProductNameUpdate = (productId: string, newName: string) => {
-        if (editingProduct && editingProduct.id === productId) {
-            const updatedProduct = { ...editingProduct, name: newName };
-            setEditingProduct(updatedProduct);
-        }
-    };
-
-    // 새로운 핸들러 함수 추가
-    const handlePriceUpdate = (productId: string, newPrice: number) => {
-        if (editingProduct && editingProduct.id === productId) {
-            const updatedProduct = { ...editingProduct, price: newPrice };
-            setEditingProduct(updatedProduct);
-        }
-    };
-
     // 수정 완료 핸들러 함수 추가
     const handleEditComplete = () => {
         if (editingProduct) {
@@ -83,14 +91,14 @@ export const AdminPage = ({
         }
     };
 
-    const handleStockUpdate = (productId: string, newStock: number) => {
-        const updatedProduct = products.find((p) => p.id === productId);
-        if (updatedProduct) {
-            const newProduct = { ...updatedProduct, stock: newStock };
-            onProductUpdate(newProduct);
-            setEditingProduct(newProduct);
-        }
-    };
+    // const handleStockUpdate = (productId: string, newStock: number) => {
+    //     const updatedProduct = products.find((p) => p.id === productId);
+    //     if (updatedProduct) {
+    //         const newProduct = { ...updatedProduct, stock: newStock };
+    //         onProductUpdate(newProduct);
+    //         setEditingProduct(newProduct);
+    //     }
+    // };
 
     const handleAddDiscount = (productId: string) => {
         const updatedProduct = products.find((p) => p.id === productId);
@@ -251,66 +259,32 @@ export const AdminPage = ({
                                         {editingProduct &&
                                         editingProduct.id === product.id ? (
                                             <div>
-                                                <div className="mb-4">
-                                                    <label className="block mb-1">
-                                                        상품명1:{" "}
-                                                    </label>
-                                                    <input
-                                                        type="text"
-                                                        value={
-                                                            editingProduct.name
-                                                        }
-                                                        onChange={(e) =>
-                                                            handleProductNameUpdate(
-                                                                product.id,
-                                                                e.target.value
-                                                            )
-                                                        }
-                                                        className="w-full p-2 border rounded"
-                                                    />
-                                                </div>
-                                                <div className="mb-4">
-                                                    <label className="block mb-1">
-                                                        가격:{" "}
-                                                    </label>
-                                                    <input
-                                                        type="number"
-                                                        value={
-                                                            editingProduct.price
-                                                        }
-                                                        onChange={(e) =>
-                                                            handlePriceUpdate(
-                                                                product.id,
-                                                                parseInt(
-                                                                    e.target
-                                                                        .value
-                                                                )
-                                                            )
-                                                        }
-                                                        className="w-full p-2 border rounded"
-                                                    />
-                                                </div>
-                                                <div className="mb-4">
-                                                    <label className="block mb-1">
-                                                        재고:{" "}
-                                                    </label>
-                                                    <input
-                                                        type="number"
-                                                        value={
-                                                            editingProduct.stock
-                                                        }
-                                                        onChange={(e) =>
-                                                            handleStockUpdate(
-                                                                product.id,
-                                                                parseInt(
-                                                                    e.target
-                                                                        .value
-                                                                )
-                                                            )
-                                                        }
-                                                        className="w-full p-2 border rounded"
-                                                    />
-                                                </div>
+                                                <ProductNameInput
+                                                    productId={product.id}
+                                                    productName={
+                                                        editingProduct.name
+                                                    }
+                                                    onNameUpdate={
+                                                        handleProductNameUpdate
+                                                    }
+                                                />
+
+                                                <ProductPriceInput
+                                                    productId={product.id}
+                                                    price={editingProduct.price}
+                                                    onPriceUpdate={
+                                                        handlePriceUpdate
+                                                    }
+                                                />
+
+                                                <ProductStockInput
+                                                    productId={product.id}
+                                                    stock={editingProduct.stock}
+                                                    onStockUpdate={
+                                                        handleStockUpdate
+                                                    }
+                                                />
+
                                                 {/* 할인 정보 수정 부분 */}
                                                 <DiscountManager
                                                     product={product}
