@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Product } from '../../../types';
 import useNewProductAdd from '../_hooks/useNewProductAdd';
 

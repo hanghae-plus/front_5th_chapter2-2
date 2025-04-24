@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Product } from '../../../types';
 import { createProductWithId } from '../../_models/product';
 
