@@ -1,14 +1,12 @@
 import { Product } from '../../../types';
-import useProductAccordion from './useProductAccordion';
 import useDiscountManagement from './useDiscountManagement';
 import useProductEditing from './useProductEditing';
 
-interface UseProductManagementProps {
+interface UseProductEditManageProps {
   //   products: Product[];
   onProductUpdate: (updatedProduct: Product) => void;
 }
-const useProductManagement = ({ onProductUpdate }: UseProductManagementProps) => {
-  const { openProductIds, toggleProductAccordion } = useProductAccordion();
+const useProductEditManage = ({ onProductUpdate }: UseProductEditManageProps) => {
   const {
     editingProduct,
     handleEditComplete,
@@ -20,8 +18,6 @@ const useProductManagement = ({ onProductUpdate }: UseProductManagementProps) =>
     useDiscountManagement({ editingProduct, setEditingProduct });
 
   return {
-    openProductIds,
-    toggleProductAccordion,
     editingProduct,
     handleEditProduct,
     handleProductNameUpdate: (productId: string, value: string) =>
@@ -38,4 +34,4 @@ const useProductManagement = ({ onProductUpdate }: UseProductManagementProps) =>
   };
 };
 
-export default useProductManagement;
+export default useProductEditManage;
