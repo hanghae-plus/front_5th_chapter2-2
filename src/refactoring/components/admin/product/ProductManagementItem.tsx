@@ -1,6 +1,7 @@
+import { Product, Discount } from "../../../../types";
 import { ProductManagementItemEdit } from "./ProductManagementItemEdit";
 import { ProductManagementItemView } from "./ProductManagementItemView";
-import { Product, Discount } from "../../../types";
+
 interface ProductManagementItemProps {
   product: Product;
   index: number;

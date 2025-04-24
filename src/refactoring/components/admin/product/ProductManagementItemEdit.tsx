@@ -1,4 +1,4 @@
-import { Discount, Product } from "../../../types";
+import { Discount, Product } from "../../../../types";
 
 interface ProductManagementItemEditProps {
   editingProduct: Product | null;

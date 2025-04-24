@@ -1,15 +1,15 @@
-interface FormSelectProps
+interface CouponFormSelectProps
   extends React.SelectHTMLAttributes<HTMLSelectElement> {
   label?: string;
   options: { value: string; label: string }[];
 }
 
-export const FormSelect = ({
+export const CouponFormSelect = ({
   label,
   className = "",
   options,
   ...props
-}: FormSelectProps) => {
+}: CouponFormSelectProps) => {
   return (
     <select className={`w-full p-2 border rounded ${className}`} {...props}>
       {options.map((option) => (

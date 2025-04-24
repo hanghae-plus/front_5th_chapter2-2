@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Coupon } from "../../../types";
-import { SectionLayout } from "../common";
+import { Coupon } from "../../../../types";
+import { SectionLayout } from "../../common";
 import { CouponForm } from "./CouponForm";
 import { CouponItemList } from "./CouponItemList";
 

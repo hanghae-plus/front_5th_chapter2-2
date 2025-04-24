@@ -1,4 +1,4 @@
-import { Product } from "../../../types";
+import { Product } from "../../../../types";
 import { FormInput } from "./FormInput";
 
 interface CreateProductFormProps {

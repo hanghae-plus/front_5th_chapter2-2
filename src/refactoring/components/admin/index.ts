@@ -1,2 +1,2 @@
-export * from "./ProductManagementSection";
-export * from "./CouponManagementSection";
+export * from "./product";
+export * from "./coupon";

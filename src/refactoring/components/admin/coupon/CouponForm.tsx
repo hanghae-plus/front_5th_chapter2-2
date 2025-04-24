@@ -1,6 +1,6 @@
-import { Coupon } from "../../../types";
+import { Coupon } from "../../../../types";
 import { CouponFormInput } from "./CouponFormInput";
-import { FormSelect } from "./FormSelect";
+import { CouponFormSelect } from "./CouponFormSelect";
 
 interface CouponFormProps {
   coupon: Coupon;
@@ -22,7 +22,7 @@ export const CouponForm = ({ coupon, onChange, onSubmit }: CouponFormProps) => {
         onChange={(e) => onChange({ ...coupon, code: e.target.value })}
       />
       <div className="flex gap-2">
-        <FormSelect
+        <CouponFormSelect
           value={coupon.discountType}
           onChange={(e) =>
             onChange({

@@ -1,7 +1,7 @@
 // components/admin/product/ProductManagementSection.tsx
-import { Product } from "../../../types";
-import { SectionLayout } from "../common";
-import { useProductManagement } from "../../hooks";
+import { Product } from "../../../../types";
+import { SectionLayout } from "../../common";
+import { useProductManagement } from "../../../hooks";
 import { CreateProductForm } from "./CreateProductForm";
 import { ProductManagementItem } from "./ProductManagementItem";
 
