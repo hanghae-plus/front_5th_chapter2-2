@@ -1,2 +1,2 @@
-export * from "./AdminPage";
-export * from "./CartPage";
+export * from "./admin";
+export * from "./cart";

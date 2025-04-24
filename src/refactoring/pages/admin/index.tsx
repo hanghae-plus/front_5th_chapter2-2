@@ -1,5 +1,5 @@
-import { CouponManagement } from "@r/components/coupon-management";
-import { ProductManagement } from "@r/components/product-management";
+import { CouponManagement } from "@r/pages/admin/components/coupon-management";
+import { ProductManagement } from "@r/pages/admin/components/product-management";
 
 interface Props {}
 
