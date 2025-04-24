@@ -1,17 +1,16 @@
-import { Product } from "../../types.ts";
-import { useCart } from "../hooks/index.ts";
+import { CartItem, Product } from "../../types.ts";
 import { ItemAddCartButton } from "./ItemAddCartButton.tsx";
 import { ItemDiscountInfo } from "./ItemDiscountInfo.tsx";
 import { ItemNamePrice } from "./ItemNamePrice.tsx";
 
 interface Props {
   products: Product[];
+  cart: CartItem[];
+  addToCart: (product: Product) => void;
 }
 
 // 왼쪽 '상품 목록' 영역
-export const ItemList = ({ products }: Props) => {
-  const { cart, addToCart } = useCart();
-
+export const ItemList = ({ products, cart, addToCart }: Props) => {
   const getRemainingStock = (product: Product) => {
     const cartItem = cart.find((item) => item.product.id === product.id);
     return product.stock - (cartItem?.quantity || 0);
