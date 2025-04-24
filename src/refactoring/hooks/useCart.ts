@@ -1,9 +1,12 @@
 import { useState } from "react"
 import { CartItem, Coupon, Product } from "../../types"
 import { calculateCartTotal, updateCartItemQuantity, findCartItemByProductId } from "../models/cart.ts"
+import useLocalStorage from "./useLocalStorage.ts"
+import { CartContextType } from "../context/CartContext.tsx"
 
-export const useCart = () => {
-  const [cart, setCart] = useState<CartItem[]>([])
+export const useCart = (): CartContextType => {
+  // 로컬 스토리지를 사용하여 장바구니와 쿠폰 상태 관리
+  const [cart, setCart] = useLocalStorage<CartItem[]>("cart", [])
   const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null)
 
   const getRemainingStock = (product: Product) => {
