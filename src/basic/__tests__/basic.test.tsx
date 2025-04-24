@@ -73,6 +73,9 @@ const TestAdminPage = () => {
 
 describe('basic > ', () => {
   describe('시나리오 테스트 > ', () => {
+    beforeEach(() => {
+      localStorage.clear();
+    });
     test('장바구니 페이지 테스트 > ', async () => {
       render(
         <ProductProvider initialProducts={mockProducts}>
