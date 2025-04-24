@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { describe, expect, test } from "vitest";
+import { describe, expect, test, vi } from "vitest";
 import {
   renderHook,
   act,
@@ -13,7 +13,6 @@ import { AdminPage } from "../../refactoring/pages/AdminPage";
 import { Coupon, Product } from "../../types";
 import {
   useProductEdit,
-  useDiscount,
   useAccordian,
   useNewProduct,
 } from "../../refactoring/hooks";
@@ -302,7 +301,10 @@ describe("advanced > ", () => {
       const mockOnProductUpdate = vi.fn();
 
       const { result } = renderHook(() =>
-        useProductEdit({ onProductUpdate: mockOnProductUpdate })
+        useProductEdit({ 
+          products: mockProducts,
+          onProductUpdate: mockOnProductUpdate 
+        })
       );
 
       // 상품 수정 테스트

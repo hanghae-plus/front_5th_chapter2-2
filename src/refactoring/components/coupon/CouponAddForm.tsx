@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Coupon } from "../../../types";
 
 interface CouponAddFormProps {

@@ -72,7 +72,7 @@ const App = () => {
             onProductUpdate={updateProduct}
             onProductAdd={addProduct}
             coupons={coupons}
-            addCoupon={addCoupon}
+            onCouponAdd={addCoupon}
           />
         ) : (
           <CartPage products={products} coupons={coupons} />
