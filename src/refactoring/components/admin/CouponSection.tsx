@@ -1,7 +1,7 @@
 import { Coupon } from "@/types";
 import CouponForm from "./CouponForm";
 import CouponList from "./CouponList";
-import { useCouponUI } from "@/refactoring/hooks/useCouponUI";
+import { useCouponUI } from "@/refactoring/hooks";
 
 interface Props {
   coupons: Coupon[];

@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { CartPage } from "./components/CartPage.tsx";
 import { AdminPage } from "./components/AdminPage.tsx";
-import { useCoupons, useProducts } from "./hooks";
 import { initialCoupons, initialProducts } from "./constants/index.ts";
+import { useProducts } from "./hooks/useProduct.ts";
+import { useCoupons } from "./hooks/useCoupon.ts";
 
 const App = () => {
   const { products, updateProduct, addProduct } = useProducts(initialProducts);

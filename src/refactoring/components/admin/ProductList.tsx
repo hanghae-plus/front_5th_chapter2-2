@@ -1,4 +1,4 @@
-import { useProductAccordion } from "@/refactoring/hooks/useProductAccordion";
+import { useProductAccordion } from "@/refactoring/hooks";
 import ProductItem from "./ProductItem";
 import { Product } from "@/types.ts";
 

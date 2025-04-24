@@ -1,7 +1,7 @@
 import { Product } from "@/types.ts";
 import ProductEditForm from "./ProductEditForm.tsx";
-import { useProductEdit } from "@/refactoring/hooks/useProductEdit.ts";
 import { formatDiscountInfo } from "@/refactoring/models/product.ts";
+import { useProductEdit } from "@/refactoring/hooks/useProductEdit.ts";
 
 interface Props {
   product: Product;
