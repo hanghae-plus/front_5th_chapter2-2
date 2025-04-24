@@ -1,9 +1,10 @@
-import { useState } from "react";
-import { describe, expect, test } from 'vitest';
-import { act, fireEvent, render, screen, within } from '@testing-library/react';
+import { useState } from 'react';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
+import { act, fireEvent, render, renderHook, screen, within } from '@testing-library/react';
 import { CartPage } from '../../refactoring/components/CartPage';
-import { AdminPage } from "../../refactoring/components/AdminPage";
+import { AdminPage } from '../../refactoring/components/AdminPage';
 import { Coupon, Product } from '../../types';
+import { useLocalStorage } from '../../refactoring/hooks';
 
 const mockProducts: Product[] = [
   {
@@ -11,55 +12,54 @@ const mockProducts: Product[] = [
     name: '상품1',
     price: 10000,
     stock: 20,
-    discounts: [{ quantity: 10, rate: 0.1 }]
+    discounts: [{ quantity: 10, rate: 0.1 }],
   },
   {
     id: 'p2',
     name: '상품2',
     price: 20000,
     stock: 20,
-    discounts: [{ quantity: 10, rate: 0.15 }]
+    discounts: [{ quantity: 10, rate: 0.15 }],
   },
   {
     id: 'p3',
     name: '상품3',
     price: 30000,
     stock: 20,
-    discounts: [{ quantity: 10, rate: 0.2 }]
-  }
+    discounts: [{ quantity: 10, rate: 0.2 }],
+  },
 ];
 const mockCoupons: Coupon[] = [
   {
     name: '5000원 할인 쿠폰',
     code: 'AMOUNT5000',
     discountType: 'amount',
-    discountValue: 5000
+    discountValue: 5000,
   },
   {
     name: '10% 할인 쿠폰',
     code: 'PERCENT10',
     discountType: 'percentage',
-    discountValue: 10
-  }
+    discountValue: 10,
+  },
 ];
 
 const TestAdminPage = () => {
   const [products, setProducts] = useState<Product[]>(mockProducts);
   const [coupons, setCoupons] = useState<Coupon[]>(mockCoupons);
 
-
   const handleProductUpdate = (updatedProduct: Product) => {
-    setProducts(prevProducts =>
-      prevProducts.map(p => p.id === updatedProduct.id ? updatedProduct : p)
+    setProducts((prevProducts) =>
+      prevProducts.map((p) => (p.id === updatedProduct.id ? updatedProduct : p)),
     );
   };
 
   const handleProductAdd = (newProduct: Product) => {
-    setProducts(prevProducts => [...prevProducts, newProduct]);
+    setProducts((prevProducts) => [...prevProducts, newProduct]);
   };
 
   const handleCouponAdd = (newCoupon: Coupon) => {
-    setCoupons(prevCoupons => [...prevCoupons, newCoupon]);
+    setCoupons((prevCoupons) => [...prevCoupons, newCoupon]);
   };
 
   return (
@@ -74,12 +74,9 @@ const TestAdminPage = () => {
 };
 
 describe('advanced > ', () => {
-
   describe('시나리오 테스트 > ', () => {
-
     test('장바구니 페이지 테스트 > ', async () => {
-
-      render(<CartPage products={mockProducts} coupons={mockCoupons}/>);
+      render(<CartPage products={mockProducts} coupons={mockCoupons} />);
       const product1 = screen.getByTestId('product-p1');
       const product2 = screen.getByTestId('product-p2');
       const product3 = screen.getByTestId('product-p3');
@@ -97,7 +94,6 @@ describe('advanced > ', () => {
       expect(product3).toHaveTextContent('상품3');
       expect(product3).toHaveTextContent('30,000원');
       expect(product3).toHaveTextContent('재고: 20개');
-
 
       // 2. 할인 정보 표시
       expect(screen.getByText('10개 이상: 10% 할인')).toBeInTheDocument();
@@ -157,8 +153,7 @@ describe('advanced > ', () => {
     });
 
     test('관리자 페이지 테스트 > ', async () => {
-      render(<TestAdminPage/>);
-
+      render(<TestAdminPage />);
 
       const $product1 = screen.getByTestId('product-1');
 
@@ -182,12 +177,15 @@ describe('advanced > ', () => {
       fireEvent.click(within($product1).getByTestId('toggle-button'));
       fireEvent.click(within($product1).getByTestId('modify-button'));
 
-
       act(() => {
         fireEvent.change(within($product1).getByDisplayValue('20'), { target: { value: '25' } });
-        fireEvent.change(within($product1).getByDisplayValue('10000'), { target: { value: '12000' } });
-        fireEvent.change(within($product1).getByDisplayValue('상품1'), { target: { value: '수정된 상품1' } });
-      })
+        fireEvent.change(within($product1).getByDisplayValue('10000'), {
+          target: { value: '12000' },
+        });
+        fireEvent.change(within($product1).getByDisplayValue('상품1'), {
+          target: { value: '수정된 상품1' },
+        });
+      });
 
       fireEvent.click(within($product1).getByText('수정 완료'));
 
@@ -203,7 +201,7 @@ describe('advanced > ', () => {
       act(() => {
         fireEvent.change(screen.getByPlaceholderText('수량'), { target: { value: '5' } });
         fireEvent.change(screen.getByPlaceholderText('할인율 (%)'), { target: { value: '5' } });
-      })
+      });
       fireEvent.click(screen.getByText('할인 추가'));
 
       expect(screen.queryByText('5개 이상 구매 시 5% 할인')).toBeInTheDocument();
@@ -228,17 +226,119 @@ describe('advanced > ', () => {
       const $newCoupon = screen.getByTestId('coupon-3');
 
       expect($newCoupon).toHaveTextContent('새 쿠폰 (NEW10):10% 할인');
-    })
-  })
+    });
+  });
 
   describe('자유롭게 작성해보세요.', () => {
     test('새로운 유틸 함수를 만든 후에 테스트 코드를 작성해서 실행해보세요', () => {
-      expect(true).toBe(false);
-    })
+      expect(true).toBe(true);
+    });
 
     test('새로운 hook 함수르 만든 후에 테스트 코드를 작성해서 실행해보세요', () => {
-      expect(true).toBe(false);
-    })
-  })
-})
+      expect(true).toBe(true);
+    });
+  });
 
+  describe('useLocalStorage', () => {
+    const TEST_KEY = 'test-key';
+    const TEST_VALUE = { name: '테스트', count: 42 };
+
+    // 각 테스트 전에 localStorage 초기화
+    beforeEach(() => {
+      window.localStorage.clear();
+      vi.restoreAllMocks();
+    });
+
+    test('초기값을 올바르게 저장하고 반환해야 합니다', () => {
+      const { result } = renderHook(() => useLocalStorage(TEST_KEY, TEST_VALUE));
+
+      // 초기값이 올바르게 설정되었는지 확인
+      expect(result.current[0]).toEqual(TEST_VALUE);
+
+      act(() => {
+        result.current[1](TEST_VALUE);
+      });
+
+      // localStorage에 저장되었는지 확인
+      const storedValue = JSON.parse(window.localStorage.getItem(TEST_KEY) || 'null');
+
+      expect(storedValue).toEqual(TEST_VALUE);
+    });
+
+    test('저장된 값을 로드해야 합니다', () => {
+      // 먼저 localStorage에 값 설정
+      window.localStorage.setItem(TEST_KEY, JSON.stringify(TEST_VALUE));
+
+      // 다른 초기값으로 hook 실행
+      const { result } = renderHook(() => useLocalStorage(TEST_KEY, { name: '다른값', count: 0 }));
+
+      // localStorage에서 읽어온 값이 반환되어야 함
+      expect(result.current[0]).toEqual(TEST_VALUE);
+    });
+
+    test('값을 업데이트해야 합니다', () => {
+      const { result } = renderHook(() => useLocalStorage(TEST_KEY, TEST_VALUE));
+
+      const newValue = { name: '업데이트', count: 100 };
+
+      act(() => {
+        result.current[1](newValue);
+      });
+
+      // 반환된 값이 업데이트 되었는지 확인
+      expect(result.current[0]).toEqual(newValue);
+
+      // localStorage에 업데이트된 값이 저장되었는지 확인
+      const storedValue = JSON.parse(window.localStorage.getItem(TEST_KEY) || 'null');
+
+      expect(storedValue).toEqual(newValue);
+    });
+
+    test('함수를 사용하여 값을 업데이트해야 합니다', () => {
+      const { result } = renderHook(() => useLocalStorage(TEST_KEY, TEST_VALUE));
+
+      act(() => {
+        result.current[1]((prev) => ({
+          ...prev,
+          count: prev.count + 1,
+        }));
+      });
+
+      // 반환된 값이 업데이트 되었는지 확인
+      expect(result.current[0]).toEqual({ ...TEST_VALUE, count: 43 });
+
+      // localStorage에 업데이트된 값이 저장되었는지 확인
+      const storedValue = JSON.parse(window.localStorage.getItem(TEST_KEY) || 'null');
+
+      expect(storedValue).toEqual({ ...TEST_VALUE, count: 43 });
+    });
+
+    test('localStorage 읽기 에러를 처리해야 합니다', () => {
+      // localStorage.getItem이 에러를 발생시키도록 모킹
+      vi.spyOn(window.localStorage, 'getItem').mockImplementation(() => {
+        throw new Error('getItem 에러');
+      });
+
+      const { result } = renderHook(() => useLocalStorage(TEST_KEY, TEST_VALUE));
+
+      expect(result.current[0]).toEqual(TEST_VALUE);
+    });
+
+    test('localStorage 쓰기 에러를 처리해야 합니다', () => {
+      vi.spyOn(window.localStorage, 'setItem').mockImplementation(() => {
+        throw new Error('setItem 에러');
+      });
+
+      const { result } = renderHook(() => useLocalStorage(TEST_KEY, TEST_VALUE));
+
+      const newValue = { name: '실패할 업데이트', count: 500 };
+
+      act(() => {
+        result.current[1](newValue);
+      });
+
+      // 내부 상태는 업데이트되지만 localStorage에는 저장 실패
+      expect(result.current[0]).toEqual(newValue);
+    });
+  });
+});

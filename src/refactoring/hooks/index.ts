@@ -6,3 +6,4 @@ export * from './useAdminProduct';
 export * from './useAdminDiscount';
 export * from './useAdminCoupon';
 export * from './useAdminNewProduct';
+export * from './useLocalStorage';

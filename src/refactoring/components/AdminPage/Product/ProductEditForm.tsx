@@ -4,11 +4,11 @@ import { DiscountManager } from '../DiscountManager';
 interface ProductEditFormProps {
   product: Product;
   editingProduct: Product;
+  newDiscount: Discount;
   updateProductName: (productId: string, name: string) => void;
   updateProductPrice: (productId: string, price: number) => void;
   updateProductStock: (productId: string, stock: number) => void;
   editComplete: () => void;
-  newDiscount: Discount;
   addDiscount: (productId: string) => void;
   removeDiscount: (productId: string, index: number) => void;
   updateDiscount: (params: { e: React.ChangeEvent<HTMLInputElement>; isRate: boolean }) => void;
