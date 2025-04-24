@@ -4,6 +4,7 @@ import CustomSelect from '../components/CustomSelect.tsx';
 import Container from '../components/Container.tsx';
 import ContainerTitle from '../components/ContainerTitle.tsx';
 import CustomButton from '../components/CustomButton.tsx';
+import { formatComma } from '../utils/formatComma.ts';
 
 interface Props {
   products: Product[];
@@ -49,7 +50,7 @@ export const CartPage = ({ products, coupons }: Props) => {
                 <Container key={product.id} testId={`product-${product.id}`}>
                   <div className="flex justify-between items-center mb-2">
                     <span className="font-semibold">{product.name}</span>
-                    <span className="text-gray-600">{product.price.toLocaleString()}원</span>
+                    <span className="text-gray-600">{formatComma(product.price)}원</span>
                   </div>
                   <div className="text-sm text-gray-500 mb-2">
                     <span className={`font-medium ${remainingStock > 0 ? 'text-green-600' : 'text-red-600'}`}>
@@ -98,7 +99,7 @@ export const CartPage = ({ products, coupons }: Props) => {
                     <span className="font-semibold">{item.product.name}</span>
                     <br />
                     <span className="text-sm text-gray-600">
-                      {item.product.price}원 x {item.quantity}
+                      {formatComma(item.product.price)}원 x {item.quantity}
                       {appliedDiscount > 0 && (
                         <span className="text-green-600 ml-1">({(appliedDiscount * 100).toFixed(0)}% 할인 적용)</span>
                       )}
@@ -150,9 +151,9 @@ export const CartPage = ({ products, coupons }: Props) => {
           <Container className="mt-6 p-4">
             <ContainerTitle title="주문 요약" mb="2" />
             <div className="space-y-1">
-              <p>상품 금액: {totalBeforeDiscount.toLocaleString()}원</p>
-              <p className="text-green-600">할인 금액: {totalDiscount.toLocaleString()}원</p>
-              <p className="text-xl font-bold">최종 결제 금액: {totalAfterDiscount.toLocaleString()}원</p>
+              <p>상품 금액: {formatComma(totalBeforeDiscount)}원</p>
+              <p className="text-green-600">할인 금액: {formatComma(totalDiscount)}원</p>
+              <p className="text-xl font-bold">최종 결제 금액: {formatComma(totalAfterDiscount)}원</p>
             </div>
           </Container>
         </div>
