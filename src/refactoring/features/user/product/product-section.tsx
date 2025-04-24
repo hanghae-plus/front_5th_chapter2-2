@@ -4,6 +4,7 @@ import { CartItem, Product } from "../../../entities";
 import { Button } from "../../../ui/button";
 import { ListWrapper } from "../../../ui/list-wrapper";
 import { Section } from "../../../ui/section";
+import { rateToPercent } from "../../../utils/percentUtils";
 
 interface Props {
   products: Product[];
@@ -43,7 +44,7 @@ export const ProductSection = ({ products, cart, addToCart }: Props) => {
                 <ul className="list-disc list-inside text-sm text-gray-500 mb-2">
                   {product.discounts.map((discount, index) => (
                     <li key={index}>
-                      {discount.quantity}개 이상: {(discount.rate * 100).toFixed(0)}% 할인
+                      {discount.quantity}개 이상: {rateToPercent(discount.rate)}% 할인
                     </li>
                   ))}
                 </ul>

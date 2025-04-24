@@ -1,5 +1,6 @@
 import { Button } from "../../ui/button";
 import { Input } from "../../ui/input";
+import { percentToRate, rateToPercent } from "../../utils/percentUtils";
 
 type DiscountInput = {
   quantity: number;
@@ -25,8 +26,8 @@ export const DiscountInputForm = ({ discount, onChange, onSubmit }: DiscountInpu
       <Input
         type="number"
         placeholder="할인율 (%)"
-        value={discount.rate * 100}
-        onChange={(e) => onChange({ ...discount, rate: parseInt(e.target.value) / 100 })}
+        value={rateToPercent(discount.rate)}
+        onChange={(e) => onChange({ ...discount, rate: percentToRate(parseInt(e.target.value)) })}
         className="w-1/3  p-2 border rounded"
       />
       <Button

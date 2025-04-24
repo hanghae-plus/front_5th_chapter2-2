@@ -2,6 +2,7 @@ import { Product } from "../../../entities";
 import { DiscountInputForm } from "../../../entities/discount/discount-input-form";
 import { useDiscount } from "../../../hooks";
 import { Button } from "../../../ui/button";
+import { rateToPercent } from "../../../utils/percentUtils";
 
 interface Props {
   editingProduct: Product;
@@ -19,7 +20,7 @@ export const DiscountEditForm = (props: Props) => {
       {editingProduct.discounts.map((discount, index) => (
         <div key={index} className="flex justify-between items-center mb-2">
           <span>
-            {discount.quantity}개 이상 구매 시 {discount.rate * 100}% 할인
+            {discount.quantity}개 이상 구매 시 {rateToPercent(discount.rate)}% 할인
           </span>
           <Button
             onClick={() => handleRemoveDiscount(product.id, index)}

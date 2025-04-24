@@ -3,6 +3,7 @@ import { useToggle } from "../../../hooks";
 import { useEditProductAction } from "../../../hooks/product/useEditProductAction";
 import { useProductStore } from "../../../store/product-store";
 import { Button } from "../../../ui/button";
+import { rateToPercent } from "../../../utils/percentUtils";
 import { ProductEditForm } from "./product-edit-form";
 
 interface Props {
@@ -42,7 +43,7 @@ export const ProductItem = (props: Props) => {
               {product.discounts.map((discount, index) => (
                 <div key={index} className="mb-2">
                   <span>
-                    {discount.quantity}개 이상 구매 시 {discount.rate * 100}% 할인
+                    {discount.quantity}개 이상 구매 시 {rateToPercent(discount.rate)}% 할인
                   </span>
                 </div>
               ))}
