@@ -494,7 +494,6 @@ describe("basic > ", () => {
         setCart(testProduct);
       });
       const { result } = renderHook(() => useAtomValue(cartAtom));
-      console.log("result.currentcart!!", result.current);
 
       expect(result.current).toHaveLength(1);
       expect(result.current[0]).toEqual({

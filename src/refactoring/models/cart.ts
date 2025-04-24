@@ -25,7 +25,6 @@ export const calculateCartTotal = (
   cart: CartItem[],
   selectedCoupon: CouponItem | null
 ) => {
-  console.log("cart", cart);
   const totalBeforeDiscount = cart.reduce(
     (sum, item) => sum + item.product.price * item.quantity,
     0
@@ -49,9 +48,6 @@ export const calculateCartTotal = (
 
   const totalDiscount = totalBeforeDiscount - totalAfterDiscount;
 
-  console.log("totalBeforeDiscount", totalBeforeDiscount);
-  console.log("totalAfterDiscount", totalAfterDiscount);
-  console.log("totalDiscount", totalDiscount);
   return {
     totalBeforeDiscount: Math.round(totalBeforeDiscount),
     totalAfterDiscount: Math.round(totalAfterDiscount),
