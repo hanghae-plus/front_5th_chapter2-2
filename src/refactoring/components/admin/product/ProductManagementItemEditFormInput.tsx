@@ -1,20 +1,24 @@
 import { Product } from "../../../../types";
 import { useProductManagement } from "../../../contexts/ProductManagementContext";
+import { useHandleInputChange } from "../../../hooks/common";
 
-interface ProductManagementItemEditInputProps {
-  productId: string;
+interface ProductManagementItemEditFormInputProps
+  extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;
   field: "name" | "price" | "stock";
   type?: "number" | "text";
 }
 
-export const ProductManagementItemEditInput = ({
-  productId,
+export const ProductManagementItemEditFormInput = ({
   field,
   label,
+  onChange,
   type = "number",
-}: ProductManagementItemEditInputProps) => {
-  const { editingProduct, handleFieldUpdate } = useProductManagement();
+  ...props
+}: ProductManagementItemEditFormInputProps) => {
+  const { editingProduct } = useProductManagement();
+  const { handleInputChange } = useHandleInputChange(onChange);
+
   if (!editingProduct) return null;
 
   return (
@@ -23,14 +27,9 @@ export const ProductManagementItemEditInput = ({
       <input
         type={type}
         value={editingProduct[field as keyof Product] as string | number}
-        onChange={(e) =>
-          handleFieldUpdate(
-            productId,
-            field as keyof Product,
-            type === "number" ? parseInt(e.target.value) : e.target.value
-          )
-        }
+        onChange={handleInputChange(field)}
         className="w-full p-2 border rounded"
+        {...props}
       />
     </div>
   );
