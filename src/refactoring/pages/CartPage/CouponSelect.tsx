@@ -1,4 +1,4 @@
-import { CartSection } from "@/refactoring/components";
+import { CartSection, Select } from "@/refactoring/components";
 import { useCartContext, useCouponContext } from "@/refactoring/provider";
 
 export const CouponSelect = () => {
@@ -6,10 +6,7 @@ export const CouponSelect = () => {
   const { applyCoupon, selectedCoupon } = useCartContext();
   return (
     <CartSection title={"쿠폰 적용"}>
-      <select
-        onChange={(e) => applyCoupon(coupons[parseInt(e.target.value)])}
-        className="w-full p-2 border rounded mb-2"
-      >
+      <Select onChange={(e) => applyCoupon(coupons[parseInt(e.target.value)])} className="mb-2">
         <option value="">쿠폰 선택</option>
         {coupons.map((coupon, index) => (
           <option key={coupon.code} value={index}>
@@ -17,7 +14,7 @@ export const CouponSelect = () => {
             {coupon.discountType === "amount" ? `${coupon.discountValue}원` : `${coupon.discountValue}%`}
           </option>
         ))}
-      </select>
+      </Select>
       {selectedCoupon && (
         <p className="text-green-600">
           적용된 쿠폰: {selectedCoupon.name}(

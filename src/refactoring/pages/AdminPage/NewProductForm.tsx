@@ -28,20 +28,20 @@ export const NewProductForm = ({ setShowNewProductForm }: Props) => {
   return (
     <div className="bg-white p-4 rounded shadow mb-4">
       <h3 className="text-xl font-semibold mb-2">새 상품 추가</h3>
-      <LabelInput //
+      <LabelInput
         id={"productName"}
         label={"상품명"}
         value={newProduct.name}
         onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
       />
-      <LabelInput //
+      <LabelInput
         id={"productPrice"}
         type={"number"}
         label={"가격"}
         value={newProduct.price}
         onChange={(e) => setNewProduct({ ...newProduct, price: parseInt(e.target.value) })}
       />
-      <LabelInput //
+      <LabelInput
         id={"productStock"}
         type={"number"}
         label={"재고"}
