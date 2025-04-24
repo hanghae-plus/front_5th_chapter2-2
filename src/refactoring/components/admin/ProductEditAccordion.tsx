@@ -1,7 +1,7 @@
 import { Button } from "../ui/Button.tsx";
 
 import { useState } from "react";
-import { Product } from "../../../types.ts";
+import { Discount, Product } from "../../../types.ts";
 import {
 	Accordion,
 	AccordionTrigger,
@@ -35,24 +35,35 @@ export function ProductEditAccordion({
 						onComplete={() => setIsEditing(false)}
 					/>
 				) : (
-					<div>
-						{product.discounts.map((discount, index) => (
-							<div key={index} className="mb-2">
-								<span>
-									{discount.quantity}개 이상 구매 시 {discount.rate * 100}% 할인
-								</span>
-							</div>
-						))}
-						<Button
-							color="blue"
-							data-testid="modify-button"
-							onClick={() => setIsEditing(true)}
-						>
-							수정
-						</Button>
-					</div>
+					<ProductEditAccordion.ProductInfo
+						discounts={product.discounts}
+						onStartEdit={() => setIsEditing(true)}
+					/>
 				)}
 			</AccordionContent>
 		</Accordion>
 	);
 }
+
+ProductEditAccordion.ProductInfo = ({
+	discounts,
+	onStartEdit,
+}: {
+	discounts: Discount[];
+	onStartEdit: () => void;
+}) => {
+	return (
+		<div>
+			{discounts.map((discount, index) => (
+				<div key={index} className="mb-2">
+					<span>
+						{discount.quantity}개 이상 구매 시 {discount.rate * 100}% 할인
+					</span>
+				</div>
+			))}
+			<Button color="blue" data-testid="modify-button" onClick={onStartEdit}>
+				수정
+			</Button>
+		</div>
+	);
+};
