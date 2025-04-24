@@ -1,18 +1,8 @@
-import { Coupon } from "../../../types";
+import { useCouponContext } from "../../provider/CouponProvider";
 
-interface Props {
-  coupons: Coupon[];
-  newCoupon: Coupon;
-  setNewCoupon: React.Dispatch<React.SetStateAction<Coupon>>;
-  handleAddNewCoupon: () => void;
-}
-
-const CouponManage = ({
-  coupons,
-  newCoupon,
-  setNewCoupon,
-  handleAddNewCoupon,
-}: Props) => {
+const CouponManage = () => {
+  const { coupons, newCoupon, setNewCoupon, handleAddNewCoupon } =
+    useCouponContext();
   return (
     <div>
       <h2 className="text-2xl font-semibold mb-4">쿠폰 관리</h2>

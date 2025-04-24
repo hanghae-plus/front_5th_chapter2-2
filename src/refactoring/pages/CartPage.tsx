@@ -1,15 +1,11 @@
-import { Coupon } from "../../types.ts";
 import CartList from "../components/cart/CartList.tsx";
 import ProductList from "../components/product/ProductList.tsx";
 import { useCart } from "../hooks";
+import { useCouponContext } from "../provider/CouponProvider.tsx";
 
-interface Props {
-  coupons: Coupon[];
-}
-
-export const CartPage = ({ coupons }: Props) => {
+export const CartPage = () => {
   const { selectedCoupon, applyCoupon, calculateTotal } = useCart();
-
+  const { coupons } = useCouponContext();
   const { totalBeforeDiscount, totalAfterDiscount, totalDiscount } =
     calculateTotal();
 
