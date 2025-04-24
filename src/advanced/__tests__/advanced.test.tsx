@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { describe, expect, test } from 'vitest';
-import { act, fireEvent, render, screen, within } from '@testing-library/react';
+import { act, fireEvent, render, renderHook, screen, within } from '@testing-library/react';
 import { CartPage } from '../../refactoring/components/page/CartPage';
 import { AdminPage } from "../../refactoring/components/page/AdminPage";
 import { Coupon, Product } from '../../types';
+import { useToggle } from "../../refactoring/shared/useToggle";
 
 const mockProducts: Product[] = [
   {
@@ -231,13 +232,41 @@ describe('advanced > ', () => {
     })
   })
 
-  describe('자유롭게 작성해보세요.', () => {
-    test('새로운 유틸 함수를 만든 후에 테스트 코드를 작성해서 실행해보세요', () => {
-      expect(true).toBe(false);
+  describe('useToggle hook 테스트 > ', () => {
+    test('초기 값에 true를 전달할 경우 초기 값이 true가 되어야 한다.', () => {
+      const { result } = renderHook(() => useToggle(true));
+
+      expect(result.current.value).toBe(true);
     })
 
-    test('새로운 hook 함수르 만든 후에 테스트 코드를 작성해서 실행해보세요', () => {
-      expect(true).toBe(false);
+    test('toggle 함수를 호출할 경우 값이 반대로 변경되어야 한다.', () => {
+      const { result } = renderHook(() => useToggle(false));
+
+      act(() => {
+        result.current.toggle();
+      })
+
+      expect(result.current.value).toBe(true);
+    })
+
+    test('setTrue 함수를 호출할 경우 값이 true가 되어야 한다.', () => {
+      const { result } = renderHook(() => useToggle(false));
+
+      act(() => {
+        result.current.setTrue();
+      })
+
+      expect(result.current.value).toBe(true);
+    })
+
+    test('setFalse 함수를 호출할 경우 값이 false가 되어야 한다.', () => {
+      const { result } = renderHook(() => useToggle(true));
+
+      act(() => {
+        result.current.setFalse();
+      })
+
+      expect(result.current.value).toBe(false);
     })
   })
 })
