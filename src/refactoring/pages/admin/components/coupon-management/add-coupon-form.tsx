@@ -1,6 +1,7 @@
 import { useForm } from "@r/hooks/use-form";
 import { useCouponContext } from "@r/model/coupon/coupon-context";
 import { Coupon } from "@r/model/coupon/types";
+import { Input } from "@r/shared/ui/input";
 
 export const AddCouponForm = () => {
   const { addCoupon } = useCouponContext();
@@ -19,22 +20,19 @@ export const AddCouponForm = () => {
 
   return (
     <div className="space-y-2 mb-4">
-      <input
-        type="text"
+      <Input
+        name="name"
         placeholder="쿠폰 이름"
         value={formValues.name}
-        name="name"
         onChange={handleFormChange}
-        className="w-full p-2 border rounded"
       />
-      <input
-        type="text"
+      <Input
+        name="code"
         placeholder="쿠폰 코드"
         value={formValues.code}
-        name="code"
         onChange={handleFormChange}
-        className="w-full p-2 border rounded"
       />
+
       <div className="flex gap-2">
         <select
           value={formValues.discountType}
@@ -45,13 +43,12 @@ export const AddCouponForm = () => {
           <option value="amount">금액(원)</option>
           <option value="percentage">할인율(%)</option>
         </select>
-        <input
+        <Input
           type="number"
+          name="discountValue"
           placeholder="할인 값"
           value={formValues.discountValue}
-          name="discountValue"
           onChange={handleFormChange}
-          className="w-full p-2 border rounded"
         />
       </div>
       <button
