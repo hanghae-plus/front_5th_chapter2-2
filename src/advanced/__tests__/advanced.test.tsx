@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 import { act, fireEvent, render, screen, within } from '@testing-library/react';
 import { CartPage } from '../../refactoring/components/CartPage';
 import { AdminPage } from "../../refactoring/components/AdminPage";
-import { Coupon, Product } from '../../types';
+import { CartItem, Coupon, Product } from '../../types';
 
 const mockProducts: Product[] = [
   {
@@ -79,7 +79,7 @@ describe('advanced > ', () => {
 
     test('장바구니 페이지 테스트 > ', async () => {
 
-      render(<CartPage products={mockProducts} coupons={mockCoupons}/>);
+      render(<CartPage products={mockProducts} coupons={mockCoupons} />);
       const product1 = screen.getByTestId('product-p1');
       const product2 = screen.getByTestId('product-p2');
       const product3 = screen.getByTestId('product-p3');
@@ -157,7 +157,7 @@ describe('advanced > ', () => {
     });
 
     test('관리자 페이지 테스트 > ', async () => {
-      render(<TestAdminPage/>);
+      render(<TestAdminPage />);
 
 
       const $product1 = screen.getByTestId('product-1');
@@ -231,14 +231,140 @@ describe('advanced > ', () => {
     })
   })
 
-  describe('자유롭게 작성해보세요.', () => {
-    test('새로운 유틸 함수를 만든 후에 테스트 코드를 작성해서 실행해보세요', () => {
-      expect(true).toBe(false);
+  describe('chekcCurrency함수 테스트', () => {
+
+    test("가격이 100으로 나누어떨어지지 않으면 alert 호출", () => {
+      render(<TestAdminPage />);
+
+      const alertSpy = vi.spyOn(window, "alert").mockImplementation(() => {
+      });
+      const $product1 = screen.getByTestId('product-1');
+      fireEvent.click($product1);
+      fireEvent.click(within($product1).getByTestId('toggle-button'));
+      fireEvent.click(within($product1).getByTestId('modify-button'));
+
+      const priceInput = screen.getByLabelText("가격:");
+      console.log(priceInput);
+      expect(priceInput).toBeInTheDocument();
+
+      fireEvent.change(priceInput, { target: { value: "1050" } });
+      expect(alertSpy).toHaveBeenCalledWith("가격은 100원 단위로 입력해야 합니다.");
+
+      expect(alertSpy).toHaveBeenCalledWith("가격은 100원 단위로 입력해야 합니다.");
+
+      alertSpy.mockRestore();
+    });
+
+    test("가격이 100으로 나누어떨어지면 수정까지 완료", () => {
+      render(<TestAdminPage />);
+
+      const $product1 = screen.getByTestId('product-1');
+      fireEvent.click($product1);
+      fireEvent.click(within($product1).getByTestId('toggle-button'));
+      fireEvent.click(within($product1).getByTestId('modify-button'));
+
+      const priceInput = screen.getByLabelText("가격:");
+      console.log(priceInput);
+      expect(priceInput).toBeInTheDocument();
+
+      fireEvent.change(priceInput, { target: { value: "100" } });
+
+      fireEvent.click(within($product1).getByText('수정 완료'));
+      expect($product1).toHaveTextContent('100');
+
+    });
+  })
+
+  describe('useLocalStorage 테스트', () => {
+
+    test('useLocalStorage 저장 기능', () => {
+      render(<CartPage products={mockProducts} coupons={mockCoupons} />);
+      localStorage.clear();
+      const product1 = screen.getByTestId("product-p1");
+      const addToCartButton1 = within(product1).getByText("장바구니에 추가");
+
+      // 상품2의 "장바구니에 추가" 버튼 가져오기
+      const product2 = screen.getByTestId("product-p2");
+      const addToCartButton2 = within(product2).getByText("장바구니에 추가");
+
+      // 상품3의 "장바구니에 추가" 버튼 가져오기
+      const product3 = screen.getByTestId("product-p3");
+      const addToCartButton3 = within(product3).getByText("장바구니에 추가");
+
+      fireEvent.click(addToCartButton1);
+      fireEvent.click(addToCartButton2);
+      fireEvent.click(addToCartButton3);
+      fireEvent.click(addToCartButton3);
+
+      const saveButton = screen.getByText('저장');
+
+      fireEvent.click(saveButton);
+
+      // localStorage에 저장된 데이터 확인
+      const savedCart = localStorage.getItem('cart');
+      expect(savedCart).not.toBeNull();
+
+      const parsedCart:CartItem[] = JSON.parse(savedCart!);
+      // console.log(savedCart)
+      console.log('parsedCart', parsedCart);
+      const totalQuantity = parsedCart.reduce((acc, item) => acc + item.quantity, 0);
+      expect(parsedCart.length).toBe(3) // 상품1, 상품2, 상품3이 각각 1개씩 추가되었으므로 총 3개
+      expect(totalQuantity).toBe(4); // 상품1 1개, 상품2 1개, 상품3 2개
+
+      //다른 페이지 갔다가 와도 데이터 유지?
+
+      render(<TestAdminPage />);
+
+      render(<CartPage products={mockProducts} coupons={mockCoupons} />);
+
+      expect(parsedCart.length).toBe(3) // 상품1, 상품2, 상품3이 각각 1개씩 추가되었으므로 총 3개
+      expect(totalQuantity).toBe(4); 
+
+
     })
 
-    test('새로운 hook 함수르 만든 후에 테스트 코드를 작성해서 실행해보세요', () => {
-      expect(true).toBe(false);
+    test('useLocalStorage 삭제 기능', () => {
+
+      render(<CartPage products={mockProducts} coupons={mockCoupons} />);
+      localStorage.clear();
+      const product1 = screen.getByTestId("product-p1");
+      const addToCartButton1 = within(product1).getByText("장바구니에 추가");
+
+      // 상품2의 "장바구니에 추가" 버튼 가져오기
+      const product2 = screen.getByTestId("product-p2");
+      const addToCartButton2 = within(product2).getByText("장바구니에 추가");
+
+      // 상품3의 "장바구니에 추가" 버튼 가져오기
+      const product3 = screen.getByTestId("product-p3");
+      const addToCartButton3 = within(product3).getByText("장바구니에 추가");
+
+      fireEvent.click(addToCartButton1);
+      fireEvent.click(addToCartButton2);
+      fireEvent.click(addToCartButton3);
+      fireEvent.click(addToCartButton3);
+
+      const saveButton = screen.getByText('저장');
+
+      fireEvent.click(saveButton);
+
+      // localStorage에 저장된 데이터 확인
+      const savedCart = localStorage.getItem('cart');
+      expect(savedCart).not.toBeNull();
+
+      const parsedCart:CartItem[] = JSON.parse(savedCart!);
+      // console.log(savedCart)
+      console.log('parsedCart', parsedCart);
+      const totalQuantity = parsedCart.reduce((acc, item) => acc + item.quantity, 0);
+      expect(parsedCart.length).toBe(3) // 상품1, 상품2, 상품3이 각각 1개씩 추가되었으므로 총 3개
+      expect(totalQuantity).toBe(4); // 상품1 1개, 상품2 1개, 상품3 2개
+
+      const deleteButton = screen.getByTestId('local-remove');
+      fireEvent.click(deleteButton);
+      // localStorage에 저장된 데이터 확인
+      expect(localStorage.getItem('cart')).toBeNull();
+
     })
+
   })
 })
 

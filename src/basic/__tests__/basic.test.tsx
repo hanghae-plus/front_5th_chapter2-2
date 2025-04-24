@@ -334,7 +334,7 @@ describe("basic > ", () => {
       act(() => {
         result.current.addCoupon(newCoupon);
       });
-
+      console.log("result.current.coupons", result.current.coupons);
       expect(result.current.coupons).toHaveLength(3);
       expect(result.current.coupons[2]).toEqual(newCoupon);
     });
@@ -456,12 +456,13 @@ describe("basic > ", () => {
 
     test("장바구니에 제품을 추가해야 합니다", () => {
       const { result } = renderHook(() => useCart());
-
+      console.log("result.current.cart 장바구니에 제품을 추가해야 합니다:", result.current.cart);
       act(() => {
         result.current.addToCart(testProduct);
       });
-
+      console.log("result.current.cart 장바구니에 제품을 추가해야 합니다:2", result.current.cart);
       expect(result.current.cart).toHaveLength(1);
+
       expect(result.current.cart[0]).toEqual({
         product: testProduct,
         quantity: 1,
@@ -473,6 +474,7 @@ describe("basic > ", () => {
 
       act(() => {
         result.current.addToCart(testProduct);
+        console.log("장바구니에 추가", result.current.cart);
         result.current.removeFromCart(testProduct.id);
       });
 
@@ -481,12 +483,13 @@ describe("basic > ", () => {
 
     test("제품 수량을 업데이트해야 합니다", () => {
       const { result } = renderHook(() => useCart());
-
+      
       act(() => {
         result.current.addToCart(testProduct);
+        console.log("result:", result.current.cart[0])
         result.current.updateQuantity(testProduct.id, 5);
       });
-
+      console.log("result.current.cart:", result.current.cart);
       expect(result.current.cart[0].quantity).toBe(5);
     });
 
@@ -502,11 +505,13 @@ describe("basic > ", () => {
 
     test("합계를 정확하게 계산해야 합니다", () => {
       const { result } = renderHook(() => useCart());
-
       act(() => {
         result.current.addToCart(testProduct);
+        console.log('result:,', result.current);
         result.current.updateQuantity(testProduct.id, 2);
+        console.log('result:,', result.current);
         result.current.applyCoupon(testCoupon);
+        console.log('result:,', result.current);
       });
 
       const total = result.current.calculateTotal();
