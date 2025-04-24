@@ -8,7 +8,7 @@ interface CartItemProps {
 
 export const useCartItems = ({cart, setCart}: CartItemProps) => {
 
-  const getRemainingStock = (product: Product) => {
+  const getRemainingStock = (product: Product, cart:CartItem[]) => {
     const cartItem = cart.find(item => item.product.id === product.id);
     return product.stock - (cartItem?.quantity || 0);
   };
@@ -27,7 +27,7 @@ export const useCartItems = ({cart, setCart}: CartItemProps) => {
   };
 
   const addToCart = (product: Product) => {
-    const remainingStock = getRemainingStock(product);
+    const remainingStock = getRemainingStock(product, cart);
     if (remainingStock <= 0) return;
 
     setCart(prevCart => {

@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
-import { CartItem, Discount, Product } from "../../../types";
+import { CartItem, Product } from "../../../types";
 import { useCartOperations } from "../../hooks/useCartOperations";
+import { getMaxDiscount, getRemainingStock } from "../../models/cart";
 
 
 interface ProductItemListProps {
@@ -10,13 +11,13 @@ interface ProductItemListProps {
 }
 
 export const ProductItemList = ({products,cart, setCart}: ProductItemListProps) => {
-  const { getRemainingStock, addToCart, getMaxDiscount } = useCartOperations({ cart, setCart });
+  const { addToCart } = useCartOperations({ cart, setCart });
     return (
         <div>
           <h2 className="text-2xl font-semibold mb-4">상품 목록</h2>
           <div className="space-y-2">
             {products.map((product) => {
-              const remainingStock = getRemainingStock(product);
+              const remainingStock = getRemainingStock(product, cart);
               return (
                 <div key={product.id} data-testid={`product-${product.id}`} className="bg-white p-3 rounded shadow">
                   <div className="flex justify-between items-center mb-2">

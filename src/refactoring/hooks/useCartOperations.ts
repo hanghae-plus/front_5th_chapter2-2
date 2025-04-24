@@ -7,17 +7,19 @@ interface CartOperationsProps {
 }
 
 export const useCartOperations = ({ cart, setCart }: CartOperationsProps) => {
-  const getRemainingStock = (product: Product) => {
+    //계산
+  const getRemainingStock = (product: Product, cart:CartItem[]) => {
     const cartItem = cart.find((item) => item.product.id === product.id);
     return product.stock - (cartItem?.quantity || 0);
   };
 
+  //계산
   const getMaxDiscount = (discounts: { quantity: number; rate: number }[]) => {
     return discounts.reduce((max, discount) => Math.max(max, discount.rate), 0);
   };
 
   const addToCart = ( product: Product) => {
-    const remainingStock = getRemainingStock(product);
+    const remainingStock = getRemainingStock(product, cart);
     if (remainingStock <= 0) return;
 
     setCart((prevCart:CartItem[]) => {

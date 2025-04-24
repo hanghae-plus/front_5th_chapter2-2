@@ -4,12 +4,13 @@ import { Coupon } from "../../../types";
 import { useCoupons } from "../../hooks";
 
 interface CouponApplySectionProps {
+    coupons: Coupon[];
     selectedCoupon: Coupon | null;
     setSelectedCoupon: Dispatch<SetStateAction<Coupon | null>>;
 }
 
-export const CouponApplySection = ({ selectedCoupon, setSelectedCoupon}: CouponApplySectionProps) => {
-    const { coupons } = useCoupons(initialCoupons);
+export const CouponApplySection = ({ coupons, selectedCoupon, setSelectedCoupon}: CouponApplySectionProps) => {
+    
     return (
         <div className="mt-6 bg-white p-4 rounded shadow">
             <h2 className="text-2xl font-semibold mb-2">쿠폰 적용</h2>

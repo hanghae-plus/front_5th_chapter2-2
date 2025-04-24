@@ -25,7 +25,7 @@ export const CartPage = ({ products, coupons }: Props) => {
           <h2 className="text-2xl font-semibold mb-4">장바구니 내역</h2>
           <CartItemList cart={cart} setCart={setCart}/>
           {/* 쿠폰도 역시 동일! */}
-          <CouponApplySection selectedCoupon={selectedCoupon} setSelectedCoupon={setSelectedCoupon}/>
+          <CouponApplySection coupons={coupons} selectedCoupon={selectedCoupon} setSelectedCoupon={setSelectedCoupon}/>
           <OrderSummary cart={cart} selectedCoupon={selectedCoupon} />
         </div>
       </div>
