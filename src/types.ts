@@ -1,24 +1,31 @@
-export interface Product {
-  id: string;
-  name: string;
-  price: number;
-  stock: number;
-  discounts: Discount[];
-}
-
-export interface Discount {
+export interface IDiscount {
   quantity: number;
   rate: number;
 }
 
-export interface CartItem {
-  product: Product;
+export interface IProduct {
+  id: string;
+  name: string;
+  price: number;
+  stock: number;
+  discounts: IDiscount[];
+}
+
+export interface ICartItem {
+  product: IProduct;
   quantity: number;
 }
 
-export interface Coupon {
+/**
+ * 할인 타입
+ * amount: 금액 할인
+ * percentage: 퍼센트 할인
+ */
+export type TDiscountType = "amount" | "percentage";
+
+export interface ICoupon {
   name: string;
   code: string;
-  discountType: 'amount' | 'percentage';
+  discountType: TDiscountType;
   discountValue: number;
 }
