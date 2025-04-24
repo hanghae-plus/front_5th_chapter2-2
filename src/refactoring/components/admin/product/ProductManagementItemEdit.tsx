@@ -1,4 +1,5 @@
 import { Discount, Product } from "../../../../types";
+import { Button } from "../../common";
 
 interface ProductManagementItemEditProps {
   editingProduct: Product | null;
@@ -70,12 +71,13 @@ export const ProductManagementItemEdit = ({
             <span>
               {discount.quantity}개 이상 구매 시 {discount.rate * 100}% 할인
             </span>
-            <button
+            <Button
+              color="red"
+              className="px-2 py-1"
               onClick={() => handleDiscountRemove(product.id, index)}
-              className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
             >
               삭제
-            </button>
+            </Button>
           </div>
         ))}
         <div className="flex space-x-2">
@@ -103,20 +105,23 @@ export const ProductManagementItemEdit = ({
             }
             className="w-1/3 p-2 border rounded"
           />
-          <button
+          <Button
+            color="blue"
+            width="third"
+            className="p-2"
             onClick={() => handleDiscountAdd(product.id)}
-            className="w-1/3 bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
           >
             할인 추가
-          </button>
+          </Button>
         </div>
       </div>
-      <button
+      <Button
+        color="green"
+        className="px-2 py-1 mt-2"
         onClick={handleEditComplete}
-        className="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600 mt-2"
       >
         수정 완료
-      </button>
+      </Button>
     </div>
   );
 };

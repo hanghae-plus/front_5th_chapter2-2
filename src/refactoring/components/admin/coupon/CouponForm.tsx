@@ -1,7 +1,7 @@
 import { Coupon } from "../../../../types";
 import { CouponFormInput } from "./CouponFormInput";
 import { CouponFormSelect } from "./CouponFormSelect";
-
+import { Button } from "../../common";
 interface CouponFormProps {
   coupon: Coupon;
   onChange: (coupon: Coupon) => void;
@@ -47,12 +47,9 @@ export const CouponForm = ({ coupon, onChange, onSubmit }: CouponFormProps) => {
           }
         />
       </div>
-      <button
-        onClick={onSubmit}
-        className="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600"
-      >
+      <Button color="green" size="full" className="p-2" onClick={onSubmit}>
         쿠폰 추가
-      </button>
+      </Button>
     </div>
   );
 };

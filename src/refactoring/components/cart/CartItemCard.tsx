@@ -1,4 +1,5 @@
 import { CartItem } from "../../../types";
+import { Button } from "../common";
 
 interface CartItemCardProps {
   item: CartItem;
@@ -28,24 +29,27 @@ export const CartItemCard = ({
         </span>
       </div>
       <div>
-        <button
+        <Button
           onClick={() => onUpdateQuantity(item.product.id, item.quantity - 1)}
-          className="bg-gray-300 text-gray-800 px-2 py-1 rounded mr-1 hover:bg-gray-400"
+          color="gray"
+          className="px-2 py-1 mr-1"
         >
           -
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={() => onUpdateQuantity(item.product.id, item.quantity + 1)}
-          className="bg-gray-300 text-gray-800 px-2 py-1 rounded mr-1 hover:bg-gray-400"
+          color="gray"
+          className="px-2 py-1 mr-1"
         >
           +
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={() => onRemoveFromCart(item.product.id)}
-          className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
+          color="red"
+          className="px-2 py-1"
         >
           삭제
-        </button>
+        </Button>
       </div>
     </div>
   );

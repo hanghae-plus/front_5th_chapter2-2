@@ -1,4 +1,5 @@
 import { Product } from "../../../../types";
+import { Button } from "../../common";
 
 interface ProductManagementItemViewProps {
   product: Product;
@@ -18,13 +19,14 @@ export const ProductManagementItemView = ({
           </span>
         </div>
       ))}
-      <button
+      <Button
         data-testid="modify-button"
         onClick={() => handleEditProduct(product)}
-        className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 mt-2"
+        color="blue"
+        className="px-2 py-1 mt-2"
       >
         수정
-      </button>
+      </Button>
     </div>
   );
 };

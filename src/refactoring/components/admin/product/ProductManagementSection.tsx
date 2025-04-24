@@ -1,6 +1,6 @@
 // components/admin/product/ProductManagementSection.tsx
 import { Product } from "../../../../types";
-import { SectionLayout } from "../../common";
+import { SectionLayout, Button } from "../../common";
 import { useProductManagement } from "../../../hooks";
 import { CreateProductForm } from "./CreateProductForm";
 import { ProductManagementItem } from "./ProductManagementItem";
@@ -29,12 +29,13 @@ export const ProductManagementSection = ({
 
   return (
     <SectionLayout title="상품 관리">
-      <button
+      <Button
         onClick={() => setShowNewProductForm(!showNewProductForm)}
-        className="bg-green-500 text-white px-4 py-2 rounded mb-4 hover:bg-green-600"
+        color="green"
+        className="px-4 py-2 mb-4"
       >
         {showNewProductForm ? "취소" : "새 상품 추가"}
-      </button>
+      </Button>
       <CreateProductForm
         formData={newProduct}
         setFormData={setNewProduct}

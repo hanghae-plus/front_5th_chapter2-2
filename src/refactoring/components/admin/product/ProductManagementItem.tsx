@@ -1,6 +1,7 @@
 import { Product, Discount } from "../../../../types";
 import { ProductManagementItemEdit } from "./ProductManagementItemEdit";
 import { ProductManagementItemView } from "./ProductManagementItemView";
+import { Button } from "../../common";
 
 interface ProductManagementItemProps {
   product: Product;
@@ -41,13 +42,14 @@ export const ProductManagementItem = ({
       data-testid={`product-${index + 1}`}
       className="bg-white p-4 rounded shadow"
     >
-      <button
+      <Button
         data-testid="toggle-button"
+        width="full"
+        text="left-semibold"
         onClick={() => toggle(product.id)}
-        className="w-full text-left font-semibold"
       >
         {product.name} - {product.price}원 (재고: {product.stock})
-      </button>
+      </Button>
       {isOpen(product.id) && (
         <div className="mt-2">
           {editingProduct && editingProduct.id === product.id ? (

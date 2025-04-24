@@ -1,5 +1,6 @@
 import { Product } from "../../../../types";
 import { FormInput } from "./FormInput";
+import { Button } from "../../common";
 
 interface CreateProductFormProps {
   formData: Omit<Product, "id">;
@@ -43,12 +44,9 @@ export const CreateProductForm = ({
           setFormData({ ...formData, stock: Number(e.target.value) })
         }
       />
-      <button
-        onClick={handleSubmit}
-        className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
-      >
+      <Button color="blue" width="full" className="p-2" onClick={handleSubmit}>
         추가
-      </button>
+      </Button>
     </div>
   );
 };
