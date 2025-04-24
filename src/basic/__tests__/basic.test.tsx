@@ -10,7 +10,7 @@ import {
 } from '@testing-library/react';
 import { CartPage, AdminPage } from '../../refactoring/pages';
 import { CartItem, Coupon, Product } from '../../types';
-import * as cartUtils from '../../refactoring/models/cart';
+import * as cartUtils from '../../refactoring/entities';
 import {
   CouponContext,
   ProductContext,

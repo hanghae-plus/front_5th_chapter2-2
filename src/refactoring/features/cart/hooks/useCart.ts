@@ -2,10 +2,11 @@
 import { useState } from 'react';
 import {
   calculateCartTotal,
-  calculateItemTotal,
+  CartItem,
+  Coupon,
+  Product,
   updateCartItemQuantity,
-} from '../../../models/cart';
-import { CartItem, Coupon, Product } from '../../../entities';
+} from '../../../entities';
 
 export const useCart = () => {
   const [cart, setCart] = useState<CartItem[]>([]);
