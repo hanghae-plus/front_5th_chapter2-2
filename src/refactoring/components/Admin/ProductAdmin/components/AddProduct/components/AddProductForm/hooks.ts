@@ -1,6 +1,6 @@
-import { Product } from '../../../../../../types.ts';
 import { Dispatch, SetStateAction, useState } from 'react';
-import { defaultProduct } from '../../data.ts';
+import { Product } from '../../../../../../../../types.ts';
+import { defaultProduct } from '../../../../data.ts';
 
 export const useGetProductAddHandler = (
   onProductAdd: (newProduct: Product) => void,

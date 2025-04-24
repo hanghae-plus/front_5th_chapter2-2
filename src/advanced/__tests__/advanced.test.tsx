@@ -515,7 +515,7 @@ describe('advanced > ', () => {
       });
     });
 
-    describe('components/Nav/hooks.ts 함수 테스트', () => {
+    describe('Naviation hooks 테스트', () => {
       test('useTogglePage hook은 페이지 전환 상태를 관리해야 한다', () => {
         const TestComponent = () => {
           const { isAdmin, switchPage } = useTogglePage();
@@ -542,7 +542,7 @@ describe('advanced > ', () => {
       });
     });
 
-    describe('components/Admin/ProductAdmin/components/EachProduct/component/EditProduct/components/EditDiscount/components/AddDiscount/hooks.ts 함수 테스트', () => {
+    describe('EditProduct - AddDiscout - hooks 테스트', () => {
       test('useDiscountForm hook은 할인 폼 상태를 관리해야 한다', () => {
         const TestComponent = () => {
           const { newDiscount, updateDiscountField, resetDiscountForm } =
