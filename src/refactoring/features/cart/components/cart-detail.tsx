@@ -1,8 +1,8 @@
-import { CartItem, Coupon } from '../../../types.ts';
-import { calculateCartTotal } from '../../models/cart.ts';
+import { CartItem, Coupon } from '../../shared/types/entities.ts';
+import { calculateCartTotal } from '../../../features/cart/models/cart.ts';
 
-import { Button } from '../../ui/Button.tsx';
-import { getAppliedDiscount } from '../../utils/carttUtils.ts';
+import { Button } from '../../../ui/Button.tsx';
+import { getAppliedDiscount } from '../../shared/utils/cartUtils.ts';
 
 interface CartDetailProps {
   cart: CartItem[];

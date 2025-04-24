@@ -1,6 +1,6 @@
-import { Coupon, Product } from '../../types.ts';
-import { CartDetail, ProductList } from '../components/index.ts';
-import { useCart } from '../hooks';
+import { Coupon, Product } from '../../features/shared/types/entities.ts';
+import { CartDetail, ProductList } from '../../../refactoring/features/cart/components';
+import { useCart } from '../../features/cart/hooks';
 
 interface Props {
   products: Product[];

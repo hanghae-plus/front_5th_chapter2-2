@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { describe, expect, test } from 'vitest';
 import { act, fireEvent, render, renderHook, screen, within } from '@testing-library/react';
-import { CartPage } from '../../refactoring/page/cart-page';
-import { AdminPage } from '../../refactoring/page/admin-page';
-import { CartItem, Coupon, Product } from '../../types';
-import { useCart, useCoupons, useProducts } from '../../refactoring/hooks';
-import * as cartUtils from '../../refactoring/models/cart';
+import { CartPage } from '../../refactoring/page/cart';
+import { AdminPage } from '../../refactoring/page/admin';
+import { CartItem, Coupon, Product } from '../../refactoring/features/shared/types/entities';
+import { useCart, useCoupons, useProducts } from '../../refactoring/features/cart/hooks';
+import * as cartUtils from '../../refactoring/features/cart/models/cart';
 
 const INITIAL_COUPON: Coupon = {
   name: '',

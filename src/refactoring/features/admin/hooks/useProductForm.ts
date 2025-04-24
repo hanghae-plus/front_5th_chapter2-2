@@ -8,7 +8,7 @@ import {
   addDiscount,
   removeDiscount,
 } from '../models/admin';
-import { Product, Discount } from '../../types';
+import { Product, Discount } from '../../shared/types/entities';
 
 interface UseProductManagerProps {
   products: Product[];

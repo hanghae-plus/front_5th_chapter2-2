@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Coupon } from '../../types.ts';
+import { Coupon } from '../types/entities.ts';
 
 //데이터
 const INITIAL_COUPON: Coupon = {

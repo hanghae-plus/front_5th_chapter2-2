@@ -1,4 +1,4 @@
-import { CartItem, Product } from '../../types';
+import { CartItem, Product } from '../types/entities';
 
 export const getMaxDiscount = (discounts: { quantity: number; rate: number }[]) => {
   return discounts.reduce((max, discount) => Math.max(max, discount.rate), 0);

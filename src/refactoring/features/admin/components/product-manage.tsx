@@ -1,5 +1,5 @@
-import { Discount, Product } from '../../../types.ts';
-import { PRODUCT_FORM_FIELDS } from '../../constatns/productFormFields.ts';
+import { Discount, Product } from '../../shared/types/entities.ts';
+import { PRODUCT_FORM_FIELDS } from '../../../constants/productFormFields.ts';
 
 interface ProductManageProps {
   products: Product[];
@@ -22,7 +22,7 @@ interface ProductManageProps {
   setNewDiscount: React.Dispatch<React.SetStateAction<Discount>>;
 }
 
-import { Input, Button } from '../../ui';
+import { Input, Button } from '../../../ui/index.ts';
 export const ProductManage = ({
   products,
   openProductIds,

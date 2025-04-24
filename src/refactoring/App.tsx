@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { CartPage, AdminPage } from './page';
+import { AdminPage } from './page/admin';
+import { CartPage } from './page/cart';
 
-import { Coupon, Product } from '../types.ts';
-import { useCoupons, useProducts } from './hooks';
+import { Coupon, Product } from './features/shared/types/entities.ts';
+import { useCoupons, useProducts } from './features/cart/hooks';
 
 // 초기 상품 목록
 const initialProducts: Product[] = [

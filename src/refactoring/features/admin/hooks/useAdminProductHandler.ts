@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { Product, Discount } from '../../types.ts';
+import { Product, Discount } from '../../shared/types/entities.ts';
 import {
   updateProductName,
   updateProductPrice,

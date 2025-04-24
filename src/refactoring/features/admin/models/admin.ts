@@ -1,4 +1,4 @@
-import { Discount, Product } from '../../types';
+import { Discount, Product } from '../../shared/types/entities';
 
 //할인추가
 export const addDiscount = (product: Product, discount: Discount): Product => {

@@ -1,5 +1,5 @@
-import { CartItem, Product } from '../../../types';
-import { getRemainingStock, getMaxDiscount } from '../../utils/carttUtils';
+import { CartItem, Product } from '../../shared/types/entities';
+import { getRemainingStock, getMaxDiscount } from '../../shared/utils/cartUtils';
 interface ProductListProps {
   products: Product[];
   cart: CartItem[];
