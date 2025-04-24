@@ -1,7 +1,20 @@
 import React, { createContext, useContext } from "react";
 import { useCart } from "../hooks";
+import { CartItem, Coupon, Product } from "../../types";
 
-interface CartContext {}
+interface CartContext {
+  cart: CartItem[];
+  selectedCoupon: Coupon | null;
+  addToCart: (product: Product) => void;
+  removeFromCart: (productId: string) => void;
+  updateQuantity: (productId: string, newQuantity: number) => void;
+  applyCoupon: (coupon: Coupon) => void;
+  calculateTotal: () => {
+    totalBeforeDiscount: number;
+    totalAfterDiscount: number;
+    totalDiscount: number;
+  };
+}
 
 const CartContext = createContext<CartContext | undefined>(undefined);
 

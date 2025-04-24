@@ -1,10 +1,13 @@
+import { useProductContext } from "../../provider/ProductProvider";
 import ProductItem from "./ProductItem";
 
 const ProductList = () => {
+  const { products } = useProductContext();
+
   return (
     <div className="space-y-2">
       {products.map((product) => (
-        <ProductItem />
+        <ProductItem key={product.id} product={product} />
       ))}
     </div>
   );

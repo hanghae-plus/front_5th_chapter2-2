@@ -3,7 +3,7 @@ import { useDiscount } from "../../hooks/entities/discount/useDiscount";
 import { useEditProduct } from "../../hooks/entities/product/useEditProduct";
 import { useProductContext } from "../../provider/ProductProvider";
 
-const ProductList = () => {
+const ProductEditList = () => {
   const { openProductIds, toggleProductAccordion } = useProductAccordion();
 
   const { newDiscount, setNewDiscount, handleAddDiscount } = useDiscount();
@@ -170,4 +170,4 @@ const ProductList = () => {
   );
 };
 
-export default ProductList;
+export default ProductEditList;

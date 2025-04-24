@@ -13,6 +13,7 @@ import { AdminPage } from "../../refactoring/pages/AdminPage";
 import { CartItem, Coupon, Product } from "../../types";
 import { useCart, useCoupons, useProducts } from "../../refactoring/hooks";
 import * as cartUtils from "../../refactoring/models/cart";
+import { ProductProvider } from "../../refactoring/provider/ProductProvider";
 
 const mockProducts: Product[] = [
   {
@@ -53,56 +54,55 @@ const mockCoupons: Coupon[] = [
 ];
 
 const TestAdminPage = () => {
-  const [products, setProducts] = useState<Product[]>(mockProducts);
-  const [coupons, setCoupons] = useState<Coupon[]>(mockCoupons);
-  const [newCoupon, setNewCoupon] = useState<Coupon>({
-    name: "",
-    code: "",
-    discountType: "percentage",
-    discountValue: 0,
-  });
-  const handleProductUpdate = (updatedProduct: Product) => {
-    setProducts((prevProducts) =>
-      prevProducts.map((p) =>
-        p.id === updatedProduct.id ? updatedProduct : p,
-      ),
-    );
-  };
+  const [products] = useState<Product[]>(mockProducts);
+  const [coupons] = useState<Coupon[]>(mockCoupons);
 
-  const handleProductAdd = (newProduct: Product) => {
-    setProducts((prevProducts) => [...prevProducts, newProduct]);
-  };
+  // const [products, setProducts] = useState<Product[]>(mockProducts);
+  // const [coupons, setCoupons] = useState<Coupon[]>(mockCoupons);
+  // const [newCoupon, setNewCoupon] = useState<Coupon>({
+  //   name: "",
+  //   code: "",
+  //   discountType: "percentage",
+  //   discountValue: 0,
+  // });
+  // const handleProductUpdate = (updatedProduct: Product) => {
+  //   setProducts((prevProducts) =>
+  //     prevProducts.map((p) =>
+  //       p.id === updatedProduct.id ? updatedProduct : p,
+  //     ),
+  //   );
+  // };
+
+  // const handleProductAdd = (newProduct: Product) => {
+  //   setProducts((prevProducts) => [...prevProducts, newProduct]);
+  // };
 
   // const handleCouponAdd = (newCoupon: Coupon) => {
   //   setCoupons((prevCoupons) => [...prevCoupons, newCoupon]);
   // };
-  const addCoupon = (newCoupon: Coupon) => {
-    setCoupons((prevCoupons) => [...prevCoupons, newCoupon]);
-  };
+  // const addCoupon = (newCoupon: Coupon) => {
+  //   setCoupons((prevCoupons) => [...prevCoupons, newCoupon]);
+  // };
 
-  const resetNewCoupon = () => {
-    setNewCoupon({
-      name: "",
-      code: "",
-      discountType: "percentage",
-      discountValue: 0,
-    });
-  };
-  const handleAddNewCoupon = () => {
-    addCoupon(newCoupon);
-    resetNewCoupon();
-  };
+  // const resetNewCoupon = () => {
+  //   setNewCoupon({
+  //     name: "",
+  //     code: "",
+  //     discountType: "percentage",
+  //     discountValue: 0,
+  //   });
+  // };
+  // const handleAddNewCoupon = () => {
+  //   addCoupon(newCoupon);
+  //   resetNewCoupon();
+  // };
 
   return (
-    <AdminPage
-      products={products}
-      coupons={coupons}
-      newCoupon={newCoupon}
-      onProductUpdate={handleProductUpdate}
-      onProductAdd={handleProductAdd}
-      setNewCoupon={setNewCoupon}
-      handleAddNewCoupon={handleAddNewCoupon}
-    />
+    <ProductProvider initialProducts={products}>
+      <CouponProvider initialCoupons={coupons}>
+        <AdminPage />
+      </CouponProvider>
+    </ProductProvider>
   );
 };
 

@@ -1,6 +1,6 @@
 import { Coupon } from "../../types.ts";
-import ProductManage from "../components/admin/ProductManage.tsx";
-import CouponManage from "../components/admin/CouponManage.tsx";
+import ProductManage from "../components/product/ProductManage.tsx";
+import CouponManage from "../components/coupon/CouponManage.tsx";
 
 interface Props {
   coupons: Coupon[];
