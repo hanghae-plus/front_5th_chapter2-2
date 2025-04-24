@@ -2,6 +2,7 @@ import { useState } from "react";
 import { describe, expect, test } from "vitest";
 import { act, fireEvent, render, screen, within } from "@testing-library/react";
 import { Coupon, Product } from "../../types";
+import { formatPrice } from "../../refactoring/utils";
 import { CartPage } from "../../refactoring/pages/CartPage";
 import { AdminPage } from "../../refactoring/pages/AdminPage";
 
@@ -261,13 +262,112 @@ describe("advanced > ", () => {
     });
   });
 
-  describe("자유롭게 작성해보세요.", () => {
-    test("새로운 유틸 함수를 만든 후에 테스트 코드를 작성해서 실행해보세요", () => {
-      expect(true).toBe(false);
+  describe("Custom Hooks", () => {
+    describe("useCouponManager", () => {
+      test("쿠폰 추가 테스트", () => {
+        const { container } = render(<TestAdminPage />);
+        fireEvent.change(screen.getByPlaceholderText("쿠폰 이름"), {
+          target: { value: "훅 테스트 쿠폰" },
+        });
+        fireEvent.change(screen.getByPlaceholderText("쿠폰 코드"), {
+          target: { value: "HOOKTESTCOUPON" },
+        });
+        fireEvent.change(screen.getByPlaceholderText("할인 값"), {
+          target: { value: "10" },
+        });
+
+        const dropdowns = screen.getAllByRole("combobox");
+        const discountTypeDropdown = dropdowns[0]; 
+        fireEvent.change(discountTypeDropdown, {
+          target: { value: "percentage" },
+        });
+
+        fireEvent.click(screen.getByRole("button", { name: "쿠폰 추가" }));
+
+        const couponDisplay = within(
+          container.querySelector("div:first-child")!
+        ).getByText("훅 테스트 쿠폰 (HOOKTESTCOUPON):10% 할인");
+        expect(couponDisplay).toBeInTheDocument();
+      });
     });
 
-    test("새로운 hook 함수르 만든 후에 테스트 코드를 작성해서 실행해보세요", () => {
-      expect(true).toBe(false);
+    describe("useDiscountManager", () => {
+      test("할인율 추가 및 삭제", () => {
+        render(<TestAdminPage />);
+
+        const product1 = screen.getByTestId("product-1");
+        fireEvent.click(within(product1).getByTestId("toggle-button"));
+        fireEvent.click(within(product1).getByTestId("modify-button"));
+
+        act(() => {
+          fireEvent.change(screen.getByPlaceholderText("수량"), {
+            target: { value: "5" },
+          });
+          fireEvent.change(screen.getByPlaceholderText("할인율 (%)"), {
+            target: { value: "5" },
+          });
+        });
+        fireEvent.click(screen.getByText("할인 추가"));
+
+        const addedDiscount = screen.getByText("5개 이상 구매 시 5% 할인");
+        expect(addedDiscount).toBeInTheDocument();
+
+        const discountItem = screen
+          .getByText("5개 이상 구매 시 5% 할인")
+          .closest("div");
+
+        fireEvent.click(within(discountItem!).getByText("삭제"));
+
+        expect(
+          screen.queryByText("5개 이상 구매 시 5% 할인")
+        ).not.toBeInTheDocument();
+      });
+    });
+
+    describe("useNewProductManager", () => {
+      test("새로운 상품 추가", () => {
+        render(<TestAdminPage />);
+
+        const toggleButton = screen.getByText("새 상품 추가");
+        fireEvent.click(toggleButton);
+
+        expect(screen.getByLabelText("상품명")).toBeInTheDocument();
+
+        fireEvent.change(screen.getByLabelText("상품명"), {
+          target: { value: "테스트" },
+        });
+        fireEvent.change(screen.getByLabelText("가격"), {
+          target: { value: "15000" },
+        });
+        fireEvent.change(screen.getByLabelText("재고"), {
+          target: { value: "30" },
+        });
+
+        expect(screen.getByLabelText("상품명")).toHaveValue("테스트");
+        expect(screen.getByLabelText("가격")).toHaveValue(15000);
+        expect(screen.getByLabelText("재고")).toHaveValue(30);
+
+        const addButton = screen.getByText("추가");
+        fireEvent.click(addButton);
+
+        expect(screen.queryByPlaceholderText("상품명")).not.toBeInTheDocument();
+
+        const $product4 = screen.getByTestId("product-4");
+
+        expect($product4).toHaveTextContent("테스트");
+        expect($product4).toHaveTextContent("15000원");
+        expect($product4).toHaveTextContent("재고: 30");
+      });
+    });
+  });
+
+  describe("유틸 함수 테스트", () => {
+    describe("formatPrice", () => {
+      test("숫자를 천 단위로 구분하고 '원'을 붙인다", () => {
+        expect(formatPrice(1000)).toBe("1,000원");
+        expect(formatPrice(123456789)).toBe("123,456,789원");
+        expect(formatPrice(0)).toBe("0원");
+      });
     });
   });
 });
