@@ -1,4 +1,4 @@
-import NewProductForm from "./NewProductForm.tsx"
+import AddProductForm from "./AddProductForm.tsx"
 import ProductList from "./ProductList.tsx"
 import { useState } from "react"
 import Button from "../../ui/Button.tsx"
@@ -19,7 +19,7 @@ export default function ProductManagement() {
       </Button>
 
       {/* 상품 등록 폼 */}
-      {showNewProductForm && <NewProductForm setShowNewProductForm={setShowNewProductForm} />}
+      {showNewProductForm && <AddProductForm setShowNewProductForm={setShowNewProductForm} />}
 
       {/* 상품 목록 */}
       <ProductList />

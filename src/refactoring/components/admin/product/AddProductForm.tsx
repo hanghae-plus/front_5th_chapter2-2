@@ -1,11 +1,11 @@
 import { useNewProductForm } from "../../../hooks/useNewProductForm.ts"
 import Button from "../../ui/Button.tsx"
-import Input from "../../ui/Input.tsx"
+import Input, { InputType } from "../../ui/Input.tsx"
 
 interface INewProductForm {
   setShowNewProductForm: React.Dispatch<React.SetStateAction<boolean>>
 }
-export default function NewProductForm({ setShowNewProductForm }: INewProductForm) {
+export default function AddProductForm({ setShowNewProductForm }: INewProductForm) {
   const { newProduct, handleInputChange, handleAddNewProduct } = useNewProductForm(setShowNewProductForm)
 
   return (
@@ -16,7 +16,7 @@ export default function NewProductForm({ setShowNewProductForm }: INewProductFor
           label="상품명"
           labelClassName="block text-sm font-medium text-gray-700"
           id="productName"
-          type="text"
+          type={InputType.Text}
           value={newProduct.name}
           onChange={(e) => handleInputChange("name", e.target.value)}
           className="w-full p-2 border rounded"
@@ -27,7 +27,7 @@ export default function NewProductForm({ setShowNewProductForm }: INewProductFor
           label="가격"
           labelClassName="block text-sm font-medium text-gray-700"
           id="productPrice"
-          type="number"
+          type={InputType.Number}
           value={newProduct.price}
           onChange={(e) => handleInputChange("price", parseInt(e.target.value))}
           className="w-full p-2 border rounded"
@@ -36,7 +36,7 @@ export default function NewProductForm({ setShowNewProductForm }: INewProductFor
       <div className="mb-2">
         <Input
           id="productStock"
-          type="number"
+          type={InputType.Number}
           label={"재고"}
           labelClassName={"block text-sm font-medium text-gray-700"}
           value={newProduct.stock}

@@ -10,9 +10,7 @@ export default mergeConfig(
     build: {
       rollupOptions: {
         input: {
-          main: path.resolve(__dirname, "index.html"),
-          basic: path.resolve(__dirname, "index.basic.html"),
-          advanced: path.resolve(__dirname, "index.advanced.html")
+          main: path.resolve(__dirname, "index.refactoring.html"),
         }
       }
     }

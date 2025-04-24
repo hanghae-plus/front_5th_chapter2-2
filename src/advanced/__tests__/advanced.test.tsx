@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, test, vi } from "vitest"
+import { afterEach, describe, expect, test } from "vitest"
 import { act, fireEvent, render, renderHook, screen, within } from "@testing-library/react"
 import { CartPage } from "../../refactoring/components/CartPage.tsx"
 import { AdminPage } from "../../refactoring/components/AdminPage"
@@ -768,16 +768,7 @@ describe("basic > ", () => {
     })
 
     test("합계를 정확하게 계산해야 한다", () => {
-      // 테스트용 레파 컴포넌트
-      const wrapper = ({ children }) => (
-        <ProductProvider initialProducts={[testProduct]}>
-          <CouponProvider initialCoupons={[testCoupon]}>
-            <CartProvider>
-              {children}
-            </CartProvider>
-          </CouponProvider>
-        </ProductProvider>
-      )
+
       const { result } = renderHook(() => useCart())
 
       act(() => {

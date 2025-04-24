@@ -1,4 +1,4 @@
-import { Discount, Product } from "../../types.ts"
+import {  Product } from "../../types.ts"
 import { useState } from "react"
 
 export default function useProductEditForm({
