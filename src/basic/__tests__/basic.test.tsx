@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { describe, expect, test } from 'vitest';
+import { beforeEach, describe, expect, test } from 'vitest';
 import { act, fireEvent, render, renderHook, screen, within } from '@testing-library/react';
 import { CartPage } from '../../refactoring/page/cart';
 import { AdminPage } from '../../refactoring/page/admin';
@@ -448,6 +448,10 @@ describe('basic > ', () => {
       discountValue: 10,
     };
 
+    beforeEach(() => {
+      localStorage.clear();
+    });
+
     test('장바구니에 제품을 추가해야 합니다', () => {
       const { result } = renderHook(() => useCart());
 
@@ -478,6 +482,12 @@ describe('basic > ', () => {
 
       act(() => {
         result.current.addToCart(testProduct);
+      });
+
+      expect(result.current.cart).toHaveLength(1);
+
+      // 수량 업데이트
+      act(() => {
         result.current.updateQuantity(testProduct.id, 5);
       });
 
@@ -497,8 +507,15 @@ describe('basic > ', () => {
     test('합계를 정확하게 계산해야 합니다', () => {
       const { result } = renderHook(() => useCart());
 
+      //1. 장바구니 추가
       act(() => {
         result.current.addToCart(testProduct);
+      });
+      //안전가드
+      expect(result.current.cart).toHaveLength(1);
+
+      //2. 수량 업데이트 및 쿠폰 적용
+      act(() => {
         result.current.updateQuantity(testProduct.id, 2);
         result.current.applyCoupon(testCoupon);
       });

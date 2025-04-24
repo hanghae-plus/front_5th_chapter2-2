@@ -1,14 +1,15 @@
 // useCart.ts
 import { useState } from 'react';
+import { useLocalStorage } from '../../shared/hooks';
 import { CartItem, Coupon, Product } from '../../shared/types/entities';
 import { calculateCartTotal, updateCartItemQuantity } from '../models/cart';
 
 export const useCart = () => {
-  const [cart, setCart] = useState<CartItem[]>([]);
+  const [cart, setCart] = useLocalStorage<CartItem[]>('cart', []);
   const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
 
   const addToCart = (product: Product) => {
-    if (product.stock <= 0) return 0;
+    if (product.stock <= 0) return;
     return setCart((prevCart) => {
       const existing = prevCart.find((item) => item.product.id === product.id);
 
