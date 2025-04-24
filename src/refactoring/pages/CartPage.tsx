@@ -90,6 +90,7 @@ export const CartPage = ({ products, coupons }: Props) => {
             })}
           </div>
         </div>
+
         <div>
           {/* 장바구니에 추가한 내역 컴포넌트 */}
           <h2 className="text-2xl font-semibold mb-4">장바구니 내역</h2>
