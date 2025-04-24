@@ -1,11 +1,12 @@
+import Container from '../components/container/Container.tsx';
+import ContainerTitle from '../components/container/ContainerTitle.tsx';
+import CustomButton from '../components/button/CustomButton.tsx';
+import CustomSelect from '../components/select/CustomSelect.tsx';
+import TextInput from '../components/input/TextInput.tsx';
+import NumberInput from '../components/input/NumberInput.tsx';
+
 import { useState } from 'react';
 import { Coupon, Discount, Product } from '../../types.ts';
-import Container from '../components/Container.tsx';
-import ContainerTitle from '../components//ContainerTitle.tsx';
-import CustomButton from '../components/CustomButton';
-import CustomSelect from '../components/CustomSelect.tsx';
-import TextInput from '../components/TextInput.tsx';
-import NumberInput from '../components/NumberInput.tsx';
 import { formatComma } from '../utils/formatComma.ts';
 
 interface Props {

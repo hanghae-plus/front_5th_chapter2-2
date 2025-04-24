@@ -1,9 +1,10 @@
+import CustomSelect from '../components/select/CustomSelect.tsx';
+import Container from '../components/container/Container.tsx';
+import ContainerTitle from '../components/container/ContainerTitle.tsx';
+import CustomButton from '../components/button/CustomButton.tsx';
+
 import { CartItem, Coupon, Product } from '../../types.ts';
 import { useCart } from '../hooks';
-import CustomSelect from '../components/CustomSelect.tsx';
-import Container from '../components/Container.tsx';
-import ContainerTitle from '../components/ContainerTitle.tsx';
-import CustomButton from '../components/CustomButton.tsx';
 import { formatComma } from '../utils/formatComma.ts';
 
 interface Props {

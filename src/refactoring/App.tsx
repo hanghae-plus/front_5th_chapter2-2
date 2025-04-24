@@ -1,4 +1,4 @@
-import CustomButton from './components/CustomButton.tsx';
+import CustomButton from './components/button/CustomButton.tsx';
 
 import { useState } from 'react';
 

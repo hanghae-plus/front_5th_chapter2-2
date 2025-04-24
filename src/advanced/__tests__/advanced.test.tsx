@@ -1,8 +1,8 @@
-import Container from '../../refactoring/components/Container';
-import ContainerTitle from '../../refactoring/components/ContainerTitle';
-import CustomButton from '../../refactoring/components/CustomButton';
-import CustomSelect from '../../refactoring/components/CustomSelect';
-import CustomInput from '../../refactoring/components/CustomInput';
+import Container from '../../refactoring/components/container/Container';
+import ContainerTitle from '../../refactoring/components/container/ContainerTitle';
+import CustomButton from '../../refactoring/components/button/CustomButton';
+import CustomSelect from '../../refactoring/components/select/CustomSelect';
+import CustomInput from '../../refactoring/components/input/CustomInput';
 
 import { useState } from 'react';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
