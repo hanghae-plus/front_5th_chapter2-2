@@ -1,4 +1,4 @@
-import { Product } from "../../entities";
+import { Product } from "@refactoring/entities";
 
 /**
  * 기존 배열에 새로운 상품을 추가하여 새 배열을 반환

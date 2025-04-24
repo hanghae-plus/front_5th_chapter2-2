@@ -1,8 +1,8 @@
-import { CouponInputForm } from "../../../entities/coupon/coupon-input-form";
-import { useCoupons } from "../../../hooks";
-import { ListWrapper } from "../../../ui/list-wrapper";
-import { Section } from "../../../ui/section";
-import { formatCurrency, formatPercent } from "../../../utils/formatter";
+import { CouponInputForm } from "@refactoring/entities/coupon/coupon-input-form";
+import { useCoupons } from "@refactoring/hooks";
+
+import { ListWrapper, Section } from "@refactoring/ui";
+import { formatCurrency, formatPercent } from "@refactoring/utils/formatter";
 
 export const CouponManageSection = () => {
   const { coupons, newCoupon, updateNewCoupon, handleAddCoupon } = useCoupons();

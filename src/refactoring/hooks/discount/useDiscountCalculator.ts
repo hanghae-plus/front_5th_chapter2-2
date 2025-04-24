@@ -1,6 +1,6 @@
+import { calculateCartTotal } from "@refactoring/calculations/discount/calc-total-discount";
+import { CartItem, Coupon } from "@refactoring/entities";
 import { useMemo } from "react";
-import { CartItem, Coupon } from "../../entities";
-import { calculateCartTotal } from "../../models/cart";
 
 /**
  * 장바구니와 선택된 쿠폰을 기반으로

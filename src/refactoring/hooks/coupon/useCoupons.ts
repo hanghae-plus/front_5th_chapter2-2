@@ -1,6 +1,6 @@
+import { initialCoupon, initialCoupons } from "@refactoring/data";
+import { Coupon } from "@refactoring/entities";
 import { useState } from "react";
-import { initialCoupon, initialCoupons } from "../../data";
-import { Coupon } from "../../entities";
 
 /**
  * 쿠폰 목록 및 신규 쿠폰 상태를 관리하는 커스텀 훅

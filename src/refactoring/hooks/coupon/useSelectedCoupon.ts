@@ -1,4 +1,4 @@
-import { Coupon } from "../../entities";
+import { Coupon } from "@refactoring/entities";
 
 import { useState } from "react";
 

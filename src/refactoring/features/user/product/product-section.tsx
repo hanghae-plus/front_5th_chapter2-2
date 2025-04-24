@@ -1,11 +1,8 @@
-import { getRemainingStock } from "../../../calculations/cart/calc-item";
-import { getMaxDiscount } from "../../../calculations/discount/calc-discount-rate";
-import { CartItem, Product } from "../../../entities";
-import { Button } from "../../../ui/button";
-import { ListWrapper } from "../../../ui/list-wrapper";
-import { Section } from "../../../ui/section";
-import { formatCurrency } from "../../../utils/formatter";
-import { rateToPercent } from "../../../utils/percentUtils";
+import { getRemainingStock } from "@refactoring/calculations/cart/calc-item";
+import { getMaxDiscount } from "@refactoring/calculations/discount/calc-discount-rate";
+import { CartItem, Product } from "@refactoring/entities";
+import { Button, ListWrapper, Section } from "@refactoring/ui";
+import { formatCurrency, rateToPercent } from "@refactoring/utils";
 
 interface Props {
   products: Product[];

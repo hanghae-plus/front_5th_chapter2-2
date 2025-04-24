@@ -1,5 +1,5 @@
-import { Product } from "../../entities";
-import { useProductStore } from "../../store/product-store";
+import { Product } from "@refactoring/entities";
+import { useProductStore } from "@refactoring/store/product-store";
 
 /**
  * 상품 편집 작업을 위한 액션 훅

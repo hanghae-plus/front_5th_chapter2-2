@@ -1,6 +1,7 @@
-import { useProductStore } from "../../../store/product-store";
-import { Button } from "../../../ui/button";
-import { FormInput } from "../../../ui/form-input";
+import { useProductStore } from "@refactoring/store/product-store";
+
+import { Button } from "@refactoring/ui/button";
+import { FormInput } from "@refactoring/ui/form-input";
 
 export const NewProductForm = () => {
   const { newProduct, updateNewProduct, handleAddNewProduct } = useProductStore();

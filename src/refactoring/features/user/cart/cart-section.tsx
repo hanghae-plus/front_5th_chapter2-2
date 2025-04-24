@@ -1,7 +1,8 @@
-import { CartItem } from "../../../entities";
-import { useSelectedCoupon } from "../../../hooks";
-import { Section } from "../../../ui/section";
-import { CouponSection } from "../coupon/coupon-section";
+import { CartItem } from "@refactoring/entities";
+import { CouponSection } from "@refactoring/features/user/coupon/coupon-section";
+import { useSelectedCoupon } from "@refactoring/hooks";
+import { Section } from "@refactoring/ui";
+
 import { CartList } from "./cart-list";
 import { CartPriceSummary } from "./cart-price-summary";
 

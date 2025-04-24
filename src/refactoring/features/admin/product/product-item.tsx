@@ -1,11 +1,10 @@
-import { Product } from "../../../entities";
-import { useToggle } from "../../../hooks";
-import { useEditProductAction } from "../../../hooks/product/useEditProductAction";
-import { useProductStore } from "../../../store/product-store";
-import { Button } from "../../../ui/button";
-import { formatCurrency } from "../../../utils/formatter";
-import { rateToPercent } from "../../../utils/percentUtils";
+import { Product } from "@refactoring/entities";
+import { useEditProductAction, useToggle } from "@refactoring/hooks";
 import { ProductEditForm } from "./product-edit-form";
+
+import { useProductStore } from "@refactoring/store/product-store";
+import { Button } from "@refactoring/ui";
+import { formatCurrency, rateToPercent } from "@refactoring/utils";
 
 interface Props {
   product: Product;

@@ -1,6 +1,6 @@
-import { CartItem, Coupon } from "../../../entities";
-import { useDiscountCalculator } from "../../../hooks/discount/useDiscountCalculator";
-import { CardWithTitle } from "../../../ui/card-with-title";
+import { CartItem, Coupon } from "@refactoring/entities";
+import { useDiscountCalculator } from "@refactoring/hooks";
+import { CardWithTitle } from "@refactoring/ui";
 
 interface Props {
   cart: CartItem[];

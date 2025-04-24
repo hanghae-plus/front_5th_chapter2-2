@@ -1,6 +1,6 @@
+import { Discount } from "@refactoring/entities";
+import { useProductStore } from "@refactoring/store/product-store";
 import { useState } from "react";
-import { Discount } from "../../entities";
-import { useProductStore } from "../../store/product-store";
 
 /**
  * 할인 조건 입력 및 제품에 대한 할인 추가/삭제를 관리하는 커스텀 훅

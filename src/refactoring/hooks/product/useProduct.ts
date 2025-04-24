@@ -1,4 +1,4 @@
-import { useProductStore } from "../../store/product-store";
+import { useProductStore } from "@refactoring/store/product-store";
 
 /**
  * 테스트로 남겨둔 커스텀 훅

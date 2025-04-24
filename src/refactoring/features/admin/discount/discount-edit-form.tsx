@@ -1,8 +1,9 @@
-import { Product } from "../../../entities";
-import { DiscountInputForm } from "../../../entities/discount/discount-input-form";
-import { useDiscount } from "../../../hooks";
-import { Button } from "../../../ui/button";
-import { rateToPercent } from "../../../utils/percentUtils";
+import { Product } from "@refactoring/entities";
+import { DiscountInputForm } from "@refactoring/entities/discount/discount-input-form";
+
+import { useDiscount } from "@refactoring/hooks";
+import { Button } from "@refactoring/ui";
+import { rateToPercent } from "@refactoring/utils/percentUtils";
 
 interface Props {
   editingProduct: Product;

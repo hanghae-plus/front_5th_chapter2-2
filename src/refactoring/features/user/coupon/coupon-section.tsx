@@ -1,6 +1,6 @@
-import { Coupon } from "../../../entities";
-import { useCoupons } from "../../../hooks";
-import { CardWithTitle } from "../../../ui/card-with-title";
+import { Coupon } from "@refactoring/entities";
+import { useCoupons } from "@refactoring/hooks";
+import { CardWithTitle } from "@refactoring/ui";
 
 interface Props {
   selectedCoupon: Coupon | null;

@@ -1,6 +1,5 @@
-import { useProductStore } from "../../../store/product-store";
-import { Button } from "../../../ui/button";
-import { Section } from "../../../ui/section";
+import { useProductStore } from "@refactoring/store/product-store";
+import { Button, Section } from "@refactoring/ui";
 import { NewProductForm } from "./new-product-form";
 import { ProductList } from "./product-list";
 

@@ -1,5 +1,5 @@
-import { calculateCartTotal } from "../../calculations/discount/calc-total-discount";
-import { useCartStore } from "../../store/cart-store";
+import { calculateCartTotal } from "@refactoring/calculations/discount/calc-total-discount";
+import { useCartStore } from "@refactoring/store/cart-store";
 import { useSelectedCoupon } from "../coupon/useSelectedCoupon";
 
 /** 테스트 전용 hook - 실사용 로직에서는 사용하지 않음 */

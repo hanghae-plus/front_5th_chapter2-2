@@ -1,7 +1,6 @@
-import { CartItem } from "../../../entities";
-import { getMaxApplicableDiscount } from "../../../models/cart";
-import { Button } from "../../../ui/button";
-import { ListWrapper } from "../../../ui/list-wrapper";
+import { getMaxApplicableDiscount } from "@refactoring/calculations/discount/calc-discount-rate";
+import { CartItem } from "@refactoring/entities";
+import { Button, ListWrapper } from "@refactoring/ui";
 
 interface CartListProps {
   cart: CartItem[];

@@ -1,5 +1,5 @@
-import { useProductStore } from "../../../store/product-store";
-import { ListWrapper } from "../../../ui/list-wrapper";
+import { useProductStore } from "@refactoring/store/product-store";
+import { ListWrapper } from "@refactoring/ui";
 import { ProductItem } from "./product-item";
 
 export const ProductList = () => {

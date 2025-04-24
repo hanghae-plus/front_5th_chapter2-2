@@ -1,9 +1,8 @@
-import { Product } from "../../../entities";
-import { useEditProductAction } from "../../../hooks/product/useEditProductAction";
-import { useProductStore } from "../../../store/product-store";
-import { Button } from "../../../ui/button";
-import { FormInput } from "../../../ui/form-input";
-import { DiscountEditForm } from "../discount/discount-edit-form";
+import { Product } from "@refactoring/entities";
+import { DiscountEditForm } from "@refactoring/features/admin/discount/discount-edit-form";
+import { useEditProductAction } from "@refactoring/hooks/product/useEditProductAction";
+import { useProductStore } from "@refactoring/store/product-store";
+import { Button, FormInput } from "@refactoring/ui";
 
 interface Props {
   editingProduct: Product;
