@@ -1,5 +1,4 @@
-// src/refactoring/components/admin/product/CreateProductForm.tsx
-import { ProductFormInput } from "./ProductFormInput";
+import { CreateProductFormInput } from "./CreateProductFormInput";
 import { Button } from "../../common";
 import { useProductManagement } from "../../../contexts/ProductManagementContext";
 
@@ -12,13 +11,13 @@ export const CreateProductForm = () => {
   return (
     <div className="bg-white p-4 rounded shadow mb-4">
       <h3 className="text-xl font-semibold mb-2">새 상품 추가</h3>
-      <ProductFormInput
+      <CreateProductFormInput
         id="productName"
         label="상품명"
         value={newProduct.name}
         onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
       />
-      <ProductFormInput
+      <CreateProductFormInput
         id="productPrice"
         label="가격"
         type="number"
@@ -27,7 +26,7 @@ export const CreateProductForm = () => {
           setNewProduct({ ...newProduct, price: Number(e.target.value) })
         }
       />
-      <ProductFormInput
+      <CreateProductFormInput
         id="productStock"
         label="재고"
         type="number"
