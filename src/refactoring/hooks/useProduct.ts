@@ -4,7 +4,7 @@ import { Product } from "../../types.ts";
 export const useProducts = (initialProducts: Product[]) => {
   const [products, setProducts] = useState<Product[]>(initialProducts);
 
-  // 제품 업데이트 함수
+  // 제품업데이트
   const updateProduct = (updatedProduct: Product) => {
     setProducts(prevProducts => 
       prevProducts.map(product => 
@@ -13,7 +13,7 @@ export const useProducts = (initialProducts: Product[]) => {
     );
   };
 
-   // 제품 추가 함수
+   // 제품추가
    const addProduct = (newProduct: Product) => {
     setProducts(prevProducts => [...prevProducts, newProduct]);
   };

@@ -1,6 +1,6 @@
 import { Product } from "../../types";
 
-// 초기 상품 리스트트
+// 초기 상품 리스트
 export const initialProducts: Product[] = [
   {
     id: 'p1',
