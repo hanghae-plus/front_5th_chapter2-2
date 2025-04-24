@@ -1,9 +1,5 @@
-import {
-  CartList,
-  CouponApplier,
-  OrderSummary,
-  ProductList,
-} from "./components";
+import { CartList, CouponApplier, OrderSummary } from "./components";
+import { ProductList } from "./components/product-list";
 
 interface Props {}
 
