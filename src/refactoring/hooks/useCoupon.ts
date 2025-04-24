@@ -14,9 +14,7 @@ export const useCoupons = (initialCoupons: Coupon[]) => {
   };
   const applyCoupon = (couponCode: string) => {
     const coupon = coupons.find((coupon) => coupon.code === couponCode);
-    // if (coupon) {
-
-    // }
+    console.log(coupon);
   };
 
   return {
