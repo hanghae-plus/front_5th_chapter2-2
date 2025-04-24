@@ -1,27 +1,13 @@
-import { useState } from 'react';
 import { Coupon } from '../../types';
+import { useCouponManage } from '../hooks';
 
 interface Props {
   coupons: Coupon[];
   onCouponAdd: (newCoupon: Coupon) => void;
 }
 export default function CouponManage({ coupons, onCouponAdd }: Props) {
-  const [newCoupon, setNewCoupon] = useState<Coupon>({
-    name: '',
-    code: '',
-    discountType: 'percentage',
-    discountValue: 0,
-  });
-
-  const handleAddCoupon = () => {
-    onCouponAdd(newCoupon);
-    setNewCoupon({
-      name: '',
-      code: '',
-      discountType: 'percentage',
-      discountValue: 0,
-    });
-  };
+  const { newCoupon, handleAddCoupon, setCouponField } =
+    useCouponManage(onCouponAdd);
 
   return (
     <div>
@@ -32,28 +18,24 @@ export default function CouponManage({ coupons, onCouponAdd }: Props) {
             type="text"
             placeholder="쿠폰 이름"
             value={newCoupon.name}
-            onChange={(e) =>
-              setNewCoupon({ ...newCoupon, name: e.target.value })
-            }
+            onChange={(e) => setCouponField('name', e.target.value)}
             className="w-full p-2 border rounded"
           />
           <input
             type="text"
             placeholder="쿠폰 코드"
             value={newCoupon.code}
-            onChange={(e) =>
-              setNewCoupon({ ...newCoupon, code: e.target.value })
-            }
+            onChange={(e) => setCouponField('code', e.target.value)}
             className="w-full p-2 border rounded"
           />
           <div className="flex gap-2">
             <select
               value={newCoupon.discountType}
               onChange={(e) =>
-                setNewCoupon({
-                  ...newCoupon,
-                  discountType: e.target.value as 'amount' | 'percentage',
-                })
+                setCouponField(
+                  'discountType',
+                  e.target.value as 'amount' | 'percentage',
+                )
               }
               className="w-full p-2 border rounded"
             >
@@ -65,10 +47,7 @@ export default function CouponManage({ coupons, onCouponAdd }: Props) {
               placeholder="할인 값"
               value={newCoupon.discountValue}
               onChange={(e) =>
-                setNewCoupon({
-                  ...newCoupon,
-                  discountValue: parseInt(e.target.value),
-                })
+                setCouponField('discountValue', parseInt(e.target.value))
               }
               className="w-full p-2 border rounded"
             />
