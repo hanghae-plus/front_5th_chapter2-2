@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { describe, expect, test } from 'vitest';
 import { act, fireEvent, render, renderHook, screen, within } from '@testing-library/react';
 import { AdminPage } from '../../refactoring/Admin/AdminPage';
-import { Coupon, Discount, Product } from '../../types';
+import { Coupon, Product } from '../../types';
 import { CartPage } from '../../refactoring/Cart/CartPage';
 import { updateProductProperty } from '../../refactoring/_models/product';
 import useProductAccordion from '../../refactoring/Admin/_hooks/useProductAccordion';
@@ -295,7 +295,6 @@ describe('advanced > ', () => {
           expect(result.current.openProductIds.size).toBe(0);
         });
       });
-      describe('상품 수정 시작 및 속성 업데이트, 수정 완료 과정이 정상적으로 동작 > ', () => {});
     });
   });
 });
