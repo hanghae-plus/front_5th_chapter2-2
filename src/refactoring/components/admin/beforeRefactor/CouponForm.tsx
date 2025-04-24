@@ -1,4 +1,6 @@
 import { Coupon } from "../../../../types";
+import CouponInput from "./CouponInput";
+import CouponSelect from "./CouponSelect";
 
 interface Props {
   newCoupon: Coupon;
@@ -9,42 +11,31 @@ interface Props {
 const CouponForm = ({ newCoupon, updateNewCoupon, onAddCoupon }: Props) => {
   return (
     <div className="space-y-2 mb-4">
-      <input
-        type="text"
-        placeholder="쿠폰 이름"
+      <CouponInput
+        type={"text"}
         value={newCoupon.name}
-        onChange={(e) => updateNewCoupon("name", e.target.value)}
-        className="w-full p-2 border rounded"
+        placeholder={"쿠폰 이름"}
+        updateNewCoupon={updateNewCoupon}
+        field={"name"}
       />
-      <input
-        type="text"
-        placeholder="쿠폰 코드"
+      <CouponInput
+        type={"text"}
         value={newCoupon.code}
-        onChange={(e) => updateNewCoupon("code", e.target.value)}
-        className="w-full p-2 border rounded"
+        placeholder={"쿠폰 코드"}
+        updateNewCoupon={updateNewCoupon}
+        field={"code"}
       />
       <div className="flex gap-2">
-        <select
+        <CouponSelect
           value={newCoupon.discountType}
-          onChange={(e) =>
-            updateNewCoupon(
-              "discountType",
-              e.target.value as "amount" | "percentage"
-            )
-          }
-          className="w-full p-2 border rounded"
-        >
-          <option value="amount">금액(원)</option>
-          <option value="percentage">할인율(%)</option>
-        </select>
-        <input
-          type="number"
-          placeholder="할인 값"
+          updateNewCoupon={updateNewCoupon}
+        />
+        <CouponInput
+          type={"number"}
           value={newCoupon.discountValue}
-          onChange={(e) =>
-            updateNewCoupon("discountValue", parseInt(e.target.value))
-          }
-          className="w-full p-2 border rounded"
+          placeholder={"할인 값"}
+          updateNewCoupon={updateNewCoupon}
+          field={"discountValue"}
         />
       </div>
       <button
