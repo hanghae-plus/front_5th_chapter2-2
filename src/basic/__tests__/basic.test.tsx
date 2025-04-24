@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { describe, expect, test } from "vitest";
+import { afterAll, afterEach, beforeAll, describe, expect, test } from "vitest";
 import {
   act,
   fireEvent,
@@ -8,11 +8,16 @@ import {
   screen,
   within,
 } from "@testing-library/react";
-import { CartPage } from "../../refactoring/components/CartPage";
-import { AdminPage } from "../../refactoring/components/AdminPage";
+import { CartPage } from "../../refactoring/components/cart/CartPage";
+import { AdminPage } from "../../refactoring/components/admin/AdminPage";
 import { CartItem, Coupon, Product } from "../../types";
 import { useCart, useCoupons, useProducts } from "../../refactoring/hooks";
-import * as cartUtils from "../../refactoring/models/cart";
+import * as cartUtils from "../../refactoring/hooks/utils/cartUtils";
+import { ProductProvider } from "../../refactoring/provider/ProductProvider";
+import { CouponProvider } from "../../refactoring/provider/CouponProvider";
+import { CartProvider } from "../../refactoring/provider/CartProvider";
+import { MemberProvider } from "../../refactoring/provider/MemberProvider";
+import { server } from "../../refactoring/mocks/server";
 
 const mockProducts: Product[] = [
   {
@@ -53,38 +58,53 @@ const mockCoupons: Coupon[] = [
 ];
 
 const TestAdminPage = () => {
-  const [products, setProducts] = useState<Product[]>(mockProducts);
-  const [coupons, setCoupons] = useState<Coupon[]>(mockCoupons);
+  const [products] = useState<Product[]>(mockProducts);
+  const [coupons] = useState<Coupon[]>(mockCoupons);
 
-  const handleProductUpdate = (updatedProduct: Product) => {
-    setProducts((prevProducts) =>
-      prevProducts.map((p) => (p.id === updatedProduct.id ? updatedProduct : p))
-    );
-  };
+  // const handleProductUpdate = (updatedProduct: Product) => {
+  //   setProducts((prevProducts) =>
+  //     prevProducts.map((p) => (p.id === updatedProduct.id ? updatedProduct : p))
+  //   );
+  // };
 
-  const handleProductAdd = (newProduct: Product) => {
-    setProducts((prevProducts) => [...prevProducts, newProduct]);
-  };
+  // const handleProductAdd = (newProduct: Product) => {
+  //   setProducts((prevProducts) => [...prevProducts, newProduct]);
+  // };
 
-  const handleCouponAdd = (newCoupon: Coupon) => {
-    setCoupons((prevCoupons) => [...prevCoupons, newCoupon]);
-  };
+  // const handleCouponAdd = (newCoupon: Coupon) => {
+  //   setCoupons((prevCoupons) => [...prevCoupons, newCoupon]);
+  // };
 
   return (
-    <AdminPage
-      products={products}
-      coupons={coupons}
-      onProductUpdate={handleProductUpdate}
-      onProductAdd={handleProductAdd}
-      onCouponAdd={handleCouponAdd}
-    />
+    <ProductProvider initialProducts={products}>
+      <CouponProvider initialCoupons={coupons}>
+        <MemberProvider>
+          <AdminPage />
+        </MemberProvider>
+      </CouponProvider>
+    </ProductProvider>
   );
 };
+
+// MSW 서버 설정
+beforeAll(() => server.listen());
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
 
 describe("basic > ", () => {
   describe("시나리오 테스트 > ", () => {
     test("장바구니 페이지 테스트 > ", async () => {
-      render(<CartPage products={mockProducts} coupons={mockCoupons} />);
+      render(
+        <ProductProvider initialProducts={mockProducts}>
+          <CouponProvider initialCoupons={mockCoupons}>
+            <MemberProvider>
+              <CartProvider>
+                <CartPage />
+              </CartProvider>
+            </MemberProvider>
+          </CouponProvider>
+        </ProductProvider>
+      );
       const product1 = screen.getByTestId("product-p1");
       const product2 = screen.getByTestId("product-p2");
       const product3 = screen.getByTestId("product-p3");
@@ -148,7 +168,9 @@ describe("basic > ", () => {
       expect(screen.getByText("최종 결제 금액: 590,000원")).toBeInTheDocument();
 
       // 10. 쿠폰 적용하기
-      const couponSelect = screen.getByRole("combobox");
+      const couponSelect = screen.getByRole("combobox", {
+        name: "쿠폰 선택",
+      });
       fireEvent.change(couponSelect, { target: { value: "1" } }); // 10% 할인 쿠폰 선택
 
       // 11. 할인율 계산
@@ -383,7 +405,7 @@ describe("basic > ", () => {
       ];
 
       test("쿠폰 없이 총액을 올바르게 계산해야 합니다.", () => {
-        const result = cartUtils.calculateCartTotal(cart, null);
+        const result = cartUtils.calculateCartTotal(cart, null, null);
         expect(result.totalBeforeDiscount).toBe(400);
         expect(result.totalAfterDiscount).toBe(380);
         expect(result.totalDiscount).toBe(20);
@@ -396,7 +418,7 @@ describe("basic > ", () => {
           discountType: "amount",
           discountValue: 50,
         };
-        const result = cartUtils.calculateCartTotal(cart, coupon);
+        const result = cartUtils.calculateCartTotal(cart, coupon, null);
         expect(result.totalAfterDiscount).toBe(330);
         expect(result.totalDiscount).toBe(70);
       });
@@ -408,7 +430,7 @@ describe("basic > ", () => {
           discountType: "percentage",
           discountValue: 10,
         };
-        const result = cartUtils.calculateCartTotal(cart, coupon);
+        const result = cartUtils.calculateCartTotal(cart, coupon, null);
         expect(result.totalAfterDiscount).toBe(342);
         expect(result.totalDiscount).toBe(58);
       });
@@ -509,7 +531,7 @@ describe("basic > ", () => {
         result.current.applyCoupon(testCoupon);
       });
 
-      const total = result.current.calculateTotal();
+      const total = result.current.calculateTotal(null);
       expect(total.totalBeforeDiscount).toBe(200);
       expect(total.totalAfterDiscount).toBe(180);
       expect(total.totalDiscount).toBe(20);
