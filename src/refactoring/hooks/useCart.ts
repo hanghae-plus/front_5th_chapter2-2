@@ -1,25 +1,43 @@
-// useCart.ts
-import { useState } from "react";
-import { CartItem, Coupon, Product } from "../../types";
-import { calculateCartTotal, updateCartItemQuantity } from "../models/cart";
+import { useState } from 'react';
+import { CartItem, Coupon, Product } from '../../types';
+import {
+  calculateCartTotal,
+  addCartProduct,
+  updateCartItemQuantity,
+  removeCartProduct,
+  getDefaultCartTotal,
+} from '../models/cart';
 
+// 장바구니 관련 커스텀 훅
 export const useCart = () => {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
 
-  const addToCart = (product: Product) => {};
+  // 장바구니에 상품 추가
+  const addToCart = (product: Product) => {
+    setCart((prev) => addCartProduct(prev, product));
+  };
 
-  const removeFromCart = (productId: string) => {};
+  // 장바구니에서 상품 제거
+  const removeFromCart = (productId: string) => {
+    setCart((prev) => removeCartProduct(prev, productId));
+  };
 
-  const updateQuantity = (productId: string, newQuantity: number) => {};
+  // 장바구니 수량 업데이트
+  const updateQuantity = (productId: string, newQuantity: number) => {
+    setCart((prev) => updateCartItemQuantity(prev, productId, newQuantity));
+  };
 
-  const applyCoupon = (coupon: Coupon) => {};
+  // 쿠폰 적용
+  const applyCoupon = (coupon: Coupon) => {
+    setSelectedCoupon(coupon);
+  };
 
-  const calculateTotal = () => ({
-    totalBeforeDiscount: 0,
-    totalAfterDiscount: 0,
-    totalDiscount: 0,
-  });
+  // 장바구니 총액 계산
+  const calculateTotal = () =>
+    cart.length > 0
+      ? calculateCartTotal(cart, selectedCoupon)
+      : getDefaultCartTotal();
 
   return {
     cart,
