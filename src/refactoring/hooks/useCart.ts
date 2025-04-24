@@ -4,6 +4,17 @@ import { CartItem, Coupon, Product } from "../../types";
 import { calculateCartTotal, updateCartItemQuantity } from "../models/cart";
 import { useLocalStorage } from "../hooks";
 
+export const addToCartOnExistItem = (
+  cartItems: CartItem[],
+  product: Product
+) => {
+  return cartItems.map((item) =>
+    item.product.id === product.id
+      ? { ...item, quantity: Math.min(item.quantity + 1, product.stock) }
+      : item
+  );
+};
+
 export const useCart = () => {
   const { cart, setCart } = useLocalStorage("cart");
   const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
@@ -24,11 +35,7 @@ export const useCart = () => {
         (item) => item.product.id === product.id
       );
       if (existingItem) {
-        return prevCart.map((item) =>
-          item.product.id === product.id
-            ? { ...item, quantity: Math.min(item.quantity + 1, product.stock) }
-            : item
-        );
+        return addToCartOnExistItem(prevCart, product);
       }
       return [...prevCart, { product, quantity: 1 }];
     });

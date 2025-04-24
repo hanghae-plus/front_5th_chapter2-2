@@ -10,12 +10,13 @@ import {
 } from "@testing-library/react";
 import { CartPage } from "../../refactoring/components/CartPage";
 import { AdminPage } from "../../refactoring/components/AdminPage";
-import { Coupon, Product } from "../../types";
+import { CartItem, Coupon, Product } from "../../types";
 import {
   getLocalStorage,
   setLocalStorage,
   removeLocalStorage,
   useLocalStorage,
+  addToCartOnExistItem,
 } from "../../refactoring/hooks";
 import { ProductsProvider } from "../../refactoring/providers";
 
@@ -56,7 +57,23 @@ const mockCoupons: Coupon[] = [
     discountValue: 10,
   },
 ];
-
+const mockCart: CartItem[] = [
+  {
+    product: {
+      id: "p1",
+      name: "상품1",
+      price: 10000,
+      stock: 20,
+      discounts: [
+        {
+          quantity: 10,
+          rate: 0.1,
+        },
+      ],
+    },
+    quantity: 4,
+  },
+];
 const TestAdminPage = () => {
   const [coupons, setCoupons] = useState<Coupon[]>(mockCoupons);
 
@@ -271,8 +288,9 @@ describe("advanced > ", () => {
   });
 
   describe("자유롭게 작성해보세요.", () => {
-    test("새로운 유틸 함수를 만든 후에 테스트 코드를 작성해서 실행해보세요", () => {
-      expect(true).toBe(false);
+    test("addToCartOnExistItem 유틸함수 테스트", () => {
+      const cart = addToCartOnExistItem(mockCart, mockProducts[0]);
+      expect(cart[0].quantity).toBe(5);
     });
 
     test("useLocalStorage 계산 테스트", () => {
