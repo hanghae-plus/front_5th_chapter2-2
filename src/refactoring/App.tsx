@@ -1,14 +1,13 @@
-import { useState } from "react";
 import { CartPage } from "./pages/CartPage.tsx";
 import { AdminPage } from "./pages/AdminPage.tsx";
-import { useCoupons, useProducts } from "./hooks";
+import { useCoupons, useProducts, useAdmin } from "./hooks";
 import { Nav } from "./components/nav";
 import { INITIAL_PRODUCTS, INITIAL_COUPONS } from "./consts";
 
 const App = () => {
   const { products, updateProduct, addProduct } = useProducts(INITIAL_PRODUCTS);
   const { coupons, addCoupon } = useCoupons(INITIAL_COUPONS);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const { isAdmin, setIsAdmin } = useAdmin(false);
 
   return (
     <div className="min-h-screen bg-gray-100">
