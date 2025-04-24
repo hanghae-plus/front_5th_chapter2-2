@@ -1,5 +1,8 @@
 import { useState } from 'react';
 import { Coupon, Discount, Product } from '../../types.ts';
+import InputField from './InputField.tsx';
+import NewProductForm from './NewProductForm.tsx';
+
 
 interface Props {
   products: Product[];
@@ -41,7 +44,7 @@ export const AdminPage = ({ products, coupons, onProductUpdate, onProductAdd, on
 
   // handleEditProduct 함수 수정
   const handleEditProduct = (product: Product) => {
-    setEditingProduct({...product});
+    setEditingProduct({ ...product });
   };
 
   // 새로운 핸들러 함수 추가
@@ -137,45 +140,11 @@ export const AdminPage = ({ products, coupons, onProductUpdate, onProductAdd, on
             {showNewProductForm ? '취소' : '새 상품 추가'}
           </button>
           {showNewProductForm && (
-            <div className="bg-white p-4 rounded shadow mb-4">
-              <h3 className="text-xl font-semibold mb-2">새 상품 추가</h3>
-              <div className="mb-2">
-                <label htmlFor="productName" className="block text-sm font-medium text-gray-700">상품명</label>
-                <input
-                  id="productName"
-                  type="text"
-                  value={newProduct.name}
-                  onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
-                  className="w-full p-2 border rounded"
-                />
-              </div>
-              <div className="mb-2">
-                <label htmlFor="productPrice" className="block text-sm font-medium text-gray-700">가격</label>
-                <input
-                  id="productPrice"
-                  type="number"
-                  value={newProduct.price}
-                  onChange={(e) => setNewProduct({ ...newProduct, price: parseInt(e.target.value) })}
-                  className="w-full p-2 border rounded"
-                />
-              </div>
-              <div className="mb-2">
-                <label htmlFor="productStock" className="block text-sm font-medium text-gray-700">재고</label>
-                <input
-                  id="productStock"
-                  type="number"
-                  value={newProduct.stock}
-                  onChange={(e) => setNewProduct({ ...newProduct, stock: parseInt(e.target.value) })}
-                  className="w-full p-2 border rounded"
-                />
-              </div>
-              <button
-                onClick={handleAddNewProduct}
-                className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
-              >
-                추가
-              </button>
-            </div>
+            <NewProductForm
+              newProduct={newProduct}
+              setNewProduct={setNewProduct}
+              handleAddNewProduct={handleAddNewProduct}
+            />
           )}
           <div className="space-y-2">
             {products.map((product, index) => (
@@ -221,6 +190,7 @@ export const AdminPage = ({ products, coupons, onProductUpdate, onProductAdd, on
                         {/* 할인 정보 수정 부분 */}
                         <div>
                           <h4 className="text-lg font-semibold mb-2">할인 정보</h4>
+
                           {editingProduct.discounts.map((discount, index) => (
                             <div key={index} className="flex justify-between items-center mb-2">
                               <span>{discount.quantity}개 이상 구매 시 {discount.rate * 100}% 할인</span>
@@ -288,19 +258,15 @@ export const AdminPage = ({ products, coupons, onProductUpdate, onProductAdd, on
           <h2 className="text-2xl font-semibold mb-4">쿠폰 관리</h2>
           <div className="bg-white p-4 rounded shadow">
             <div className="space-y-2 mb-4">
-              <input
-                type="text"
+              <InputField
+                searchValue={newCoupon.name}
+                setSearchValue={(value) => setNewCoupon({ ...newCoupon, name: value })}
                 placeholder="쿠폰 이름"
-                value={newCoupon.name}
-                onChange={(e) => setNewCoupon({ ...newCoupon, name: e.target.value })}
-                className="w-full p-2 border rounded"
               />
-              <input
-                type="text"
+              <InputField
+                searchValue={newCoupon.code}
+                setSearchValue={(value) => setNewCoupon({ ...newCoupon, code: value })}
                 placeholder="쿠폰 코드"
-                value={newCoupon.code}
-                onChange={(e) => setNewCoupon({ ...newCoupon, code: e.target.value })}
-                className="w-full p-2 border rounded"
               />
               <div className="flex gap-2">
                 <select

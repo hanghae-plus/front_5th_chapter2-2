@@ -84,7 +84,7 @@ const App = () => {
             onCouponAdd={handleCouponAdd}
           />
         ) : (
-          <CartPage products={products} coupons={coupons}/>
+          <CartPage products={products} coupons={coupons} />
         )}
       </main>
     </div>
