@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { CartItem, Coupon, Product } from '../../types.ts';
-import { calculateCartTotal } from '../../refactoring/models/cart.ts';
+import { calculateCartTotal } from '../../refactoring/utils';
 
 interface Props {
   products: Product[];
@@ -66,7 +66,7 @@ export const CartPage = ({ products, coupons }: Props) => {
   };
 
   const { totalBeforeDiscount, totalAfterDiscount, totalDiscount } =
-    calculateCartTotal();
+    calculateCartTotal(cart, selectedCoupon);
 
   const getAppliedDiscount = (item: CartItem) => {
     const { discounts } = item.product;
