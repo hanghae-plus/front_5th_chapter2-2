@@ -1,8 +1,8 @@
-type OrderSummaryProps = {
+interface OrderSummaryProps {
   totalBeforeDiscount: number;
   totalDiscount: number;
   totalAfterDiscount: number;
-};
+}
 
 const OrderSummary = (props: OrderSummaryProps) => {
   const { totalBeforeDiscount, totalDiscount, totalAfterDiscount } = props;
