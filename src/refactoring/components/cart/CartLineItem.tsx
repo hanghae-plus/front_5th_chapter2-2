@@ -2,16 +2,10 @@
 import { CartItem } from "../../../types.ts"
 import { getAppliedDiscount } from "../../models/cart.ts"
 import Button from "../ui/Button.tsx"
+import { useCartContext } from "../../context/CartContext.tsx"
 
-export default function CartLineItem({
-  item,
-  updateQuantity,
-  removeFromCart,
-}: {
-  item: CartItem
-  updateQuantity: (productId: string, newQuantity: number) => void
-  removeFromCart: (productId: string) => void
-}) {
+export default function CartLineItem({ item }: { item: CartItem }) {
+  const { removeFromCart, updateQuantity } = useCartContext()
   const appliedDiscount = getAppliedDiscount(item)
 
   return (

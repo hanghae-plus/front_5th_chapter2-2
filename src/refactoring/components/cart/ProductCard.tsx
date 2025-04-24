@@ -3,16 +3,10 @@ import { Cart, Product } from "../../../types.ts"
 import { getRemainingStock } from "../../models/cart.ts"
 import { calculateProductMaxDiscountRate } from "../../models/product.ts"
 import Button from "../ui/Button.tsx"
+import { useCartContext } from "../../context/CartContext.tsx"
 
-export default function ProductCard({
-  product,
-  cart,
-  addToCart,
-}: {
-  product: Product
-  cart: Cart
-  addToCart: (product: Product) => void
-}) {
+export default function ProductCard({ product, cart }: { product: Product; cart: Cart }) {
+  const { addToCart } = useCartContext()
   const remainingStock = getRemainingStock(cart, product)
 
   return (

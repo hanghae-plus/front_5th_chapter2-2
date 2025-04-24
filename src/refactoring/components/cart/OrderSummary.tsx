@@ -1,12 +1,7 @@
-export default function OrderSummary({
-  calculateTotal,
-}: {
-  calculateTotal: () => {
-    totalBeforeDiscount: number
-    totalAfterDiscount: number
-    totalDiscount: number
-  }
-}) {
+import { useCartContext } from "../../context/CartContext.tsx"
+
+export default function OrderSummary() {
+  const { calculateTotal } = useCartContext()
   const { totalBeforeDiscount, totalAfterDiscount, totalDiscount } = calculateTotal()
 
   return (

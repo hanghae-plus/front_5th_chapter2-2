@@ -1,16 +1,11 @@
 import { Coupon } from "../../../types.ts"
 import { useCouponContext } from "../../context/CouponContext.tsx"
 import Select, { SelectOption } from "../ui/Select.tsx"
+import { useCartContext } from "../../context/CartContext.tsx"
 
-export default function CouponSelector({
-  selectedCoupon,
-  applyCoupon,
-}: {
-  selectedCoupon: Coupon | null
-  applyCoupon: (coupon: Coupon) => void
-}) {
+export default function CouponSelector() {
   const { coupons } = useCouponContext()
-
+  const { applyCoupon, selectedCoupon } = useCartContext()
   // 쿠폰 옵션 생성
   const couponOptions = coupons.map((coupon, index) => ({
     label: `${coupon.name} - ${
