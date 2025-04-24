@@ -1,4 +1,3 @@
-import { Discount } from './types';
 export interface Product {
   id: string;
   name: string;
