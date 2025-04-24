@@ -1,4 +1,4 @@
-import { Product } from "../../types";
+import { Product } from "../../../../types";
 
 interface NewProductFormTypeProps {
   product: Omit<Product, "id">;

@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Product, Discount } from "../../types";
-import { useForm } from "../hooks";
+import { Product, Discount } from "../../../../types";
+import { useForm } from "../../../hooks";
 
 interface ProductEditorTypeProps {
   product: Product;

@@ -1,8 +1,8 @@
 import { useMemo } from "react";
 
-import { getMaxDiscount, getRemainingStock } from "../utils";
+import { getMaxDiscount, getRemainingStock } from "../../../utils";
 
-import { CartItem, Product } from "../../types";
+import { CartItem, Product } from "../../../../types";
 
 interface ProductItemTypeProps {
   product: Product;

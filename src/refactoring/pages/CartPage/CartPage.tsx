@@ -1,17 +1,17 @@
-import { CartProductItem } from "./CartProductItem.tsx";
-import { ProductItem } from "./ProductItem.tsx";
-import { SearchBar } from "./SearchBar.tsx";
+import { ProductItem } from "./components/ProductItem";
+import { CartProductItem } from "./components/CartProductItem";
+import { SearchBar } from "../../components/SearchBar";
 
-import { useCart, useProductSearch } from "../hooks";
+import { useCart, useProductSearch } from "../../hooks";
 
-import { Coupon, Product } from "../../types.ts";
+import { Coupon, Product } from "../../../types";
 
 interface Props {
   products: Product[];
   coupons: Coupon[];
 }
 
-export const CartPage = ({ products, coupons }: Props) => {
+const CartPage = ({ products, coupons }: Props) => {
   const {
     cart,
     addToCart,
@@ -107,3 +107,5 @@ export const CartPage = ({ products, coupons }: Props) => {
     </div>
   );
 };
+
+export default CartPage;

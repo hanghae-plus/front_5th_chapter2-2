@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 
-import { CartItem } from "../../types";
+import { CartItem } from "../../../../types";
 
 interface CartProductItemTypeProps {
   cart: CartItem;

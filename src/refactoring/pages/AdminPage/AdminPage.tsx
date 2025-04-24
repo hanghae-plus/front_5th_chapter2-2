@@ -1,12 +1,9 @@
 import { useState } from "react";
-
-import { NewProductForm } from "./NewProductForm.tsx";
-import { CouponManager } from "./CouponManager.tsx";
-import { ProductEditor } from "./ProductEditor.tsx";
-
-import { useForm } from "../hooks/useForm.ts";
-
-import { Coupon, Product } from "../../types.ts";
+import { Coupon, Product } from "../../../types";
+import { useForm } from "../../hooks";
+import { NewProductForm } from "./components/NewProductForm";
+import { ProductEditor } from "./components/ProductEditor";
+import { CouponManager } from "./components/CouponManager";
 
 const INITIAL_PRODUCT_STATE = {
   name: "",
@@ -23,7 +20,7 @@ interface Props {
   onCouponAdd: (newCoupon: Coupon) => void;
 }
 
-export const AdminPage = ({
+const AdminPage = ({
   products,
   coupons,
   onProductUpdate,
@@ -113,3 +110,5 @@ export const AdminPage = ({
     </div>
   );
 };
+
+export default AdminPage;
