@@ -3,19 +3,14 @@ import type { Product } from "../../../types";
 import { ProductToggleButton } from "./ProductToggleButton";
 import { UpdateProductForm } from "./UpdateProductForm";
 import { DiscountInfo } from "./DiscountInfo";
+import { useAtomValue } from "jotai";
+import { productsAtom } from "../../../state";
 
-interface ProductListProps {
-  products: Product[];
-  onProductUpdate: (updatedProduct: Product) => void;
-}
-
-export const ProductList = ({
-  products,
-  onProductUpdate,
-}: ProductListProps) => {
+export const ProductList = () => {
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [openProductIds, setOpenProductIds] = useState<Set<string>>(new Set());
 
+  const products = useAtomValue(productsAtom);
   // handleEditProduct 함수 수정
   const handleEditProduct = (product: Product) => {
     setEditingProduct({ ...product });
@@ -39,7 +34,6 @@ export const ProductList = ({
                 <UpdateProductForm
                   products={products}
                   product={product}
-                  onProductUpdate={onProductUpdate}
                   editingProduct={editingProduct}
                   setEditingProduct={setEditingProduct}
                 />

@@ -1,10 +1,10 @@
-import { useState } from "react";
-import type { Discount, Product } from "../../../types";
+import type { Product } from "../../../types";
+
+import { useProductUpdateForm } from "../../../hooks";
 
 interface UpdateProductFormProps {
   products: Product[];
   product: Product;
-  onProductUpdate: (updatedProduct: Product) => void;
   editingProduct: Product | null;
   setEditingProduct: (product: Product | null) => void;
 }
@@ -12,71 +12,24 @@ interface UpdateProductFormProps {
 export const UpdateProductForm = ({
   products,
   product,
-  onProductUpdate,
   editingProduct,
   setEditingProduct,
 }: UpdateProductFormProps) => {
-  //   const [editingProduct, setEditingProduct] = useState<Product | null>(product);
-  const [newDiscount, setNewDiscount] = useState<Discount>({
-    quantity: 0,
-    rate: 0,
+  const {
+    handleEditComplete,
+    handleProductNameUpdate,
+    handlePriceUpdate,
+    handleStockUpdate,
+    handleAddDiscount,
+    handleRemoveDiscount,
+    handleChangeDiscountRate,
+    handleChangeDiscountQuantity,
+    newDiscount,
+  } = useProductUpdateForm({
+    products,
+    editingProduct,
+    setEditingProduct,
   });
-
-  // 수정 완료 핸들러 함수 추가
-  const handleEditComplete = () => {
-    if (editingProduct) {
-      onProductUpdate(editingProduct);
-      setEditingProduct(null);
-    }
-  };
-
-  const handleProductNameUpdate = (productId: string, newName: string) => {
-    if (editingProduct && editingProduct.id === productId) {
-      const updatedProduct = { ...editingProduct, name: newName };
-      setEditingProduct(updatedProduct);
-    }
-  };
-
-  const handleStockUpdate = (productId: string, newStock: number) => {
-    const updatedProduct = products.find((p) => p.id === productId);
-    if (updatedProduct) {
-      const newProduct = { ...updatedProduct, stock: newStock };
-      onProductUpdate(newProduct);
-      setEditingProduct(newProduct);
-    }
-  };
-
-  const handlePriceUpdate = (productId: string, newPrice: number) => {
-    if (editingProduct && editingProduct.id === productId) {
-      const updatedProduct = { ...editingProduct, price: newPrice };
-      setEditingProduct(updatedProduct);
-    }
-  };
-
-  const handleAddDiscount = (productId: string) => {
-    const updatedProduct = products.find((p) => p.id === productId);
-    if (updatedProduct && editingProduct) {
-      const newProduct = {
-        ...updatedProduct,
-        discounts: [...updatedProduct.discounts, newDiscount],
-      };
-      onProductUpdate(newProduct);
-      setEditingProduct(newProduct);
-      setNewDiscount({ quantity: 0, rate: 0 });
-    }
-  };
-
-  const handleRemoveDiscount = (productId: string, index: number) => {
-    const updatedProduct = products.find((p) => p.id === productId);
-    if (updatedProduct) {
-      const newProduct = {
-        ...updatedProduct,
-        discounts: updatedProduct.discounts.filter((_, i) => i !== index),
-      };
-      onProductUpdate(newProduct);
-      setEditingProduct(newProduct);
-    }
-  };
   return (
     <div>
       <div className="mb-4">
@@ -147,10 +100,7 @@ export const UpdateProductForm = ({
             placeholder="수량"
             value={newDiscount.quantity}
             onChange={(e) =>
-              setNewDiscount({
-                ...newDiscount,
-                quantity: Number.parseInt(e.target.value),
-              })
+              handleChangeDiscountQuantity(Number.parseInt(e.target.value))
             }
             className="w-1/3 p-2 border rounded"
           />
@@ -159,10 +109,7 @@ export const UpdateProductForm = ({
             placeholder="할인율 (%)"
             value={newDiscount.rate * 100}
             onChange={(e) =>
-              setNewDiscount({
-                ...newDiscount,
-                rate: Number.parseInt(e.target.value) / 100,
-              })
+              handleChangeDiscountRate(Number.parseInt(e.target.value) / 100)
             }
             className="w-1/3 p-2 border rounded"
           />

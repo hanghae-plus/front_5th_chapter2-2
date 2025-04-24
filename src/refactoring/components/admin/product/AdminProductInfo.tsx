@@ -1,14 +1,9 @@
 import { useState } from "react";
 import { NewProductForm } from "./NewProductForm";
 import { ProductList } from "./ProductList";
-import { useAtomValue, useSetAtom } from "jotai";
-import { productsAtom, updateProductAtom } from "../../../state";
 
 export const AdminProductInfo = () => {
   const [showNewProductForm, setShowNewProductForm] = useState(false);
-
-  const products = useAtomValue(productsAtom);
-  const onProductUpdate = useSetAtom(updateProductAtom);
 
   return (
     <div>
@@ -23,7 +18,7 @@ export const AdminProductInfo = () => {
       {showNewProductForm && (
         <NewProductForm setShowNewProductForm={setShowNewProductForm} />
       )}
-      <ProductList products={products} onProductUpdate={onProductUpdate} />
+      <ProductList />
     </div>
   );
 };
