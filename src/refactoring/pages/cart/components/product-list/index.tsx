@@ -1,5 +1,5 @@
 import { useProductContext } from "@r/model/product/product-context";
-import { ProductCard } from "./product-card";
+import { ProductCard } from "./product-list/product-card";
 
 interface ProductListProps {}
 
