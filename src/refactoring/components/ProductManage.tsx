@@ -1,9 +1,11 @@
-import { useState } from 'react';
 import { Product } from '../../types';
+import { useDiscount } from '../hooks/useDiscount';
+import { useProductEdit } from '../hooks/useProductEdit';
+import { getTitle, isEditingProduct } from '../utils/productUtils';
 import NewProductForm from './NewProductForm';
 import ProductAccordion from './ProductAccordion';
 import ProductEditForm from './ProductEditForm';
-import { getTitle, isEditingProduct } from '../utils/productUtils';
+import ProductDiscountsCard from './ProductDiscountsCard';
 
 interface Props {
   products: Product[];
@@ -16,12 +18,15 @@ export default function ProductManage({
   onProductUpdate,
   onProductAdd,
 }: Props) {
-  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+  const productEditor = useProductEdit(onProductUpdate, products);
+  const { editingProduct, setEditingProduct, updateProduct } = productEditor;
 
-  // handleEditProduct 함수 수정
-  const handleEditProduct = (product: Product) => {
-    setEditingProduct({ ...product });
-  };
+  const productDiscounter = useDiscount(
+    products,
+    editingProduct,
+    setEditingProduct,
+    onProductUpdate,
+  );
 
   return (
     <div>
@@ -38,29 +43,14 @@ export default function ProductManage({
               {isEditingProduct(editingProduct, product.id) ? (
                 <ProductEditForm
                   product={product}
-                  products={products}
-                  editingProduct={editingProduct}
-                  setEditingProduct={setEditingProduct}
-                  onProductUpdate={onProductUpdate}
+                  productEditor={{ ...productEditor, editingProduct }}
+                  productDiscounter={productDiscounter}
                 />
               ) : (
-                <div>
-                  {product.discounts.map((discount, index) => (
-                    <div key={index} className="mb-2">
-                      <span>
-                        {discount.quantity}개 이상 구매 시 {discount.rate * 100}
-                        % 할인
-                      </span>
-                    </div>
-                  ))}
-                  <button
-                    data-testid="modify-button"
-                    onClick={() => handleEditProduct(product)}
-                    className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 mt-2"
-                  >
-                    수정
-                  </button>
-                </div>
+                <ProductDiscountsCard
+                  product={product}
+                  handleEditProduct={updateProduct}
+                />
               )}
             </ProductAccordion>
           </div>

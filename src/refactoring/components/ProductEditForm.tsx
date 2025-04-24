@@ -1,59 +1,31 @@
 import { Product } from '../../types';
+import { useProductEdit } from '../hooks/useProductEdit';
 import { useDiscount } from '../hooks/useDiscount';
 
 interface Props {
   product: Product;
-  products: Product[];
-  editingProduct: Product | null;
-  setEditingProduct: (product: Product | null) => void;
-  onProductUpdate: (updatedProduct: Product) => void;
+  productEditor: ReturnType<typeof useProductEdit>;
+  productDiscounter: ReturnType<typeof useDiscount>;
 }
 
 export default function ProductEditForm({
   product,
-  products,
-  editingProduct,
-  setEditingProduct,
-  onProductUpdate,
+  productEditor,
+  productDiscounter,
 }: Props) {
   const {
+    editingProduct,
+    handleProductNameUpdate,
+    handlePriceUpdate,
+    handleStockUpdate,
+    handleEditComplete,
+  } = productEditor;
+  const {
+    newDiscount,
     handleAddDiscount,
     handleRemoveDiscount,
-    newDiscount,
     setNewDiscount,
-  } = useDiscount(products, editingProduct, setEditingProduct, onProductUpdate);
-  // 새로운 핸들러 함수 추가
-  const handleProductNameUpdate = (productId: string, newName: string) => {
-    if (editingProduct && editingProduct.id === productId) {
-      const updatedProduct = { ...editingProduct, name: newName };
-      setEditingProduct(updatedProduct);
-    }
-  };
-
-  // 새로운 핸들러 함수 추가
-  const handlePriceUpdate = (productId: string, newPrice: number) => {
-    if (editingProduct && editingProduct.id === productId) {
-      const updatedProduct = { ...editingProduct, price: newPrice };
-      setEditingProduct(updatedProduct);
-    }
-  };
-
-  // 수정 완료 핸들러 함수 추가
-  const handleEditComplete = () => {
-    if (editingProduct) {
-      onProductUpdate(editingProduct);
-      setEditingProduct(null);
-    }
-  };
-
-  const handleStockUpdate = (productId: string, newStock: number) => {
-    const updatedProduct = products.find((p) => p.id === productId);
-    if (updatedProduct) {
-      const newProduct = { ...updatedProduct, stock: newStock };
-      onProductUpdate(newProduct);
-      setEditingProduct(newProduct);
-    }
-  };
+  } = productDiscounter;
 
   return (
     <div>
