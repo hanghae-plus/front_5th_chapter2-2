@@ -1,4 +1,4 @@
-import {  Product } from "../../types.ts"
+import { Discount, Product } from "../../types.ts"
 import { useState } from "react"
 
 export default function useProductEditForm({
@@ -24,6 +24,13 @@ export default function useProductEditForm({
     setEditingProduct((prev) => ({ ...prev, stock: newStock }))
   }
 
+  const handleDiscountUpdate = (updatedDiscounts: Discount[]) => {
+    setEditingProduct((prev) => ({
+      ...prev,
+      discounts: updatedDiscounts,
+    }))
+  }
+
   const handleSaveChanges = () => {
     updateProduct(editingProduct)
     onEditComplete()
@@ -34,6 +41,7 @@ export default function useProductEditForm({
     handleProductNameUpdate,
     handlePriceUpdate,
     handleStockUpdate,
+    handleDiscountUpdate,
     handleSaveChanges,
   }
 }

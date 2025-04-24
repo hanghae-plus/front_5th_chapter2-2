@@ -1,4 +1,4 @@
-import { Product } from "../../../../types.ts"
+import { Discount, Product } from "../../../../types.ts"
 import { useProductContext } from "../../../context/ProductContext.tsx"
 import { useDiscountManager } from "../../../hooks/useDiscountManager.ts"
 import Button from "../../ui/Button.tsx"
@@ -7,13 +7,15 @@ import { formatPercentage } from "../../../utils"
 
 interface IDiscountManager {
   product: Product
+  onDiscountsUpdate: (discounts: Discount[]) => void
 }
-export default function DiscountManager({ product }: IDiscountManager) {
+export default function DiscountManager({ product, onDiscountsUpdate }: IDiscountManager) {
   const { updateProduct } = useProductContext()
 
   const { newDiscount, handleNewDiscountChange, handleAddDiscount, handleRemoveDiscount } = useDiscountManager({
     product,
     updateProduct,
+    onDiscountsUpdate
   })
 
   return (

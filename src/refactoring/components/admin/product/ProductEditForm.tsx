@@ -12,7 +12,7 @@ interface IProductEditForm {
 export default function ProductEditForm({ product, onEditComplete }: IProductEditForm) {
   const { updateProduct } = useProductContext()
 
-  const { editingProduct, handleProductNameUpdate, handlePriceUpdate, handleStockUpdate, handleSaveChanges } =
+  const { editingProduct, handleProductNameUpdate, handlePriceUpdate, handleStockUpdate, handleSaveChanges, handleDiscountUpdate } =
     useProductEditForm({ product, updateProduct, onEditComplete })
 
   return (
@@ -45,7 +45,7 @@ export default function ProductEditForm({ product, onEditComplete }: IProductEdi
         />
       </div>
       {/* 할인 정보 수정 부분 */}
-      <DiscountManager product={product} />
+      <DiscountManager product={product} onDiscountsUpdate={handleDiscountUpdate} />
       <Button onClick={handleSaveChanges} className="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600 mt-2">
         수정 완료
       </Button>
