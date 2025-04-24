@@ -1,4 +1,5 @@
 import { Coupon } from "../../../../types";
+import { Input } from "../../../components/Input";
 
 interface CouponManagerTypeProps {
   coupons: Coupon[];
@@ -18,20 +19,22 @@ export const CouponManager = ({
       <h2 className="text-2xl font-semibold mb-4">쿠폰 관리</h2>
       <div className="bg-white p-4 rounded shadow">
         <div className="space-y-2 mb-4">
-          <input
-            type="text"
-            placeholder="쿠폰 이름"
-            value={newCoupon.name}
-            onChange={(e) => onChange({ ...newCoupon, name: e.target.value })}
-            className="w-full p-2 border rounded"
-          />
-          <input
-            type="text"
-            placeholder="쿠폰 코드"
-            value={newCoupon.code}
-            onChange={(e) => onChange({ ...newCoupon, code: e.target.value })}
-            className="w-full p-2 border rounded"
-          />
+          <Input>
+            <Input.Field
+              type="text"
+              placeholder="쿠폰 이름"
+              value={newCoupon.name}
+              onChange={(e) => onChange({ ...newCoupon, name: e.target.value })}
+            />
+          </Input>
+          <Input>
+            <Input.Field
+              type="text"
+              placeholder="쿠폰 코드"
+              value={newCoupon.code}
+              onChange={(e) => onChange({ ...newCoupon, code: e.target.value })}
+            />
+          </Input>
           <div className="flex gap-2">
             <select
               value={newCoupon.discountType}

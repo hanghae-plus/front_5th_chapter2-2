@@ -1,6 +1,10 @@
 import { useState } from "react";
-import { Product, Discount } from "../../../../types";
+
+import { Input } from "../../../components/Input";
+
 import { useForm } from "../../../hooks";
+
+import { Product, Discount } from "../../../../types";
 
 interface ProductEditorTypeProps {
   product: Product;
@@ -60,37 +64,34 @@ export const ProductEditor = ({
         <div className="mt-2">
           {isEditing ? (
             <div>
-              <div className="mb-4">
-                <label className="block mb-1">상품명: </label>
-                <input
+              <Input id="edit-product-name">
+                <Input.Label>상품명 :</Input.Label>
+                <Input.Field
                   type="text"
                   value={editProduct.name}
                   onChange={(e) => handleChange("name", e.target.value)}
-                  className="w-full p-2 border rounded"
                 />
-              </div>
-              <div className="mb-4">
-                <label className="block mb-1">가격: </label>
-                <input
+              </Input>
+              <Input id="edit-product-price">
+                <Input.Label>가격: </Input.Label>
+                <Input.Field
                   type="number"
                   value={editProduct.price}
                   onChange={(e) =>
                     handleChange("price", parseInt(e.target.value))
                   }
-                  className="w-full p-2 border rounded"
                 />
-              </div>
-              <div className="mb-4">
-                <label className="block mb-1">재고: </label>
-                <input
+              </Input>
+              <Input id="edit-product-stock">
+                <Input.Label>재고: </Input.Label>
+                <Input.Field
                   type="number"
                   value={editProduct.stock}
                   onChange={(e) =>
                     handleChange("stock", parseInt(e.target.value))
                   }
-                  className="w-full p-2 border rounded"
                 />
-              </div>
+              </Input>
               <div>
                 <h4 className="text-lg font-semibold mb-2">할인 정보</h4>
                 {editProduct.discounts.map((discount, idx) => (
@@ -111,30 +112,32 @@ export const ProductEditor = ({
                   </div>
                 ))}
                 <div className="flex space-x-2">
-                  <input
-                    type="number"
-                    placeholder="수량"
-                    value={newDiscount.quantity}
-                    onChange={(e) =>
-                      setNewDiscount({
-                        ...newDiscount,
-                        quantity: parseInt(e.target.value),
-                      })
-                    }
-                    className="w-1/3 p-2 border rounded"
-                  />
-                  <input
-                    type="number"
-                    placeholder="할인율 (%)"
-                    value={newDiscount.rate * 100}
-                    onChange={(e) =>
-                      setNewDiscount({
-                        ...newDiscount,
-                        rate: parseInt(e.target.value) / 100,
-                      })
-                    }
-                    className="w-1/3 p-2 border rounded"
-                  />
+                  <Input id="edit-product-quantity">
+                    <Input.Field
+                      type="number"
+                      placeholder="수량"
+                      value={newDiscount.quantity || ""}
+                      onChange={(e) =>
+                        setNewDiscount({
+                          ...newDiscount,
+                          quantity: parseInt(e.target.value),
+                        })
+                      }
+                    />
+                  </Input>
+                  <Input id="edit-product-rate">
+                    <Input.Field
+                      type="number"
+                      placeholder="할인율 (%)"
+                      value={newDiscount.rate * 100 || ""}
+                      onChange={(e) =>
+                        setNewDiscount({
+                          ...newDiscount,
+                          rate: parseInt(e.target.value) / 100,
+                        })
+                      }
+                    />
+                  </Input>
                   <button
                     onClick={handleAddDiscount}
                     className="w-1/3 bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
