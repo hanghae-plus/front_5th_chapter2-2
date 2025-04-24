@@ -1,244 +1,860 @@
-import { useState } from "react";
-import { describe, expect, test } from 'vitest';
-import { act, fireEvent, render, screen, within } from '@testing-library/react';
-import { CartPage } from '../../refactoring/components/CartPage';
-import { AdminPage } from "../../refactoring/components/AdminPage";
-import { Coupon, Product } from '../../types';
+import { afterEach, describe, expect, test } from "vitest"
+import { act, fireEvent, render, renderHook, screen, within } from "@testing-library/react"
+import { CartPage } from "../../refactoring/components/CartPage.tsx"
+import { AdminPage } from "../../refactoring/components/AdminPage"
+import { Cart, CartItem, Coupon, Discount, Product } from "../../types"
+import { useCart, useCoupons, useProducts } from "../../refactoring/hooks"
+import * as cartUtils from "../../refactoring/models/cart"
+import * as productUtils from "../../refactoring/models/product"
+import * as discountUtils from "../../refactoring/models/discount"
+import { ProductProvider } from "../../refactoring/context/ProductContext.tsx"
+import { CouponProvider } from "../../refactoring/context/CouponContext.tsx"
+import { CartProvider } from "../../refactoring/context/CartContext.tsx"
+import * as utils from "../../refactoring/utils"
 
 const mockProducts: Product[] = [
   {
-    id: 'p1',
-    name: '상품1',
+    id: "p1",
+    name: "상품1",
     price: 10000,
     stock: 20,
-    discounts: [{ quantity: 10, rate: 0.1 }]
+    discounts: [{ quantity: 10, rate: 0.1 }],
   },
   {
-    id: 'p2',
-    name: '상품2',
+    id: "p2",
+    name: "상품2",
     price: 20000,
     stock: 20,
-    discounts: [{ quantity: 10, rate: 0.15 }]
+    discounts: [{ quantity: 10, rate: 0.15 }],
   },
   {
-    id: 'p3',
-    name: '상품3',
+    id: "p3",
+    name: "상품3",
     price: 30000,
     stock: 20,
-    discounts: [{ quantity: 10, rate: 0.2 }]
-  }
-];
+    discounts: [{ quantity: 10, rate: 0.2 }],
+  },
+]
 const mockCoupons: Coupon[] = [
   {
-    name: '5000원 할인 쿠폰',
-    code: 'AMOUNT5000',
-    discountType: 'amount',
-    discountValue: 5000
+    name: "5000원 할인 쿠폰",
+    code: "AMOUNT5000",
+    discountType: "amount",
+    discountValue: 5000,
   },
   {
-    name: '10% 할인 쿠폰',
-    code: 'PERCENT10',
-    discountType: 'percentage',
-    discountValue: 10
-  }
-];
+    name: "10% 할인 쿠폰",
+    code: "PERCENT10",
+    discountType: "percentage",
+    discountValue: 10,
+  },
+]
 
-const TestAdminPage = () => {
-  const [products, setProducts] = useState<Product[]>(mockProducts);
-  const [coupons, setCoupons] = useState<Coupon[]>(mockCoupons);
-
-
-  const handleProductUpdate = (updatedProduct: Product) => {
-    setProducts(prevProducts =>
-      prevProducts.map(p => p.id === updatedProduct.id ? updatedProduct : p)
-    );
-  };
-
-  const handleProductAdd = (newProduct: Product) => {
-    setProducts(prevProducts => [...prevProducts, newProduct]);
-  };
-
-  const handleCouponAdd = (newCoupon: Coupon) => {
-    setCoupons(prevCoupons => [...prevCoupons, newCoupon]);
-  };
-
+// 테스트용 장바구니 페이지 컴포넌트
+const TestCartPage = () => {
   return (
-    <AdminPage
-      products={products}
-      coupons={coupons}
-      onProductUpdate={handleProductUpdate}
-      onProductAdd={handleProductAdd}
-      onCouponAdd={handleCouponAdd}
-    />
-  );
-};
+    <ProductProvider initialProducts={mockProducts}>
+      <CouponProvider initialCoupons={mockCoupons}>
+        <CartProvider>
+          <CartPage />
+        </CartProvider>
+      </CouponProvider>
+    </ProductProvider>
+  )
+}
 
-describe('advanced > ', () => {
+// 테스트용 관리자 페이지 컴포넌트
+const TestAdminPage = () => {
+  return (
+    <ProductProvider initialProducts={mockProducts}>
+      <CouponProvider initialCoupons={mockCoupons}>
+        <AdminPage />
+      </CouponProvider>
+    </ProductProvider>
+  )
+}
 
-  describe('시나리오 테스트 > ', () => {
+describe("basic > ", () => {
+  afterEach(() => {
+    localStorage.clear();
+  });
 
-    test('장바구니 페이지 테스트 > ', async () => {
+  describe("시나리오 테스트 > ", () => {
+    test("장바구니 페이지 테스트 > ", async () => {
+      render(<TestCartPage />)
 
-      render(<CartPage products={mockProducts} coupons={mockCoupons}/>);
-      const product1 = screen.getByTestId('product-p1');
-      const product2 = screen.getByTestId('product-p2');
-      const product3 = screen.getByTestId('product-p3');
-      const addToCartButtonsAtProduct1 = within(product1).getByText('장바구니에 추가');
-      const addToCartButtonsAtProduct2 = within(product2).getByText('장바구니에 추가');
-      const addToCartButtonsAtProduct3 = within(product3).getByText('장바구니에 추가');
+      const product1 = screen.getByTestId("product-p1")
+      const product2 = screen.getByTestId("product-p2")
+      const product3 = screen.getByTestId("product-p3")
+      const addToCartButtonsAtProduct1 = within(product1).getByText("장바구니에 추가")
+      const addToCartButtonsAtProduct2 = within(product2).getByText("장바구니에 추가")
+      const addToCartButtonsAtProduct3 = within(product3).getByText("장바구니에 추가")
 
       // 1. 상품 정보 표시
-      expect(product1).toHaveTextContent('상품1');
-      expect(product1).toHaveTextContent('10,000원');
-      expect(product1).toHaveTextContent('재고: 20개');
-      expect(product2).toHaveTextContent('상품2');
-      expect(product2).toHaveTextContent('20,000원');
-      expect(product2).toHaveTextContent('재고: 20개');
-      expect(product3).toHaveTextContent('상품3');
-      expect(product3).toHaveTextContent('30,000원');
-      expect(product3).toHaveTextContent('재고: 20개');
-
+      expect(product1).toHaveTextContent("상품1")
+      expect(product1).toHaveTextContent("10,000원")
+      expect(product1).toHaveTextContent("재고: 20개")
+      expect(product2).toHaveTextContent("상품2")
+      expect(product2).toHaveTextContent("20,000원")
+      expect(product2).toHaveTextContent("재고: 20개")
+      expect(product3).toHaveTextContent("상품3")
+      expect(product3).toHaveTextContent("30,000원")
+      expect(product3).toHaveTextContent("재고: 20개")
 
       // 2. 할인 정보 표시
-      expect(screen.getByText('10개 이상: 10% 할인')).toBeInTheDocument();
+      expect(screen.getByText("10개 이상: 10% 할인")).toBeInTheDocument()
 
       // 3. 상품1 장바구니에 상품 추가
-      fireEvent.click(addToCartButtonsAtProduct1); // 상품1 추가
+      fireEvent.click(addToCartButtonsAtProduct1) // 상품1 추가
 
       // 4. 할인율 계산
-      expect(screen.getByText('상품 금액: 10,000원')).toBeInTheDocument();
-      expect(screen.getByText('할인 금액: 0원')).toBeInTheDocument();
-      expect(screen.getByText('최종 결제 금액: 10,000원')).toBeInTheDocument();
+      expect(screen.getByText("상품 금액: 10,000원")).toBeInTheDocument()
+      expect(screen.getByText("할인 금액: 0원")).toBeInTheDocument()
+      expect(screen.getByText("최종 결제 금액: 10,000원")).toBeInTheDocument()
 
       // 5. 상품 품절 상태로 만들기
       for (let i = 0; i < 19; i++) {
-        fireEvent.click(addToCartButtonsAtProduct1);
+        fireEvent.click(addToCartButtonsAtProduct1)
       }
 
       // 6. 품절일 때 상품 추가 안 되는지 확인하기
-      expect(product1).toHaveTextContent('재고: 0개');
-      fireEvent.click(addToCartButtonsAtProduct1);
-      expect(product1).toHaveTextContent('재고: 0개');
+      expect(product1).toHaveTextContent("재고: 0개")
+      fireEvent.click(addToCartButtonsAtProduct1)
+      expect(product1).toHaveTextContent("재고: 0개")
 
       // 7. 할인율 계산
-      expect(screen.getByText('상품 금액: 200,000원')).toBeInTheDocument();
-      expect(screen.getByText('할인 금액: 20,000원')).toBeInTheDocument();
-      expect(screen.getByText('최종 결제 금액: 180,000원')).toBeInTheDocument();
+      expect(screen.getByText("상품 금액: 200,000원")).toBeInTheDocument()
+      expect(screen.getByText("할인 금액: 20,000원")).toBeInTheDocument()
+      expect(screen.getByText("최종 결제 금액: 180,000원")).toBeInTheDocument()
 
       // 8. 상품을 각각 10개씩 추가하기
-      fireEvent.click(addToCartButtonsAtProduct2); // 상품2 추가
-      fireEvent.click(addToCartButtonsAtProduct3); // 상품3 추가
+      fireEvent.click(addToCartButtonsAtProduct2) // 상품2 추가
+      fireEvent.click(addToCartButtonsAtProduct3) // 상품3 추가
 
-      const increaseButtons = screen.getAllByText('+');
+      const increaseButtons = screen.getAllByText("+")
       for (let i = 0; i < 9; i++) {
-        fireEvent.click(increaseButtons[1]); // 상품2
-        fireEvent.click(increaseButtons[2]); // 상품3
+        fireEvent.click(increaseButtons[1]) // 상품2
+        fireEvent.click(increaseButtons[2]) // 상품3
       }
 
       // 9. 할인율 계산
-      expect(screen.getByText('상품 금액: 700,000원')).toBeInTheDocument();
-      expect(screen.getByText('할인 금액: 110,000원')).toBeInTheDocument();
-      expect(screen.getByText('최종 결제 금액: 590,000원')).toBeInTheDocument();
+      expect(screen.getByText("상품 금액: 700,000원")).toBeInTheDocument()
+      expect(screen.getByText("할인 금액: 110,000원")).toBeInTheDocument()
+      expect(screen.getByText("최종 결제 금액: 590,000원")).toBeInTheDocument()
 
       // 10. 쿠폰 적용하기
-      const couponSelect = screen.getByRole('combobox');
-      fireEvent.change(couponSelect, { target: { value: '1' } }); // 10% 할인 쿠폰 선택
+      const couponSelect = screen.getByRole("combobox")
+      fireEvent.change(couponSelect, { target: { value: "1" } }) // 10% 할인 쿠폰 선택
 
       // 11. 할인율 계산
-      expect(screen.getByText('상품 금액: 700,000원')).toBeInTheDocument();
-      expect(screen.getByText('할인 금액: 169,000원')).toBeInTheDocument();
-      expect(screen.getByText('최종 결제 금액: 531,000원')).toBeInTheDocument();
+      expect(screen.getByText("상품 금액: 700,000원")).toBeInTheDocument()
+      expect(screen.getByText("할인 금액: 169,000원")).toBeInTheDocument()
+      expect(screen.getByText("최종 결제 금액: 531,000원")).toBeInTheDocument()
 
       // 12. 다른 할인 쿠폰 적용하기
-      fireEvent.change(couponSelect, { target: { value: '0' } }); // 5000원 할인 쿠폰
-      expect(screen.getByText('상품 금액: 700,000원')).toBeInTheDocument();
-      expect(screen.getByText('할인 금액: 115,000원')).toBeInTheDocument();
-      expect(screen.getByText('최종 결제 금액: 585,000원')).toBeInTheDocument();
-    });
+      fireEvent.change(couponSelect, { target: { value: "0" } }) // 5000원 할인 쿠폰
+      expect(screen.getByText("상품 금액: 700,000원")).toBeInTheDocument()
+      expect(screen.getByText("할인 금액: 115,000원")).toBeInTheDocument()
+      expect(screen.getByText("최종 결제 금액: 585,000원")).toBeInTheDocument()
+    })
 
-    test('관리자 페이지 테스트 > ', async () => {
-      render(<TestAdminPage/>);
+    test("관리자 페이지 테스트 > ", async () => {
+      render(<TestAdminPage />)
 
-
-      const $product1 = screen.getByTestId('product-1');
+      const $product1 = screen.getByTestId("product-1")
 
       // 1. 새로운 상품 추가
-      fireEvent.click(screen.getByText('새 상품 추가'));
+      fireEvent.click(screen.getByText("새 상품 추가"))
 
-      fireEvent.change(screen.getByLabelText('상품명'), { target: { value: '상품4' } });
-      fireEvent.change(screen.getByLabelText('가격'), { target: { value: '15000' } });
-      fireEvent.change(screen.getByLabelText('재고'), { target: { value: '30' } });
-
-      fireEvent.click(screen.getByText('추가'));
-
-      const $product4 = screen.getByTestId('product-4');
-
-      expect($product4).toHaveTextContent('상품4');
-      expect($product4).toHaveTextContent('15000원');
-      expect($product4).toHaveTextContent('재고: 30');
-
-      // 2. 상품 선택 및 수정
-      fireEvent.click($product1);
-      fireEvent.click(within($product1).getByTestId('toggle-button'));
-      fireEvent.click(within($product1).getByTestId('modify-button'));
-
-
-      act(() => {
-        fireEvent.change(within($product1).getByDisplayValue('20'), { target: { value: '25' } });
-        fireEvent.change(within($product1).getByDisplayValue('10000'), { target: { value: '12000' } });
-        fireEvent.change(within($product1).getByDisplayValue('상품1'), { target: { value: '수정된 상품1' } });
+      fireEvent.change(screen.getByLabelText("상품명"), {
+        target: { value: "상품4" },
+      })
+      fireEvent.change(screen.getByLabelText("가격"), {
+        target: { value: "15000" },
+      })
+      fireEvent.change(screen.getByLabelText("재고"), {
+        target: { value: "30" },
       })
 
-      fireEvent.click(within($product1).getByText('수정 완료'));
+      fireEvent.click(screen.getByText("추가"))
 
-      expect($product1).toHaveTextContent('수정된 상품1');
-      expect($product1).toHaveTextContent('12000원');
-      expect($product1).toHaveTextContent('재고: 25');
+      const $product4 = screen.getByTestId("product-4")
+
+      expect($product4).toHaveTextContent("상품4")
+      expect($product4).toHaveTextContent("15000원")
+      expect($product4).toHaveTextContent("재고: 30")
+
+      // 2. 상품 선택 및 수정
+      fireEvent.click($product1)
+      fireEvent.click(within($product1).getByTestId("toggle-button"))
+      fireEvent.click(within($product1).getByTestId("modify-button"))
+
+      act(() => {
+        fireEvent.change(within($product1).getByDisplayValue("20"), {
+          target: { value: "25" },
+        })
+        fireEvent.change(within($product1).getByDisplayValue("10000"), {
+          target: { value: "12000" },
+        })
+        fireEvent.change(within($product1).getByDisplayValue("상품1"), {
+          target: { value: "수정된 상품1" },
+        })
+      })
+
+      fireEvent.click(within($product1).getByText("수정 완료"))
+
+      expect($product1).toHaveTextContent("수정된 상품1")
+      expect($product1).toHaveTextContent("12000원")
+      expect($product1).toHaveTextContent("재고: 25")
 
       // 3. 상품 할인율 추가 및 삭제
-      fireEvent.click($product1);
-      fireEvent.click(within($product1).getByTestId('modify-button'));
+      fireEvent.click($product1)
+      fireEvent.click(within($product1).getByTestId("modify-button"))
 
       // 할인 추가
       act(() => {
-        fireEvent.change(screen.getByPlaceholderText('수량'), { target: { value: '5' } });
-        fireEvent.change(screen.getByPlaceholderText('할인율 (%)'), { target: { value: '5' } });
+        fireEvent.change(screen.getByPlaceholderText("수량"), {
+          target: { value: "5" },
+        })
+        fireEvent.change(screen.getByPlaceholderText("할인율 (%)"), {
+          target: { value: "5" },
+        })
       })
-      fireEvent.click(screen.getByText('할인 추가'));
+      fireEvent.click(screen.getByText("할인 추가"))
 
-      expect(screen.queryByText('5개 이상 구매 시 5% 할인')).toBeInTheDocument();
+      expect(screen.queryByText("5개 이상 구매 시 5% 할인")).toBeInTheDocument()
 
       // 할인 삭제
-      fireEvent.click(screen.getAllByText('삭제')[0]);
-      expect(screen.queryByText('10개 이상 구매 시 10% 할인')).not.toBeInTheDocument();
-      expect(screen.queryByText('5개 이상 구매 시 5% 할인')).toBeInTheDocument();
+      fireEvent.click(screen.getAllByText("삭제")[0])
+      expect(screen.queryByText("10개 이상 구매 시 10% 할인")).not.toBeInTheDocument()
+      expect(screen.queryByText("5개 이상 구매 시 5% 할인")).toBeInTheDocument()
 
-      fireEvent.click(screen.getAllByText('삭제')[0]);
-      expect(screen.queryByText('10개 이상 구매 시 10% 할인')).not.toBeInTheDocument();
-      expect(screen.queryByText('5개 이상 구매 시 5% 할인')).not.toBeInTheDocument();
+      fireEvent.click(screen.getAllByText("삭제")[0])
+      expect(screen.queryByText("10개 이상 구매 시 10% 할인")).not.toBeInTheDocument()
+      expect(screen.queryByText("5개 이상 구매 시 5% 할인")).not.toBeInTheDocument()
 
       // 4. 쿠폰 추가
-      fireEvent.change(screen.getByPlaceholderText('쿠폰 이름'), { target: { value: '새 쿠폰' } });
-      fireEvent.change(screen.getByPlaceholderText('쿠폰 코드'), { target: { value: 'NEW10' } });
-      fireEvent.change(screen.getByRole('combobox'), { target: { value: 'percentage' } });
-      fireEvent.change(screen.getByPlaceholderText('할인 값'), { target: { value: '10' } });
+      fireEvent.change(screen.getByPlaceholderText("쿠폰 이름"), {
+        target: { value: "새 쿠폰" },
+      })
+      fireEvent.change(screen.getByPlaceholderText("쿠폰 코드"), {
+        target: { value: "NEW10" },
+      })
+      fireEvent.change(screen.getByRole("combobox"), {
+        target: { value: "percentage" },
+      })
+      fireEvent.change(screen.getByPlaceholderText("할인 값"), {
+        target: { value: "10" },
+      })
 
-      fireEvent.click(screen.getByText('쿠폰 추가'));
+      fireEvent.click(screen.getByText("쿠폰 추가"))
 
-      const $newCoupon = screen.getByTestId('coupon-3');
+      const $newCoupon = screen.getByTestId("coupon-3")
 
-      expect($newCoupon).toHaveTextContent('새 쿠폰 (NEW10):10% 할인');
+      expect($newCoupon).toHaveTextContent("새 쿠폰 (NEW10):10% 할인")
     })
   })
 
-  describe('자유롭게 작성해보세요.', () => {
-    test('새로운 유틸 함수를 만든 후에 테스트 코드를 작성해서 실행해보세요', () => {
-      expect(true).toBe(false);
+  describe("product", () => {
+    describe("calculateProductMaxDiscountRate", () => {
+      test("할인이 없는 상품은 0을 반환해야 한다", () => {
+        const product: Product = {
+          id: "1",
+          name: "No Discount Product",
+          price: 100,
+          stock: 10,
+          discounts: []
+        }
+        expect(productUtils.calculateProductMaxDiscountRate(product)).toBe(0)
+      })
+
+      test("할인이 하나만 있는 상품은 해당 할인율을 반환해야 한다", () => {
+        const product: Product = {
+          id: "2",
+          name: "Single Discount Product",
+          price: 200,
+          stock: 20,
+          discounts: [{ quantity: 2, rate: 0.1 }]
+        }
+        expect(productUtils.calculateProductMaxDiscountRate(product)).toBe(0.1)
+      })
+
+      test("여러 할인이 있는 상품은 가장 높은 할인율을 반환해야 한다", () => {
+        const product: Product = {
+          id: "3",
+          name: "Multiple Discount Product",
+          price: 300,
+          stock: 30,
+          discounts: [
+            { quantity: 2, rate: 0.1 },
+            { quantity: 5, rate: 0.2 },
+            { quantity: 10, rate: 0.15 }
+          ]
+        }
+        expect(productUtils.calculateProductMaxDiscountRate(product)).toBe(0.2)
+      })
+
+    })
+  })
+
+  describe("useProducts > ", () => {
+    const initialProducts: Product[] = [{ id: "1", name: "Product 1", price: 100, stock: 10, discounts: [] }]
+
+    test("특정 제품으로 초기화할 수 있다.", () => {
+      const { result } = renderHook(() => useProducts(initialProducts))
+      expect(result.current.products).toEqual(initialProducts)
     })
 
-    test('새로운 hook 함수르 만든 후에 테스트 코드를 작성해서 실행해보세요', () => {
-      expect(true).toBe(false);
+    test("제품을 업데이트할 수 있다.", () => {
+      const { result } = renderHook(() => useProducts(initialProducts))
+      const updatedProduct = { ...initialProducts[0], name: "Updated Product" }
+
+      act(() => {
+        result.current.updateProduct(updatedProduct)
+      })
+
+      expect(result.current.products[0]).toEqual({
+        discounts: [],
+        id: "1",
+        name: "Updated Product",
+        price: 100,
+        stock: 10,
+      })
+    })
+
+    test("새로운 제품을 추가할 수 있다.", () => {
+      const { result } = renderHook(() => useProducts(initialProducts))
+      const newProduct: Product = {
+        id: "2",
+        name: "New Product",
+        price: 200,
+        stock: 5,
+        discounts: [],
+      }
+
+      act(() => {
+        result.current.addProduct(newProduct)
+      })
+
+      expect(result.current.products).toHaveLength(2)
+      expect(result.current.products[1]).toEqual(newProduct)
+    })
+  })
+
+  describe("useCoupons > ", () => {
+    test("쿠폰을 초기화할 수 있다.", () => {
+      const { result } = renderHook(() => useCoupons(mockCoupons))
+      expect(result.current.coupons).toEqual(mockCoupons)
+    })
+
+    test("쿠폰을 추가할 수 있다", () => {
+      const { result } = renderHook(() => useCoupons(mockCoupons))
+      const newCoupon: Coupon = {
+        name: "New Coupon",
+        code: "NEWCODE",
+        discountType: "amount",
+        discountValue: 5000,
+      }
+
+      act(() => {
+        result.current.addCoupon(newCoupon)
+      })
+
+      expect(result.current.coupons).toHaveLength(3)
+      expect(result.current.coupons[2]).toEqual(newCoupon)
+    })
+  })
+
+  describe("cart", () => {
+    const testProduct: Product = {
+      id: "1",
+      name: "Test Product",
+      price: 100,
+      stock: 10,
+      discounts: [
+        { quantity: 2, rate: 0.1 },
+        { quantity: 5, rate: 0.2 },
+      ],
+    }
+
+    describe("calculateItemTotal", () => {
+      test("할인 없이 총액을 계산해야 한다.", () => {
+        const item: CartItem = { product: testProduct, quantity: 1 }
+        expect(cartUtils.calculateItemTotal(item)).toBe(100)
+      })
+
+      test("수량에 따라 올바른 할인을 적용해야 한다.", () => {
+        const item: CartItem = { product: testProduct, quantity: 5 }
+        expect(cartUtils.calculateItemTotal(item)).toBe(400) // 500 * 0.8
+      })
+    })
+
+    describe("getMaxApplicableDiscount", () => {
+      test("할인이 적용되지 않으면 0을 반환해야 한다.", () => {
+        const item: CartItem = { product: testProduct, quantity: 1 }
+        expect(cartUtils.getMaxApplicableDiscount(item)).toBe(0)
+      })
+
+      test("적용 가능한 가장 높은 할인율을 반환해야 한다.", () => {
+        const item: CartItem = { product: testProduct, quantity: 5 }
+        expect(cartUtils.getMaxApplicableDiscount(item)).toBe(0.2)
+      })
+    })
+
+    describe("calculateCartTotal", () => {
+      const cart: CartItem[] = [
+        { product: testProduct, quantity: 2 },
+        { product: { ...testProduct, id: "2", price: 200 }, quantity: 1 },
+      ]
+
+      test("쿠폰 없이 총액을 올바르게 계산해야 한다.", () => {
+        const result = cartUtils.calculateCartTotal(cart, null)
+        expect(result.totalBeforeDiscount).toBe(400)
+        expect(result.totalAfterDiscount).toBe(380)
+        expect(result.totalDiscount).toBe(20)
+      })
+
+      test("금액쿠폰을 올바르게 적용해야 한다.", () => {
+        const coupon: Coupon = {
+          name: "Test Coupon",
+          code: "TEST",
+          discountType: "amount",
+          discountValue: 50,
+        }
+        const result = cartUtils.calculateCartTotal(cart, coupon)
+        expect(result.totalAfterDiscount).toBe(330)
+        expect(result.totalDiscount).toBe(70)
+      })
+
+      test("퍼센트 쿠폰을 올바르게 적용해야 한다", () => {
+        const coupon: Coupon = {
+          name: "Test Coupon",
+          code: "TEST",
+          discountType: "percentage",
+          discountValue: 10,
+        }
+        const result = cartUtils.calculateCartTotal(cart, coupon)
+        expect(result.totalAfterDiscount).toBe(342)
+        expect(result.totalDiscount).toBe(58)
+      })
+    })
+
+    describe("updateCartItemQuantity", () => {
+      const cart: CartItem[] = [
+        { product: testProduct, quantity: 2 },
+        { product: { ...testProduct, id: "2" }, quantity: 1 },
+      ]
+
+      test("수량을 올바르게 업데이트해야 한다", () => {
+        const updatedCart = cartUtils.updateCartItemQuantity(cart, "1", 5)
+        expect(updatedCart[0].quantity).toBe(5)
+        expect(updatedCart[1].quantity).toBe(1)
+      })
+
+      test("수량이 0으로 설정된 경우 항목을 제거해야 한다.", () => {
+        const updatedCart = cartUtils.updateCartItemQuantity(cart, "1", 0)
+        expect(updatedCart.length).toBe(1)
+        expect(updatedCart[0].product.id).toBe("2")
+      })
+
+      test("재고 한도를 초과해서는 안 됩니다.", () => {
+        const updatedCart = cartUtils.updateCartItemQuantity(cart, "1", 15)
+        expect(updatedCart[0].quantity).toBe(10) // max stock is 10
+      })
+    })
+
+    describe("getAppliedDiscount", () => {
+      const testProduct: Product = {
+        id: "1",
+        name: "Test Product",
+        price: 100,
+        stock: 10,
+        discounts: [
+          { quantity: 2, rate: 0.1 },
+          { quantity: 5, rate: 0.2 },
+        ],
+      }
+
+      test("수량에 맞는 할인을 반환해야 한다", () => {
+        // 수량이 2이면 첫 번째 할인(10%)이 적용됨
+        const item1: CartItem = { product: testProduct, quantity: 2 }
+        expect(cartUtils.getAppliedDiscount(item1)).toBe(0.1)
+      })
+
+      test("수량이 모든 할인 기준을 충족하면 가장 높은 할인율을 반환해야 한다", () => {
+        const item: CartItem = { product: testProduct, quantity: 10 }
+        expect(cartUtils.getAppliedDiscount(item)).toBe(0.2)
+      })
+
+      test("할인이 없는 상품은 0을 반환해야 한다", () => {
+        const noDiscountProduct: Product = {
+          id: "2",
+          name: "No Discount Product",
+          price: 100,
+          stock: 10,
+          discounts: [],
+        }
+        const item: CartItem = { product: noDiscountProduct, quantity: 5 }
+        expect(cartUtils.getAppliedDiscount(item)).toBe(0)
+      })
+    })
+
+    describe("getRemainingStock", () => {
+      const testProduct: Product = {
+        id: "1",
+        name: "Test Product",
+        price: 100,
+        stock: 10,
+        discounts: [],
+      }
+
+      test("장바구니에 상품이 없으면 전체 재고를 반환해야 한다", () => {
+        const cart: Cart = []
+        expect(cartUtils.getRemainingStock(cart, testProduct)).toBe(10)
+      })
+
+      test("장바구니에 상품이 있으면 남은 재고를 반환해야 한다", () => {
+        const cart: Cart = [{ product: testProduct, quantity: 3 }]
+        expect(cartUtils.getRemainingStock(cart, testProduct)).toBe(7)
+      })
+
+      test("장바구니에 해당 상품만 있을 때 올바르게 계산해야 한다", () => {
+        const otherProduct: Product = {
+          id: "2",
+          name: "Other Product",
+          price: 200,
+          stock: 5,
+          discounts: [],
+        }
+        const cart: Cart = [
+          { product: testProduct, quantity: 2 },
+          { product: otherProduct, quantity: 3 }
+        ]
+        expect(cartUtils.getRemainingStock(cart, testProduct)).toBe(8)
+        expect(cartUtils.getRemainingStock(cart, otherProduct)).toBe(2)
+      })
+    })
+
+    describe("findCartItemByProductId", () => {
+      const testProduct1: Product = {
+        id: "1",
+        name: "Test Product 1",
+        price: 100,
+        stock: 10,
+        discounts: [],
+      }
+      const testProduct2: Product = {
+        id: "2",
+        name: "Test Product 2",
+        price: 200,
+        stock: 20,
+        discounts: [],
+      }
+      const cart: CartItem[] = [
+        { product: testProduct1, quantity: 2 },
+        { product: testProduct2, quantity: 1 }
+      ]
+
+      test("장바구니에서 상품을 찾아야 한다", () => {
+        const item = cartUtils.findCartItemByProductId(cart, "1")
+        expect(item).toBeDefined()
+        expect(item?.product.id).toBe("1")
+        expect(item?.quantity).toBe(2)
+      })
+
+      test("장바구니에 없는 상품은 undefined를 반환해야 한다", () => {
+        const item = cartUtils.findCartItemByProductId(cart, "3")
+        expect(item).toBeUndefined()
+      })
+    })
+
+    describe("calculateTotalBeforeDiscount", () => {
+      test("할인 전 장바구니 총액을 계산해야 한다", () => {
+        const cart: CartItem[] = [
+          {
+            product: {
+              id: "1",
+              name: "Product 1",
+              price: 100,
+              stock: 10,
+              discounts: []
+            },
+            quantity: 2
+          },
+          {
+            product: {
+              id: "2",
+              name: "Product 2",
+              price: 200,
+              stock: 10,
+              discounts: []
+            },
+            quantity: 3
+          }
+        ]
+
+        expect(cartUtils.calculateTotalBeforeDiscount(cart)).toBe(800)
+      })
+
+      test("빈 장바구니는 0을 반환해야 한다", () => {
+        expect(cartUtils.calculateTotalBeforeDiscount([])).toBe(0)
+      })
+    })
+
+    describe("calculateTotalAfterProductDiscount", () => {
+      test("상품 할인이 적용된 총액을 계산해야 한다", () => {
+        const cart: CartItem[] = [
+          {
+            product: {
+              id: "1",
+              name: "Product 1",
+              price: 100,
+              stock: 10,
+              discounts: [{ quantity: 2, rate: 0.1 }]
+            },
+            quantity: 2
+          }
+        ]
+
+        expect(cartUtils.calculateTotalAfterProductDiscount(cart)).toBe(180)
+      })
+
+      test("빈 장바구니는 0을 반환해야 힌디", () => {
+        expect(cartUtils.calculateTotalAfterProductDiscount([])).toBe(0)
+      })
+    })
+
+    describe("applyCouponDiscount", () => {
+      test("금액 쿠폰을 적용해야 한다", () => {
+        const coupon: Coupon = {
+          name: "5000원 할인",
+          code: "AMOUNT5000",
+          discountType: "amount",
+          discountValue: 5000,
+        }
+
+        expect(cartUtils.applyCouponDiscount(10000, coupon)).toBe(5000)
+      })
+
+      test("할인액이 총액보다 크면 0을 반환해야 한다", () => {
+        const coupon: Coupon = {
+          name: "5000원 할인",
+          code: "AMOUNT5000",
+          discountType: "amount",
+          discountValue: 5000,
+        }
+
+        expect(cartUtils.applyCouponDiscount(3000, coupon)).toBe(0)
+      })
+
+      test("퍼센트 쿠폰을 적용해야 한다", () => {
+        const coupon: Coupon = {
+          name: "10% 할인",
+          code: "PERCENT10",
+          discountType: "percentage",
+          discountValue: 10,
+        }
+
+        expect(cartUtils.applyCouponDiscount(10000, coupon)).toBe(9000)
+      })
+
+      test("쿠폰이 null이면 원래 금액을 반환해야 한다", () => {
+        expect(cartUtils.applyCouponDiscount(10000, null)).toBe(10000)
+      })
+    })
+
+    describe("calculateProductMaxDiscountRate", () => {
+      test("할인이 없는 상품은 0을 반환해야 한다", () => {
+        const product: Product = {
+          id: "1",
+          name: "No Discount Product",
+          price: 100,
+          stock: 10,
+          discounts: []
+        }
+        expect(productUtils.calculateProductMaxDiscountRate(product)).toBe(0)
+      })
+
+      test("할인이 하나만 있는 상품은 해당 할인율을 반환해야 한다", () => {
+        const product: Product = {
+          id: "2",
+          name: "Single Discount Product",
+          price: 200,
+          stock: 20,
+          discounts: [{ quantity: 2, rate: 0.1 }]
+        }
+        expect(productUtils.calculateProductMaxDiscountRate(product)).toBe(0.1)
+      })
+
+      test("여러 할인이 있는 상품은 가장 높은 할인율을 반환해야 한다", () => {
+        const product: Product = {
+          id: "3",
+          name: "Multiple Discount Product",
+          price: 300,
+          stock: 30,
+          discounts: [
+            { quantity: 2, rate: 0.1 },
+            { quantity: 5, rate: 0.2 },
+            { quantity: 10, rate: 0.15 }
+          ]
+        }
+        expect(productUtils.calculateProductMaxDiscountRate(product)).toBe(0.2)
+      })
+
+    })
+  })
+
+  describe("useCart > ", () => {
+    const testProduct: Product = {
+      id: "1",
+      name: "Test Product",
+      price: 100,
+      stock: 10,
+      discounts: [],
+    }
+    const testCoupon: Coupon = {
+      name: "Test Coupon",
+      code: "TEST",
+      discountType: "percentage",
+      discountValue: 10,
+    }
+
+    test("장바구니에 제품을 추가해야 한다", () => {
+
+      const { result } = renderHook(() => useCart())
+
+
+      act(() => {
+        result.current.addToCart(testProduct)
+      })
+
+      expect(result.current.cart).toHaveLength(1)
+      expect(result.current.cart[0]).toEqual({
+        product: testProduct,
+        quantity: 1,
+      })
+    })
+
+    test("장바구니에서 제품을 제거해야 한다", () => {
+      const { result } = renderHook(() => useCart())
+
+      act(() => {
+        result.current.addToCart(testProduct)
+        result.current.removeFromCart(testProduct.id)
+      })
+
+      expect(result.current.cart).toHaveLength(0)
+    })
+
+    test("제품 수량을 업데이트해야 한다", () => {
+      const { result } = renderHook(() => useCart())
+
+      act(() => {
+        result.current.addToCart(testProduct)
+        result.current.updateQuantity(testProduct.id, 5)
+      })
+
+      expect(result.current.cart[0].quantity).toBe(5)
+    })
+
+    test("쿠폰을 적용해야지", () => {
+      const { result } = renderHook(() => useCart())
+
+      act(() => {
+        result.current.applyCoupon(testCoupon)
+      })
+
+      expect(result.current.selectedCoupon).toEqual(testCoupon)
+    })
+
+    test("합계를 정확하게 계산해야 한다", () => {
+
+      const { result } = renderHook(() => useCart())
+
+      act(() => {
+        result.current.addToCart(testProduct)
+        result.current.updateQuantity(testProduct.id, 2)
+        result.current.applyCoupon(testCoupon)
+      })
+
+      const total = result.current.calculateTotal()
+      expect(total.totalBeforeDiscount).toBe(200)
+      expect(total.totalAfterDiscount).toBe(180)
+      expect(total.totalDiscount).toBe(20)
+    })
+  })
+
+  describe("discount", () => {
+    const testProduct: Product = {
+      id: "1",
+      name: "Test Product",
+      price: 100,
+      stock: 10,
+      discounts: [
+        { quantity: 2, rate: 0.1 },
+        { quantity: 5, rate: 0.2 }
+      ]
+    }
+
+    describe("isValidDiscount", () => {
+      test("유효한 할인은 true를 반환해야 한다", () => {
+        const validDiscount: Discount = { quantity: 3, rate: 0.15 }
+        expect(discountUtils.isValidDiscount(validDiscount)).toBe(true)
+      })
+
+      test("수량이 0 이하면 false를 반환해야 한다", () => {
+        const invalidDiscount1: Discount = { quantity: 0, rate: 0.15 }
+        const invalidDiscount2: Discount = { quantity: -1, rate: 0.15 }
+        expect(discountUtils.isValidDiscount(invalidDiscount1)).toBe(false)
+        expect(discountUtils.isValidDiscount(invalidDiscount2)).toBe(false)
+      })
+
+      test("할인율이 0 이하면 false를 반환해야 한다", () => {
+        const invalidDiscount1: Discount = { quantity: 3, rate: 0 }
+        const invalidDiscount2: Discount = { quantity: 3, rate: -0.1 }
+        expect(discountUtils.isValidDiscount(invalidDiscount1)).toBe(false)
+        expect(discountUtils.isValidDiscount(invalidDiscount2)).toBe(false)
+      })
+    })
+
+    describe("addDiscountToProduct", () => {
+      test("유효한 할인을 상품에 추가해야 한다", () => {
+        const newDiscount: Discount = { quantity: 3, rate: 0.15 }
+        const updatedProduct = discountUtils.addDiscountToProduct(testProduct, newDiscount)
+
+        expect(updatedProduct.discounts).toHaveLength(3)
+        expect(updatedProduct.discounts[2]).toEqual(newDiscount)
+      })
+    })
+
+    describe("removeDiscountFromProduct", () => {
+      test("지정된 인덱스의 할인을 제거해야 한다", () => {
+        const updatedProduct = discountUtils.removeDiscountFromProduct(testProduct, 0)
+
+        expect(updatedProduct.discounts).toHaveLength(1)
+        expect(updatedProduct.discounts[0]).toEqual(testProduct.discounts[1])
+      })
+
+      test("범위를 벗어난 인덱스는 무시하고 원래 상품을 반환해야 한다", () => {
+        const updatedProduct = discountUtils.removeDiscountFromProduct(testProduct, 5)
+
+        expect(updatedProduct).toEqual(testProduct)
+        expect(updatedProduct.discounts).toHaveLength(2)
+      })
+    })
+  })
+
+  describe("utils", () => {
+    describe("formatPercentage", () => {
+      test("소수를 퍼센트 문자열로 변환해야 한다", () => {
+        expect(utils.formatPercentage(0.1)).toBe("10%")
+        expect(utils.formatPercentage(1)).toBe("100%")
+      })
+
+      test("소수점 이하 값을 반올림해야 한다", () => {
+        expect(utils.formatPercentage(0.125)).toBe("13%") // 12.5% -> 반올림 -> 13%
+        expect(utils.formatPercentage(0.995)).toBe("100%") // 99.5% -> 반올림 -> 100%
+      })
     })
   })
 })
-
