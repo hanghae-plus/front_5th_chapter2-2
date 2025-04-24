@@ -1,7 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
-import { initialCoupons } from "../../../basic/mocks/data";
 import { Coupon } from "../../../types";
-import { useCoupons } from "../../hooks";
+
 
 interface CouponApplySectionProps {
     coupons: Coupon[];

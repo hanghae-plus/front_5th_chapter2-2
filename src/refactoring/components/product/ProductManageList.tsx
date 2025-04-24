@@ -14,7 +14,7 @@ export const ProductManageList = ({
   isEditing,
   onToggle,
   onEditClick,
-}: // testId
+}:
 ProductManageListProps) => {
   return (
     <>

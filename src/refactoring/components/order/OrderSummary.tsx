@@ -5,8 +5,10 @@ interface OrderSummaryProps {
     selectedCoupon: Coupon | null;
 }
 
+
 export const OrderSummary = ({cart, selectedCoupon}: OrderSummaryProps) => {
     const {totalBeforeDiscount, totalDiscount, totalAfterDiscount} = calculateCartTotal(cart, selectedCoupon);
+
     return (
         <div className="mt-6 bg-white p-4 rounded shadow">
             <h2 className="text-2xl font-semibold mb-2">주문 요약</h2>

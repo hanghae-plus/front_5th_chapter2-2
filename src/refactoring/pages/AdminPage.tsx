@@ -1,12 +1,14 @@
 import { useState } from "react";
-import { Coupon, Discount, Product } from "../../types.ts";
+import { Coupon, Product } from "../../types.ts";
 import { ProductAddForm } from "../components/product/ProductAddForm.tsx";
 import { CouponAddForm } from "../components/coupon/CouponAddForm.tsx";
 import { CouponList } from "../components/coupon/CouponList.tsx";
 import { ProductManageList } from "../components/product/ProductManageList.tsx";
 import { ProductEditForm } from "../components/product/ProductEditForm.tsx";
-import { useProductManagement } from "../hooks/useProductManagement.ts";
 import { useAccordian } from "../hooks/useAccordian.ts";
+import { useProductEdit } from "../hooks/useProductEdit.ts";
+import { useDiscount } from "../hooks/useDiscount.ts";
+import { useNewProduct } from "../hooks/useNewProduct.ts";
 
 interface Props {
   products: Product[];
@@ -23,25 +25,37 @@ export const AdminPage = ({
   onProductAdd,
   onCouponAdd,
 }: Props) => {
+  
+  const { openProductIds, toggleProductAccordion } = useAccordian();
   const {
     editingProduct,
+    setEditingProduct,
+    handleEditProduct,
+    handleProductNameUpdate,
+    handlePriceUpdate,
+    handleEditComplete,
+  } = useProductEdit({ onProductUpdate });
+  const {
     showNewProductForm,
     setShowNewProductForm,
     newProduct,
     setNewProduct,
-    handleEditProduct,
-    handleProductNameUpdate,
-    handlePriceUpdate,
-    setEditingProduct,
-    handleEditComplete,
     handleAddNewProduct,
-  } = useProductManagement({ onProductUpdate, onProductAdd });
-  const { openProductIds, toggleProductAccordion } = useAccordian();
+  } = useNewProduct({ onProductAdd });
 
-  const [newDiscount, setNewDiscount] = useState<Discount>({
-    quantity: 0,
-    rate: 0,
+  const {
+    newDiscount,
+    setNewDiscount,
+    handleAddDiscount,
+    handleRemoveDiscount,
+  } = useDiscount({
+    products,
+    editingProduct,
+    onProductUpdate,
+    setEditingProduct
   });
+
+  
   const [newCoupon, setNewCoupon] = useState<Coupon>({
     name: "",
     code: "",
@@ -58,30 +72,6 @@ export const AdminPage = ({
     }
   };
 
-  const handleAddDiscount = (productId: string) => {
-    const updatedProduct = products.find((p) => p.id === productId);
-    if (updatedProduct && editingProduct) {
-      const newProduct = {
-        ...updatedProduct,
-        discounts: [...updatedProduct.discounts, newDiscount],
-      };
-      onProductUpdate(newProduct);
-      setEditingProduct(newProduct);
-      setNewDiscount({ quantity: 0, rate: 0 });
-    }
-  };
-
-  const handleRemoveDiscount = (productId: string, index: number) => {
-    const updatedProduct = products.find((p) => p.id === productId);
-    if (updatedProduct) {
-      const newProduct = {
-        ...updatedProduct,
-        discounts: updatedProduct.discounts.filter((_, i) => i !== index),
-      };
-      onProductUpdate(newProduct);
-      setEditingProduct(newProduct);
-    }
-  };
 
   const handleAddCoupon = () => {
     onCouponAdd(newCoupon);
@@ -92,7 +82,6 @@ export const AdminPage = ({
       discountValue: 0,
     });
   };
-
 
   return (
     <div className="container mx-auto p-4">

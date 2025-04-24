@@ -14,7 +14,6 @@ export const CartPage = ({ products, coupons }: Props) => {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [selectedCoupon , setSelectedCoupon] = useState<Coupon | null>(null);
   
-
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-6">장바구니</h1>
