@@ -45,32 +45,7 @@ const mockCoupons: Coupon[] = [
 ];
 
 const TestAdminPage = () => {
-  // const [products, setProducts] = useState<Product[]>(mockProducts);
-  // const [coupons, setCoupons] = useState<Coupon[]>(mockCoupons);
-
-  // const handleProductUpdate = (updatedProduct: Product) => {
-  //   setProducts((prevProducts) =>
-  //     prevProducts.map((p) => (p.id === updatedProduct.id ? updatedProduct : p)),
-  //   );
-  // };
-
-  // const handleProductAdd = (newProduct: Product) => {
-  //   setProducts((prevProducts) => [...prevProducts, newProduct]);
-  // };
-
-  // const handleCouponAdd = (newCoupon: Coupon) => {
-  //   setCoupons((prevCoupons) => [...prevCoupons, newCoupon]);
-  // };
-
-  return (
-    <AdminPage
-    // products={products}
-    // coupons={coupons}
-    // onProductUpdate={handleProductUpdate}
-    // onProductAdd={handleProductAdd}
-    // onCouponAdd={handleCouponAdd}
-    />
-  );
+  return <AdminPage />;
 };
 
 describe("advanced > ", () => {
@@ -178,7 +153,7 @@ describe("advanced > ", () => {
       const $product4 = screen.getByTestId("product-4");
 
       expect($product4).toHaveTextContent("상품4");
-      expect($product4).toHaveTextContent("15000원");
+      expect($product4).toHaveTextContent("15,000원");
       expect($product4).toHaveTextContent("재고: 30");
 
       // 2. 상품 선택 및 수정
@@ -199,7 +174,7 @@ describe("advanced > ", () => {
       fireEvent.click(within($product1).getByText("수정 완료"));
 
       expect($product1).toHaveTextContent("수정된 상품1");
-      expect($product1).toHaveTextContent("12000원");
+      expect($product1).toHaveTextContent("12,000원");
       expect($product1).toHaveTextContent("재고: 25");
 
       // 3. 상품 할인율 추가 및 삭제
@@ -220,7 +195,7 @@ describe("advanced > ", () => {
       expect(screen.queryByText("10개 이상 구매 시 10% 할인")).not.toBeInTheDocument();
       expect(screen.queryByText("5개 이상 구매 시 5% 할인")).toBeInTheDocument();
 
-      fireEvent.click(screen.getAllByText("삭제")[1]);
+      fireEvent.click(screen.getAllByText("삭제")[0]);
       expect(screen.queryByText("10개 이상 구매 시 10% 할인")).not.toBeInTheDocument();
       expect(screen.queryByText("5개 이상 구매 시 5% 할인")).not.toBeInTheDocument();
 
