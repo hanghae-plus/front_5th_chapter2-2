@@ -20,9 +20,6 @@ export const CartPage = ({ products, coupons }: Props) => {
     selectedCoupon,
   } = useCart();
 
-  const getMaxDiscount = (discounts: { quantity: number; rate: number }[]) =>
-    discounts.reduce((max, discount) => Math.max(max, discount.rate), 0);
-
   const getRemainingStock = (product: Product) => {
     const cartItem = cart.find((item) => item.product.id === product.id);
     return product.stock - (cartItem?.quantity || 0);
@@ -46,7 +43,6 @@ export const CartPage = ({ products, coupons }: Props) => {
         <ProductList
           products={products}
           getRemainingStock={getRemainingStock}
-          getMaxDiscount={getMaxDiscount}
           addToCart={addToCart}
         />
         <div>

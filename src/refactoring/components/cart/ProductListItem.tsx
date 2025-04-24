@@ -1,18 +1,13 @@
 import { Product } from '../../../types';
+import { getMaxDiscount } from '../../utils/getMaxDiscount';
 
 interface Props {
   product: Product;
   remainingStock: number;
-  getMaxDiscount: (discounts: { quantity: number; rate: number }[]) => number;
   addToCart: (product: Product) => void;
 }
 
-function ProductListItem({
-  product,
-  remainingStock,
-  getMaxDiscount,
-  addToCart,
-}: Props) {
+function ProductListItem({ product, remainingStock, addToCart }: Props) {
   return (
     <div
       key={product.id}
@@ -26,7 +21,9 @@ function ProductListItem({
       </div>
       <div className='text-sm text-gray-500 mb-2'>
         <span
-          className={`font-medium ${remainingStock > 0 ? 'text-green-600' : 'text-red-600'}`}>
+          className={`font-medium ${
+            remainingStock > 0 ? 'text-green-600' : 'text-red-600'
+          }`}>
           재고: {remainingStock}개
         </span>
         {product.discounts.length > 0 && (

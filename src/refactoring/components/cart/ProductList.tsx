@@ -4,16 +4,10 @@ import ProductListItem from './ProductListItem';
 interface Props {
   products: Product[];
   getRemainingStock: (product: Product) => number;
-  getMaxDiscount: (discounts: { quantity: number; rate: number }[]) => number;
   addToCart: (product: Product) => void;
 }
 
-function ProductList({
-  products,
-  getRemainingStock,
-  getMaxDiscount,
-  addToCart,
-}: Props) {
+function ProductList({ products, getRemainingStock, addToCart }: Props) {
   return (
     <div>
       <h2 className='text-2xl font-semibold mb-4'>상품 목록</h2>
@@ -24,7 +18,6 @@ function ProductList({
             <ProductListItem
               product={product}
               remainingStock={remainingStock}
-              getMaxDiscount={getMaxDiscount}
               addToCart={addToCart}
             />
           );
