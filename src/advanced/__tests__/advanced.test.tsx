@@ -12,6 +12,7 @@ import { CartPage } from "../../refactoring/components/CartPage";
 import { AdminPage } from "../../refactoring/components/AdminPage";
 import { Coupon, Product } from "../../types";
 import { useCart } from "@/refactoring/hooks";
+import { useNewProduct } from "@/refactoring/hooks/useNewProduct";
 
 const mockProduct1: Product = {
   id: "1",
@@ -299,6 +300,106 @@ describe("advanced > ", () => {
       expect(true).toBe(false);
     });
 
+    describe("useNewProduct Hook", () => {
+      test("초기 상태 확인", () => {
+        const { result } = renderHook(() => useNewProduct());
+
+        expect(result.current.showNewProductForm).toBe(false);
+        expect(result.current.newProduct).toEqual({
+          name: "",
+          price: 0,
+          stock: 0,
+          discounts: [],
+        });
+      });
+
+      test("toggleNewProductForm으로 폼 표시 여부 토글", () => {
+        const { result } = renderHook(() => useNewProduct());
+
+        act(() => {
+          result.current.toggleNewProductForm();
+        });
+
+        expect(result.current.showNewProductForm).toBe(true);
+
+        act(() => {
+          result.current.toggleNewProductForm();
+        });
+
+        expect(result.current.showNewProductForm).toBe(false);
+      });
+
+      test("updateNewProduct으로 제품 필드 업데이트", () => {
+        const { result } = renderHook(() => useNewProduct());
+
+        act(() => {
+          result.current.updateNewProduct("name", "New Item");
+          result.current.updateNewProduct("price", 99.99);
+          result.current.updateNewProduct("stock", 50);
+          result.current.updateNewProduct("discounts", [
+            { quantity: 2, rate: 10 },
+          ]);
+        });
+
+        expect(result.current.newProduct).toEqual({
+          name: "New Item",
+          price: 99.99,
+          stock: 50,
+          discounts: [{ quantity: 2, rate: 10 }],
+        });
+      });
+
+      test("resetNewProduct으로 제품 정보 초기화 및 폼 닫기", () => {
+        const { result } = renderHook(() => useNewProduct());
+
+        act(() => {
+          result.current.updateNewProduct("name", "Test Product");
+          result.current.updateNewProduct("price", 100);
+          result.current.toggleNewProductForm(); // 폼 열기
+          result.current.resetNewProduct();
+        });
+
+        expect(result.current.newProduct).toEqual({
+          name: "",
+          price: 0,
+          stock: 0,
+          discounts: [],
+        });
+        expect(result.current.showNewProductForm).toBe(false);
+      });
+
+      test("getNewProductWithId로 고유 ID가 포함된 제품 반환", () => {
+        const { result } = renderHook(() => useNewProduct());
+
+        act(() => {
+          result.current.updateNewProduct("name", "Test Product");
+          result.current.updateNewProduct("price", 100);
+          result.current.updateNewProduct("stock", 10);
+        });
+
+        const newProductWithId = result.current.getNewProductWithId();
+        expect(newProductWithId).toMatchObject({
+          name: "Test Product",
+          price: 100,
+          stock: 10,
+          discounts: [],
+        });
+        expect(newProductWithId.id).toBeDefined();
+        expect(typeof newProductWithId.id).toBe("string");
+      });
+
+      test("getNewProductWithId 호출 시 원본 newProduct는 ID 없이 유지", () => {
+        const { result } = renderHook(() => useNewProduct());
+
+        act(() => {
+          result.current.updateNewProduct("name", "Test Product");
+          result.current.getNewProductWithId();
+        });
+
+        expect(result.current.newProduct).not.toHaveProperty("id");
+        expect(result.current.newProduct.name).toBe("Test Product");
+      });
+    });
     describe("useCart Hook", () => {
       test("장바구니에 제품 추가", () => {
         const { result } = renderHook(() => useCart());
