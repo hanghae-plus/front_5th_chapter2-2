@@ -34,7 +34,7 @@ const setStateWithLocalStorage = <T>(key: LocalStorageKeyType, prev: T, updater:
   return newValue;
 };
 
-// hook
+// hook 재사용이 가능한 custom hook, 현재 useCart에만 적용
 export const useLocalStorage = <T>(key: LocalStorageKeyType, initialValue: T): Storage<T> => {
   const [storedItem, setStoredItem] = useState<T>(() => getLocalStorage(key, initialValue));
 

@@ -1,3 +1,4 @@
+import { ListContainer } from "@/refactoring/components";
 import { getMaxApplicableDiscount } from "@/refactoring/models";
 import { useCartContext } from "@/refactoring/provider";
 
@@ -5,7 +6,7 @@ export const CartItemList = () => {
   const { cart, removeFromCart, updateQuantity } = useCartContext();
 
   return (
-    <div className="space-y-2">
+    <ListContainer>
       {cart.map((item) => {
         const appliedDiscount = getMaxApplicableDiscount(item);
         return (
@@ -32,6 +33,6 @@ export const CartItemList = () => {
           </div>
         );
       })}
-    </div>
+    </ListContainer>
   );
 };

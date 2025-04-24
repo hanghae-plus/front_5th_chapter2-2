@@ -1,3 +1,4 @@
+import { Input } from "@/refactoring/components";
 import { useProductContext } from "@/refactoring/provider";
 import { Product } from "@/types";
 import { Dispatch, SetStateAction } from "react";
@@ -39,15 +40,15 @@ export const ModifyProduct = ({ product, editingProduct, setEditingProduct }: Pr
     <>
       <div className="mb-4">
         <label className="block mb-1">상품명: </label>
-        <input type="text" value={editingProduct.name} onChange={(e) => handleProductNameUpdate(product.id, e.target.value)} className="w-full p-2 border rounded" />
+        <Input type="text" value={editingProduct.name} onChange={(e) => handleProductNameUpdate(product.id, e.target.value)} />
       </div>
       <div className="mb-4">
         <label className="block mb-1">가격: </label>
-        <input type="number" value={editingProduct.price} onChange={(e) => handlePriceUpdate(product.id, parseInt(e.target.value))} className="w-full p-2 border rounded" />
+        <Input type="number" value={editingProduct.price} onChange={(e) => handlePriceUpdate(product.id, parseInt(e.target.value))} />
       </div>
       <div className="mb-4">
         <label className="block mb-1">재고: </label>
-        <input type="number" value={editingProduct.stock} onChange={(e) => handleStockUpdate(product.id, parseInt(e.target.value))} className="w-full p-2 border rounded" />
+        <Input type="number" value={editingProduct.stock} onChange={(e) => handleStockUpdate(product.id, parseInt(e.target.value))} />
       </div>
     </>
   );

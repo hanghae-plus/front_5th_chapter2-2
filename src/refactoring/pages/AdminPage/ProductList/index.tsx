@@ -1,3 +1,4 @@
+import { ListContainer } from "@/refactoring/components";
 import { useProductContext } from "@/refactoring/provider";
 import { Product } from "@/types";
 import { useState } from "react";
@@ -32,7 +33,7 @@ export const ProductList = () => {
   };
 
   return (
-    <div className="space-y-2">
+    <ListContainer>
       {products.map((product, index) => (
         <div key={product.id} data-testid={`product-${index + 1}`} className="bg-white p-4 rounded shadow">
           <button data-testid="toggle-button" onClick={() => toggleProductAccordion(product.id)} className="w-full text-left font-semibold">
@@ -56,6 +57,6 @@ export const ProductList = () => {
           )}
         </div>
       ))}
-    </div>
+    </ListContainer>
   );
 };
