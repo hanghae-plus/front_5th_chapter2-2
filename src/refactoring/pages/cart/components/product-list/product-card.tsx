@@ -3,6 +3,7 @@ import { getMaxDiscount } from "@r/model/discount/lib";
 import { getRemainingStock } from "@r/model/product/lib";
 import { Product } from "@r/model/product/types";
 import { AddButton } from "./add-button";
+import { ApplicableCouponList } from "./applicable-coupon-list";
 
 interface ProductCardProps {
   product: Product;
@@ -39,17 +40,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           </span>
         )}
       </div>
-      {product.discounts.length > 0 && (
-        <ul className="list-disc list-inside text-sm text-gray-500 mb-2">
-          {product.discounts.map((discount, index) => (
-            <li key={index}>
-              {discount.quantity}개 이상: {(discount.rate * 100).toFixed(0)}%
-              할인
-            </li>
-          ))}
-        </ul>
-      )}
-
+      <ApplicableCouponList product={product} />
       <AddButton disabled={remainingStock <= 0} product={product} />
     </div>
   );
