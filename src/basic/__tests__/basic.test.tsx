@@ -49,33 +49,6 @@ const mockCoupons: ICoupon[] = [
   },
 ];
 
-const TestAdminPage = () => {
-  const [products, setProducts] = useState<IProduct[]>(mockProducts);
-  const [coupons, setCoupons] = useState<ICoupon[]>(mockCoupons);
-
-  const handleProductUpdate = (updatedProduct: IProduct) => {
-    setProducts((prevProducts) => prevProducts.map((p) => (p.id === updatedProduct.id ? updatedProduct : p)));
-  };
-
-  const handleProductAdd = (newProduct: IProduct) => {
-    setProducts((prevProducts) => [...prevProducts, newProduct]);
-  };
-
-  const handleCouponAdd = (newCoupon: ICoupon) => {
-    setCoupons((prevCoupons) => [...prevCoupons, newCoupon]);
-  };
-
-  return (
-    <AdminPage
-      products={products}
-      coupons={coupons}
-      onProductUpdate={handleProductUpdate}
-      onProductAdd={handleProductAdd}
-      onCouponAdd={handleCouponAdd}
-    />
-  );
-};
-
 // 테스트 환경에서 사용할 Product ContextAPI Provider
 const MockProductProvider: React.FC<{
   children: React.ReactNode;
@@ -104,6 +77,16 @@ const MockCartProvider: React.FC<{
 
   return (
     <CartContext.Provider value={{ cart, setCart, selectedCoupon, setSelectedCoupon }}>{children}</CartContext.Provider>
+  );
+};
+
+const TestAdminPage = () => {
+  return (
+    <MockProductProvider initialTestProducts={mockProducts}>
+      <MockCouponProvider initialTestCoupons={mockCoupons}>
+        <AdminPage />
+      </MockCouponProvider>
+    </MockProductProvider>
   );
 };
 
