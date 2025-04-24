@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { describe, expect, test } from "vitest";
 import {
   act,
@@ -8,11 +7,17 @@ import {
   screen,
   within,
 } from "@testing-library/react";
-import { CartPage } from "../../refactoring/components/CartPage";
-import { AdminPage } from "../../refactoring/components/AdminPage";
+import { CartPage } from "../../refactoring/pages/CartPage";
+import { AdminPage } from "../../refactoring/pages/AdminPage";
 import { CartItem, Coupon, Product } from "../../types";
 import { useCart, useCoupons, useProducts } from "../../refactoring/hooks";
 import * as cartUtils from "../../refactoring/models/cart";
+import {
+  ProductProvider,
+  CouponProvider,
+  CartProvider,
+  AuthProvider,
+} from "../../refactoring/contexts";
 
 const mockProducts: Product[] = [
   {
@@ -52,39 +57,20 @@ const mockCoupons: Coupon[] = [
   },
 ];
 
-const TestAdminPage = () => {
-  const [products, setProducts] = useState<Product[]>(mockProducts);
-  const [coupons, setCoupons] = useState<Coupon[]>(mockCoupons);
-
-  const handleProductUpdate = (updatedProduct: Product) => {
-    setProducts((prevProducts) =>
-      prevProducts.map((p) => (p.id === updatedProduct.id ? updatedProduct : p))
-    );
-  };
-
-  const handleProductAdd = (newProduct: Product) => {
-    setProducts((prevProducts) => [...prevProducts, newProduct]);
-  };
-
-  const handleCouponAdd = (newCoupon: Coupon) => {
-    setCoupons((prevCoupons) => [...prevCoupons, newCoupon]);
-  };
-
-  return (
-    <AdminPage
-      products={products}
-      coupons={coupons}
-      onProductUpdate={handleProductUpdate}
-      onProductAdd={handleProductAdd}
-      onCouponAdd={handleCouponAdd}
-    />
-  );
-};
-
 describe("basic > ", () => {
   describe("시나리오 테스트 > ", () => {
     test("장바구니 페이지 테스트 > ", async () => {
-      render(<CartPage products={mockProducts} coupons={mockCoupons} />);
+      render(
+        <AuthProvider>
+          <ProductProvider products={mockProducts}>
+            <CouponProvider coupons={mockCoupons}>
+              <CartProvider>
+                <CartPage />
+              </CartProvider>
+            </CouponProvider>
+          </ProductProvider>
+        </AuthProvider>
+      );
       const product1 = screen.getByTestId("product-p1");
       const product2 = screen.getByTestId("product-p2");
       const product3 = screen.getByTestId("product-p3");
@@ -164,7 +150,17 @@ describe("basic > ", () => {
     });
 
     test("관리자 페이지 테스트 > ", async () => {
-      render(<TestAdminPage />);
+      render(
+        <AuthProvider>
+          <ProductProvider products={mockProducts}>
+            <CouponProvider coupons={mockCoupons}>
+              <CartProvider>
+                <AdminPage />
+              </CartProvider>
+            </CouponProvider>
+          </ProductProvider>
+        </AuthProvider>
+      );
 
       const $product1 = screen.getByTestId("product-1");
 
@@ -352,15 +348,15 @@ describe("basic > ", () => {
       ],
     };
 
-    describe("calculateItemTotal", () => {
+    describe("calculateCartItemTotal", () => {
       test("할인 없이 총액을 계산해야 합니다.", () => {
         const item: CartItem = { product: testProduct, quantity: 1 };
-        expect(cartUtils.calculateItemTotal(item)).toBe(100);
+        expect(cartUtils.calculateCartItemTotal(item)).toBe(100);
       });
 
       test("수량에 따라 올바른 할인을 적용해야 합니다.", () => {
         const item: CartItem = { product: testProduct, quantity: 5 };
-        expect(cartUtils.calculateItemTotal(item)).toBe(400); // 500 * 0.8
+        expect(cartUtils.calculateCartItemTotal(item)).toBe(400); // 500 * 0.8
       });
     });
 
@@ -383,7 +379,7 @@ describe("basic > ", () => {
       ];
 
       test("쿠폰 없이 총액을 올바르게 계산해야 합니다.", () => {
-        const result = cartUtils.calculateCartTotal(cart, null);
+        const result = cartUtils.calculateCartTotal(cart, null, null);
         expect(result.totalBeforeDiscount).toBe(400);
         expect(result.totalAfterDiscount).toBe(380);
         expect(result.totalDiscount).toBe(20);
@@ -396,7 +392,7 @@ describe("basic > ", () => {
           discountType: "amount",
           discountValue: 50,
         };
-        const result = cartUtils.calculateCartTotal(cart, coupon);
+        const result = cartUtils.calculateCartTotal(cart, coupon, null);
         expect(result.totalAfterDiscount).toBe(330);
         expect(result.totalDiscount).toBe(70);
       });
@@ -408,7 +404,7 @@ describe("basic > ", () => {
           discountType: "percentage",
           discountValue: 10,
         };
-        const result = cartUtils.calculateCartTotal(cart, coupon);
+        const result = cartUtils.calculateCartTotal(cart, coupon, null);
         expect(result.totalAfterDiscount).toBe(342);
         expect(result.totalDiscount).toBe(58);
       });
