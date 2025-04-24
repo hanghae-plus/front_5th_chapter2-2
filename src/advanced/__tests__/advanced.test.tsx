@@ -4,6 +4,7 @@ import { act, fireEvent, render, screen, within } from "@testing-library/react";
 import { CartPage } from "../../refactoring/pages/CartPage";
 import { AdminPage } from "../../refactoring/pages/AdminPage";
 import { Coupon, Product } from "../../types";
+import { validateInput } from "../../refactoring/calculations";
 
 const mockProducts: Product[] = [
   {
@@ -261,12 +262,94 @@ describe("advanced > ", () => {
     });
   });
 
-  describe("자유롭게 작성해보세요.", () => {
-    test("새로운 유틸 함수를 만든 후에 테스트 코드를 작성해서 실행해보세요", () => {
-      expect(true).toBe(false);
+  describe("util 함수 및 hook 함수 테스트", () => {
+    test("price 필드 validation 테스트", () => {
+      // 유효한 가격
+      expect(validateInput("price", 10000)).toEqual({ isValid: true });
+
+      // 문자열로 된 유효한 가격
+      expect(validateInput("price", "10000")).toEqual({ isValid: true });
+
+      // 음수 가격
+      expect(validateInput("price", -1000)).toEqual({
+        isValid: false,
+        message: "0 이상의 값을 입력해주세요.",
+      });
+
+      // 너무 큰 가격
+      expect(validateInput("price", 2000000000)).toEqual({
+        isValid: false,
+        message: "10억 이하의 값을 입력해주세요.",
+      });
+
+      // 숫자가 아닌 입력
+      expect(validateInput("price", "abc")).toEqual({
+        isValid: false,
+        message: "숫자를 입력해주세요.",
+      });
     });
 
-    test("새로운 hook 함수르 만든 후에 테스트 코드를 작성해서 실행해보세요", () => {
+    test("stock 필드 validation 테스트", () => {
+      // 유효한 재고
+      expect(validateInput("stock", 100)).toEqual({ isValid: true });
+
+      // 문자열로 된 유효한 재고
+      expect(validateInput("stock", "100")).toEqual({ isValid: true });
+
+      // 음수 재고
+      expect(validateInput("stock", -10)).toEqual({
+        isValid: false,
+        message: "0 이상의 값을 입력해주세요.",
+      });
+
+      // 소수점 재고
+      expect(validateInput("stock", 10.5)).toEqual({
+        isValid: false,
+        message: "정수를 입력해주세요.",
+      });
+
+      // 너무 큰 재고
+      expect(validateInput("stock", 20000)).toEqual({
+        isValid: false,
+        message: "10000 이하의 값을 입력해주세요.",
+      });
+    });
+
+    test("quantity 필드 validation 테스트", () => {
+      // 유효한 수량
+      expect(validateInput("quantity", 5)).toEqual({ isValid: true });
+
+      // 0 또는 음수 수량
+      expect(validateInput("quantity", 0)).toEqual({
+        isValid: false,
+        message: "1 이상의 값을 입력해주세요.",
+      });
+
+      // 소수점 수량
+      expect(validateInput("quantity", 5.5)).toEqual({
+        isValid: false,
+        message: "정수를 입력해주세요.",
+      });
+    });
+
+    test("rate 필드 validation 테스트", () => {
+      // 유효한 할인율
+      expect(validateInput("rate", 10)).toEqual({ isValid: true });
+
+      // 0 이하 할인율
+      expect(validateInput("rate", 0)).toEqual({
+        isValid: false,
+        message: "0보다 큰 값을 입력해주세요.",
+      });
+
+      // 100 초과 할인율
+      expect(validateInput("rate", 150)).toEqual({
+        isValid: false,
+        message: "100 이하의 값을 입력해주세요.",
+      });
+    });
+
+    test("새로운 hook 함수를 만든 후에 테스트 코드를 작성해서 실행해보세요", () => {
       expect(true).toBe(false);
     });
   });
