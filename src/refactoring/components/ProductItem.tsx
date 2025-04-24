@@ -1,3 +1,7 @@
+import { useMemo } from "react";
+
+import { getMaxDiscount, getRemainingStock } from "../utils";
+
 import { CartItem, Product } from "../../types";
 
 interface ProductItemTypeProps {
@@ -11,15 +15,10 @@ export const ProductItem = ({
   cart,
   addToCart,
 }: ProductItemTypeProps) => {
-  const getRemainingStock = (product: Product) => {
-    const cartItem = cart.find((item) => item.product.id === product.id);
-    return product.stock - (cartItem?.quantity || 0);
-  };
-
-  const getMaxDiscount = (discounts: { quantity: number; rate: number }[]) => {
-    return discounts.reduce((max, discount) => Math.max(max, discount.rate), 0);
-  };
-  const remainingStock = getRemainingStock(product);
+  const remainingStock = useMemo(
+    () => getRemainingStock(cart, product),
+    [cart, product],
+  );
 
   return (
     <div
