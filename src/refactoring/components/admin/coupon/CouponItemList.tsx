@@ -1,5 +1,6 @@
 import { Coupon } from "../../../../types";
 import { CouponItem } from "./CouponItem";
+import { Typography } from "../../common";
 
 interface CouponItemListProps {
   coupons: Coupon[];
@@ -8,7 +9,7 @@ interface CouponItemListProps {
 export const CouponItemList = ({ coupons }: CouponItemListProps) => {
   return (
     <div>
-      <h3 className="text-lg font-semibold mb-2">현재 쿠폰 목록</h3>
+      <Typography variant="h3">현재 쿠폰 목록</Typography>
       <div className="space-y-2">
         {coupons.map((coupon, index) => (
           <CouponItem key={index} coupon={coupon} index={index} />

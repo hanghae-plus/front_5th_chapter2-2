@@ -1,5 +1,5 @@
 interface TypographyProps {
-  variant: "h1" | "h2" | "price" | "label" | "productName" | "navHeader";
+  variant: "h1" | "h2" | "h3" | "price" | "label" | "productName" | "navHeader";
   children: React.ReactNode;
   className?: string;
 }
@@ -12,6 +12,7 @@ export const Typography = ({
   const baseStyles = {
     h1: "text-3xl font-bold mb-6",
     h2: "text-2xl font-semibold mb-4",
+    h3: "text-lg font-semibold mb-2",
     price: "text-gray-600",
     label: "text-sm font-medium",
     productName: "font-semibold",
@@ -21,6 +22,7 @@ export const Typography = ({
   const element = {
     h1: "h1",
     h2: "h2",
+    h3: "h3",
     price: "span",
     label: "span",
     productName: "span",
