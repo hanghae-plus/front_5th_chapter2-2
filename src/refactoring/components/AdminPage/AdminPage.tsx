@@ -1,4 +1,4 @@
-import { Coupon, Product } from '../../../types.ts';
+import { Coupon, Product } from '../../../types';
 import {
   useAdminNewProduct,
   useProductAccordion,
@@ -6,7 +6,7 @@ import {
   useAdminDiscount,
   useAdminCoupon,
 } from '../../hooks';
-import { NewProductForm } from './NewProductForm.tsx';
+import { NewProductForm } from './NewProductForm';
 import { ProductDetail } from './Product';
 import { CouponForm, CouponList } from './Coupon';
 

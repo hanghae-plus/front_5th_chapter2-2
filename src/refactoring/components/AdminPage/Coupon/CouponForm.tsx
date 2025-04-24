@@ -1,4 +1,4 @@
-import Select from '../../common/Select/index.tsx';
+import Select from '../../common/Select';
 
 interface CouponFormProps {
   newCoupon: {

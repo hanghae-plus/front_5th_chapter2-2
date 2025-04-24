@@ -1,5 +1,5 @@
-import { Coupon } from '../../../../types.ts';
-import { isAmountDiscount } from '../../../lib/utils.ts';
+import { Coupon } from '../../../../types';
+import { isAmountDiscount } from '../../../lib';
 
 interface CouponListProps {
   coupons: Coupon[];
