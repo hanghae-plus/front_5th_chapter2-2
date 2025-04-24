@@ -6,6 +6,11 @@
   "scripts": {
     "start:origin": "vite serve --open ./index.origin.html",
     "start:refactoring": "vite serve --open ./index.refactoring.html",
+    "dev": "vite",
+
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist",
     "test": "vitest",
     "test:origin": "vitest src/origin",
     "test:basic": "vitest src/basic",
