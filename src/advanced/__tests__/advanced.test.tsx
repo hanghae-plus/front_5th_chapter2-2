@@ -1,8 +1,10 @@
-import { act, fireEvent, render, screen, within } from "@testing-library/react";
-import { describe, expect, test } from "vitest";
+import { act, fireEvent, render, renderHook, screen, within } from "@testing-library/react";
+import { beforeEach, describe, expect, test } from "vitest";
+import { Coupon, Product } from "../../refactoring/entities";
+import { useCoupons } from "../../refactoring/hooks";
 import { AdminPage } from "../../refactoring/pages/AdminPage";
 import { CartPage } from "../../refactoring/pages/CartPage";
-import { Coupon, Product } from "../../types";
+import { useProductStore } from "../../refactoring/store/product-store";
 
 const mockProducts: Product[] = [
   {
@@ -73,8 +75,17 @@ const TestAdminPage = () => {
 
 describe("advanced > ", () => {
   describe("시나리오 테스트 > ", () => {
+    beforeEach(() => {
+      const store = useProductStore.getState();
+      store.initializeProducts(mockProducts);
+
+      const { result } = renderHook(() => useCoupons());
+      act(() => {
+        result.current.initializeCoupons(mockCoupons);
+      });
+    });
     test("장바구니 페이지 테스트 > ", async () => {
-      render(<CartPage products={mockProducts} coupons={mockCoupons} />);
+      render(<CartPage />);
       const product1 = screen.getByTestId("product-p1");
       const product2 = screen.getByTestId("product-p2");
       const product3 = screen.getByTestId("product-p3");
