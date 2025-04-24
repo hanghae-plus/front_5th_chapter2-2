@@ -3,11 +3,10 @@ import { useCart } from '../hooks';
 import { CartSection, ProductSection } from '../widgets';
 
 interface Props {
-  products: Product[];
   coupons: Coupon[];
 }
 
-export const CartPage = ({ products, coupons }: Props) => {
+export const CartPage = ({ coupons }: Props) => {
   const {
     cart,
     addToCart,
@@ -28,7 +27,6 @@ export const CartPage = ({ products, coupons }: Props) => {
       <h1 className="text-3xl font-bold mb-6">장바구니</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <ProductSection
-          products={products}
           getRemainingStock={getRemainingStock}
           addToCart={addToCart}
         />

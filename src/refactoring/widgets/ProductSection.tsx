@@ -1,17 +1,18 @@
 import { Product } from '../entities';
 import { ProductItem } from '../features/cart';
+import { useProductContext } from '../shared';
 
 interface ProductSectionProps {
-  products: Product[];
   getRemainingStock: (product: Product) => number;
   addToCart: (product: Product) => void;
 }
 
 export const ProductSection = ({
-  products,
   getRemainingStock,
   addToCart,
 }: ProductSectionProps) => {
+  const { products } = useProductContext();
+
   return (
     <div>
       <h2 className="text-2xl font-semibold mb-4">상품 목록</h2>

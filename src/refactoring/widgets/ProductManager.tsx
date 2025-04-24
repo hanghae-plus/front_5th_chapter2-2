@@ -1,18 +1,12 @@
 import { useState } from 'react';
 import { Product } from '../entities';
 import { NewProductForm, ProductList } from '../features/admin';
+import { useProductContext } from '../shared';
 
-interface ProductManagerProps {
-  products: Product[];
-  onProductUpdate: (updatedProduct: Product) => void;
-  onProductAdd: (newProduct: Product) => void;
-}
+interface ProductManagerProps {}
 
-export const ProductManager = ({
-  products,
-  onProductAdd,
-  onProductUpdate,
-}: ProductManagerProps) => {
+export const ProductManager = ({}: ProductManagerProps) => {
+  const { products, addProduct, updateProduct } = useProductContext();
   const [showNewProductForm, setShowNewProductForm] = useState(false);
   const [newProduct, setNewProduct] = useState<Omit<Product, 'id'>>({
     name: '',
@@ -23,7 +17,7 @@ export const ProductManager = ({
 
   const handleAddNewProduct = () => {
     const productWithId = { ...newProduct, id: Date.now().toString() };
-    onProductAdd(productWithId);
+    addProduct(productWithId);
     setNewProduct({
       name: '',
       price: 0,
@@ -48,7 +42,7 @@ export const ProductManager = ({
           handleAddNewProduct={handleAddNewProduct}
         />
       )}
-      <ProductList products={products} onProductUpdate={onProductUpdate} />
+      <ProductList products={products} onProductUpdate={updateProduct} />
     </div>
   );
 };
