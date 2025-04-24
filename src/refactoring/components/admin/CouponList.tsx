@@ -6,18 +6,15 @@ interface CouponListProps {
 
 export function CouponList({ coupons }: CouponListProps) {
 	return (
-		<div>
-			<h3 className="mb-2 text-lg font-semibold">현재 쿠폰 목록</h3>
-			<div className="space-y-2">
-				{coupons.map((coupon, index) => (
-					<CouponList.Item
-						key={index}
-						data-testid={`coupon-${index + 1}`}
-						coupon={coupon}
-					/>
-				))}
-			</div>
-		</div>
+		<CouponList.Layout>
+			{coupons.map((coupon, index) => (
+				<CouponList.Item
+					key={index}
+					data-testid={`coupon-${index + 1}`}
+					coupon={coupon}
+				/>
+			))}
+		</CouponList.Layout>
 	);
 }
 
@@ -32,6 +29,15 @@ CouponList.Item = ({
 				? `${coupon.discountValue}원`
 				: `${coupon.discountValue}%`}{" "}
 			할인
+		</div>
+	);
+};
+
+CouponList.Layout = ({ children }: { children: React.ReactNode }) => {
+	return (
+		<div>
+			<h3 className="mb-2 text-lg font-semibold">현재 쿠폰 목록</h3>
+			<div className="space-y-2">{children}</div>
 		</div>
 	);
 };
