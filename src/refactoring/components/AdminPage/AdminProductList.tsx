@@ -1,4 +1,4 @@
-import { useProductsContext } from "../hooks/index.ts";
+import { useProductsContext } from "../../hooks/index.ts";
 import { AdminProduct } from "./AdminProduct.tsx";
 
 export const AdminProductList = () => {

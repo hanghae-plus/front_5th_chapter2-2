@@ -1,5 +1,5 @@
-import { CartItem, Coupon } from "../../types.ts";
-import { useCart, useProductsContext } from "../hooks";
+import { CartItem, Coupon } from "../../../types.ts";
+import { useCart, useProductsContext } from "../../hooks";
 import { OrderSummary } from "./OrderSummary.tsx";
 interface Props {
   coupons: Coupon[];
