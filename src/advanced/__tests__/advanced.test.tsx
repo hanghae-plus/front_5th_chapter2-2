@@ -251,7 +251,7 @@ describe("advanced > ", () => {
   });
 
   describe("", () => {
-    test("새로운 유틸 함수를 만든 후에 테스트 코드를 작성해서 실행해보세요", () => {
+    test("새로운 hook을 만든 후에 테스트 코드를 작성해서 실행해보세요", () => {
       expect(true).toBe(false);
     });
   });

@@ -1,33 +1,15 @@
-import type { Product } from "../../../types";
-import { useState } from "react";
+import { useProductForm } from "../../../hooks";
+
 interface NewProductFormProps {
-  onProductAdd: (product: Product) => void;
   setShowNewProductForm: (show: boolean) => void;
 }
 
 export const NewProductForm = ({
-  onProductAdd,
   setShowNewProductForm,
 }: NewProductFormProps) => {
-  const [newProduct, setNewProduct] = useState<Omit<Product, "id">>({
-    name: "",
-    price: 0,
-    stock: 0,
-    discounts: [],
+  const { newProduct, setNewProduct, handleAddNewProduct } = useProductForm({
+    setShowNewProductForm,
   });
-
-  const handleAddNewProduct = () => {
-    const productWithId = { ...newProduct, id: Date.now().toString() };
-    onProductAdd(productWithId);
-    setNewProduct({
-      name: "",
-      price: 0,
-      stock: 0,
-      discounts: [],
-    });
-    setShowNewProductForm(false);
-  };
-
   return (
     <div className="bg-white p-4 rounded shadow mb-4">
       <h3 className="text-xl font-semibold mb-2">새 상품 추가</h3>

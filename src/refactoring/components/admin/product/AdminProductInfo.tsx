@@ -2,18 +2,13 @@ import { useState } from "react";
 import { NewProductForm } from "./NewProductForm";
 import { ProductList } from "./ProductList";
 import { useAtomValue, useSetAtom } from "jotai";
-import {
-  addProductAtom,
-  productsAtom,
-  updateProductAtom,
-} from "../../../state";
+import { productsAtom, updateProductAtom } from "../../../state";
 
 export const AdminProductInfo = () => {
   const [showNewProductForm, setShowNewProductForm] = useState(false);
 
   const products = useAtomValue(productsAtom);
   const onProductUpdate = useSetAtom(updateProductAtom);
-  const onProductAdd = useSetAtom(addProductAtom);
 
   return (
     <div>
@@ -26,10 +21,7 @@ export const AdminProductInfo = () => {
         {showNewProductForm ? "취소" : "새 상품 추가"}
       </button>
       {showNewProductForm && (
-        <NewProductForm
-          onProductAdd={onProductAdd}
-          setShowNewProductForm={setShowNewProductForm}
-        />
+        <NewProductForm setShowNewProductForm={setShowNewProductForm} />
       )}
       <ProductList products={products} onProductUpdate={onProductUpdate} />
     </div>
