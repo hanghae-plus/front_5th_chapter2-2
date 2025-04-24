@@ -1,25 +1,30 @@
-// useCart.ts
-import { useState } from "react";
-import { CartItem, Coupon, Product } from "../../types";
-import { calculateCartTotal, updateCartItemQuantity } from "../models/cart";
+// src/refactoring/hooks/useCart.ts
+import { useAtom } from "jotai";
+import { Coupon, Product } from "../../types";
+import { calculateCartTotal, getItemAddedCart, getItemRemovedCart, updateCartItemQuantity } from "../models/cart";
+import { cartAtom, selectedCouponAtom } from "../atoms/cartAtoms";
 
 export const useCart = () => {
-  const [cart, setCart] = useState<CartItem[]>([]);
-  const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
+  const [cart, setCart] = useAtom(cartAtom);
+  const [selectedCoupon, setSelectedCoupon] = useAtom(selectedCouponAtom);
 
-  const addToCart = (product: Product) => {};
+  const addToCart = (product: Product) => {
+    setCart(prevCart => getItemAddedCart(prevCart, product));
+  };
 
-  const removeFromCart = (productId: string) => {};
+  const removeFromCart = (productId: string) => {
+    setCart(prevCart => getItemRemovedCart(prevCart, productId));
+  };
 
-  const updateQuantity = (productId: string, newQuantity: number) => {};
+  const updateQuantity = (productId: string, newQuantity: number) => {
+    setCart(prevCart => updateCartItemQuantity(prevCart, productId, newQuantity));
+  };
 
-  const applyCoupon = (coupon: Coupon) => {};
+  const applyCoupon = (coupon: Coupon) => {
+    setSelectedCoupon(coupon);
+  };
 
-  const calculateTotal = () => ({
-    totalBeforeDiscount: 0,
-    totalAfterDiscount: 0,
-    totalDiscount: 0,
-  });
+  const calculateTotal = () => calculateCartTotal(cart, selectedCoupon);
 
   return {
     cart,
