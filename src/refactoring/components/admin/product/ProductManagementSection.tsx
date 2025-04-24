@@ -1,4 +1,3 @@
-// components/admin/product/ProductManagementSection.tsx
 import { Product } from "../../../../types";
 import { SectionLayout } from "../../common";
 import { ProductManagementProvider } from "../../../contexts/ProductManagementContext";

@@ -1,4 +1,3 @@
-// hooks/product/useProductManagement.ts
 import { Product } from "../../../types";
 import { useAccordion } from "../common/useAccordion";
 import { useProductEdit } from "./useProductEdit";

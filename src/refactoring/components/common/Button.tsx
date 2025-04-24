@@ -1,4 +1,3 @@
-// src/refactoring/components/common/Button.tsx
 type ButtonColor = "white" | "blue" | "green" | "red" | "gray" | "none";
 
 type ButtonWidth = "full" | "third" | "default";
