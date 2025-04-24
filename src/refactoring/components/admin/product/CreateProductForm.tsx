@@ -1,20 +1,12 @@
-import { Product } from "../../../../types";
+// src/refactoring/components/admin/product/CreateProductForm.tsx
 import { ProductFormInput } from "./ProductFormInput";
 import { Button } from "../../common";
+import { useProductManagement } from "../../../contexts/ProductManagementContext";
 
-interface CreateProductFormProps {
-  formData: Omit<Product, "id">;
-  setFormData: React.Dispatch<React.SetStateAction<Omit<Product, "id">>>;
-  handleSubmit: () => void;
-  showNewProductForm: boolean;
-}
+export const CreateProductForm = () => {
+  const { showNewProductForm, newProduct, setNewProduct, handleAddNewProduct } =
+    useProductManagement();
 
-export const CreateProductForm = ({
-  formData,
-  setFormData,
-  handleSubmit,
-  showNewProductForm,
-}: CreateProductFormProps) => {
   if (!showNewProductForm) return null;
 
   return (
@@ -23,28 +15,33 @@ export const CreateProductForm = ({
       <ProductFormInput
         id="productName"
         label="상품명"
-        value={formData.name}
-        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+        value={newProduct.name}
+        onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
       />
       <ProductFormInput
         id="productPrice"
         label="가격"
         type="number"
-        value={formData.price}
+        value={newProduct.price}
         onChange={(e) =>
-          setFormData({ ...formData, price: Number(e.target.value) })
+          setNewProduct({ ...newProduct, price: Number(e.target.value) })
         }
       />
       <ProductFormInput
         id="productStock"
         label="재고"
         type="number"
-        value={formData.stock}
+        value={newProduct.stock}
         onChange={(e) =>
-          setFormData({ ...formData, stock: Number(e.target.value) })
+          setNewProduct({ ...newProduct, stock: Number(e.target.value) })
         }
       />
-      <Button color="blue" width="full" className="p-2" onClick={handleSubmit}>
+      <Button
+        color="blue"
+        width="full"
+        className="p-2"
+        onClick={handleAddNewProduct}
+      >
         추가
       </Button>
     </div>
