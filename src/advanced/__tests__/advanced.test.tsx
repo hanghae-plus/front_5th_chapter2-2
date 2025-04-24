@@ -1,10 +1,18 @@
 import { useState } from "react";
-import { describe, expect, test } from "vitest";
-import { act, fireEvent, render, screen, within } from "@testing-library/react";
+import { describe, expect, test, beforeEach, vi } from "vitest";
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  within,
+  renderHook,
+} from "@testing-library/react";
 import { CartPage } from "../../refactoring/pages/CartPage";
 import { AdminPage } from "../../refactoring/pages/AdminPage";
 import { Coupon, Product } from "../../types";
 import { validateInput } from "../../refactoring/calculations";
+import { useLocalStorage, useValidation } from "../../refactoring/hooks/common";
 
 const mockProducts: Product[] = [
   {
@@ -262,7 +270,7 @@ describe("advanced > ", () => {
     });
   });
 
-  describe("util 함수 및 hook 함수 테스트", () => {
+  describe("util 함수 테스트", () => {
     test("price 필드 validation 테스트", () => {
       // 유효한 가격
       expect(validateInput("price", 10000)).toEqual({ isValid: true });
@@ -348,9 +356,198 @@ describe("advanced > ", () => {
         message: "100 이하의 값을 입력해주세요.",
       });
     });
+  });
 
-    test("새로운 hook 함수를 만든 후에 테스트 코드를 작성해서 실행해보세요", () => {
-      expect(true).toBe(false);
+  describe("custom hook 테스트", () => {
+    describe("useValidation 테스트", () => {
+      test("price 필드 validation", () => {
+        const mockHandler = vi.fn();
+        const { result } = renderHook(() => useValidation());
+        const priceHandler = result.current.withValidation(
+          "price",
+          mockHandler
+        );
+        const mockAlert = vi
+          .spyOn(window, "alert")
+          .mockImplementation(() => {});
+
+        // 유효한 가격
+        priceHandler({ target: { value: "1000" } } as any);
+        expect(mockHandler).toHaveBeenCalledWith("1000");
+
+        // 음수 가격
+        priceHandler({ target: { value: "-1000" } } as any);
+        expect(mockAlert).toHaveBeenCalledWith("0 이상의 값을 입력해주세요.");
+
+        // 너무 큰 가격
+        priceHandler({ target: { value: "2000000000" } } as any);
+        expect(mockAlert).toHaveBeenCalledWith(
+          "10억 이하의 값을 입력해주세요."
+        );
+
+        // 숫자가 아닌 입력
+        priceHandler({ target: { value: "abc" } } as any);
+        expect(mockAlert).toHaveBeenCalledWith("숫자를 입력해주세요.");
+
+        mockAlert.mockRestore();
+      });
+
+      test("stock 필드 validation", () => {
+        const mockHandler = vi.fn();
+        const { result } = renderHook(() => useValidation());
+        const stockHandler = result.current.withValidation(
+          "stock",
+          mockHandler
+        );
+        const mockAlert = vi
+          .spyOn(window, "alert")
+          .mockImplementation(() => {});
+
+        // 유효한 재고
+        stockHandler({ target: { value: "100" } } as any);
+        expect(mockHandler).toHaveBeenCalledWith("100");
+
+        // 음수 재고
+        stockHandler({ target: { value: "-10" } } as any);
+        expect(mockAlert).toHaveBeenCalledWith("0 이상의 값을 입력해주세요.");
+
+        // 소수점 재고
+        stockHandler({ target: { value: "10.5" } } as any);
+        expect(mockAlert).toHaveBeenCalledWith("정수를 입력해주세요.");
+
+        // 너무 큰 재고
+        stockHandler({ target: { value: "20000" } } as any);
+        expect(mockAlert).toHaveBeenCalledWith(
+          "10000 이하의 값을 입력해주세요."
+        );
+
+        mockAlert.mockRestore();
+      });
+
+      test("quantity 필드 validation", () => {
+        const mockHandler = vi.fn();
+        const { result } = renderHook(() => useValidation());
+        const quantityHandler = result.current.withValidation(
+          "quantity",
+          mockHandler
+        );
+        const mockAlert = vi
+          .spyOn(window, "alert")
+          .mockImplementation(() => {});
+
+        // 유효한 수량
+        quantityHandler({ target: { value: "5" } } as any);
+        expect(mockHandler).toHaveBeenCalledWith("5");
+
+        // 0 수량
+        quantityHandler({ target: { value: "0" } } as any);
+        expect(mockAlert).toHaveBeenCalledWith("1 이상의 값을 입력해주세요.");
+
+        // 소수점 수량
+        quantityHandler({ target: { value: "5.5" } } as any);
+        expect(mockAlert).toHaveBeenCalledWith("정수를 입력해주세요.");
+
+        mockAlert.mockRestore();
+      });
+
+      test("rate 필드 validation", () => {
+        const mockHandler = vi.fn();
+        const { result } = renderHook(() => useValidation());
+        const rateHandler = result.current.withValidation("rate", mockHandler);
+        const mockAlert = vi
+          .spyOn(window, "alert")
+          .mockImplementation(() => {});
+
+        // 유효한 할인율
+        rateHandler({ target: { value: "10" } } as any);
+        expect(mockHandler).toHaveBeenCalledWith("10");
+
+        // 0 할인율
+        rateHandler({ target: { value: "0" } } as any);
+        expect(mockAlert).toHaveBeenCalledWith("0보다 큰 값을 입력해주세요.");
+
+        // 100 초과 할인율
+        rateHandler({ target: { value: "150" } } as any);
+        expect(mockAlert).toHaveBeenCalledWith("100 이하의 값을 입력해주세요.");
+
+        mockAlert.mockRestore();
+      });
+
+      test("name 필드는 validation 없이 통과", () => {
+        const mockHandler = vi.fn();
+        const { result } = renderHook(() => useValidation());
+        const nameHandler = result.current.withValidation("name", mockHandler);
+
+        // 어떤 값이든 통과
+        nameHandler({ target: { value: "테스트 상품" } } as any);
+        expect(mockHandler).toHaveBeenCalledWith("테스트 상품");
+
+        nameHandler({ target: { value: "" } } as any);
+        expect(mockHandler).toHaveBeenCalledWith("");
+
+        nameHandler({ target: { value: "123" } } as any);
+        expect(mockHandler).toHaveBeenCalledWith("123");
+      });
+    });
+
+    describe("useLocalStorage 테스트", () => {
+      // 각 테스트 전에 localStorage 초기화
+      beforeEach(() => {
+        window.localStorage.clear();
+      });
+
+      test("초기값이 없을 때 기본값 설정", () => {
+        const { result } = renderHook(() =>
+          useLocalStorage("test-key", "default-value")
+        );
+        expect(result.current[0]).toBe("default-value");
+      });
+
+      test("localStorage에 저장된 값 불러오기", () => {
+        // 먼저 localStorage에 값을 직접 설정
+        localStorage.setItem("test-key", JSON.stringify("stored-value"));
+
+        const { result } = renderHook(() =>
+          useLocalStorage("test-key", "default-value")
+        );
+        expect(result.current[0]).toBe("stored-value");
+      });
+
+      test("setValue로 값 업데이트", () => {
+        const { result } = renderHook(() =>
+          useLocalStorage("test-key", "initial-value")
+        );
+
+        act(() => {
+          result.current[1]("updated-value");
+        });
+
+        // 상태값 확인
+        expect(result.current[0]).toBe("updated-value");
+        // localStorage에 저장된 값 확인
+        expect(JSON.parse(localStorage.getItem("test-key") || "")).toBe(
+          "updated-value"
+        );
+      });
+
+      test("객체 타입 데이터 저장 및 불러오기", () => {
+        const testObject = { name: "test", value: 123 };
+        const { result } = renderHook(() =>
+          useLocalStorage("test-object", testObject)
+        );
+
+        expect(result.current[0]).toEqual(testObject);
+
+        const newObject = { name: "updated", value: 456 };
+        act(() => {
+          result.current[1](newObject);
+        });
+
+        expect(result.current[0]).toEqual(newObject);
+        expect(JSON.parse(localStorage.getItem("test-object") || "")).toEqual(
+          newObject
+        );
+      });
     });
   });
 });
