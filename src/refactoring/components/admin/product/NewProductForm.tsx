@@ -1,10 +1,9 @@
 import { useNewProductForm } from "../../../hooks/useNewProductForm.ts"
 
-export default function NewProductForm({
-  setShowNewProductForm,
-}: {
+interface INewProductForm {
   setShowNewProductForm: React.Dispatch<React.SetStateAction<boolean>>
-}) {
+}
+export default function NewProductForm({ setShowNewProductForm }: INewProductForm) {
   const { newProduct, handleInputChange, handleAddNewProduct } = useNewProductForm(setShowNewProductForm)
 
   return (
