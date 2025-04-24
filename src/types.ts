@@ -11,6 +11,12 @@ export interface Discount {
     rate: number;
 }
 
+export interface TotalDiscount {
+    totalBeforeDiscount: number;
+    totalAfterDiscount: number;
+    totalDiscount: number;
+}
+
 export interface CartItem {
     product: Product;
     quantity: number;
