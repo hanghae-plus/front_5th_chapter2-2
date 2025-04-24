@@ -1,9 +1,12 @@
 import { useState } from "react";
-import { describe, expect, test } from 'vitest';
-import { act, fireEvent, render, screen, within } from '@testing-library/react';
-import { CartPage } from '../../refactoring/components/CartPage';
-import { AdminPage } from "../../refactoring/components/AdminPage";
+import { beforeEach, describe, expect, test } from 'vitest';
+import { act, fireEvent, render, renderHook, screen, within } from '@testing-library/react';
+import { CartPage } from '../../refactoring/pages/CartPage';
+import { AdminPage } from "../../refactoring/pages/AdminPage";
 import { Coupon, Product } from '../../types';
+import { CouponProvider } from "../../refactoring/context/CouponContext";
+import { ProductProvider } from "../../refactoring/context/ProductContext";
+import { useLocalStorage } from "../../refactoring/hooks/useLocalStorage";
 
 const mockProducts: Product[] = [
   {
@@ -44,32 +47,15 @@ const mockCoupons: Coupon[] = [
 ];
 
 const TestAdminPage = () => {
-  const [products, setProducts] = useState<Product[]>(mockProducts);
-  const [coupons, setCoupons] = useState<Coupon[]>(mockCoupons);
-
-
-  const handleProductUpdate = (updatedProduct: Product) => {
-    setProducts(prevProducts =>
-      prevProducts.map(p => p.id === updatedProduct.id ? updatedProduct : p)
-    );
-  };
-
-  const handleProductAdd = (newProduct: Product) => {
-    setProducts(prevProducts => [...prevProducts, newProduct]);
-  };
-
-  const handleCouponAdd = (newCoupon: Coupon) => {
-    setCoupons(prevCoupons => [...prevCoupons, newCoupon]);
-  };
+  const [products, _] = useState<Product[]>(mockProducts);
+  const [coupons, __] = useState<Coupon[]>(mockCoupons);
 
   return (
-    <AdminPage
-      products={products}
-      coupons={coupons}
-      onProductUpdate={handleProductUpdate}
-      onProductAdd={handleProductAdd}
-      onCouponAdd={handleCouponAdd}
-    />
+    <ProductProvider initialProducts={products}>
+      <CouponProvider initialCoupons={coupons}>
+        <AdminPage />
+      </CouponProvider>
+    </ProductProvider>
   );
 };
 
@@ -78,8 +64,19 @@ describe('advanced > ', () => {
   describe('시나리오 테스트 > ', () => {
 
     test('장바구니 페이지 테스트 > ', async () => {
+      
+      beforeEach(() => {
+        localStorage.clear();
+      });
 
-      render(<CartPage products={mockProducts} coupons={mockCoupons}/>);
+      render(
+        <ProductProvider initialProducts={mockProducts}>
+          <CouponProvider initialCoupons={mockCoupons}>
+            <CartPage />
+          </CouponProvider>
+        </ProductProvider>,
+      );
+
       const product1 = screen.getByTestId('product-p1');
       const product2 = screen.getByTestId('product-p2');
       const product3 = screen.getByTestId('product-p3');
@@ -231,14 +228,41 @@ describe('advanced > ', () => {
     })
   })
 
-  describe('자유롭게 작성해보세요.', () => {
-    test('새로운 유틸 함수를 만든 후에 테스트 코드를 작성해서 실행해보세요', () => {
-      expect(true).toBe(false);
-    })
+  //useLocalSotrage 테스트
+  describe('useLocalStorage', () => {
 
-    test('새로운 hook 함수르 만든 후에 테스트 코드를 작성해서 실행해보세요', () => {
-      expect(true).toBe(false);
-    })
+    const key = 'test-key';
+   
+    beforeEach(() => {
+      localStorage.clear();
+    });
+
+
+    test('localStorage가 비었다면 initialValue를 return 해야한다.', () => {
+      const { result } = renderHook(() => useLocalStorage(key, '초기 상태'));
+      
+      expect(result.current[0]).toBe('초기 상태');
+    });
+
+
+    test('localStorage에 기존 값이 있다면 해당 값을 가져와야 한다.', () => {
+      localStorage.setItem(key, JSON.stringify('상품 1')); 
+      const { result } = renderHook(() => useLocalStorage(key, '초기 상태'));
+
+      expect(result.current[0]).toBe('상품 1');
+    });
+
+
+    test('값이 업데이트되면 localStorage에도 반영되어야 한다', () => {
+      const { result } = renderHook(() => useLocalStorage(key, '초기 상태'));
+  
+      act(() => {
+        result.current[1]('상품 2');
+      });
+  
+      expect(localStorage.getItem(key)).toBe(JSON.stringify('상품 2'));
+      expect(result.current[0]).toBe('상품 2');
+    });
   })
 })
 
