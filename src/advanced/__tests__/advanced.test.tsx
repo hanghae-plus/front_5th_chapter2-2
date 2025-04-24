@@ -1,9 +1,18 @@
 import { useState } from 'react';
-import { describe, expect, test } from 'vitest';
-import { act, fireEvent, render, screen, within } from '@testing-library/react';
+import { describe, expect, test, vi } from 'vitest';
+import {
+  act,
+  fireEvent,
+  render,
+  renderHook,
+  screen,
+  within,
+} from '@testing-library/react';
 import { CartPage } from '../../refactoring/pages/CartPage';
 import { AdminPage } from '../../refactoring/pages/AdminPage';
-import { Coupon, Product } from '../../types';
+import { Coupon, Discount, Product } from '../../types';
+import { useCart } from '../../refactoring/hooks';
+import { useDiscount } from '../../refactoring/hooks/useDiscount';
 
 const mockProducts: Product[] = [
   {
@@ -267,9 +276,245 @@ describe('advanced > ', () => {
     test('새로운 유틸 함수를 만든 후에 테스트 코드를 작성해서 실행해보세요', () => {
       expect(true).toBe(false);
     });
+  });
 
-    test('새로운 hook 함수르 만든 후에 테스트 코드를 작성해서 실행해보세요', () => {
-      expect(true).toBe(false);
+  describe('커스텀 훅 > ', () => {
+    describe('useCart > ', () => {
+      const productA: Product = {
+        id: 'p1',
+        name: 'Product A',
+        price: 10000,
+        stock: 10,
+        discounts: [],
+      };
+
+      const productB: Product = {
+        id: 'p2',
+        name: 'Product B',
+        price: 20000,
+        stock: 10,
+        discounts: [],
+      };
+
+      const coupon: Coupon = {
+        name: '10% 할인 쿠폰',
+        code: 'TENPERCENT',
+        discountType: 'percentage',
+        discountValue: 10,
+      };
+
+      test('상품을 장바구니에 추가하면 cart에 반영되어야 한다', () => {
+        const { result } = renderHook(() => useCart());
+        act(() => {
+          result.current.addToCart(productA);
+        });
+        expect(result.current.cart.length).toBe(1);
+        expect(result.current.cart[0].product).toEqual(productA);
+      });
+
+      test('같은 상품을 두 번 추가하면 수량이 증가해야 한다', () => {
+        const { result } = renderHook(() => useCart());
+        act(() => {
+          result.current.addToCart(productA);
+          result.current.addToCart(productA);
+        });
+        expect(result.current.cart.length).toBe(1);
+        expect(result.current.cart[0].quantity).toBe(2);
+      });
+
+      test('서로 다른 상품을 추가하면 각각 장바구니에 있어야 한다', () => {
+        const { result } = renderHook(() => useCart());
+        act(() => {
+          result.current.addToCart(productA);
+          result.current.addToCart(productB);
+        });
+        expect(result.current.cart.length).toBe(2);
+      });
+
+      test('상품의 수량을 변경할 수 있어야 한다', () => {
+        const { result } = renderHook(() => useCart());
+        act(() => {
+          result.current.addToCart(productA);
+          result.current.updateQuantity(productA.id, 5);
+        });
+        expect(result.current.cart[0].quantity).toBe(5);
+      });
+
+      test('상품을 장바구니에서 제거할 수 있어야 한다', () => {
+        const { result } = renderHook(() => useCart());
+        act(() => {
+          result.current.addToCart(productA);
+          result.current.removeFromCart(productA.id);
+        });
+        expect(result.current.cart).toEqual([]);
+      });
+
+      test('쿠폰을 적용할 수 있어야 한다', () => {
+        const { result } = renderHook(() => useCart());
+        act(() => {
+          result.current.applyCoupon(coupon);
+        });
+        expect(result.current.selectedCoupon).toEqual(coupon);
+      });
+
+      test('장바구니에 아무 상품도 없으면 기본 총액을 반환해야 한다', () => {
+        const { result } = renderHook(() => useCart());
+        const total = result.current.calculateTotal();
+        expect(total.totalAfterDiscount).toBe(0); // getDefaultCartTotal이 0을 반환한다고 가정
+      });
+
+      test('쿠폰이 적용된 경우 총액은 할인된 가격으로 계산되어야 한다', () => {
+        const { result } = renderHook(() => useCart());
+        act(() => {
+          result.current.addToCart(productA); // 10000
+          result.current.updateQuantity(productA.id, 2); // 20000
+          result.current.applyCoupon(coupon); // 10% 할인 → 18000
+        });
+        const total = result.current.calculateTotal();
+        expect(total.totalAfterDiscount).toBe(18000);
+      });
+
+      test('존재하지 않는 상품을 제거해도 에러가 나지 않아야 한다', () => {
+        const { result } = renderHook(() => useCart());
+        act(() => {
+          result.current.removeFromCart('invalid-id');
+        });
+        expect(result.current.cart).toEqual([]);
+      });
+
+      test('존재하지 않는 상품의 수량을 변경해도 에러가 나지 않아야 한다', () => {
+        const { result } = renderHook(() => useCart());
+        act(() => {
+          result.current.updateQuantity('invalid-id', 5);
+        });
+        expect(result.current.cart).toEqual([]);
+      });
+
+      test('상품 수량을 0으로 변경하면 장바구니에서 제거되어야 한다', () => {
+        const { result } = renderHook(() => useCart());
+        act(() => {
+          result.current.addToCart(productA);
+          result.current.updateQuantity(productA.id, 0);
+        });
+        expect(result.current.cart).toEqual([]);
+      });
+
+      test('상품 수량을 음수로 변경해도 장바구니에서 제거되어야 한다', () => {
+        const { result } = renderHook(() => useCart());
+        act(() => {
+          result.current.addToCart(productA);
+          result.current.updateQuantity(productA.id, -5);
+        });
+        expect(result.current.cart).toEqual([]);
+      });
+
+      test('잘못된 쿠폰(할인율이 0 이하)을 적용해도 에러가 나지 않아야 한다', () => {
+        const invalidCoupon: Coupon = {
+          name: '무효 쿠폰',
+          code: 'ZERO',
+          discountType: 'percentage',
+          discountValue: 0,
+        };
+
+        const { result } = renderHook(() => useCart());
+        act(() => {
+          result.current.applyCoupon(invalidCoupon);
+        });
+        expect(result.current.selectedCoupon).toEqual(invalidCoupon);
+        const total = result.current.calculateTotal();
+        expect(total.totalAfterDiscount).toBe(0); // 장바구니가 비어 있으므로 총액은 0
+      });
+
+      test('중복된 쿠폰을 여러 번 적용해도 마지막 값만 유지되어야 한다', () => {
+        const { result } = renderHook(() => useCart());
+        act(() => {
+          result.current.applyCoupon(coupon);
+          result.current.applyCoupon(coupon); // 같은 쿠폰 다시 적용
+        });
+        expect(result.current.selectedCoupon).toEqual(coupon);
+      });
+    });
+
+    describe('useDiscount > ', () => {
+      const productA: Product = {
+        id: 'p1',
+        name: '상품 A',
+        price: 10000,
+        stock: 10,
+        discounts: [],
+      };
+
+      const discount: Discount = {
+        quantity: 5,
+        rate: 0.1,
+      };
+
+      test('editingProduct가 없으면 할인을 추가하지 않아야 한다', () => {
+        const products = [productA];
+        const mockSetEditing = vi.fn();
+        const mockOnUpdate = vi.fn();
+
+        const { result } = renderHook(() =>
+          useDiscount(products, null, mockSetEditing, mockOnUpdate),
+        );
+
+        act(() => {
+          result.current.setNewDiscount(discount);
+          result.current.handleAddDiscount('p1');
+        });
+
+        expect(mockOnUpdate).not.toHaveBeenCalled();
+        expect(mockSetEditing).not.toHaveBeenCalled();
+      });
+
+      test('할인을 제거하면 해당 인덱스가 삭제되어야 한다', () => {
+        const productWithDiscount: Product = {
+          ...productA,
+          discounts: [
+            { quantity: 1, rate: 0.05 },
+            { quantity: 5, rate: 0.1 },
+          ],
+        };
+
+        const products = [productWithDiscount];
+        const mockSetEditing = vi.fn();
+        const mockOnUpdate = vi.fn();
+
+        const { result } = renderHook(() =>
+          useDiscount(
+            products,
+            productWithDiscount,
+            mockSetEditing,
+            mockOnUpdate,
+          ),
+        );
+
+        act(() => {
+          result.current.handleRemoveDiscount('p1', 0);
+        });
+
+        expect(mockOnUpdate).toHaveBeenCalled();
+        const updated = mockOnUpdate.mock.calls[0][0];
+        expect(updated.discounts.length).toBe(1);
+        expect(updated.discounts[0]).toEqual({ quantity: 5, rate: 0.1 });
+      });
+
+      test('없는 상품 ID로 할인 제거를 시도하면 아무 일도 일어나지 않아야 한다', () => {
+        const products = [productA];
+        const mockSetEditing = vi.fn();
+        const mockOnUpdate = vi.fn();
+
+        const { result } = renderHook(() =>
+          useDiscount(products, productA, mockSetEditing, mockOnUpdate),
+        );
+
+        act(() => {
+          result.current.handleRemoveDiscount('invalid-id', 0);
+        });
+
+        expect(mockOnUpdate).not.toHaveBeenCalled();
+        expect(mockSetEditing).not.toHaveBeenCalled();
+      });
     });
   });
 });
