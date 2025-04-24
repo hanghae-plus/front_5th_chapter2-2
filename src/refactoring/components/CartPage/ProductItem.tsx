@@ -1,6 +1,6 @@
 import { CartItem, Product } from '../../../types';
 import { getRemainingStock } from '../../models/cart';
-import { getMaxDiscount } from '../../utils';
+import { getMaxDiscount } from '../../lib/utils';
 
 interface CartItemProps {
   product: Product;

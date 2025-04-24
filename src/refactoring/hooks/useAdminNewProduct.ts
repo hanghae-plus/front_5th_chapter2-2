@@ -1,16 +1,10 @@
 import { useState, useCallback } from 'react';
 import { Product } from '../../types.ts';
+import { INITIAL_NEW_PRODUCT } from '../lib/constants.ts';
 
 interface UseAdminNewProductProps {
   onProductAdd: (newProduct: Product) => void;
 }
-
-const INITIAL_NEW_PRODUCT: Omit<Product, 'id'> = {
-  name: '',
-  price: 0,
-  stock: 0,
-  discounts: [],
-};
 
 export const useAdminNewProduct = ({ onProductAdd }: UseAdminNewProductProps) => {
   const [showNewProductForm, setShowNewProductForm] = useState(false);

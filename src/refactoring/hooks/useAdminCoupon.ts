@@ -1,12 +1,6 @@
 import { useCallback, useState } from 'react';
 import { Coupon } from '../../types.ts';
-
-const INITIAL_NEW_COUPON: Coupon = {
-  name: '',
-  code: '',
-  discountType: 'percentage',
-  discountValue: 0,
-};
+import { INITIAL_NEW_COUPON } from '../lib/constants.ts';
 
 interface UseAdminCouponProps {
   onCouponAdd: (newCoupon: Coupon) => void;
