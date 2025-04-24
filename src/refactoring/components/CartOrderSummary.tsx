@@ -1,12 +1,15 @@
 import { CartItem, Coupon } from "../../types";
 import { calculateCartTotal } from "../models/cart";
 
-interface OrderSummaryProps {
+interface CartOrderSummaryProps {
   cart: CartItem[];
   selectedCoupon: Coupon | null;
 }
 // 주문 요약
-export const OrderSummary = ({ cart, selectedCoupon }: OrderSummaryProps) => {
+export const CartOrderSummary = ({
+  cart,
+  selectedCoupon,
+}: CartOrderSummaryProps) => {
   const { totalBeforeDiscount, totalAfterDiscount, totalDiscount } =
     calculateCartTotal(cart, selectedCoupon);
 

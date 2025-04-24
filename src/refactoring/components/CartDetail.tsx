@@ -1,8 +1,8 @@
 import { Coupon } from "../../types";
 import { useCart } from "../hooks";
+import { CartCouponSelect } from "./CartCouponSelect";
 import { CartList } from "./CartList";
-import { CouponSelect } from "./CouponSelect";
-import { OrderSummary } from "./OrderSummary";
+import { CartOrderSummary } from "./CartOrderSummary";
 
 interface Props {
   coupons: Coupon[];
@@ -21,12 +21,12 @@ export const CartDetail = ({ coupons }: Props) => {
         removeFromCart={removeFromCart}
         updateQuantity={updateQuantity}
       />
-      <CouponSelect
+      <CartCouponSelect
         coupons={coupons}
         applyCoupon={applyCoupon}
         selectedCoupon={selectedCoupon}
       />
-      <OrderSummary cart={cart} selectedCoupon={selectedCoupon} />
+      <CartOrderSummary cart={cart} selectedCoupon={selectedCoupon} />
     </div>
   );
 };
