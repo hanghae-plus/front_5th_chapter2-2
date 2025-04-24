@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+import { useLocalStorage } from '@/hooks/useLocalStorage';
 import type { CartItem, Coupon, Product } from '@/types';
 
 import {
@@ -8,7 +9,7 @@ import {
 } from '../models';
 
 export const useCart = () => {
-  const [cart, setCart] = useState<CartItem[]>([]);
+  const [cart, setCart] = useLocalStorage<CartItem[]>('cart', []);
   const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
 
   const getRemainingStock = useCallback(
@@ -23,17 +24,19 @@ export const useCart = () => {
     (product: Product) => {
       const remainingStock = getRemainingStock(product);
       if (remainingStock <= 0) return;
-
       setCart((prevCart) => updateCartWithProduct(prevCart, product));
     },
-    [getRemainingStock],
+    [getRemainingStock, setCart],
   );
 
-  const removeFromCart = useCallback((productId: string) => {
-    setCart((prevCart) =>
-      prevCart.filter((item) => item.product.id !== productId),
-    );
-  }, []);
+  const removeFromCart = useCallback(
+    (productId: string) => {
+      setCart((prevCart) =>
+        prevCart.filter((item) => item.product.id !== productId),
+      );
+    },
+    [setCart],
+  );
 
   const updateQuantity = useCallback(
     (productId: string, newQuantity: number) => {
@@ -41,12 +44,15 @@ export const useCart = () => {
         updateCartItemQuantity(prevCart, productId, newQuantity),
       );
     },
-    [],
+    [setCart],
   );
 
-  const applyCoupon = useCallback((coupon: Coupon) => {
-    setSelectedCoupon(coupon);
-  }, []);
+  const applyCoupon = useCallback(
+    (coupon: Coupon) => {
+      setSelectedCoupon(coupon);
+    },
+    [setSelectedCoupon],
+  );
 
   const calculateTotal = useCallback(() => {
     return calculateCartTotal(cart, selectedCoupon);
