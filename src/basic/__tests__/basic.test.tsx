@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { describe, expect, test } from 'vitest';
 import { act, fireEvent, render, renderHook, screen, within } from '@testing-library/react';
-import { CartPage } from '../../refactoring/pages/CartPage';
+import { CartPage } from '../../refactoring/pages/carts/page';
 import { AdminPage } from '../../refactoring/pages/admin/page';
 import { CartItem, Coupon, Product } from '../../types';
 import { useCart, useCoupons, useProducts } from '../../refactoring/hooks';
