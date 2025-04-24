@@ -1,4 +1,4 @@
-import { Product } from '../../../types';
+import { Product } from '../../models/product/types';
 import ProductListItem from './ProductListItem';
 
 interface Props {
@@ -16,6 +16,7 @@ function ProductList({ products, getRemainingStock, addToCart }: Props) {
           const remainingStock = getRemainingStock(product);
           return (
             <ProductListItem
+              key={product.id}
               product={product}
               remainingStock={remainingStock}
               addToCart={addToCart}

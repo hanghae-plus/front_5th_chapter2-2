@@ -1,4 +1,4 @@
-import { Coupon } from '../../../types';
+import { Coupon } from '../../models/coupon/types';
 
 interface Props {
   selectedCoupon: Coupon;

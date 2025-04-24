@@ -1,4 +1,4 @@
-import { Product } from '../../../types';
+import { Product } from '../../models/product/types';
 
 interface Props {
   newProduct: Omit<Product, 'id'>;

@@ -1,9 +1,5 @@
-import {
-  CartItem,
-  Coupon,
-  CouponDiscountProps,
-  TotalDiscountProps,
-} from '../../types';
+import { CouponDiscountProps, Coupon } from '../coupon/types';
+import { CartItem, TotalDiscountProps } from './types';
 
 export const getQuantityDiscount = (item: CartItem) => {
   const { discounts } = item.product;

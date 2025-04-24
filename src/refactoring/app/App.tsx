@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { initialCoupons, initialProducts } from '../mock/data';
-import { useCoupons } from '../hooks/useCoupon';
-import { useProducts } from '../hooks/useProduct';
+import { useCoupons } from '../models/coupon/useCoupon';
+import { useProducts } from '../models/product/useProduct';
 import { CartPage } from '../pages/CartPage';
 import { AdminPage } from '../pages/AdminPage';
 
