@@ -1,5 +1,5 @@
 import React from 'react';
-import { SelectOption, StringOption } from '../../../../types';
+import { SelectOption } from '../../../../types';
 import { isStringOption } from '../../../lib';
 
 interface OptionProps {
