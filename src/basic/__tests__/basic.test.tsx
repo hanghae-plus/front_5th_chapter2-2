@@ -12,7 +12,7 @@ import { CartPage } from '../../refactoring/components/CartPage/index.tsx';
 import { AdminPage } from '../../refactoring/components/AdminPage/index.tsx';
 import type { CartItem, Coupon, Product } from '../../types';
 import { useCart, useCoupons, useProducts } from '../../refactoring/hooks';
-import * as cartUtils from '../../refactoring/utils';
+import * as cartUtils from '../../refactoring/models/index.ts';
 
 import { ProductProvider } from '../../refactoring/contexts/productContext';
 import { CouponProvider } from '../../refactoring/contexts/couponContext';

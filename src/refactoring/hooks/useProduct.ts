@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { Product } from '@/types';
-import { updateProductList } from '@/utils';
+import { updateProductList } from '@/models';
 
 export const useProducts = (initialProducts: Product[]) => {
   const [products, setProducts] = useState<Product[]>(initialProducts);

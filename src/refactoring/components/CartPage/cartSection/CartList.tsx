@@ -1,5 +1,5 @@
 import type { CartItem } from '@/types';
-import { getAppliedDiscount } from '@/utils';
+import { getAppliedDiscount } from '@/models/index.ts';
 
 import CartListItem from './CartListItem.tsx';
 

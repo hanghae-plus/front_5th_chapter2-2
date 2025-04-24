@@ -1,5 +1,5 @@
 import { CartItem, Coupon } from '@/types';
-import { calculateItemDiscountTotal } from './discountUtils';
+import { calculateItemDiscountTotal } from './discount';
 
 export const calculateItemTotal = (item: CartItem): number => {
   const originalTotal = calculateItemOriginalTotal(item);

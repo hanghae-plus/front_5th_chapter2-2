@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { CartItem, Coupon, Product } from '../../types.ts';
-import { calculateCartTotal } from '../../refactoring/utils';
+import { calculateCartTotal } from '../../refactoring/models/index.ts';
 
 interface Props {
   products: Product[];
