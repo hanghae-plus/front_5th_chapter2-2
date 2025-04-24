@@ -1,4 +1,5 @@
 import { Product } from "../../../entities";
+import { DiscountInputForm } from "../../../entities/discount/discount-input-form";
 import { useDiscount } from "../../../hooks";
 import { Button } from "../../../ui/button";
 
@@ -28,38 +29,11 @@ export const DiscountEditForm = (props: Props) => {
           </Button>
         </div>
       ))}
-      <div className="flex space-x-2">
-        <input
-          type="number"
-          placeholder="수량"
-          value={newDiscount.quantity}
-          onChange={(e) =>
-            updateNewDiscount({
-              ...newDiscount,
-              quantity: parseInt(e.target.value),
-            })
-          }
-          className="w-1/3 p-2 border rounded"
-        />
-        <input
-          type="number"
-          placeholder="할인율 (%)"
-          value={newDiscount.rate * 100}
-          onChange={(e) =>
-            updateNewDiscount({
-              ...newDiscount,
-              rate: parseInt(e.target.value) / 100,
-            })
-          }
-          className="w-1/3 p-2 border rounded"
-        />
-        <Button
-          onClick={() => handleAddDiscount(product.id)}
-          className="w-1/3 bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
-        >
-          할인 추가
-        </Button>
-      </div>
+      <DiscountInputForm
+        discount={newDiscount}
+        onChange={updateNewDiscount}
+        onSubmit={() => handleAddDiscount(product.id)}
+      />
     </div>
   );
 };

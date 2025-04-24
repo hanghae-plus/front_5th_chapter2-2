@@ -1,5 +1,4 @@
-export * from './cartItem';
-export * from './coupon';
-export * from './discount';
-export * from './product';
-
+export * from "./cart/cartItem";
+export * from "./coupon/coupon";
+export * from "./discount/discount";
+export * from "./product/product";

@@ -1,4 +1,4 @@
-import { Discount } from "./discount";
+import { Discount } from "../discount/discount";
 
 export interface Product {
   id: string;
