@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useProductContext } from '@/contexts/productContext';
-import { useCouponContext } from '@/contexts/couponContext';
+import { useCouponsContext } from '@/contexts/couponContext';
 
 import ProductList from './productSection/ProductList';
 import NewProductForm from './productSection/NewProductForm';
@@ -10,7 +10,7 @@ import CouponList from './couponSection/CouponList';
 
 export const AdminPage = () => {
   const { products, updateProduct, addProduct } = useProductContext();
-  const { coupons, addCoupon } = useCouponContext();
+  const { coupons, addCoupon } = useCouponsContext();
 
   const [showNewProductForm, setShowNewProductForm] = useState(false);
 

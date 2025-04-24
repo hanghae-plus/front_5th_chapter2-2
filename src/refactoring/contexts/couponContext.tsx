@@ -27,10 +27,10 @@ export const CouponProvider: React.FC<CouponProviderProps> = (props) => {
   );
 };
 
-export const useCouponContext = (): CouponContextValue => {
+export const useCouponsContext = (): CouponContextValue => {
   const context = useContext(CouponContext);
   if (!context) {
-    throw new Error('useCouponContext is not defined within a CouponProvider');
+    throw new Error('useCouponsContext is not defined within a CouponProvider');
   }
   return context;
 };

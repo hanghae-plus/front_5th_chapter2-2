@@ -2,7 +2,7 @@ import { renderHook, act } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 
 import type { Coupon } from '@/types';
-import { useCoupons } from '@/hooks/useCoupon';
+import { useCoupons } from '@/hooks/useCoupons';
 
 const sampleCoupon = (overrides?: Partial<Coupon>): Coupon => ({
   name: '10% 할인 쿠폰',

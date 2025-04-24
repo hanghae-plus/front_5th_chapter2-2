@@ -1,6 +1,6 @@
 import { useCart } from '@/hooks';
 import { useProductContext } from '@/contexts/productContext.tsx';
-import { useCouponContext } from '@/contexts/couponContext.tsx';
+import { useCouponsContext } from '@/contexts/couponContext.tsx';
 
 import ProductList from './productSection/ProductList.tsx';
 import OrderSummary from './cartSection/OrderSummary.tsx';
@@ -9,7 +9,7 @@ import CouponSelector from './cartSection/CouponSelector.tsx';
 
 export const CartPage = () => {
   const { products } = useProductContext();
-  const { coupons } = useCouponContext();
+  const { coupons } = useCouponsContext();
 
   const {
     cart,
