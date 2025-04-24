@@ -1,5 +1,22 @@
 import { CartItem, Discount } from '../../types.ts';
 
+export const getMaxApplicableDiscount = (item: CartItem): number => {
+  return item.product.discounts.reduce((maxDiscount, d) => {
+    return item.quantity >= d.quantity && d.rate > maxDiscount
+      ? d.rate
+      : maxDiscount;
+  }, 0);
+};
+
+export const calculateItemDiscountTotal = (
+  total: number,
+  item: CartItem,
+): number => {
+  if (item.product.discounts.length === 0) return total;
+  const discount = getMaxApplicableDiscount(item);
+  return total * (1 - discount);
+};
+
 export const getAppliedDiscount = (item: CartItem) => {
   const { discounts } = item.product;
   const { quantity } = item;
