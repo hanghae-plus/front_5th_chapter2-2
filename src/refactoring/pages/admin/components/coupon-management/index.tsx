@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import { useCouponContext } from "@r/model/coupon/coupon-context";
 import { Coupon } from "@r/model/coupon/types";
+import { CouponList } from "./coupon-list";
 
 interface CouponManagementProps {}
 
@@ -13,7 +14,7 @@ const initialCoupon: Coupon = {
 };
 
 export const CouponManagement: React.FC<CouponManagementProps> = ({}) => {
-  const { coupons, addCoupon } = useCouponContext();
+  const { addCoupon } = useCouponContext();
 
   const [newCoupon, setNewCoupon] = useState<Coupon>(initialCoupon);
 
@@ -79,24 +80,7 @@ export const CouponManagement: React.FC<CouponManagementProps> = ({}) => {
             쿠폰 추가
           </button>
         </div>
-        <div>
-          <h3 className="text-lg font-semibold mb-2">현재 쿠폰 목록</h3>
-          <div className="space-y-2">
-            {coupons.map((coupon, index) => (
-              <div
-                key={index}
-                data-testid={`coupon-${index + 1}`}
-                className="bg-gray-100 p-2 rounded"
-              >
-                {coupon.name} ({coupon.code}):
-                {coupon.discountType === "amount"
-                  ? `${coupon.discountValue}원`
-                  : `${coupon.discountValue}%`}{" "}
-                할인
-              </div>
-            ))}
-          </div>
-        </div>
+        <CouponList />
       </div>
     </div>
   );
