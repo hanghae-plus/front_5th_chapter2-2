@@ -1,5 +1,5 @@
 import React from 'react';
-import { Coupon } from '../../../types';
+import type { Coupon } from '../../../../types';
 
 import CouponListItem from './CouponListItem';
 

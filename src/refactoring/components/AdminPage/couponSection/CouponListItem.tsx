@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { Coupon } from '../../../types';
+import type { Coupon } from '../../../../types';
 
 interface CouponListItemProps {
   index: number;

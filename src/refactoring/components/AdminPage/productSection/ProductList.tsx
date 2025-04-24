@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import type { Product } from '../../../types';
+import type { Product } from '../../../../types';
 
 import ProductListItem from './ProductListItem';
 
