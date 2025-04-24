@@ -3,10 +3,11 @@ import { Product } from "../../types";
 
 
 interface useProductEditProps {
+    products: Product[];
     onProductUpdate: (updatedProduct: Product) => void;
 }
 
-export const useProductEdit = ({onProductUpdate}: useProductEditProps) => {
+export const useProductEdit = ({products, onProductUpdate}: useProductEditProps) => {
     const [editingProduct, setEditingProduct] = useState<Product | null>(null);
 
     const handleEditProduct = (product: Product) => {
@@ -35,6 +36,15 @@ export const useProductEdit = ({onProductUpdate}: useProductEditProps) => {
     }
   };
 
+  const handleStockUpdate = (productId: string, newStock: number) => {
+    const updatedProduct = products.find((p) => p.id === productId);
+    if (updatedProduct) {
+      const newProduct = { ...updatedProduct, stock: newStock };
+      onProductUpdate(newProduct);
+      setEditingProduct(newProduct);
+    }
+  };
+
   return {
     editingProduct,
     setEditingProduct,
@@ -42,5 +52,6 @@ export const useProductEdit = ({onProductUpdate}: useProductEditProps) => {
     handleProductNameUpdate,
     handlePriceUpdate,
     handleEditComplete,
+    handleStockUpdate
   };
 }

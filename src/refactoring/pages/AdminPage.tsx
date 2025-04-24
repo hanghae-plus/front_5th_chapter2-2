@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Coupon, Product } from "../../types.ts";
 import { ProductAddForm } from "../components/product/ProductAddForm.tsx";
 import { CouponAddForm } from "../components/coupon/CouponAddForm.tsx";
@@ -9,6 +8,7 @@ import { useAccordian } from "../hooks/useAccordian.ts";
 import { useProductEdit } from "../hooks/useProductEdit.ts";
 import { useDiscount } from "../hooks/useDiscount.ts";
 import { useNewProduct } from "../hooks/useNewProduct.ts";
+import { useCouponForm } from "../hooks/useCouponForm.ts";
 
 interface Props {
   products: Product[];
@@ -25,7 +25,6 @@ export const AdminPage = ({
   onProductAdd,
   onCouponAdd,
 }: Props) => {
-  
   const { openProductIds, toggleProductAccordion } = useAccordian();
   const {
     editingProduct,
@@ -34,7 +33,8 @@ export const AdminPage = ({
     handleProductNameUpdate,
     handlePriceUpdate,
     handleEditComplete,
-  } = useProductEdit({ onProductUpdate });
+    handleStockUpdate,
+  } = useProductEdit({ products, onProductUpdate });
   const {
     showNewProductForm,
     setShowNewProductForm,
@@ -52,36 +52,12 @@ export const AdminPage = ({
     products,
     editingProduct,
     onProductUpdate,
-    setEditingProduct
+    setEditingProduct,
   });
 
-  
-  const [newCoupon, setNewCoupon] = useState<Coupon>({
-    name: "",
-    code: "",
-    discountType: "percentage",
-    discountValue: 0,
+  const { newCoupon, setNewCoupon, handleAddCoupon } = useCouponForm({
+    onCouponAdd,
   });
-
-  const handleStockUpdate = (productId: string, newStock: number) => {
-    const updatedProduct = products.find((p) => p.id === productId);
-    if (updatedProduct) {
-      const newProduct = { ...updatedProduct, stock: newStock };
-      onProductUpdate(newProduct);
-      setEditingProduct(newProduct);
-    }
-  };
-
-
-  const handleAddCoupon = () => {
-    onCouponAdd(newCoupon);
-    setNewCoupon({
-      name: "",
-      code: "",
-      discountType: "percentage",
-      discountValue: 0,
-    });
-  };
 
   return (
     <div className="container mx-auto p-4">
