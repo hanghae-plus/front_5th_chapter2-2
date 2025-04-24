@@ -1,6 +1,7 @@
-import { CartItemList, CheckoutButton, CouponSelector, EmptyCartMessage, OrderSummary } from '.';
+import { CheckoutButton, CouponSelector, EmptyCartMessage, OrderSummary } from '.';
 import { CartItem, Coupon } from '../../../../types';
 import { SectionTitle } from '../../../components';
+import { CartList } from '../../../components/cart/CartList';
 
 type CartSummarySectionProps = {
   cart: CartItem[];
@@ -9,7 +10,6 @@ type CartSummarySectionProps = {
   totalBeforeDiscount: number;
   totalDiscount: number;
   totalAfterDiscount: number;
-  getAppliedDiscount: (item: CartItem) => number;
   updateQuantity: (productId: string, newQuantity: number) => void;
   removeFromCart: (productId: string) => void;
   applyCoupon: (coupon: Coupon) => void;
@@ -23,7 +23,6 @@ export const CartSummarySection = ({
   totalBeforeDiscount,
   totalDiscount,
   totalAfterDiscount,
-  getAppliedDiscount,
   updateQuantity,
   removeFromCart,
   applyCoupon,
@@ -39,12 +38,7 @@ export const CartSummarySection = ({
         <EmptyCartMessage />
       ) : (
         <>
-          <CartItemList
-            cart={cart}
-            getAppliedDiscount={getAppliedDiscount}
-            updateQuantity={updateQuantity}
-            removeFromCart={removeFromCart}
-          />
+          <CartList carts={cart} updateQuantity={updateQuantity} removeFromCart={removeFromCart} />
 
           <CouponSelector
             coupons={coupons}

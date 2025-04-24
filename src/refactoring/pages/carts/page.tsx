@@ -1,7 +1,6 @@
 import { Coupon, Product } from '../../../types.ts';
-import PagesLayout from '../../components/layouts/PagesLayout.tsx';
 import { useCart } from '../../hooks/useCart.ts';
-import { getAppliedDiscount, getMaxDiscount, getRemainingStock } from '../../models/cart.ts';
+import { getMaxDiscount, getRemainingStock } from '../../models/cart.ts';
 import { ProductListSection, CartSummarySection } from './components';
 
 interface CartPageProps {
@@ -24,9 +23,9 @@ export const CartPage = ({ products, coupons }: CartPageProps) => {
 
   return (
     <>
-      <PagesLayout
-        title={'장바구니'}
-        mainSection={
+      <div className="container mx-auto p-4">
+        <h1 className="text-3xl font-bold mb-6">장바구니</h1>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <ProductListSection
             products={products}
             cart={cart}
@@ -34,8 +33,6 @@ export const CartPage = ({ products, coupons }: CartPageProps) => {
             getRemainingStock={getRemainingStock}
             getMaxDiscount={getMaxDiscount}
           />
-        }
-        sideSection={
           <CartSummarySection
             cart={cart}
             coupons={coupons}
@@ -43,14 +40,13 @@ export const CartPage = ({ products, coupons }: CartPageProps) => {
             totalBeforeDiscount={totalBeforeDiscount}
             totalDiscount={totalDiscount}
             totalAfterDiscount={totalAfterDiscount}
-            getAppliedDiscount={getAppliedDiscount}
             updateQuantity={updateQuantity}
             removeFromCart={removeFromCart}
             applyCoupon={applyCoupon}
             onCheckout={() => alert('주문 완료!')}
           />
-        }
-      />
+        </div>
+      </div>
     </>
   );
 };
