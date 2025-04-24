@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { Coupon, Discount, Product } from '../../features/shared/types/entities.ts';
 import { CouponManage, ProductManage } from '../../features/admin/components';
 import { useAdminProductHandlers } from '../../features/admin/hooks/useAdminProductHandler.ts';
+import { useNewProductFormToggle } from '../../features/admin/hooks/useNewProductFormToggle.ts';
+import { useAccordionToggle } from '../../features/admin/hooks/useAccordionToggle.ts';
 interface Props {
   products: Product[];
   coupons: Coupon[];
@@ -21,10 +23,11 @@ export const AdminPage = ({
   setNewCoupon,
   handleAddCoupon,
 }: Props) => {
-  const [openProductIds, setOpenProductIds] = useState<Set<string>>(new Set());
+  const { showNewProductForm, setShowNewProductForm, closeNewProductForm } = useNewProductFormToggle();
+  const { openProductIds, toggleProductAccordion } = useAccordionToggle();
+
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [newDiscount, setNewDiscount] = useState<Discount>({ quantity: 0, rate: 0 });
-  const [showNewProductForm, setShowNewProductForm] = useState(false);
   const [newProduct, setNewProduct] = useState<Omit<Product, 'id'>>({
     name: '',
     price: 0,
@@ -46,23 +49,12 @@ export const AdminPage = ({
     onProductUpdate,
   });
 
-  const toggleProductAccordion = (productId: string) => {
-    setOpenProductIds((prev) => {
-      const newSet = new Set(prev);
-      if (newSet.has(productId)) {
-        newSet.delete(productId);
-      } else {
-        newSet.add(productId);
-      }
-      return newSet;
-    });
-  };
-
   // handleEditProduct 함수 수정
   const handleEditProduct = (product: Product) => {
     setEditingProduct({ ...product });
   };
 
+  // 새로운 상품 추가
   const handleAddNewProduct = () => {
     const productWithId = { ...newProduct, id: Date.now().toString() };
     onProductAdd(productWithId);
@@ -72,7 +64,7 @@ export const AdminPage = ({
       stock: 0,
       discounts: [],
     });
-    setShowNewProductForm(false);
+    closeNewProductForm();
   };
 
   return (
