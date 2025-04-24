@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://github.com/devchaeyoung/front_5th_chapter2-2",
+  "homepage": "https://devchaeyoung.github.io/front_5th_chapter2-2/",
   "scripts": {
     "start:origin": "vite serve --open ./index.origin.html",
     "start:refactoring": "vite serve --open ./index.refactoring.html",
