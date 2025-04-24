@@ -1,8 +1,8 @@
 import { useState, ChangeEvent } from 'react';
-import type { Product } from '../../../types';
-import LabeledInput from '../../ui/LabeledInput';
+import type { Product } from '../../../../types';
+import LabeledInput from '../../../ui/LabeledInput';
 
-import { DEFAULT_FORM } from '../../constants';
+import { DEFAULT_FORM } from '../../../constants';
 
 interface NewProductFormProps {
   onSubmit: (product: Product) => void;

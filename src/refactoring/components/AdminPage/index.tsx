@@ -2,10 +2,11 @@ import { useState } from 'react';
 import { useProductContext } from '../../contexts/productContext';
 import { useCouponContext } from '../../contexts/couponContext';
 
-import ProductList from './ProductList';
-import NewProductForm from './NewProductForm';
-import CouponForm from './CouponForm';
-import CouponList from './CouponList';
+import ProductList from './productSection/ProductList';
+import NewProductForm from './productSection/NewProductForm';
+
+import CouponForm from './couponSection/CouponForm';
+import CouponList from './couponSection/CouponList';
 
 export const AdminPage = () => {
   const { products, updateProduct, addProduct } = useProductContext();

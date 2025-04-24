@@ -1,6 +1,6 @@
 import { memo } from 'react';
 
-import type { Product } from '../../../types';
+import type { Product } from '../../../../types';
 import ProductCard from './ProductCard';
 import ProductEditor from './ProductEditor';
 

@@ -1,7 +1,7 @@
 import { useState, memo } from 'react';
-import type { Product, Discount } from '../../../types';
+import type { Product, Discount } from '../../../../types';
 
-import FieldInput from '../../ui/FieldInput';
+import FieldInput from '../../../ui/FieldInput';
 
 const DiscountItem = memo(
   ({ discount, onDelete }: { discount: Discount; onDelete: () => void }) => (
