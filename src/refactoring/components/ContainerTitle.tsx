@@ -1,6 +1,6 @@
 interface PropsType {
   title: string;
-  mb: string;
+  mb?: string;
 }
 
 const ContainerTitle = ({ title, mb }: PropsType) => {
