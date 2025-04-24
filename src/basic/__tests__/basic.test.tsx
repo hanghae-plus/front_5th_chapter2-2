@@ -1,4 +1,4 @@
-import { describe, expect, test, vi } from "vitest"
+import { afterEach, describe, expect, test, vi } from "vitest"
 import { act, fireEvent, render, renderHook, screen, within } from "@testing-library/react"
 import { CartPage } from "../../refactoring/components/CartPage.tsx"
 import { AdminPage } from "../../refactoring/components/AdminPage"
@@ -7,6 +7,7 @@ import { useCart, useCoupons, useProducts } from "../../refactoring/hooks"
 import * as cartUtils from "../../refactoring/models/cart"
 import { ProductProvider } from "../../refactoring/context/ProductContext.tsx"
 import { CouponProvider } from "../../refactoring/context/CouponContext.tsx"
+import { CartProvider } from "../../refactoring/context/CartContext.tsx"
 
 const mockProducts: Product[] = [
   {
@@ -51,7 +52,9 @@ const TestCartPage = () => {
   return (
     <ProductProvider initialProducts={mockProducts}>
       <CouponProvider initialCoupons={mockCoupons}>
-        <CartPage />
+        <CartProvider>
+          <CartPage />
+        </CartProvider>
       </CouponProvider>
     </ProductProvider>
   )
@@ -62,13 +65,17 @@ const TestAdminPage = () => {
   return (
     <ProductProvider initialProducts={mockProducts}>
       <CouponProvider initialCoupons={mockCoupons}>
-        <AdminPage />
+          <AdminPage />
       </CouponProvider>
     </ProductProvider>
   )
 }
 
 describe("basic > ", () => {
+  afterEach(() => {
+    localStorage.clear();
+  });
+
   describe("시나리오 테스트 > ", () => {
     test("장바구니 페이지 테스트 > ", async () => {
       render(<TestCartPage />)
@@ -428,7 +435,9 @@ describe("basic > ", () => {
     }
 
     test("장바구니에 제품을 추가해야 합니다", () => {
+
       const { result } = renderHook(() => useCart())
+
 
       act(() => {
         result.current.addToCart(testProduct)
@@ -474,6 +483,16 @@ describe("basic > ", () => {
     })
 
     test("합계를 정확하게 계산해야 합니다", () => {
+      // 테스트용 레파 컴포넌트
+      const wrapper = ({ children }) => (
+        <ProductProvider initialProducts={[testProduct]}>
+          <CouponProvider initialCoupons={[testCoupon]}>
+            <CartProvider>
+              {children}
+            </CartProvider>
+          </CouponProvider>
+        </ProductProvider>
+      )
       const { result } = renderHook(() => useCart())
 
       act(() => {
