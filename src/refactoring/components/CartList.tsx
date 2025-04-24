@@ -1,4 +1,5 @@
 import { CartItem } from "../../types";
+import { Button } from "./Button";
 
 interface CartListProps {
   cart: CartItem[];
@@ -49,28 +50,28 @@ export const CartList = ({
               </span>
             </div>
             <div>
-              <button
+              <Button
                 onClick={() =>
                   updateQuantity(item.product.id, item.quantity - 1)
                 }
                 className={updateQuantityButtonClassName}
-              >
-                -
-              </button>
-              <button
+                disabled={false}
+                text={"-"}
+              />
+              <Button
                 onClick={() =>
                   updateQuantity(item.product.id, item.quantity + 1)
                 }
                 className={updateQuantityButtonClassName}
-              >
-                +
-              </button>
-              <button
+                disabled={false}
+                text={"+"}
+              />
+              <Button
                 onClick={() => removeFromCart(item.product.id)}
                 className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
-              >
-                삭제
-              </button>
+                disabled={false}
+                text={"삭제"}
+              />
             </div>
           </div>
         );

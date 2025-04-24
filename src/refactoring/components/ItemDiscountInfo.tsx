@@ -4,6 +4,7 @@ interface ItemDiscountInfoProps {
   product: Product;
   remainingStock: number;
 }
+
 // 재고, 할인 정보
 export const ItemDiscountInfo = ({
   product,

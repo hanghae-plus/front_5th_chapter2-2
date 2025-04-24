@@ -10,7 +10,7 @@ interface Props {
 
 // 왼쪽 '상품 목록' 영역
 export const ItemList = ({ products }: Props) => {
-  const { cart } = useCart();
+  const { cart, addToCart } = useCart();
 
   const getRemainingStock = (product: Product) => {
     const cartItem = cart.find((item) => item.product.id === product.id);
@@ -38,6 +38,7 @@ export const ItemList = ({ products }: Props) => {
               <ItemAddCartButton
                 product={product}
                 remainingStock={remainingStock}
+                addToCart={addToCart}
               />
             </div>
           );

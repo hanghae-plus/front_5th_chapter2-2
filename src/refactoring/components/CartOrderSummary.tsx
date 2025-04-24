@@ -5,6 +5,7 @@ interface CartOrderSummaryProps {
   cart: CartItem[];
   selectedCoupon: Coupon | null;
 }
+
 // 주문 요약
 export const CartOrderSummary = ({
   cart,
