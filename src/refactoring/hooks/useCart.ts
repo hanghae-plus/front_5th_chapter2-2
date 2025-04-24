@@ -23,18 +23,22 @@ export const useCart = () => {
     });
   };
 
+  // 상품제거
   const removeFromCart = (productId: string) => {
     setCart(prevCart => prevCart.filter(item => item.product.id !== productId));
   };
 
+  // 상품수량업데이트
   const updateQuantity = (productId: string, newQuantity: number) => {
     setCart(prevCart => updateCartItemQuantity(prevCart, productId, newQuantity));
   };
 
+  // 쿠폰적용
   const applyCoupon = (coupon: Coupon) => {
     setSelectedCoupon(coupon);
   };
 
+  // 장바구니총액
   const calculateTotal = () => {
     return calculateCartTotal(cart, selectedCoupon);
   };
