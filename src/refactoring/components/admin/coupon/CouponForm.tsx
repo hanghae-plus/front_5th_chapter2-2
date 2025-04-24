@@ -47,7 +47,7 @@ export const CouponForm = ({ coupon, onChange, onSubmit }: CouponFormProps) => {
           }
         />
       </div>
-      <Button color="green" size="full" className="p-2" onClick={onSubmit}>
+      <Button color="green" width="full" className="p-2" onClick={onSubmit}>
         쿠폰 추가
       </Button>
     </div>
