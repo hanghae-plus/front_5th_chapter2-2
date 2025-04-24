@@ -2,6 +2,7 @@
 import { Cart, Product } from "../../../types.ts"
 import { getRemainingStock } from "../../models/cart.ts"
 import { calculateProductMaxDiscountRate } from "../../models/product.ts"
+import Button from "../ui/Button.tsx"
 
 export default function ProductCard({
   product,
@@ -42,7 +43,7 @@ export default function ProductCard({
         </ul>
       )}
 
-      <button
+      <Button
         onClick={() => addToCart(product)}
         className={`w-full px-3 py-1 rounded ${
           remainingStock > 0
@@ -52,7 +53,7 @@ export default function ProductCard({
         disabled={remainingStock <= 0}
       >
         {remainingStock > 0 ? "장바구니에 추가" : "품절"}
-      </button>
+      </Button>
     </div>
   )
 }

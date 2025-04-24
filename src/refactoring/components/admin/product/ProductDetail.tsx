@@ -1,4 +1,5 @@
 import { Product } from "../../../../types.ts"
+import Button from "../../ui/Button.tsx"
 interface IProductDetail {
   product: Product
   onEdit: () => void
@@ -14,13 +15,13 @@ export default function ProductDetail({ product, onEdit }: IProductDetail) {
           </span>
         </div>
       ))}
-      <button
+      <Button
         data-testid="modify-button"
         onClick={onEdit}
         className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 mt-2"
       >
         수정
-      </button>
+      </Button>
     </div>
   )
 }

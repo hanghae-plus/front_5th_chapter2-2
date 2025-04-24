@@ -1,6 +1,8 @@
 import { Product } from "../../../../types.ts"
 import { useProductContext } from "../../../context/ProductContext.tsx"
 import { useDiscountManager } from "../../../hooks/useDiscountManager.ts"
+import Button from "../../ui/Button.tsx"
+import Input, { InputType } from "../../ui/Input.tsx"
 
 interface IDiscountManager {
   product: Product
@@ -21,32 +23,32 @@ export default function DiscountManager({ product }: IDiscountManager) {
           <span>
             {discount.quantity}개 이상 구매 시 {discount.rate * 100}% 할인
           </span>
-          <button
+          <Button
             onClick={() => handleRemoveDiscount(index)}
             className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
           >
             삭제
-          </button>
+          </Button>
         </div>
       ))}
       <div className="flex space-x-2">
-        <input
-          type="number"
+        <Input
+          type={InputType.Number}
           placeholder="수량"
           value={newDiscount.quantity}
           onChange={(e) => handleNewDiscountChange("quantity", parseInt(e.target.value))}
           className="w-1/3 p-2 border rounded"
         />
-        <input
-          type="number"
+        <Input
+          type={InputType.Number}
           placeholder="할인율 (%)"
           value={newDiscount.rate * 100}
           onChange={(e) => handleNewDiscountChange("rate", parseInt(e.target.value) / 100)}
           className="w-1/3 p-2 border rounded"
         />
-        <button onClick={handleAddDiscount} className="w-1/3 bg-blue-500 text-white p-2 rounded hover:bg-blue-600">
+        <Button onClick={handleAddDiscount} className="w-1/3 bg-blue-500 text-white p-2 rounded hover:bg-blue-600">
           할인 추가
-        </button>
+        </Button>
       </div>
     </div>
   )

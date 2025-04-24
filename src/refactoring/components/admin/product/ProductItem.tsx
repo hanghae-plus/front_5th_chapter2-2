@@ -1,6 +1,7 @@
 import ProductDetail from "./ProductDetail"
 import ProductEditForm from "./ProductEditForm"
 import { Product } from "../../../../types.ts"
+import Button from "../../ui/Button.tsx"
 
 interface IProductItem {
   product: Product
@@ -23,9 +24,9 @@ export default function ProductItem({
 }: IProductItem) {
   return (
     <div data-testid={`product-${index + 1}`} className="bg-white p-4 rounded shadow">
-      <button data-testid="toggle-button" onClick={onToggle} className="w-full text-left font-semibold">
+      <Button data-testid="toggle-button" onClick={onToggle} className="w-full text-left font-semibold">
         {product.name} - {product.price}원 (재고: {product.stock})
-      </button>
+      </Button>
 
       {isOpen && (
         <div className="mt-2">

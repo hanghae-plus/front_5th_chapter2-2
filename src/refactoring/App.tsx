@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { CartPage } from "./components/CartPage.tsx"
 import { AdminPage } from "./components/AdminPage.tsx"
-import Header from "./components/common/Header.tsx"
+import Header from "./components/ui/Header.tsx"
 import { ProductProvider } from "./context/ProductContext.tsx"
 import { CouponProvider } from "./context/CouponContext.tsx"
 import { initialProducts } from "./constants/products.ts"
