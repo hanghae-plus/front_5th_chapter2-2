@@ -3,6 +3,7 @@ import { AdminPage } from "./pages/AdminPage.tsx";
 import { useAdmin, useCoupons, useProducts } from "./hooks";
 import { initialProducts, initialCoupons } from "./constants";
 import Nav from "./layout/Nav.tsx";
+import { CartProvider } from "./provider/CartProvider.tsx";
 const App = () => {
   //액션, 계산, 데이터
   const { isAdmin, toggleIsAdmin } = useAdmin();
@@ -27,7 +28,9 @@ const App = () => {
             handleAddNewCoupon={handleAddNewCoupon}
           />
         ) : (
-          <CartPage products={products} coupons={coupons} />
+          <CartProvider>
+            <CartPage products={products} coupons={coupons} />
+          </CartProvider>
         )}
       </main>
     </div>

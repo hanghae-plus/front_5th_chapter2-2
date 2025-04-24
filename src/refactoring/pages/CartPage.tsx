@@ -1,4 +1,6 @@
 import { Coupon, Product } from "../../types.ts";
+import ProductList from "../components/admin/ProductList.tsx";
+import CartList from "../components/cart/CartList.tsx";
 import { useCart } from "../hooks";
 import {
   getDiscountPercent,
@@ -33,7 +35,7 @@ export const CartPage = ({ products, coupons }: Props) => {
         {/* 상품목록 컴포넌트  */}
         <div>
           <h2 className="text-2xl font-semibold mb-4">상품 목록</h2>
-          <div className="space-y-2">
+          {/* <div className="space-y-2">
             {products.map((product) => {
               const remainingStock = getRemainingStock(cart, product);
               return (
@@ -88,7 +90,8 @@ export const CartPage = ({ products, coupons }: Props) => {
                 </div>
               );
             })}
-          </div>
+          </div> */}
+          <ProductList />
         </div>
 
         <div>
