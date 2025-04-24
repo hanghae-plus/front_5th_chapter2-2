@@ -175,7 +175,7 @@ describe('advanced > ', () => {
       const $product4 = screen.getByTestId('product-4');
 
       expect($product4).toHaveTextContent('상품4');
-      expect($product4).toHaveTextContent('15000원');
+      expect($product4).toHaveTextContent('15,000원');
       expect($product4).toHaveTextContent('재고: 30');
 
       // 2. 상품 선택 및 수정
@@ -192,7 +192,7 @@ describe('advanced > ', () => {
       fireEvent.click(within($product1).getByText('수정 완료'));
 
       expect($product1).toHaveTextContent('수정된 상품1');
-      expect($product1).toHaveTextContent('12000원');
+      expect($product1).toHaveTextContent('12,000원');
       expect($product1).toHaveTextContent('재고: 25');
 
       // 3. 상품 할인율 추가 및 삭제
@@ -234,37 +234,26 @@ describe('advanced > ', () => {
   describe('자유롭게 작성해보세요.', () => {
     test('새로운 유틸 함수를 만든 후에 테스트 코드를 작성해서 실행해보세요', () => {
       describe('formatComma 함수', () => {
-        test('숫자 문자열에 천 단위 쉼표를 올바르게 추가한다', () => {
-          expect(formatComma('1000')).toBe('1,000');
-          expect(formatComma('10000')).toBe('10,000');
-          expect(formatComma('1000000')).toBe('1,000,000');
-          expect(formatComma('1234567890')).toBe('1,234,567,890');
+        test('숫자에 천 단위 쉼표를 올바르게 추가한다', () => {
+          expect(formatComma(1000)).toBe('1,000');
+          expect(formatComma(10000)).toBe('10,000');
+          expect(formatComma(1000000)).toBe('1,000,000');
+          expect(formatComma(1234567890)).toBe('1,234,567,890');
         });
 
         test('0을 올바르게 처리한다', () => {
-          expect(formatComma('0')).toBe('0');
+          expect(formatComma(0)).toBe('0');
         });
 
         test('음수를 올바르게 처리한다', () => {
-          expect(formatComma('-1000')).toBe('-1,000');
-          expect(formatComma('-1000000')).toBe('-1,000,000');
+          expect(formatComma(-1000)).toBe('-1,000');
+          expect(formatComma(-1000000)).toBe('-1,000,000');
         });
 
         test('소수점이 있는 숫자를 올바르게 처리한다', () => {
-          expect(formatComma('1000.5')).toBe('1,000.5');
-          expect(formatComma('1000.55')).toBe('1,000.55');
-          expect(formatComma('1000.555')).toBe('1,000.555');
-        });
-
-        test('숫자가 아닌 문자열은 원래 값을 반환한다', () => {
-          expect(formatComma('abc')).toBe('abc');
-          expect(formatComma('1,000')).toBe('1,000'); // 이미 쉼표가 있는 경우
-          expect(formatComma('')).toBe('');
-        });
-
-        test('숫자와 문자가 혼합된 문자열은 원래 값을 반환한다', () => {
-          expect(formatComma('1000원')).toBe('1000원');
-          expect(formatComma('가격: 1000')).toBe('가격: 1000');
+          expect(formatComma(1000.5)).toBe('1,000.5');
+          expect(formatComma(1000.55)).toBe('1,000.55');
+          expect(formatComma(1000.555)).toBe('1,000.555');
         });
       });
 
