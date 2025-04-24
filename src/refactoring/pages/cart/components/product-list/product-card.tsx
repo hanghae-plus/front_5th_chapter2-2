@@ -2,13 +2,14 @@ import { useCartContext } from "@r/model/cart/cart-context";
 import { getMaxDiscount } from "@r/model/discount/lib";
 import { getRemainingStock } from "@r/model/product/lib";
 import { Product } from "@r/model/product/types";
+import { AddButton } from "./add-button";
 
 interface ProductCardProps {
   product: Product;
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
-  const { cart, addToCart } = useCartContext();
+  const { cart } = useCartContext();
 
   const remainingStock = getRemainingStock(product, cart);
 
@@ -48,17 +49,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           ))}
         </ul>
       )}
-      <button
-        onClick={() => addToCart(product)}
-        className={`w-full px-3 py-1 rounded ${
-          remainingStock > 0
-            ? "bg-blue-500 text-white hover:bg-blue-600"
-            : "bg-gray-300 text-gray-500 cursor-not-allowed"
-        }`}
-        disabled={remainingStock <= 0}
-      >
-        {remainingStock > 0 ? "장바구니에 추가" : "품절"}
-      </button>
+
+      <AddButton disabled={remainingStock <= 0} product={product} />
     </div>
   );
 };
