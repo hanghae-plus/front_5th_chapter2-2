@@ -27,21 +27,13 @@ const useViewToggleContext = () => {
   return context;
 };
 
-export const ToggleViewOnHide = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
+export const OnHide = ({ children }: { children: React.ReactNode }) => {
   const { isShow } = useViewToggleContext();
 
   return !isShow && children;
 };
 
-export const ToggleViewOnShow = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
+export const OnShow = ({ children }: { children: React.ReactNode }) => {
   const { isShow } = useViewToggleContext();
 
   return isShow && children;
@@ -52,7 +44,7 @@ interface ToggleTriggerProps extends React.ComponentProps<"button"> {
   handleClick?: () => void;
 }
 
-export const ViewToggleTrigger = ({
+export const Trigger = ({
   children,
   handleClick,
   ...props
@@ -71,3 +63,7 @@ export const ViewToggleTrigger = ({
     </button>
   );
 };
+
+ViewToggle.Trigger = Trigger;
+ViewToggle.OnShow = OnShow;
+ViewToggle.OnHide = OnHide;
