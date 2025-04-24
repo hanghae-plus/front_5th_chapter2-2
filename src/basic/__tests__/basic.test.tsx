@@ -88,7 +88,6 @@ describe("basic > ", () => {
     test("장바구니 페이지 테스트 > ", async () => {
       render(<CartPage products={mockProducts} coupons={mockCoupons} />);
 
-      console.log("=== mokkProducts ===", mockProducts);
       const product1 = screen.getByTestId("product-p1");
       const product2 = screen.getByTestId("product-p2");
       const product3 = screen.getByTestId("product-p3");
