@@ -1,7 +1,5 @@
-interface PropsType {
-  onClick: () => void;
+interface PropsType extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   label: string;
-  className?: string;
   variant: 'bg-green' | 'bg-blue' | 'bg-red' | 'bg-gray' | 'bg-white';
 }
 
@@ -13,9 +11,9 @@ const VARIANT_MAP: { [k in PropsType['variant']]: string } = {
   'bg-white': 'bg-white text-blue-600 px-4 py-2 rounded hover:bg-blue-100',
 };
 
-const CustomButton = ({ onClick, label, className, variant }: PropsType) => {
+const CustomButton = ({ onClick, label, className, variant, ...props }: PropsType) => {
   return (
-    <button onClick={onClick} className={`${VARIANT_MAP[variant]} ${className}`}>
+    <button {...props} onClick={onClick} className={`${VARIANT_MAP[variant]} ${className}`}>
       {label}
     </button>
   );

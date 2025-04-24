@@ -1,24 +1,21 @@
-interface SelectPropTypes {
-  onChange: React.ChangeEventHandler<HTMLSelectElement>;
-  children: React.ReactNode;
-  value?: string | number | readonly string[] | undefined;
-}
-
-interface OptionPropTypes {
-  value: string | number | readonly string[] | undefined;
+interface SelectPropTypes extends React.SelectHTMLAttributes<HTMLSelectElement> {
   children: React.ReactNode;
 }
 
-const Select = ({ onChange, children, value }: SelectPropTypes) => {
+interface OptionPropTypes extends React.OptionHTMLAttributes<HTMLOptionElement> {
+  children: React.ReactNode;
+}
+
+const Select = ({ children, ...props }: SelectPropTypes) => {
   return (
-    <select value={value} onChange={onChange} className="w-full p-2 border rounded mb-2">
+    <select className="w-full p-2 border rounded mb-2" {...props}>
       {children}
     </select>
   );
 };
 
-const Option = ({ value, children }: OptionPropTypes) => {
-  return <option value={value}>{children}</option>;
+const Option = ({ children, ...props }: OptionPropTypes) => {
+  return <option {...props}>{children}</option>;
 };
 
 const CustomSelect = {
