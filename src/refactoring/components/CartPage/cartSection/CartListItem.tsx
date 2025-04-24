@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import type { CartItem } from '../../../types';
+import type { CartItem } from '../../../../types';
 
 interface CartListItemProps {
   item: CartItem;

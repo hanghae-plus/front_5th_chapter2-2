@@ -2,10 +2,10 @@ import { useCart } from '../../hooks';
 import { useProductContext } from '../../contexts/productContext.tsx';
 import { useCouponContext } from '../../contexts/couponContext.tsx';
 
-import ProductList from './ProductList.tsx';
-import OrderSummary from './OrderSummary.tsx';
-import CartList from './CartList.tsx';
-import CouponSelector from './CouponSelector.tsx';
+import ProductList from './productSection/ProductList.tsx';
+import OrderSummary from './cartSection/OrderSummary.tsx';
+import CartList from './cartSection/CartList.tsx';
+import CouponSelector from './cartSection/CouponSelector.tsx';
 
 export const CartPage = () => {
   const { products } = useProductContext();
