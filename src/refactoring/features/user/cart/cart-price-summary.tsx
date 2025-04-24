@@ -1,5 +1,5 @@
 import { CartItem, Coupon } from "../../../entities";
-import { calculateCartTotal } from "../../../models/cart";
+import { useDiscountCalculator } from "../../../hooks/discount/useDiscountCalculator";
 import { CardWithTitle } from "../../../ui/card-with-title";
 
 interface Props {
@@ -8,11 +8,11 @@ interface Props {
 }
 
 export const CartPriceSummary = ({ cart, selectedCoupon }: Props) => {
-  const { totalBeforeDiscount, totalAfterDiscount, totalDiscount } = calculateCartTotal(
+  const { totalBeforeDiscount, totalAfterDiscount, totalDiscount } = useDiscountCalculator(
     cart,
     selectedCoupon,
   );
-  4;
+
   return (
     <CardWithTitle title="주문 요약">
       <div className="space-y-1">

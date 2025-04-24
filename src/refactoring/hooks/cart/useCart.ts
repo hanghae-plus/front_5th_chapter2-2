@@ -1,4 +1,4 @@
-import { calculateCartTotal } from "../../calculations/cart/calc-total-discount";
+import { calculateCartTotal } from "../../calculations/discount/calc-total-discount";
 import { useCartStore } from "../../store/cart-store";
 import { useSelectedCoupon } from "../coupon/useSelectedCoupon";
 
