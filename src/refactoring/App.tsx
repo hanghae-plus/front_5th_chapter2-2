@@ -8,6 +8,7 @@ const App = () => {
   const { isAdmin, toggleIsAdmin } = useAdmin();
 
   const { products, updateProduct, addProduct } = useProducts(initialProducts);
+
   const { coupons, newCoupon, handleAddNewCoupon, setNewCoupon } =
     useCoupons(initialCoupons);
 

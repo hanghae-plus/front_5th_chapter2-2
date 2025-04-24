@@ -1,5 +1,7 @@
-import { useState } from "react";
-import { Discount, Product } from "../../../types";
+import { Product } from "../../../types";
+import { useProductAccordion } from "../../hooks/useProductAccordion";
+import { useDiscount } from "../../hooks/useDiscount";
+import { useEditProduct } from "../../hooks/useEditProduct";
 
 interface Props {
   products: Product[];
@@ -7,91 +9,20 @@ interface Props {
 }
 
 const ProductList = ({ products, onProductUpdate }: Props) => {
-  const [openProductIds, setOpenProductIds] = useState<Set<string>>(new Set());
-  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
-  const [newDiscount, setNewDiscount] = useState<Discount>({
-    quantity: 0,
-    rate: 0,
-  });
+  const { openProductIds, toggleProductAccordion } = useProductAccordion();
 
-  /** 각 상품의 정보와 수정을 위한 아코디언 토글 */
-  const toggleProductAccordion = (productId: string) => {
-    setOpenProductIds((prev) => {
-      const newSet = new Set(prev);
-      if (newSet.has(productId)) {
-        newSet.delete(productId);
-      } else {
-        newSet.add(productId);
-      }
-      return newSet;
-    });
-  };
+  const { newDiscount, setNewDiscount, handleAddDiscount } = useDiscount();
 
-  /** 상품의 이름을 업데이트합니다.*/
-  const handleProductNameUpdate = (productId: string, newName: string) => {
-    if (editingProduct && editingProduct.id === productId) {
-      const updatedProduct = { ...editingProduct, name: newName };
-      setEditingProduct(updatedProduct);
-    }
-  };
-
-  /** 상품의 가격을 업데이트합니다. */
-  const handlePriceUpdate = (productId: string, newPrice: number) => {
-    if (editingProduct && editingProduct.id === productId) {
-      const updatedProduct = { ...editingProduct, price: newPrice };
-      setEditingProduct(updatedProduct);
-    }
-  };
-
-  /**상품의 재고를 업데이트합니다. */
-  const handleStockUpdate = (productId: string, newStock: number) => {
-    const updatedProduct = products.find((p) => p.id === productId);
-    if (updatedProduct) {
-      const newProduct = { ...updatedProduct, stock: newStock };
-      onProductUpdate(newProduct);
-      setEditingProduct(newProduct);
-    }
-  };
-
-  /** productId의 index에 해당하는 할인을 삭제합니다. */
-  const handleRemoveDiscount = (productId: string, index: number) => {
-    const updatedProduct = products.find((p) => p.id === productId);
-    if (updatedProduct) {
-      const newProduct = {
-        ...updatedProduct,
-        discounts: updatedProduct.discounts.filter((_, i) => i !== index),
-      };
-      onProductUpdate(newProduct);
-      setEditingProduct(newProduct);
-    }
-  };
-
-  /** 할인을 추가합니다. */
-  const handleAddDiscount = (productId: string) => {
-    const updatedProduct = products.find((p) => p.id === productId);
-    if (updatedProduct && editingProduct) {
-      const newProduct = {
-        ...updatedProduct,
-        discounts: [...updatedProduct.discounts, newDiscount],
-      };
-      onProductUpdate(newProduct);
-      setEditingProduct(newProduct);
-      setNewDiscount({ quantity: 0, rate: 0 });
-    }
-  };
-
-  /** 상품의 수정을 완료합니다. */
-  const handleEditComplete = () => {
-    if (editingProduct) {
-      onProductUpdate(editingProduct);
-      setEditingProduct(null);
-    }
-  };
-
-  /** 편집하는 상품을 수정합니다.*/
-  const handleEditProduct = (product: Product) => {
-    setEditingProduct({ ...product });
-  };
+  const {
+    editingProduct,
+    setEditingProduct,
+    handleProductNameUpdate,
+    handlePriceUpdate,
+    handleStockUpdate,
+    handleRemoveDiscount,
+    handleEditComplete,
+    handleEditProduct,
+  } = useEditProduct({ products, onProductUpdate });
 
   return (
     <div className="space-y-2">
@@ -193,7 +124,15 @@ const ProductList = ({ products, onProductUpdate }: Props) => {
                         className="w-1/3 p-2 border rounded"
                       />
                       <button
-                        onClick={() => handleAddDiscount(product.id)}
+                        onClick={() =>
+                          handleAddDiscount({
+                            products,
+                            productId: product.id,
+                            editingProduct,
+                            onProductUpdate,
+                            setEditingProduct,
+                          })
+                        }
                         className="w-1/3 bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
                       >
                         할인 추가

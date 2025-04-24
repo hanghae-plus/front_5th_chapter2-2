@@ -8,6 +8,7 @@ interface Props {
 
 const ProductAdd = ({ onProductAdd }: Props) => {
   const [showNewProductForm, setShowNewProductForm] = useState(false);
+
   const [newProduct, setNewProduct] =
     useState<Omit<Product, "id">>(initialNewProducts);
 

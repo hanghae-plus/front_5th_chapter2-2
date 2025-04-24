@@ -8,13 +8,14 @@ import {
 } from "../models/cart";
 /**
  * 엔티티(cart,selectedCoupon)을 다루는 훅
- *
  *데이터: cart
+
  *액션: 
     addToCart,
     removeFromCart,
     updateQuantity,
     applyCoupon,
+
   계산:
     calculateTotal
  */
