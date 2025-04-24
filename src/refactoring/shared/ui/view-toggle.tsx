@@ -39,8 +39,9 @@ export const OnShow = ({ children }: { children: React.ReactNode }) => {
   return isShow && children;
 };
 
-interface ToggleTriggerProps extends React.ComponentProps<"button"> {
-  children: React.ReactNode;
+interface ToggleTriggerProps
+  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children"> {
+  children?: React.ReactNode | ((isShow: boolean) => React.ReactNode);
   handleClick?: () => void;
 }
 
@@ -49,7 +50,9 @@ export const Trigger = ({
   handleClick,
   ...props
 }: ToggleTriggerProps) => {
-  const { toggleView } = useViewToggleContext();
+  const { toggleView, isShow } = useViewToggleContext();
+
+  const content = typeof children === "function" ? children(isShow) : children;
 
   return (
     <button
@@ -59,7 +62,7 @@ export const Trigger = ({
       }}
       {...props}
     >
-      {children}
+      {content}
     </button>
   );
 };
