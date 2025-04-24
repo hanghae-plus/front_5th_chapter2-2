@@ -1,9 +1,15 @@
-import { useCoupons, useSelectedCoupon } from "../../../hooks";
+import { Coupon } from "../../../entities";
+import { useCoupons } from "../../../hooks";
 import { CardWithTitle } from "../../../ui/card-with-title";
 
-export const CouponSection = () => {
+interface Props {
+  selectedCoupon: Coupon | null;
+  applyCoupon: (coupon: Coupon) => void;
+}
+
+export const CouponSection = (props: Props) => {
+  const { selectedCoupon, applyCoupon } = props;
   const { coupons } = useCoupons();
-  const { selectedCoupon, applyCoupon } = useSelectedCoupon();
 
   return (
     <CardWithTitle title="쿠폰 적용">

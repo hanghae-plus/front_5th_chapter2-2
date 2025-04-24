@@ -1,4 +1,5 @@
 import { CartItem } from "../../../entities";
+import { useSelectedCoupon } from "../../../hooks";
 import { Section } from "../../../ui/section";
 import { CouponSection } from "../coupon/coupon-section";
 import { CartList } from "./cart-list";
@@ -15,12 +16,13 @@ type CartSectionProps = {
 export const CartSection = (props: CartSectionProps) => {
   const { cart, actions } = props;
   const { updateQuantity, removeFromCart } = actions;
+  const { selectedCoupon, applyCoupon } = useSelectedCoupon();
 
   return (
     <Section title="장바구니 내역">
       <CartList cart={cart} actions={{ updateQuantity, removeFromCart }} />
-      <CouponSection />
-      <CartPriceSummary cart={cart} />
+      <CouponSection selectedCoupon={selectedCoupon} applyCoupon={applyCoupon} />
+      <CartPriceSummary cart={cart} selectedCoupon={selectedCoupon} />
     </Section>
   );
 };
