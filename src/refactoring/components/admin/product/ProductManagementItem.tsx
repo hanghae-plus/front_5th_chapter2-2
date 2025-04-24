@@ -2,40 +2,30 @@ import { Product, Discount } from "../../../../types";
 import { ProductManagementItemEdit } from "./ProductManagementItemEdit";
 import { ProductManagementItemView } from "./ProductManagementItemView";
 import { Button } from "../../common";
+import { useProductManagement } from "../../../contexts/ProductManagementContext";
 
 interface ProductManagementItemProps {
   product: Product;
   index: number;
-  isOpen: (productId: string) => boolean;
-  toggle: (productId: string) => void;
-  editingProduct: Product | null;
-  handleFieldUpdate: <K extends keyof Product>(
-    productId: string,
-    field: K,
-    value: Product[K]
-  ) => void;
-  handleDiscountRemove: (productId: string, index: number) => void;
-  handleDiscountAdd: (productId: string) => void;
-  newDiscount: Discount;
-  setNewDiscount: (discount: Discount) => void;
-  handleEditComplete: () => void;
-  handleEditProduct: (product: Product) => void;
 }
 
 export const ProductManagementItem = ({
   product,
   index,
-  isOpen,
-  toggle,
-  editingProduct,
-  handleFieldUpdate,
-  handleDiscountRemove,
-  handleDiscountAdd,
-  newDiscount,
-  setNewDiscount,
-  handleEditComplete,
-  handleEditProduct,
 }: ProductManagementItemProps) => {
+  const {
+    isOpen,
+    toggle,
+    editingProduct,
+    handleFieldUpdate,
+    handleDiscountRemove,
+    handleDiscountAdd,
+    newDiscount,
+    setNewDiscount,
+    handleEditComplete,
+    handleEditProduct,
+  } = useProductManagement();
+
   return (
     <div
       key={product.id}
