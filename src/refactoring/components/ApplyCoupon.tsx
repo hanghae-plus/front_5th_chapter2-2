@@ -1,12 +1,16 @@
 import { Coupon } from "../../types";
 
-interface ApplyCouponProps {
+interface IApplyCouponProps {
   coupons: Coupon[];
   onApplyCoupon: (coupon: Coupon) => void;
   selectedCoupon: Coupon | null;
 }
 
-const ApplyCounpon = ({ coupons, onApplyCoupon, selectedCoupon }: ApplyCouponProps) => {
+const ApplyCounpon = ({
+  coupons,
+  onApplyCoupon,
+  selectedCoupon,
+}: IApplyCouponProps) => {
   return (
     <div className="mt-6 bg-white p-4 rounded shadow">
       <h2 className="text-2xl font-semibold mb-2">쿠폰 적용</h2>

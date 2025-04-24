@@ -1,12 +1,16 @@
 import { CartItem, Product } from "../../types";
 
-interface ProductListProps {
+interface IProductListProps {
   products: Product[];
   cartItems: CartItem[];
   onAddToCart: (product: Product) => void;
 }
 
-const ProductList = ({ products, cartItems, onAddToCart }: ProductListProps) => {
+const ProductList = ({
+  products,
+  cartItems,
+  onAddToCart,
+}: IProductListProps) => {
   const getRemainingStock = (product: Product) => {
     const cartItem = cartItems.find((item) => item.product.id === product.id);
     return product.stock - (cartItem?.quantity || 0);

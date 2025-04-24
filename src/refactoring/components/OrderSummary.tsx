@@ -1,4 +1,4 @@
-interface OrderSummaryProps {
+interface IOrderSummaryProps {
   cartTotal: {
     totalBeforeDiscount: number;
     totalAfterDiscount: number;
@@ -7,7 +7,7 @@ interface OrderSummaryProps {
   };
 }
 
-const OrderSummary = ({ cartTotal }: OrderSummaryProps) => {
+const OrderSummary = ({ cartTotal }: IOrderSummaryProps) => {
   const {
     totalBeforeDiscount,
     totalAfterDiscount,
