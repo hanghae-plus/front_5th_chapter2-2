@@ -2,8 +2,7 @@ import { Coupon, Product } from '../../../types.ts';
 import PagesLayout from '../../components/layouts/PagesLayout.tsx';
 import { useCart } from '../../hooks/useCart.ts';
 import { getAppliedDiscount, getMaxDiscount, getRemainingStock } from '../../models/cart.ts';
-import { ProductList, CartSummary } from './components';
-import {} from './components/ProductList.tsx';
+import { ProductListSection, CartSummarySection } from './components';
 
 interface CartPageProps {
   products: Product[];
@@ -28,7 +27,7 @@ export const CartPage = ({ products, coupons }: CartPageProps) => {
       <PagesLayout
         title={'장바구니'}
         mainSection={
-          <ProductList
+          <ProductListSection
             products={products}
             cart={cart}
             addToCart={addToCart}
@@ -37,7 +36,7 @@ export const CartPage = ({ products, coupons }: CartPageProps) => {
           />
         }
         sideSection={
-          <CartSummary
+          <CartSummarySection
             cart={cart}
             coupons={coupons}
             selectedCoupon={selectedCoupon}
@@ -48,6 +47,7 @@ export const CartPage = ({ products, coupons }: CartPageProps) => {
             updateQuantity={updateQuantity}
             removeFromCart={removeFromCart}
             applyCoupon={applyCoupon}
+            onCheckout={() => alert('주문 완료!')}
           />
         }
       />
