@@ -41,9 +41,8 @@ CartCoupon.Applied = () => {
 		<p className="text-green-600">
 			적용된 쿠폰: {selectedCoupon.name}(
 			{selectedCoupon.discountType === "amount"
-				? `${selectedCoupon.discountValue}원`
-				: `${selectedCoupon.discountValue}%`}{" "}
-			할인)
+				? `${selectedCoupon.discountValue}원 할인`
+				: `${selectedCoupon.discountValue}% 할인`}
 		</p>
 	);
 };
