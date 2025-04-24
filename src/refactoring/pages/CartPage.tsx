@@ -54,12 +54,15 @@ export const CartPage = ({ products, coupons }: Props) => {
               />
             ))}
           </div>
-          <OrderSummary cartTotal={calculateTotal()} />
+        </div>
+        <div>
+          <h2 className="text-2xl font-semibold mb-4">장바구니 내역</h2>
           <ApplyCoupon
             coupons={coupons}
             onApplyCoupon={applyCoupon}
             selectedCoupon={selectedCoupon}
           />
+          <OrderSummary cartTotal={calculateTotal()} />
         </div>
       </div>
     </div>
