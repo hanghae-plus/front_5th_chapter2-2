@@ -16,7 +16,6 @@ const ProductEditForm = ({
   onCancelEdit,
   onSaveProduct,
 }: Props) => {
-  // useDiscountManagement 대신 직접 구현
   const [newDiscount, setNewDiscount] = useState<Discount>({
     quantity: 0,
     rate: 0,

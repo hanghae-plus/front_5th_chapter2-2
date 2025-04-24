@@ -1,23 +1,22 @@
-import { useAtomValue } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 import { Product } from "../../../types.ts";
-import { editingProductAtom } from "../../store/products/atom.ts";
+import {
+  editingProductAtom,
+  openProductIdsAtom,
+} from "../../store/products/atom.ts";
 import { ProductEditForm } from "./ProductEditForm.tsx";
 import { ProductDetails } from "./ProductDetail.tsx";
+import { toggleProductAccordionAtom } from "../../store/products/actions.ts";
 
 interface ProductItemProps {
   product: Product;
   index: number;
-  isOpen: boolean;
-  onToggle: () => void;
 }
 
-export const ProductItem = ({
-  product,
-  index,
-  isOpen,
-  onToggle,
-}: ProductItemProps) => {
+export const ProductItem = ({ product, index }: ProductItemProps) => {
   const editingProduct = useAtomValue(editingProductAtom);
+  const openProductIds = useAtomValue(openProductIdsAtom);
+  const toggleProductAccordion = useSetAtom(toggleProductAccordionAtom);
 
   const isEditing = editingProduct?.id === product.id;
 
@@ -28,13 +27,13 @@ export const ProductItem = ({
     >
       <button
         data-testid="toggle-button"
-        onClick={onToggle}
+        onClick={() => toggleProductAccordion}
         className="w-full text-left font-semibold"
       >
         {product.name} - {product.price}원 (재고: {product.stock})
       </button>
 
-      {isOpen && (
+      {openProductIds && (
         <div className="mt-2">
           {isEditing ? (
             <ProductEditForm />
