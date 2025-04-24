@@ -1,7 +1,7 @@
 import { ProductProvider } from './contexts/productContext.tsx';
 import { CouponProvider } from './contexts/couponContext.tsx';
 
-import Main from './components/Main.tsx';
+import Main from './pages/Main.tsx';
 
 const App = () => {
   return (
