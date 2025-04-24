@@ -1,24 +1,38 @@
-import { useAtomValue, useSetAtom } from "jotai";
-import { Product } from "../../../types.ts";
-import {
-  editingProductAtom,
-  openProductIdsAtom,
-} from "../../store/products/atom.ts";
-import { ProductEditForm } from "./ProductEditForm.tsx";
-import { ProductDetails } from "./ProductDetail.tsx";
-import { toggleProductAccordionAtom } from "../../store/products/actions.ts";
+import { Product } from "@/types.ts";
+import ProductEditForm from "./ProductEditForm.tsx";
+import { useProductEdit } from "@/refactoring/hooks/useProductEdit.ts";
+import { formatDiscountInfo } from "@/refactoring/models/product.ts";
 
-interface ProductItemProps {
+interface Props {
   product: Product;
   index: number;
+  isOpen: boolean;
+  toggleProductAccordion: (productId: string) => void;
+  onProductUpdate: (updatedProduct: Product) => void;
 }
 
-export const ProductItem = ({ product, index }: ProductItemProps) => {
-  const editingProduct = useAtomValue(editingProductAtom);
-  const openProductIds = useAtomValue(openProductIdsAtom);
-  const toggleProductAccordion = useSetAtom(toggleProductAccordionAtom);
+const ProductItem = ({
+  product,
+  index,
+  isOpen,
+  toggleProductAccordion,
+  onProductUpdate,
+}: Props) => {
+  const {
+    editingProduct,
+    handleEditProduct,
+    handleCancelEdit,
+    handleUpdateEditingField,
+  } = useProductEdit();
 
-  const isEditing = editingProduct?.id === product.id;
+  const handleSaveProduct = () => {
+    if (editingProduct) {
+      onProductUpdate(editingProduct);
+      handleCancelEdit();
+    }
+  };
+
+  const isEditing = editingProduct !== null && editingProduct.id === product.id;
 
   return (
     <div
@@ -27,21 +41,41 @@ export const ProductItem = ({ product, index }: ProductItemProps) => {
     >
       <button
         data-testid="toggle-button"
-        onClick={() => toggleProductAccordion}
+        onClick={() => toggleProductAccordion(product.id)}
         className="w-full text-left font-semibold"
       >
         {product.name} - {product.price}원 (재고: {product.stock})
       </button>
 
-      {openProductIds && (
+      {isOpen && (
         <div className="mt-2">
           {isEditing ? (
-            <ProductEditForm />
+            <ProductEditForm
+              editingProduct={editingProduct}
+              handleUpdateEditingField={handleUpdateEditingField}
+              onCancelEdit={handleCancelEdit}
+              onSaveProduct={handleSaveProduct}
+            />
           ) : (
-            <ProductDetails product={product} />
+            <div>
+              {product.discounts.map((discount, index) => (
+                <div key={index} className="mb-2">
+                  <span>{formatDiscountInfo(discount)}</span>
+                </div>
+              ))}
+              <button
+                data-testid="modify-button"
+                onClick={() => handleEditProduct(product)}
+                className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 mt-2"
+              >
+                수정
+              </button>
+            </div>
           )}
         </div>
       )}
     </div>
   );
 };
+
+export default ProductItem;

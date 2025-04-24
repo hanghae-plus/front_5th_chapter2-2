@@ -1,7 +1,7 @@
-import { useNewProduct } from "../../../hooks/useNewProduct";
 import ProductList from "./ProductList";
 import NewProductForm from "./NewProductForm";
-import { Product } from "../../../../types";
+import { Product } from "@/types";
+import { useNewProduct } from "@/refactoring/hooks/useNewProduct";
 
 interface Props {
   products: Product[];

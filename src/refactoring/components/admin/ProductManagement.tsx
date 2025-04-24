@@ -1,16 +1,51 @@
-import { useAtomValue } from "jotai";
-import { showNewProductFormAtom } from "../../store/products/atom.ts";
-import { ProductList } from "./ProductList.tsx";
-import { NewProductSection } from "./NewProductSection.tsx";
+import ProductList from "./ProductList";
+import NewProductForm from "./NewProductForm";
+import { Product } from "@/types";
+import { useNewProduct } from "@/refactoring/hooks/useNewProduct";
 
-export const ProductManagement = () => {
-  const showNewProductForm = useAtomValue(showNewProductFormAtom);
+interface Props {
+  products: Product[];
+  onProductUpdate: (updatedProduct: Product) => void;
+  onProductAdd: (newProduct: Product) => void;
+}
+
+const ProductSection = ({ products, onProductUpdate, onProductAdd }: Props) => {
+  const {
+    showNewProductForm,
+    newProduct,
+    toggleNewProductForm,
+    updateNewProduct,
+    resetNewProduct,
+    getNewProductWithId,
+  } = useNewProduct();
+
+  const handleAddNewProduct = () => {
+    const productWithId = getNewProductWithId();
+    onProductAdd(productWithId);
+    resetNewProduct();
+  };
 
   return (
     <div>
       <h2 className="text-2xl font-semibold mb-4">상품 관리</h2>
-      <NewProductSection />
-      {!showNewProductForm && <ProductList />}
+      <button
+        onClick={toggleNewProductForm}
+        className="bg-green-500 text-white px-4 py-2 rounded mb-4 hover:bg-green-600"
+      >
+        {showNewProductForm ? "취소" : "새 상품 추가"}
+      </button>
+
+      {showNewProductForm && (
+        <NewProductForm
+          newProduct={newProduct}
+          updateNewProduct={updateNewProduct}
+          onAddProduct={handleAddNewProduct}
+        />
+      )}
+
+      <ProductList products={products} onProductUpdate={onProductUpdate} />
     </div>
   );
 };
+
+export default ProductSection;

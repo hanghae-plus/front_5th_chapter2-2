@@ -1,25 +1,26 @@
-import { useSetAtom } from "jotai";
-import { updateNewCouponAtom } from "../../store/coupons/action";
+import { Coupon } from "@/types";
 
-/**
- * select 태그와 합칠 수도 있어서 type을 optional 값으로 정의하였습니다.
- */
 interface Props {
-  type?: "text" | "number";
+  type: "text" | "number";
   value: string | number;
   placeholder: string;
-  field: "name" | "code";
+  field: "name" | "code" | "discountValue";
+  updateNewCoupon: (field: keyof Coupon, value: any) => void;
 }
 
-const CouponInput = ({ value, placeholder, field, type }: Props) => {
-  const updateNewCoupon = useSetAtom(updateNewCouponAtom);
-
+const CouponInput = ({
+  type,
+  value,
+  placeholder,
+  field,
+  updateNewCoupon,
+}: Props) => {
   return (
     <input
       type={type}
       placeholder={placeholder}
       value={value}
-      onChange={(e) => updateNewCoupon({ field, value: e.target.value })}
+      onChange={(e) => updateNewCoupon(field, e.target.value)}
       className="w-full p-2 border rounded"
     />
   );

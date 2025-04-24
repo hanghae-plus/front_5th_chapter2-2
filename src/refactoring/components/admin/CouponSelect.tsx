@@ -1,20 +1,19 @@
-import { useSetAtom } from "jotai";
-import { updateNewCouponAtom } from "../../store/coupons/action";
+import { Coupon } from "@/types";
 
 interface Props {
-  value: "percentage" | "amount";
+  value: "amount" | "percentage";
+  updateNewCoupon: (field: keyof Coupon, value: any) => void;
 }
 
-const CouponSelect = ({ value }: Props) => {
-  const updateNewCoupon = useSetAtom(updateNewCouponAtom);
+const CouponSelect = ({ value, updateNewCoupon }: Props) => {
   return (
     <select
       value={value}
       onChange={(e) =>
-        updateNewCoupon({
-          field: "discountType",
-          value: e.target.value as "amount" | "percentage",
-        })
+        updateNewCoupon(
+          "discountType",
+          e.target.value as "amount" | "percentage"
+        )
       }
       className="w-full p-2 border rounded"
     >

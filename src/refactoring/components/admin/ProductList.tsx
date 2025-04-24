@@ -1,15 +1,29 @@
-import { useAtomValue } from "jotai";
-import { productsAtom } from "../../store/products/atom.ts";
-import { ProductItem } from "./ProductItem.tsx";
+import { useProductAccordion } from "@/refactoring/hooks/useProductAccordion.ts";
+import ProductItem from "./ProductItem.tsx";
+import { Product } from "@/types.ts";
 
-export const ProductList = () => {
-  const products = useAtomValue(productsAtom);
+interface Props {
+  products: Product[];
+  onProductUpdate: (updatedProduct: Product) => void;
+}
+
+const ProductList = ({ products, onProductUpdate }: Props) => {
+  const { openProductIds, toggleProductAccordion } = useProductAccordion();
 
   return (
     <div className="space-y-2">
       {products.map((product, index) => (
-        <ProductItem key={product.id} product={product} index={index} />
+        <ProductItem
+          key={product.id}
+          product={product}
+          index={index}
+          isOpen={openProductIds.has(product.id)}
+          toggleProductAccordion={toggleProductAccordion}
+          onProductUpdate={onProductUpdate}
+        />
       ))}
     </div>
   );
 };
+
+export default ProductList;
