@@ -140,6 +140,7 @@ export const AdminPage = ({
         <div>
           <h2 className="text-2xl font-semibold mb-4">상품 관리</h2>
           <button
+            type="button"
             onClick={() => setShowNewProductForm(!showNewProductForm)}
             className="bg-green-500 text-white px-4 py-2 rounded mb-4 hover:bg-green-600"
           >
@@ -199,14 +200,17 @@ export const AdminPage = ({
                   onChange={(e) =>
                     setNewProduct({
                       ...newProduct,
-                      stock: parseInt(e.target.value),
+                      stock: Number.parseInt(e.target.value),
                     })
                   }
                   className="w-full p-2 border rounded"
                 />
               </div>
-exp rt * from "./cart";
-export * from "./product";
+              <button
+                type="button"
+                onClick={handleAddNewProduct}
+                className="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600"
+              >
                 추가
               </button>
             </div>
@@ -251,7 +255,7 @@ export * from "./product";
                             onChange={(e) =>
                               handlePriceUpdate(
                                 product.id,
-                                parseInt(e.target.value)
+                                Number.parseInt(e.target.value)
                               )
                             }
                             className="w-full p-2 border rounded"
@@ -265,7 +269,7 @@ export * from "./product";
                             onChange={(e) =>
                               handleStockUpdate(
                                 product.id,
-                                parseInt(e.target.value)
+                                Number.parseInt(e.target.value)
                               )
                             }
                             className="w-full p-2 border rounded"
@@ -286,6 +290,7 @@ export * from "./product";
                                 {discount.rate * 100}% 할인
                               </span>
                               <button
+                                type="button"
                                 onClick={() =>
                                   handleRemoveDiscount(product.id, index)
                                 }
@@ -315,12 +320,13 @@ export * from "./product";
                               onChange={(e) =>
                                 setNewDiscount({
                                   ...newDiscount,
-                                  rate: parseInt(e.target.value) / 100,
+                                  rate: Number.parseInt(e.target.value) / 100,
                                 })
                               }
                               className="w-1/3 p-2 border rounded"
                             />
                             <button
+                              type="button"
                               onClick={() => handleAddDiscount(product.id)}
                               className="w-1/3 bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
                             >
@@ -329,6 +335,7 @@ export * from "./product";
                           </div>
                         </div>
                         <button
+                          type="button"
                           onClick={handleEditComplete}
                           className="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600 mt-2"
                         >
@@ -346,6 +353,7 @@ export * from "./product";
                           </div>
                         ))}
                         <button
+                          type="button"
                           data-testid="modify-button"
                           onClick={() => handleEditProduct(product)}
                           className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 mt-2"

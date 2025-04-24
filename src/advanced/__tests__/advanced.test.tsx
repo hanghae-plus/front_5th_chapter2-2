@@ -1,11 +1,23 @@
 import { describe, expect, test } from "vitest";
-import { act, fireEvent, render, screen, within } from "@testing-library/react";
+import {
+  act,
+  fireEvent,
+  render,
+  renderHook,
+  screen,
+  within,
+} from "@testing-library/react";
 import CartPage from "../../refactoring/pages/cart";
 import AdminPage from "../../refactoring/pages/admin";
 import type { CartItem, CouponItem, Product } from "../../refactoring/types";
-import { useSetAtom } from "jotai";
-import { setCouponsAtom, setProductsAtom } from "../../refactoring/state";
+import { useAtomValue, useSetAtom } from "jotai";
+import {
+  couponsAtom,
+  setCouponsAtom,
+  setProductsAtom,
+} from "../../refactoring/state";
 import { getMaxDiscount, getRemainingStock } from "../../refactoring/utils";
+import { useCouponForm } from "../../refactoring/hooks";
 
 const mockProducts: Product[] = [
   {
@@ -250,9 +262,39 @@ describe("advanced > ", () => {
     });
   });
 
-  describe("", () => {
-    test("새로운 hook을 만든 후에 테스트 코드를 작성해서 실행해보세요", () => {
-      expect(true).toBe(false);
+  describe("useCouponForm hook", () => {
+    test("쿠폰을 추가할 수 있다.", () => {
+      renderHook(() => {
+        const setCoupons = useSetAtom(setCouponsAtom);
+        setCoupons(mockCoupons);
+      });
+      const { result } = renderHook(() => useCouponForm());
+
+      const defaultCoupon: CouponItem = {
+        name: "",
+        code: "",
+        discountType: "percentage",
+        discountValue: 0,
+      };
+
+      const newCouponItem: CouponItem = {
+        name: "SUMMER",
+        code: "SUMMER2025",
+        discountType: "amount",
+        discountValue: 5000,
+      };
+
+      act(() => result.current.setNewCoupon(newCouponItem));
+
+      act(() => result.current.handleAddCoupon());
+
+      const { result: couponResult } = renderHook(() =>
+        useAtomValue(couponsAtom)
+      );
+
+      expect(couponResult.current).toHaveLength(3);
+      expect(couponResult.current[2]).toEqual(newCouponItem);
+      expect(result.current.newCoupon).toEqual(defaultCoupon);
     });
   });
 
