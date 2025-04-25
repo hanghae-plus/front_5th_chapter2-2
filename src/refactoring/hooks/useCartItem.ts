@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import { CartItem, Product } from "../../types";
+import { getRemainingStock } from "../models/cart";
 
 interface CartItemProps {
     cart: CartItem[];
@@ -7,24 +8,6 @@ interface CartItemProps {
 }
 
 export const useCartItems = ({cart, setCart}: CartItemProps) => {
-
-  const getRemainingStock = (product: Product, cart:CartItem[]) => {
-    const cartItem = cart.find(item => item.product.id === product.id);
-    return product.stock - (cartItem?.quantity || 0);
-  };
-
-  //계산
-  const getAppliedDiscount = (item: CartItem) => {
-    const { discounts } = item.product;
-    const { quantity } = item;
-    let appliedDiscount = 0;
-    for (const discount of discounts) {
-      if (quantity >= discount.quantity) {
-        appliedDiscount = Math.max(appliedDiscount, discount.rate);
-      }
-    }
-    return appliedDiscount;
-  };
 
   const addToCart = (product: Product) => {
     const remainingStock = getRemainingStock(product, cart);
@@ -63,8 +46,6 @@ export const useCartItems = ({cart, setCart}: CartItemProps) => {
   return {
     cart,
     addToCart,
-    getRemainingStock,
-    getAppliedDiscount,
     removeFromCart,
     updateQuantity
   };

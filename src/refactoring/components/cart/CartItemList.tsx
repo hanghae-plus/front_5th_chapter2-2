@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 import { CartItem } from "../../../types";
 import { useCartItems } from "../../hooks/useCartItem";
+import { getAppliedDiscount } from "../../models/cart";
 
 
 interface CartItemListProps {
@@ -9,7 +10,7 @@ interface CartItemListProps {
 }
 
 export const CartItemList = ({ cart, setCart }: CartItemListProps) => {
-    const { getAppliedDiscount, updateQuantity, removeFromCart } = useCartItems({cart, setCart});
+    const { updateQuantity, removeFromCart } = useCartItems({cart, setCart});
     return (
         <div className="space-y-2">
             {cart.map(item => {

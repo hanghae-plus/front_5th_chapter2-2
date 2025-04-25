@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 import { CartItem, Product } from "../../../types";
-import { useCartOperations } from "../../hooks/useCartOperations";
 import { getMaxDiscount, getRemainingStock } from "../../models/cart";
+import { useCartItems } from "../../hooks";
 
 
 interface ProductItemListProps {
@@ -11,7 +11,7 @@ interface ProductItemListProps {
 }
 
 export const ProductItemList = ({products,cart, setCart}: ProductItemListProps) => {
-  const { addToCart } = useCartOperations({ cart, setCart });
+  const { addToCart } = useCartItems({ cart, setCart });
     return (
         <div>
           <h2 className="text-2xl font-semibold mb-4">상품 목록</h2>
