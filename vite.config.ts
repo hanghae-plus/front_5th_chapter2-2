@@ -1,16 +1,31 @@
-import { defineConfig as defineTestConfig, mergeConfig } from 'vitest/config';
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react-swc';
+import { defineConfig as defineTestConfig, mergeConfig } from "vitest/config";
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react-swc";
 
-export default mergeConfig(
-  defineConfig({
+function createBaseConfig(command: "build" | "serve") {
+  return {
     plugins: [react()],
-  }),
-  defineTestConfig({
-    test: {
-      globals: true,
-      environment: 'jsdom',
-      setupFiles: './src/setupTests.ts'
+    base: command === "build" ? "/front_5th_chapter2-2/" : undefined,
+    build: {
+      rollupOptions: {
+        input: {
+          origin: "./index.origin.html",
+          refactoring: "./index.refactoring.html",
+        },
+      },
     },
-  })
-)
+  };
+}
+
+const testConfig = defineTestConfig({
+  test: {
+    globals: true,
+    environment: "jsdom",
+    setupFiles: "./src/setupTests.ts",
+  },
+});
+
+export default defineConfig(({ command }) => {
+  const baseConfig = createBaseConfig(command);
+  return mergeConfig(baseConfig, testConfig);
+});
