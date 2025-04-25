@@ -1,5 +1,5 @@
 import { CartItem as CartItemType } from '../../../../types';
-import { getAppliedDiscount } from '../../../functions/cartFunctions';
+import { getAppliedDiscount } from '../../../functions/cart/cartFunctions';
 import { CartItemControls } from './CartItemControls';
 
 interface CartItemProps {

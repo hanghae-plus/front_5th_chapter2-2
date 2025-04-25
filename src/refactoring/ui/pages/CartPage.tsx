@@ -1,5 +1,5 @@
 import { Product, Coupon } from '../../../types';
-import { useCart } from '../../hooks/useCart';
+import { useCart } from '../../hooks/cart/useCart';
 import { ProductList } from '../components/product/ProductList';
 import { CartList } from '../components/cart/CartList';
 import { CouponSelect } from '../components/coupon/CouponSelect';

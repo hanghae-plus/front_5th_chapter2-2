@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
-import { CartItem, Coupon } from "../../types";
-import { calculateDiscount, DiscountCalculation } from '../functions/priceCalculatorFunctions';
+import { CartItem, Coupon } from "../../../types";
+import { calculateDiscount, DiscountCalculation } from '../../functions/cart/priceCalculatorFunctions';
 
 /**
  * 할인 계산기 훅

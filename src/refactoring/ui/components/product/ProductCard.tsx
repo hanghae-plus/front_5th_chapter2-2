@@ -1,5 +1,5 @@
 import { Product, CartItem } from "../../../../types";
-import { getRemainingStock } from "../../../functions/cartFunctions";
+import { getRemainingStock } from "../../../functions/cart/cartFunctions";
 import { AddToCartButton } from "./AddToCartButton";
 import { ProductDiscountList } from "./ProductDiscountList";
 import { ProductInfo } from "./ProductInfo";

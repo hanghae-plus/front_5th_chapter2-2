@@ -1,6 +1,6 @@
-import { CartItem, Coupon, Product } from '../../types';
+import { CartItem, Coupon, Product } from '../../../types';
 import { useLocalStorage } from './useLocalStorage';
-import { calculateDiscount, DiscountCalculation } from '../functions/priceCalculatorFunctions';
+import { calculateDiscount, DiscountCalculation } from '../../functions/cart/priceCalculatorFunctions';
 import { useState } from 'react';
 /**
  * 장바구니 관리를 위한 커스텀 훅

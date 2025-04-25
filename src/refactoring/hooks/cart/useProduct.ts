@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Product } from "../../types";
-import { updateProductInList, addProductToList } from "../functions/productFunctions";
+import { Product } from "../../../types";
+import { updateProductInList, addProductToList } from "../../functions/cart/productFunctions";
 
 /**
  * 제품 훅

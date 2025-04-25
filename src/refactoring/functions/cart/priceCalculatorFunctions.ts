@@ -1,4 +1,4 @@
-import { CartItem, Coupon } from "../../types";
+import { CartItem, Coupon } from "../../../types";
 
 /**
  * 할인 계산 결과 인터페이스

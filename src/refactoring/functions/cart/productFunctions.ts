@@ -1,4 +1,4 @@
-import { Product } from "../../types";
+import { Product } from "../../../types";
 
 /**
  * 제품 목록에서 특정 제품을 업데이트

@@ -1,4 +1,4 @@
-import { CartItem, Product } from '../../types';
+import { CartItem, Product } from '../../../types';
 
 /**
  * 상품의 최대 할인율을 계산

@@ -1,5 +1,5 @@
 import { Product } from "../../../../types";
-import { getMaxDiscount } from "../../../functions/cartFunctions";
+import { getMaxDiscount } from "../../../functions/cart/cartFunctions";
 
 interface ProductInfoProps {
   product: Product;
