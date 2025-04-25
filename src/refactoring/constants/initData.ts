@@ -29,6 +29,14 @@ export const INITIAL_PRODUCTS: Product[] = [
   }
 ];
 
+export const INIT_PRODUCT: Product = {
+  id: '',
+  name: '',
+  price: 0,
+  stock: 0,
+  discounts: []
+};
+
 export const CURRENT_APPLY_INITIAL_COUPONS: Coupon[] = [
   {
     name: '5000원 할인 쿠폰',
@@ -44,7 +52,7 @@ export const CURRENT_APPLY_INITIAL_COUPONS: Coupon[] = [
   }
 ];
 
-export const INITIAL_COUPON: Coupon = {
+export const INIT_COUPON: Coupon = {
   name: '',
   code: '',
   discountType: 'percentage',

@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useCallback, useMemo } from 'react';
 import { Coupon } from '../../types';
-import { INITIAL_COUPON } from '../constants/initData';
+import { INIT_COUPON } from '../constants/initData';
 interface CouponContextType {
   newCoupon: Coupon;
   setNewCoupon: (coupon: Coupon) => void;
@@ -13,11 +13,11 @@ export const CouponProvider: React.FC<{
   onCouponAdd: (coupon: Coupon) => void;
   children: React.ReactNode;
 }> = ({ onCouponAdd, children }) => {
-  const [newCoupon, setNewCoupon] = useState<Coupon>(INITIAL_COUPON);
+  const [newCoupon, setNewCoupon] = useState<Coupon>(INIT_COUPON);
 
   const handleAddCoupon = useCallback(() => {
     onCouponAdd(newCoupon);
-    setNewCoupon(INITIAL_COUPON);
+    setNewCoupon(INIT_COUPON);
   }, [newCoupon, onCouponAdd]);
 
   return (

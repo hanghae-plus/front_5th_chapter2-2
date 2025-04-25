@@ -8,7 +8,7 @@ export function useProducts(initialProducts: Product[]) {
   );
 
   const updateProduct = (updated: Product) => {
-    const newProducts = products.map(p => (p.id === updated.id ? updated : p));
+    const newProducts = products.map(product => (product.id === updated.id ? updated : product));
     setProducts(newProducts);
   };
 
