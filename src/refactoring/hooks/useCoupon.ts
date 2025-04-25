@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Coupon } from "../../types.ts";
 
-
 /**
  * 쿠폰 훅
  * @param initialCoupons 초기 쿠폰 목록
