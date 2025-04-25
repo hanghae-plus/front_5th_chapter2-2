@@ -100,12 +100,12 @@ export const AdminPage = ({
                     <ProductEditForm
                       editingProduct={editingProduct}
                       newDiscount={newDiscount}
+                      setNewDiscount={setNewDiscount}
                       handleProductNameUpdate={handleProductNameUpdate}
                       handlePriceUpdate={handlePriceUpdate}
                       handleStockUpdate={handleStockUpdate}
                       handleAddDiscount={handleAddDiscount}
                       handleRemoveDiscount={handleRemoveDiscount}
-                      setNewDiscount={setNewDiscount}
                       handleEditComplete={handleEditComplete}
                     />
                   )}
