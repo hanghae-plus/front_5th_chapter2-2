@@ -1,5 +1,5 @@
-import { CartItem } from '../../../types';
-import { getAppliedDiscount } from '../../functions/cart';
+import { CartItem } from '../../../../types';
+import { getAppliedDiscount } from '../../../functions/cartFunctions.ts';
 
 interface CartListProps {
   cart: CartItem[];

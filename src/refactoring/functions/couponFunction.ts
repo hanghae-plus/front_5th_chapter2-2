@@ -1,11 +1,9 @@
-import { useState, useCallback, ChangeEvent } from 'react';
-import { 
-  ValidatorFn, 
-  createAllTouchedFields, 
-  extractFieldValue, 
-  updateFormField, 
-  updateTouchedField 
-} from '../functions/formFunctions';
+import { useState, useCallback, ChangeEvent } from "react";
+
+/**
+ * 폼 유효성 검사 함수 타입
+ */
+type ValidatorFn<T> = (values: T) => Partial<Record<keyof T, string>>;
 
 /**
  * 커스텀 폼 훅 매개변수
@@ -39,7 +37,7 @@ interface UseFormReturn<T extends Record<string, any>> {
 export function useForm<T extends Record<string, any>>({
   initialValues,
   onSubmit,
-  validate
+  validate,
 }: UseFormProps<T>): UseFormReturn<T> {
   const [values, setValues] = useState<T>(initialValues);
   const [errors, setErrors] = useState<Partial<Record<keyof T, string>>>({});
@@ -57,61 +55,77 @@ export function useForm<T extends Record<string, any>>({
   /**
    * 입력 필드 변경 핸들러
    */
-  const handleChange = useCallback((
-    e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
-  ) => {
-    const { name } = e.target;
-    const fieldValue = extractFieldValue(e);
-    setValues(prev => updateFormField(prev, name as keyof T, fieldValue));
+  const handleChange = useCallback((e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const { name, value, type } = e.target;
+    const fieldValue = type === "checkbox" ? (e.target as HTMLInputElement).checked : value;
+
+    setValues(prev => ({
+      ...prev,
+      [name]: fieldValue,
+    }));
   }, []);
 
   /**
    * 필드 값 직접 설정
    */
   const setFieldValue = useCallback((name: keyof T, value: any) => {
-    setValues(prev => updateFormField(prev, name, value));
+    setValues(prev => ({
+      ...prev,
+      [name]: value,
+    }));
   }, []);
 
   /**
    * 필드 포커스 아웃 핸들러
    */
-  const handleBlur = useCallback((
-    e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
-  ) => {
-    const { name } = e.target;
-    
-    setTouched(prev => updateTouchedField(prev, name as keyof T));
-    
-    if (validate) {
-      const validationErrors = validate(values);
-      setErrors(validationErrors);
-    }
-  }, [validate, values]);
+  const handleBlur = useCallback(
+    (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+      const { name } = e.target;
+
+      setTouched(prev => ({
+        ...prev,
+        [name]: true,
+      }));
+
+      if (validate) {
+        const validationErrors = validate(values);
+        setErrors(validationErrors);
+      }
+    },
+    [validate, values]
+  );
 
   /**
    * 폼 제출 핸들러
    */
-  const handleSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    
-    const validationErrors = validateForm();
-    setErrors(validationErrors);
-    
-    // 모든 필드를 터치된 상태로 표시
-    const allTouched = createAllTouchedFields(values);
-    setTouched(allTouched);
-    
-    // 유효성 검사 오류가 없을 경우 제출
-    if (Object.keys(validationErrors).length === 0) {
-      setIsSubmitting(true);
-      
-      try {
-        onSubmit(values);
-      } finally {
-        setIsSubmitting(false);
+  const handleSubmit = useCallback(
+    (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+
+      const validationErrors = validateForm();
+      setErrors(validationErrors);
+
+      // 모든 필드를 터치된 상태로 표시
+      const allTouched = Object.keys(values).reduce((acc, key) => {
+        acc[key as keyof T] = true;
+        return acc;
+      }, {} as Record<keyof T, boolean>);
+
+      setTouched(allTouched);
+
+      // 유효성 검사 오류가 없을 경우 제출
+      if (Object.keys(validationErrors).length === 0) {
+        setIsSubmitting(true);
+
+        try {
+          onSubmit(values);
+        } finally {
+          setIsSubmitting(false);
+        }
       }
-    }
-  }, [onSubmit, validateForm, values]);
+    },
+    [onSubmit, validateForm, values]
+  );
 
   /**
    * 폼 초기화
@@ -132,6 +146,6 @@ export function useForm<T extends Record<string, any>>({
     handleBlur,
     handleSubmit,
     setFieldValue,
-    resetForm
+    resetForm,
   };
-} 
+}

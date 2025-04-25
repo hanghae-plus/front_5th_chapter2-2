@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Product } from "../../types.ts";
-
+import { Product } from "../../types";
+import { updateProductInList, addProductToList } from "../functions/productFunctions";
 
 /**
  * 제품 훅
@@ -16,7 +16,7 @@ export const useProducts = (initialProducts: Product[]) => {
    * @returns 업데이트된 제품
    */
   const updateProduct = (updatedProduct: Product) => {
-    setProducts(prevProducts => prevProducts.map(p => p.id === updatedProduct.id ? updatedProduct : p));
+    setProducts(prevProducts => updateProductInList(prevProducts, updatedProduct));
   };
 
   /**
@@ -25,7 +25,7 @@ export const useProducts = (initialProducts: Product[]) => {
    * @returns 추가된 제품
    */
   const addProduct = (newProduct: Product) => {
-    setProducts(prevProducts => [...prevProducts, newProduct]);
+    setProducts(prevProducts => addProductToList(prevProducts, newProduct));
   };
 
   useEffect(() => {

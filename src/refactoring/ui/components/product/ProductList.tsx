@@ -1,5 +1,5 @@
-import { Product, CartItem } from '../../../types';
-import { getMaxDiscount, getRemainingStock } from '../../functions/cart';
+import { Product, CartItem } from "../../../../types";
+import { getMaxDiscount, getRemainingStock } from "../../../functions/cartFunctions.ts";
 
 interface ProductListProps {
   products: Product[];
@@ -21,7 +21,7 @@ export const ProductList = ({ products, cart, onAddToCart }: ProductListProps) =
                 <span className="text-gray-600">{product.price.toLocaleString()}원</span>
               </div>
               <div className="text-sm text-gray-500 mb-2">
-                <span className={`font-medium ${remainingStock > 0 ? 'text-green-600' : 'text-red-600'}`}>
+                <span className={`font-medium ${remainingStock > 0 ? "text-green-600" : "text-red-600"}`}>
                   재고: {remainingStock}개
                 </span>
                 {product.discounts.length > 0 && (
@@ -43,12 +43,12 @@ export const ProductList = ({ products, cart, onAddToCart }: ProductListProps) =
                 onClick={() => onAddToCart(product)}
                 className={`w-full px-3 py-1 rounded ${
                   remainingStock > 0
-                    ? 'bg-blue-500 text-white hover:bg-blue-600'
-                    : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                    ? "bg-blue-500 text-white hover:bg-blue-600"
+                    : "bg-gray-300 text-gray-500 cursor-not-allowed"
                 }`}
                 disabled={remainingStock <= 0}
               >
-                {remainingStock > 0 ? '장바구니에 추가' : '품절'}
+                {remainingStock > 0 ? "장바구니에 추가" : "품절"}
               </button>
             </div>
           );
@@ -56,4 +56,4 @@ export const ProductList = ({ products, cart, onAddToCart }: ProductListProps) =
       </div>
     </div>
   );
-}; 
+};
