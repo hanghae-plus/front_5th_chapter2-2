@@ -6,6 +6,8 @@ export interface Product {
   discounts: Discount[];
 }
 
+export type ProductId = Product['id'];
+
 export interface Discount {
   quantity: number;
   rate: number;
@@ -15,6 +17,8 @@ export interface CartItem {
   product: Product;
   quantity: number;
 }
+
+export type Cart = CartItem[];
 
 export interface Coupon {
   name: string;
