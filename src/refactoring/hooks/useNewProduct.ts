@@ -14,8 +14,13 @@ export const useNewProduct = ({onProductAdd}: useNewProductProps) => {
         discounts: [],
       });
 
+      const createNewProduct = (productData: Omit<Product, "id">, id: string): Product => {
+        return { ...productData, id };
+      };
+
       const handleAddNewProduct = () => {
-        const productWithId = { ...newProduct, id: Date.now().toString() };
+        const id = Date.now().toString();
+        const productWithId = createNewProduct(newProduct, id);
         onProductAdd(productWithId);
         setNewProduct({
           name: "",
