@@ -16,6 +16,8 @@ export interface CartItem {
   quantity: number;
 }
 
+export type Cart = CartItem[];
+
 export interface Coupon {
   name: string;
   code: string;

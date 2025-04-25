@@ -10,7 +10,15 @@ export default mergeConfig(
     test: {
       globals: true,
       environment: 'jsdom',
-      setupFiles: './src/setupTests.ts'
+      setupFiles: './src/setupTests.ts',
     },
-  })
-)
+    build: {
+      rollupOptions: {
+        input: {
+          main: './index.origin.html',
+          refactoring: './index.refactoring.html',
+        },
+      },
+    },
+  }),
+);
