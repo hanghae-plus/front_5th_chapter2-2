@@ -1,4 +1,4 @@
-import { describe, expect, test } from "vitest";
+import { describe, expect, test, vi } from "vitest";
 import { act, fireEvent, render, screen, within } from "@testing-library/react";
 
 import { AdminPage, CartPage } from "@r/pages";
@@ -7,6 +7,7 @@ import { Coupon } from "@r/model/coupon/types";
 import { ProductProvider } from "@r/model/product/product-context";
 import { CouponProvider } from "@r/model/coupon/coupon-context";
 import { CartProvider } from "@r/model/cart/cart-context";
+import { ViewToggle } from "@r/shared/ui/view-toggle";
 
 const mockProducts: Product[] = [
   {
@@ -266,6 +267,73 @@ describe("advanced > ", () => {
 
     test("새로운 hook 함수를 만든 후에 테스트 코드를 작성해서 실행해보세요", () => {
       expect(true).toBe(true);
+    });
+  });
+
+  describe("ViewToggle", () => {
+    test("초기에는 OnHide 콘텐츠만 보여야 함", () => {
+      render(
+        <ViewToggle>
+          <ViewToggle.OnShow>보임</ViewToggle.OnShow>
+          <ViewToggle.OnHide>숨김</ViewToggle.OnHide>
+        </ViewToggle>
+      );
+
+      expect(screen.queryByText("보임")).not.toBeInTheDocument();
+      expect(screen.getByText("숨김")).toBeInTheDocument();
+    });
+
+    test("Trigger를 클릭하면 OnShow가 표시되고 OnHide는 숨겨짐", () => {
+      render(
+        <ViewToggle>
+          <ViewToggle.Trigger>토글</ViewToggle.Trigger>
+          <ViewToggle.OnShow>보임</ViewToggle.OnShow>
+          <ViewToggle.OnHide>숨김</ViewToggle.OnHide>
+        </ViewToggle>
+      );
+
+      const button = screen.getByRole("button", { name: "토글" });
+
+      fireEvent.click(button);
+
+      expect(screen.getByText("보임")).toBeInTheDocument();
+      expect(screen.queryByText("숨김")).not.toBeInTheDocument();
+    });
+
+    test("Trigger의 children이 함수형이면 isShow에 따라 동적으로 바뀜", () => {
+      render(
+        <ViewToggle>
+          <ViewToggle.Trigger>
+            {(isShow) => (isShow ? "숨기기" : "보이기")}
+          </ViewToggle.Trigger>
+        </ViewToggle>
+      );
+
+      const button = screen.getByRole("button", { name: "보이기" });
+      expect(button).toBeInTheDocument();
+
+      fireEvent.click(button);
+
+      // 버튼 텍스트가 바뀌었는지 확인
+      expect(
+        screen.getByRole("button", { name: "숨기기" })
+      ).toBeInTheDocument();
+    });
+
+    test("Trigger의 handleClick도 실행됨", () => {
+      const handleClick = vi.fn(); // jest.fn() or vi.fn()
+
+      render(
+        <ViewToggle>
+          <ViewToggle.Trigger handleClick={handleClick}>
+            토글
+          </ViewToggle.Trigger>
+        </ViewToggle>
+      );
+
+      fireEvent.click(screen.getByRole("button", { name: "토글" }));
+
+      expect(handleClick).toHaveBeenCalledTimes(1);
     });
   });
 });
