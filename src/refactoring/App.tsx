@@ -2,10 +2,12 @@ import { CartPage } from './pages/CartPage.tsx';
 import { AdminPage } from './pages/AdminPage.tsx';
 import { useCoupons, useProducts } from './hooks';
 import useLocalStorage from './hooks/useLocalStorage.ts';
+import { CURRENT_APPLY_INITIAL_COUPONS, INITIAL_PRODUCTS } from './constants/initData.ts';
 
 const App = () => {
-  const { products, updateProduct, addProduct } = useProducts();
+  const { products, updateProduct, addProduct } = useProducts(INITIAL_PRODUCTS);
   const { coupons, addCoupon } = useCoupons();
+
   const { value: isAdmin, setLocalStorageValue: setIsAdmin } = useLocalStorage('isAdmin', false);
 
   return (

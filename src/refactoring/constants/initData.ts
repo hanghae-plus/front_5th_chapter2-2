@@ -29,7 +29,7 @@ export const INITIAL_PRODUCTS: Product[] = [
   }
 ];
 
-export const CURRENT_APPLY_INITIAL_COUPON: Coupon[] = [
+export const CURRENT_APPLY_INITIAL_COUPONS: Coupon[] = [
   {
     name: '5000원 할인 쿠폰',
     code: 'AMOUNT5000',
