@@ -1,5 +1,12 @@
 import { describe, expect, test, vi } from "vitest";
-import { act, fireEvent, render, screen, within } from "@testing-library/react";
+import {
+  act,
+  fireEvent,
+  render,
+  renderHook,
+  screen,
+  within,
+} from "@testing-library/react";
 
 import { AdminPage, CartPage } from "@r/pages";
 import { Product } from "@r/model/product/types";
@@ -8,6 +15,7 @@ import { ProductProvider } from "@r/model/product/product-context";
 import { CouponProvider } from "@r/model/coupon/coupon-context";
 import { CartProvider } from "@r/model/cart/cart-context";
 import { ViewToggle } from "@r/shared/ui/view-toggle";
+import { useForm } from "@r/shared/hooks/use-form";
 
 const mockProducts: Product[] = [
   {
@@ -260,13 +268,58 @@ describe("advanced > ", () => {
     });
   });
 
-  describe("자유롭게 작성해보세요.", () => {
-    test("새로운 유틸 함수를 만든 후에 테스트 코드를 작성해서 실행해보세요", () => {
-      expect(true).toBe(true);
+  describe("useForm", () => {
+    const initialValues = {
+      name: "",
+      price: 0,
+    };
+
+    test("초기값을 잘 설정해야 한다", () => {
+      const { result } = renderHook(() => useForm(initialValues));
+
+      expect(result.current.formValues).toEqual(initialValues);
     });
 
-    test("새로운 hook 함수를 만든 후에 테스트 코드를 작성해서 실행해보세요", () => {
-      expect(true).toBe(true);
+    test("handleFormChange로 값이 업데이트되어야 한다", () => {
+      const { result } = renderHook(() => useForm(initialValues));
+
+      act(() => {
+        result.current.handleFormChange({
+          target: { name: "name", value: "상품명" },
+        } as React.ChangeEvent<HTMLInputElement>);
+      });
+
+      expect(result.current.formValues.name).toBe("상품명");
+    });
+
+    test("handleFormChange는 string 외 값도 다룰 수 있어야 한다", () => {
+      const { result } = renderHook(() => useForm(initialValues));
+
+      act(() => {
+        result.current.handleFormChange({
+          target: { name: "price", value: "1000" }, // HTMLInputElement의 value는 string이므로
+        } as React.ChangeEvent<HTMLInputElement>);
+      });
+
+      expect(result.current.formValues.price).toBe("1000"); // ← 이건 string이 됨
+    });
+
+    test("handleFormReset으로 초기값으로 돌아가야 한다", () => {
+      const { result } = renderHook(() => useForm(initialValues));
+
+      act(() => {
+        result.current.handleFormChange({
+          target: { name: "name", value: "변경됨" },
+        } as React.ChangeEvent<HTMLInputElement>);
+      });
+
+      expect(result.current.formValues.name).toBe("변경됨");
+
+      act(() => {
+        result.current.handleFormReset();
+      });
+
+      expect(result.current.formValues).toEqual(initialValues);
     });
   });
 
