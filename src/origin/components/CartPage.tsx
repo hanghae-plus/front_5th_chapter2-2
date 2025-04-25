@@ -10,7 +10,6 @@ export const CartPage = ({ products, coupons }: Props) => {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
 
-
   const addToCart = (product: Product) => {
     const remainingStock = getRemainingStock(product);
     if (remainingStock <= 0) return;
@@ -34,14 +33,16 @@ export const CartPage = ({ products, coupons }: Props) => {
 
   const updateQuantity = (productId: string, newQuantity: number) => {
     setCart(prevCart =>
-      prevCart.map(item => {
-        if (item.product.id === productId) {
-          const maxQuantity = item.product.stock;
-          const updatedQuantity = Math.max(0, Math.min(newQuantity, maxQuantity));
-          return updatedQuantity > 0 ? { ...item, quantity: updatedQuantity } : null;
-        }
-        return item;
-      }).filter((item): item is CartItem => item !== null)
+      prevCart
+        .map(item => {
+          if (item.product.id === productId) {
+            const maxQuantity = item.product.stock;
+            const updatedQuantity = Math.max(0, Math.min(newQuantity, maxQuantity));
+            return updatedQuantity > 0 ? { ...item, quantity: updatedQuantity } : null;
+          }
+          return item;
+        })
+        .filter((item): item is CartItem => item !== null)
     );
   };
 
@@ -68,7 +69,7 @@ export const CartPage = ({ products, coupons }: Props) => {
       if (selectedCoupon.discountType === 'amount') {
         totalAfterDiscount = Math.max(0, totalAfterDiscount - selectedCoupon.discountValue);
       } else {
-        totalAfterDiscount *= (1 - selectedCoupon.discountValue / 100);
+        totalAfterDiscount *= 1 - selectedCoupon.discountValue / 100;
       }
       totalDiscount = totalBeforeDiscount - totalAfterDiscount;
     }
@@ -80,7 +81,6 @@ export const CartPage = ({ products, coupons }: Props) => {
     };
   };
 
-
   const getMaxDiscount = (discounts: { quantity: number; rate: number }[]) => {
     return discounts.reduce((max, discount) => Math.max(max, discount.rate), 0);
   };
@@ -90,7 +90,7 @@ export const CartPage = ({ products, coupons }: Props) => {
     return product.stock - (cartItem?.quantity || 0);
   };
 
-  const { totalBeforeDiscount, totalAfterDiscount, totalDiscount } = calculateTotal()
+  const { totalBeforeDiscount, totalAfterDiscount, totalDiscount } = calculateTotal();
 
   const getAppliedDiscount = (item: CartItem) => {
     const { discounts } = item.product;
@@ -118,13 +118,21 @@ export const CartPage = ({ products, coupons }: Props) => {
             {products.map(product => {
               const remainingStock = getRemainingStock(product);
               return (
-                <div key={product.id} data-testid={`product-${product.id}`} className="bg-white p-3 rounded shadow">
+                <div
+                  key={product.id}
+                  data-testid={`product-${product.id}`}
+                  className="bg-white p-3 rounded shadow"
+                >
                   <div className="flex justify-between items-center mb-2">
                     <span className="font-semibold">{product.name}</span>
                     <span className="text-gray-600">{product.price.toLocaleString()}원</span>
                   </div>
                   <div className="text-sm text-gray-500 mb-2">
-                    <span className={`font-medium ${remainingStock > 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    <span
+                      className={`font-medium ${
+                        remainingStock > 0 ? 'text-green-600' : 'text-red-600'
+                      }`}
+                    >
                       재고: {remainingStock}개
                     </span>
                     {product.discounts.length > 0 && (
@@ -165,18 +173,21 @@ export const CartPage = ({ products, coupons }: Props) => {
             {cart.map(item => {
               const appliedDiscount = getAppliedDiscount(item);
               return (
-                <div key={item.product.id} className="flex justify-between items-center bg-white p-3 rounded shadow">
+                <div
+                  key={item.product.id}
+                  className="flex justify-between items-center bg-white p-3 rounded shadow"
+                >
                   <div>
                     <span className="font-semibold">{item.product.name}</span>
-                    <br/>
+                    <br />
                     <span className="text-sm text-gray-600">
-                  {item.product.price}원 x {item.quantity}
+                      {item.product.price}원 x {item.quantity}
                       {appliedDiscount > 0 && (
                         <span className="text-green-600 ml-1">
-                      ({(appliedDiscount * 100).toFixed(0)}% 할인 적용)
-                    </span>
+                          ({(appliedDiscount * 100).toFixed(0)}% 할인 적용)
+                        </span>
                       )}
-                </span>
+                    </span>
                   </div>
                   <div>
                     <button
@@ -206,20 +217,26 @@ export const CartPage = ({ products, coupons }: Props) => {
           <div className="mt-6 bg-white p-4 rounded shadow">
             <h2 className="text-2xl font-semibold mb-2">쿠폰 적용</h2>
             <select
-              onChange={(e) => applyCoupon(coupons[parseInt(e.target.value)])}
+              onChange={e => applyCoupon(coupons[parseInt(e.target.value)])}
               className="w-full p-2 border rounded mb-2"
             >
               <option value="">쿠폰 선택</option>
               {coupons.map((coupon, index) => (
                 <option key={coupon.code} value={index}>
-                  {coupon.name} - {coupon.discountType === 'amount' ? `${coupon.discountValue}원` : `${coupon.discountValue}%`}
+                  {coupon.name} -{' '}
+                  {coupon.discountType === 'amount'
+                    ? `${coupon.discountValue}원`
+                    : `${coupon.discountValue}%`}
                 </option>
               ))}
             </select>
             {selectedCoupon && (
               <p className="text-green-600">
-                적용된 쿠폰: {selectedCoupon.name}
-                ({selectedCoupon.discountType === 'amount' ? `${selectedCoupon.discountValue}원` : `${selectedCoupon.discountValue}%`} 할인)
+                적용된 쿠폰: {selectedCoupon.name}(
+                {selectedCoupon.discountType === 'amount'
+                  ? `${selectedCoupon.discountValue}원`
+                  : `${selectedCoupon.discountValue}%`}{' '}
+                할인)
               </p>
             )}
           </div>
