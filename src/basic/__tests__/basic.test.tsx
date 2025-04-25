@@ -8,8 +8,8 @@ import {
   screen,
   within,
 } from "@testing-library/react";
-import { CartPage } from "../../refactoring/components/CartPage";
-import { AdminPage } from "../../refactoring/components/AdminPage";
+import { CartPage } from "../../refactoring/pages/CartPage";
+import { AdminPage } from "../../refactoring/pages/AdminPage";
 import { CartItem, Coupon, Product } from "../../types";
 import { useCart, useCoupons, useProducts } from "../../refactoring/hooks";
 import * as cartUtils from "../../refactoring/models/cart";
@@ -137,6 +137,7 @@ describe("basic > ", () => {
       fireEvent.click(addToCartButtonsAtProduct3); // 상품3 추가
 
       const increaseButtons = screen.getAllByText("+");
+      
       for (let i = 0; i < 9; i++) {
         fireEvent.click(increaseButtons[1]); // 상품2
         fireEvent.click(increaseButtons[2]); // 상품3
