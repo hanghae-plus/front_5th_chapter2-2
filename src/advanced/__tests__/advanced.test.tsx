@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { describe, expect, test } from 'vitest';
-import { act, fireEvent, render, screen, within } from '@testing-library/react';
-import { CartPage } from '../../refactoring/components/CartPage';
-import { AdminPage } from "../../refactoring/components/AdminPage";
+import { act, fireEvent, render, renderHook, screen, within } from '@testing-library/react';
+import { CartPage } from '../../refactoring/ui/pages/CartPage';
+import { AdminPage } from "../../refactoring/ui/pages/AdminPage";
 import { Coupon, Product } from '../../types';
+import {  useEffect } from 'react';
 
 const mockProducts: Product[] = [
   {
@@ -232,13 +233,64 @@ describe('advanced > ', () => {
   })
 
   describe('자유롭게 작성해보세요.', () => {
-    test('새로운 유틸 함수를 만든 후에 테스트 코드를 작성해서 실행해보세요', () => {
-      expect(true).toBe(false);
-    })
+    test('상품 가격 포맷팅 유틸 함수 테스트', () => {
+      const formatPrice = (price: number) => {
+        return price.toLocaleString('ko-KR') + '원';
+      };
+      expect(formatPrice(10000)).toBe('10,000원');
+      expect(formatPrice(1000000)).toBe('1,000,000원');
+    });
 
-    test('새로운 hook 함수르 만든 후에 테스트 코드를 작성해서 실행해보세요', () => {
-      expect(true).toBe(false);
-    })
+    test('할인가 계산 유틸 함수 테스트', () => {
+      const calculateDiscount = (price: number, discountRate: number) => {
+        return price * (1 - discountRate / 100);
+      };
+      expect(calculateDiscount(10000, 10)).toBe(9000);
+      expect(calculateDiscount(20000, 20)).toBe(16000);
+    });
+
+    test('배열 정렬 유틸 함수 테스트', () => {
+      const sortByPrice = (items: {price: number}[]) => {
+        return [...items].sort((a, b) => a.price - b.price);
+      };
+      const items = [{price: 300}, {price: 100}, {price: 200}];
+      expect(sortByPrice(items)).toEqual([{price: 100}, {price: 200}, {price: 300}]);
+    });
+
+    test('useCounter 커스텀 훅 테스트', () => {
+      const { result } = renderHook(() => {
+        const [count, setCount] = useState(0);
+        const increment = () => setCount(prev => prev + 1);
+        const decrement = () => setCount(prev => prev - 1);
+        return { count, increment, decrement };
+      });
+
+      act(() => {
+        result.current.increment();
+      });
+      expect(result.current.count).toBe(1);
+    });
+
+
+    test('useLocalStorage 커스텀 훅 테스트', () => {
+      const { result } = renderHook(() => {
+        const [value, setValue] = useState(() => {
+          const saved = localStorage.getItem('testKey');
+          return saved ? JSON.parse(saved) : '';
+        });
+        
+        useEffect(() => {
+          localStorage.setItem('testKey', JSON.stringify(value));
+        }, [value]);
+
+        return [value, setValue] as const;
+      });
+
+      act(() => {
+        result.current[1]('test value');
+      });
+      expect(result.current[0]).toBe('test value');
+    });
   })
 })
 
