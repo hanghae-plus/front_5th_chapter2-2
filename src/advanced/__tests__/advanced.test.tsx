@@ -2,9 +2,12 @@ import { act, fireEvent, render, screen, within } from '@testing-library/react';
 import { useState } from 'react';
 import { describe, expect, test } from 'vitest';
 import { Coupon } from '../../refactoring/models/coupon/types';
-import { Product } from '../../refactoring/models/product/types';
+import { Product, Discount } from '../../refactoring/models/product/types';
 import { AdminPage } from '../../refactoring/pages/AdminPage';
 import { CartPage } from '../../refactoring/pages/CartPage';
+import { getMaxDiscount } from '../../refactoring/utils/getMaxDiscount';
+import { useCart } from '../../refactoring/models/cart/useCart';
+import { renderHook } from '@testing-library/react';
 
 const mockProducts: Product[] = [
   {
@@ -265,12 +268,121 @@ describe('advanced > ', () => {
   });
 
   describe('자유롭게 작성해보세요.', () => {
-    test('새로운 유틸 함수를 만든 후에 테스트 코드를 작성해서 실행해보세요', () => {
-      expect(true).toBe(false);
+    describe('유틸 함수 테스트', () => {
+      test('getMaxDiscount 함수는 할인율 중 최대값을 반환한다', () => {
+        const discounts = [
+          { quantity: 5, rate: 0.1 },
+          { quantity: 10, rate: 0.2 },
+          { quantity: 15, rate: 0.15 },
+        ];
+
+        expect(getMaxDiscount(discounts)).toBe(0.2);
+      });
+
+      test('getMaxDiscount 함수는 할인율이 없을 때 0을 반환한다', () => {
+        const discounts: Discount[] = [];
+        expect(getMaxDiscount(discounts)).toBe(0);
+      });
     });
 
-    test('새로운 hook 함수르 만든 후에 테스트 코드를 작성해서 실행해보세요', () => {
-      expect(true).toBe(false);
+    describe('hook 함수 테스트', () => {
+      test('useCart hook은 상품을 장바구니에 추가할 수 있다', () => {
+        const { result } = renderHook(() => useCart());
+        const product: Product = {
+          id: '1',
+          name: '상품1',
+          price: 10000,
+          stock: 10,
+          discounts: [],
+        };
+
+        act(() => {
+          result.current.addToCart(product);
+        });
+
+        expect(result.current.cart).toHaveLength(1);
+        expect(result.current.cart[0].product).toEqual(product);
+        expect(result.current.cart[0].quantity).toBe(1);
+      });
+
+      test('useCart hook은 장바구니에서 상품을 제거할 수 있다', () => {
+        const { result } = renderHook(() => useCart());
+        const product: Product = {
+          id: '1',
+          name: '상품1',
+          price: 10000,
+          stock: 10,
+          discounts: [],
+        };
+
+        act(() => {
+          result.current.addToCart(product);
+          result.current.removeFromCart(product.id);
+        });
+
+        expect(result.current.cart).toHaveLength(0);
+      });
+
+      test('useCart hook은 상품 수량을 업데이트할 수 있다', () => {
+        const { result } = renderHook(() => useCart());
+        const product: Product = {
+          id: '1',
+          name: '상품1',
+          price: 10000,
+          stock: 10,
+          discounts: [],
+        };
+
+        act(() => {
+          result.current.addToCart(product);
+          result.current.updateQuantity(product.id, 5);
+        });
+
+        expect(result.current.cart[0].quantity).toBe(5);
+      });
+
+      test('useCart hook은 쿠폰을 적용할 수 있다', () => {
+        const { result } = renderHook(() => useCart());
+        const coupon: Coupon = {
+          name: '10% 할인 쿠폰',
+          code: 'PERCENT10',
+          discountType: 'percentage',
+          discountValue: 10,
+        };
+
+        act(() => {
+          result.current.applyCoupon(coupon);
+        });
+
+        expect(result.current.selectedCoupon).toEqual(coupon);
+      });
+
+      test('useCart hook은 장바구니 총액을 계산할 수 있다', () => {
+        const { result } = renderHook(() => useCart());
+        const product: Product = {
+          id: '1',
+          name: '상품1',
+          price: 10000,
+          stock: 10,
+          discounts: [],
+        };
+        const coupon: Coupon = {
+          name: '10% 할인 쿠폰',
+          code: 'PERCENT10',
+          discountType: 'percentage',
+          discountValue: 10,
+        };
+
+        act(() => {
+          result.current.addToCart(product, 2);
+          result.current.applyCoupon(coupon);
+        });
+
+        const total = result.current.calculateTotal();
+        expect(total.totalBeforeDiscount).toBe(20000);
+        expect(total.totalDiscount).toBe(2000);
+        expect(total.totalAfterDiscount).toBe(18000);
+      });
     });
   });
 });

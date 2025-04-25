@@ -53,12 +53,10 @@ export const AdminPage = ({
     });
   };
 
-  // handleEditProduct 함수 수정
   const handleEditProduct = (product: Product) => {
     setEditingProduct({ ...product });
   };
 
-  // 새로운 핸들러 함수 추가
   const handleProductNameUpdate = (productId: string, newName: string) => {
     if (editingProduct && editingProduct.id === productId) {
       const updatedProduct = { ...editingProduct, name: newName };
@@ -66,7 +64,6 @@ export const AdminPage = ({
     }
   };
 
-  // 새로운 핸들러 함수 추가
   const handlePriceUpdate = (productId: string, newPrice: number) => {
     if (editingProduct && editingProduct.id === productId) {
       const updatedProduct = { ...editingProduct, price: newPrice };
@@ -74,7 +71,6 @@ export const AdminPage = ({
     }
   };
 
-  // 수정 완료 핸들러 함수 추가
   const handleEditComplete = () => {
     if (editingProduct) {
       onProductUpdate(editingProduct);
