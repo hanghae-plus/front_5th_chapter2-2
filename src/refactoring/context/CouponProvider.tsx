@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback } from 'react';
+import React, { createContext, useContext, useState, useCallback, useMemo } from 'react';
 import { Coupon } from '../../types';
 import { INITIAL_COUPON } from '../constants/initData';
 interface CouponContextType {
@@ -22,11 +22,14 @@ export const CouponProvider: React.FC<{
 
   return (
     <CouponContext.Provider
-      value={{
-        newCoupon,
-        setNewCoupon,
-        handleAddCoupon
-      }}
+      value={useMemo(
+        () => ({
+          newCoupon,
+          setNewCoupon,
+          handleAddCoupon
+        }),
+        [newCoupon]
+      )}
     >
       {children}
     </CouponContext.Provider>

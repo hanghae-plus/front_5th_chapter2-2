@@ -1,12 +1,12 @@
-import { useState } from 'react';
 import { CartPage } from './pages/CartPage.tsx';
 import { AdminPage } from './pages/AdminPage.tsx';
 import { useCoupons, useProducts } from './hooks';
+import useLocalStorage from './hooks/useLocalStorage.ts';
 
 const App = () => {
   const { products, updateProduct, addProduct } = useProducts();
   const { coupons, addCoupon } = useCoupons();
-  const [isAdmin, setIsAdmin] = useState(false);
+  const { value: isAdmin, setLocalStorageValue: setIsAdmin } = useLocalStorage('isAdmin', false);
 
   return (
     <div className="min-h-screen bg-gray-100">

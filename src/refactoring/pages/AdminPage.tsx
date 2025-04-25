@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Coupon, Product } from '../../types.ts';
 import ProductSection from '../components/AdminPage/Product/ManageProductSection.tsx';
 import { EditProductProvider } from '../context/EditProductContext.tsx';

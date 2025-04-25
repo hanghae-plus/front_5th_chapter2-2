@@ -1,4 +1,3 @@
-import React from 'react';
 import { Coupon } from '../../../../types';
 
 export default function CurrentApplyCoupon({ coupons }: { coupons: Coupon[] }) {

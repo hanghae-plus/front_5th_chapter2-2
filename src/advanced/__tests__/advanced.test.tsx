@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { describe, expect, test } from 'vitest';
-import { act, fireEvent, render, screen, within } from '@testing-library/react';
+import { act, fireEvent, render, screen, within, renderHook } from '@testing-library/react';
 import { CartPage } from '../../refactoring/pages/CartPage';
 import { AdminPage } from '../../refactoring/pages/AdminPage';
 import { Coupon, Product } from '../../types';
+import useLocalStorage from '../../refactoring/hooks/useLocalStorage';
 
 const mockProducts: Product[] = [
   {
@@ -228,13 +229,31 @@ describe('advanced > ', () => {
     });
   });
 
-  describe('자유롭게 작성해보세요.', () => {
-    test('새로운 유틸 함수를 만든 후에 테스트 코드를 작성해서 실행해보세요', () => {
-      expect(true).toBe(true);
+  describe('useLocalStorage hook 테스트 > ', () => {
+    test('useLocalStorage 훅이 초기 값을 가져오고 localStorage를 업데이트한다', () => {
+      const key = 'test-key';
+      const initialValue = 'initial';
+
+      const { result } = renderHook(() => useLocalStorage<string>(key, initialValue));
+
+      expect(result.current.value).toBe('initial');
+      expect(localStorage.getItem(key)).toBeNull();
+
+      act(() => {
+        result.current.setLocalStorageValue('updated');
+      });
+
+      expect(result.current.value).toBe('updated');
+      expect(localStorage.getItem(key)).toBe(JSON.stringify('updated'));
     });
 
-    test('새로운 hook 함수르 만든 후에 테스트 코드를 작성해서 실행해보세요', () => {
-      expect(true).toBe(true);
+    test('useLocalStorage 훅이 localStorage 값을 우선해서 읽는다', () => {
+      const key = 'test-key-2';
+      localStorage.setItem(key, JSON.stringify('fromStorage'));
+
+      const { result } = renderHook(() => useLocalStorage<string>(key, 'fallback'));
+
+      expect(result.current.value).toBe('fromStorage');
     });
   });
 });
