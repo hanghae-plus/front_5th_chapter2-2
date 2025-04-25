@@ -1,7 +1,7 @@
 import { CartItem, Coupon, Product } from '../../types';
 import { useLocalStorage } from './useLocalStorage';
 import { calculateDiscount, DiscountCalculation } from './useDiscountCalculator';
-
+import { useState } from 'react';
 /**
  * 장바구니 관리를 위한 커스텀 훅
  * @returns 장바구니 상태와 관련 함수들
@@ -9,7 +9,7 @@ import { calculateDiscount, DiscountCalculation } from './useDiscountCalculator'
 export const useCart = () => {
   // 로컬 스토리지를 사용하여 장바구니 정보 유지
   const [cart, setCart] = useLocalStorage<CartItem[]>('cart', []);
-  const [selectedCoupon, setSelectedCoupon] = useLocalStorage<Coupon | null>('selectedCoupon', null);
+  const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
 
   /**
    * 장바구니에 상품 추가
