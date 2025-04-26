@@ -1,10 +1,28 @@
 import { useState } from "react";
-import { Product } from "../../types.ts";
+
+import {
+  Product,
+  updateProduct as updateProductModel,
+  CreateProductProperties,
+  createProduct,
+} from "@/refactoring/entities/product";
 
 export const useProducts = (initialProducts: Product[]) => {
+  const [products, setProducts] = useState<Product[]>(initialProducts);
+
+  const updateProduct = (updatedProduct: Product) => {
+    setProducts((oldProducts) =>
+      updateProductModel(oldProducts, updatedProduct)
+    );
+  };
+
+  const addProduct = (newProduct: CreateProductProperties) => {
+    setProducts((oldProducts) => createProduct(oldProducts, newProduct));
+  };
+
   return {
-    products: [],
-    updateProduct: () => undefined,
-    addProduct: () => undefined,
+    products,
+    updateProduct,
+    addProduct,
   };
 };

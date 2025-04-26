@@ -1,25 +1,53 @@
 // useCart.ts
 import { useState } from "react";
-import { CartItem, Coupon, Product } from "../../types";
-import { calculateCartTotal, updateCartItemQuantity } from "../models/cart";
+
+import {
+  calculateCartTotal,
+  updateCartItemQuantity,
+  createCartItem,
+  removeCartItem,
+  findCartItemByProductId,
+  CartItem,
+} from "@/refactoring/features/cart";
+import { Coupon } from "@/refactoring/entities/coupon";
+import { Product, OutOfStockError } from "@/refactoring/entities/product";
 
 export const useCart = () => {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
 
-  const addToCart = (product: Product) => {};
+  const addToCart = (product: Product) => {
+    if (product.stock <= 0) {
+      throw new OutOfStockError(product);
+    }
 
-  const removeFromCart = (productId: string) => {};
+    const foundCartItem = findCartItemByProductId(cart, product.id);
 
-  const updateQuantity = (productId: string, newQuantity: number) => {};
+    if (foundCartItem) {
+      setCart((oldCart) =>
+        updateCartItemQuantity(oldCart, product.id, foundCartItem.quantity + 1)
+      );
+      return;
+    }
 
-  const applyCoupon = (coupon: Coupon) => {};
+    setCart((oldCart) => createCartItem(oldCart, product));
+  };
 
-  const calculateTotal = () => ({
-    totalBeforeDiscount: 0,
-    totalAfterDiscount: 0,
-    totalDiscount: 0,
-  });
+  const removeFromCart = (productId: string) => {
+    setCart((oldCart) => removeCartItem(oldCart, productId));
+  };
+
+  const updateQuantity = (productId: string, newQuantity: number) => {
+    setCart((oldCart) =>
+      updateCartItemQuantity(oldCart, productId, newQuantity)
+    );
+  };
+
+  const applyCoupon = (coupon: Coupon) => {
+    setSelectedCoupon(coupon);
+  };
+
+  const calculateTotal = () => calculateCartTotal(cart, selectedCoupon);
 
   return {
     cart,
