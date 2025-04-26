@@ -1,4 +1,4 @@
-import { CartItem, Coupon, Product } from "../../types";
+import { CartItem, Coupon, Product } from "@/types";
 
 /** 할인을 포함한 아이템의 총액을 계산합니다. */
 export const calculateItemTotal = (item: CartItem) => {

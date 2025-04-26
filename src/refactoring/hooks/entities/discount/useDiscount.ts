@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Discount, Product } from "../../../../types";
+import { Discount, Product } from "@/types";
 
 interface handleProps {
   products: Product[];

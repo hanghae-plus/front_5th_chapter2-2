@@ -1,6 +1,6 @@
 import React, { createContext, useContext } from "react";
 import { useProducts } from "../hooks";
-import { Product } from "../../types";
+import { Product } from "@/types";
 
 interface ProductContext {
   products: Product[];

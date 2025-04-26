@@ -1,11 +1,11 @@
 // useCart.ts
 import { useState } from "react";
-import { CartItem, Coupon, Product } from "../../../../types";
+import { CartItem, Coupon, Product } from "@/types";
 import {
   calculateCartTotal,
   isRemainingStock,
   updateCartItemQuantity,
-} from "../../../models/cart";
+} from "@r/models/cart";
 /**
  * 엔티티(cart,selectedCoupon)을 다루는 훅
  *데이터: cart

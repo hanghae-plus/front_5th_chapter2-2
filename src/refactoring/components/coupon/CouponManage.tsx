@@ -1,4 +1,4 @@
-import { useCouponContext } from "../../provider/CouponProvider";
+import { useCouponContext } from "@r/provider/CouponProvider";
 
 const CouponManage = () => {
   const { coupons, newCoupon, setNewCoupon, handleAddNewCoupon } =

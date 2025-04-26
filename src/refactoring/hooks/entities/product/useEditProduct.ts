@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Product } from "../../../../types";
-import { useProductContext } from "../../../provider/ProductProvider";
+import { Product } from "@/types";
+import { useProductContext } from "@r/provider/ProductProvider";
 
 // interface Props {
 //   products: Product[];

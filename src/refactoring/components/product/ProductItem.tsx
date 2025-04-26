@@ -1,10 +1,10 @@
-import { Product } from "../../../types";
+import { Product } from "@/types";
 import {
   getDiscountPercent,
   getMaxDiscount,
   getRemainingStock,
-} from "../../models/cart";
-import { useCartContext } from "../../provider/CartProvider";
+} from "@r/models/cart";
+import { useCartContext } from "@r/provider/CartProvider";
 
 interface Props {
   product: Product;

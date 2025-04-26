@@ -1,6 +1,6 @@
-import { useProductForm } from "../../hooks/entities/product/useProductForm";
-import { useNewProduct } from "../../hooks/entities/product/useNewProduct";
-import { useProductContext } from "../../provider/ProductProvider";
+import { useProductForm } from "@r/hooks/entities/product/useProductForm";
+import { useNewProduct } from "@r/hooks/entities/product/useNewProduct";
+import { useProductContext } from "@r/provider/ProductProvider";
 
 const ProductAdd = () => {
   const { showNewProductForm, setShowNewProductForm, handleProductFormToggle } =

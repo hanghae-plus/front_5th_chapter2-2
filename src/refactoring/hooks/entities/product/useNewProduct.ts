@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Product } from "../../../../types";
-import { initialNewProducts } from "../../../constants";
+import { Product } from "@/types";
+import { initialNewProducts } from "@r/constants";
 
 interface handleProps {
   addProduct: (newProduct: Product) => void;

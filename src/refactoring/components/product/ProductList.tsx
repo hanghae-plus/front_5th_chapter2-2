@@ -1,4 +1,4 @@
-import { useProductContext } from "../../provider/ProductProvider";
+import { useProductContext } from "@r/provider/ProductProvider";
 import ProductItem from "./ProductItem";
 
 const ProductList = () => {

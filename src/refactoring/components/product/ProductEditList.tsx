@@ -1,7 +1,7 @@
-import { useProductAccordion } from "../../hooks/entities/product/useProductAccordion";
-import { useDiscount } from "../../hooks/entities/discount/useDiscount";
-import { useEditProduct } from "../../hooks/entities/product/useEditProduct";
-import { useProductContext } from "../../provider/ProductProvider";
+import { useProductAccordion } from "@r/hooks/entities/product/useProductAccordion";
+import { useDiscount } from "@r/hooks/entities/discount/useDiscount";
+import { useEditProduct } from "@r/hooks/entities/product/useEditProduct";
+import { useProductContext } from "@r/provider/ProductProvider";
 
 const ProductEditList = () => {
   const { openProductIds, toggleProductAccordion } = useProductAccordion();

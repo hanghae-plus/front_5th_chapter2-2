@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Product } from "../../../../types.ts";
+import { Product } from "@/types.ts";
 
 /**
  * 엔티티(상품)을 다루는 훅

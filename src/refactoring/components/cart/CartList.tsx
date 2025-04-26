@@ -1,4 +1,4 @@
-import { useCartContext } from "../../provider/CartProvider";
+import { useCartContext } from "@r/provider/CartProvider";
 
 import CartListItem from "./CartListItem";
 
