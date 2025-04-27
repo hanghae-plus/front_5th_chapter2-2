@@ -1,7 +1,7 @@
-import { CheckoutButton, CouponSelector, EmptyCartMessage, OrderSummary } from '.';
+import { CheckoutButton, CouponSelector, OrderSummary } from '.';
 import { CartItem, Coupon } from '../../../../types';
-import { SectionTitle } from '../../../components';
 import { CartList } from '../../../components/cart/CartList';
+import { EmptyCartMessage } from './empty/EmptyCartMessage';
 
 type CartSummarySectionProps = {
   cart: CartItem[];
@@ -30,31 +30,18 @@ export const CartSummarySection = ({
 }: CartSummarySectionProps) => {
   const isCartEmpty = cart.length === 0;
 
+  if (isCartEmpty) return <EmptyCartMessage />;
+
   return (
     <div>
-      <SectionTitle>장바구니 내역</SectionTitle>
-
-      {isCartEmpty ? (
-        <EmptyCartMessage />
-      ) : (
-        <>
-          <CartList carts={cart} updateQuantity={updateQuantity} removeFromCart={removeFromCart} />
-
-          <CouponSelector
-            coupons={coupons}
-            selectedCoupon={selectedCoupon}
-            applyCoupon={applyCoupon}
-          />
-
-          <OrderSummary
-            totalBeforeDiscount={totalBeforeDiscount}
-            totalDiscount={totalDiscount}
-            totalAfterDiscount={totalAfterDiscount}
-          />
-
-          <CheckoutButton onCheckout={onCheckout} disabled={isCartEmpty} />
-        </>
-      )}
+      <CartList carts={cart} updateQuantity={updateQuantity} removeFromCart={removeFromCart} />
+      <CouponSelector coupons={coupons} selectedCoupon={selectedCoupon} applyCoupon={applyCoupon} />
+      <OrderSummary
+        totalBeforeDiscount={totalBeforeDiscount}
+        totalDiscount={totalDiscount}
+        totalAfterDiscount={totalAfterDiscount}
+      />
+      <CheckoutButton onCheckout={onCheckout} disabled={isCartEmpty} />
     </div>
   );
 };

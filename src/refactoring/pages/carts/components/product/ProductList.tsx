@@ -1,21 +1,18 @@
-import { CartItem, Product } from '../../../../types';
-import { getRemainingStock, getMaxDiscount } from '../../../models/cart';
+import { CartItem, Product } from '../../../../../types';
+import { getRemainingStock, getMaxDiscount } from '../../../../models/cart';
 
-export interface ProductCardProps {
+export interface ProductItemProps {
   product: Product;
   cart: CartItem[];
   addToCart: (product: Product) => void;
 }
 
-export const ProductCard = ({ product, cart, addToCart }: ProductCardProps) => {
+const ProductItem = ({ product, cart, addToCart }: ProductItemProps) => {
   const remainingStock = getRemainingStock({ cart, product });
 
   const isSoldOut = remainingStock <= 0;
   return (
-    <div
-      key={product.id}
-      data-testid={`product-${product.id}`}
-      className="bg-white p-3 rounded shadow">
+    <div data-testid={`product-${product.id}`} className="bg-white p-3 rounded shadow">
       <div className="flex justify-between items-center mb-2">
         <span className="font-semibold">{product.name}</span>
         <span className="text-gray-600">{product.price.toLocaleString()}원</span>
@@ -50,4 +47,8 @@ export const ProductCard = ({ product, cart, addToCart }: ProductCardProps) => {
       </button>
     </div>
   );
+};
+
+const ProductList = () => {
+  return <></>;
 };
