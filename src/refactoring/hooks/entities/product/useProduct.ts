@@ -1,10 +1,6 @@
 import { useState } from "react";
 import { Product } from "@/types.ts";
 
-/**
- * 엔티티(상품)을 다루는 훅
- *액션: updateProduct, addProduct
- *데이터: initialProducts(props), products(state)*/
 export const useProducts = (initialProducts: Product[]) => {
   const [products, setProducts] = useState<Product[]>(initialProducts);
 

@@ -2,12 +2,6 @@ import { useState } from "react";
 import { Coupon } from "@/types.ts";
 import { initialNewCoupon } from "@r/constants/coupon.ts";
 
-/**
- * 엔티티(쿠폰)을 다루는 훅
- *
- *데이터: coupons (상태)
- *액션: addCoupon (setState호출)
- */
 export const useCoupons = (initialCoupons: Coupon[]) => {
   const [coupons, setCoupons] = useState<Coupon[]>(initialCoupons);
   const [newCoupon, setNewCoupon] = useState<Coupon>(initialNewCoupon);

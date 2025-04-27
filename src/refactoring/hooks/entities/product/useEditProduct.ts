@@ -2,11 +2,6 @@ import { useState } from "react";
 import { Product } from "@/types";
 import { useProductContext } from "@r/provider/ProductProvider";
 
-// interface Props {
-//   products: Product[];
-//   updateProduct: (updatedProduct: Product) => void;
-// }
-
 export const useEditProduct = () => {
   const { products, updateProduct } = useProductContext();
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);

@@ -6,19 +6,7 @@ import {
   isRemainingStock,
   updateCartItemQuantity,
 } from "@r/models/cart";
-/**
- * 엔티티(cart,selectedCoupon)을 다루는 훅
- *데이터: cart
 
- *액션: 
-    addToCart,
-    removeFromCart,
-    updateQuantity,
-    applyCoupon,
-
-  계산:
-    calculateTotal
- */
 export const useCart = () => {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
@@ -40,7 +28,6 @@ export const useCart = () => {
       }
       return [...prevCart, { product, quantity: 1 }];
     });
-    // 장바구니 추가 됨 ->
   };
 
   /**장바구니에서 상품을 삭제합니다 */
