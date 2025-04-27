@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { CartItem, Coupon, Product } from '../../types';
-import { calculateCartTotal, getUpdatedCart, updateCartItemQuantity } from '../models/cart';
+import { getUpdatedCart, updateCartItemQuantity } from '../models/cart';
 
 export const useCart = () => {
   const [cart, setCart] = useState<CartItem[]>([]);
@@ -22,15 +22,12 @@ export const useCart = () => {
     setSelectedCoupon(coupon);
   };
 
-  const calculateTotal = () => calculateCartTotal(cart, selectedCoupon);
-
   return {
     cart,
     addToCart,
     removeFromCart,
     updateQuantity,
     applyCoupon,
-    calculateTotal,
     selectedCoupon,
   };
 };

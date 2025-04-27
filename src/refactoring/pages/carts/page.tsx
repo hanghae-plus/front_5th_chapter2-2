@@ -1,8 +1,7 @@
 import { Coupon, Product } from '../../../types.ts';
-import { useCart } from '../../hooks/useCart.ts';
-import { getMaxDiscount, getRemainingStock } from '../../models/cart.ts';
 import { ProductListSection, CartSummarySection } from './components';
 import { SectionTitle } from '../../components';
+import { useCart } from '../../hooks/useCart.ts';
 
 interface CartPageProps {
   products: Product[];
@@ -10,17 +9,8 @@ interface CartPageProps {
 }
 
 export const CartPage = ({ products, coupons }: CartPageProps) => {
-  const {
-    cart,
-    addToCart,
-    removeFromCart,
-    updateQuantity,
-    applyCoupon,
-    calculateTotal,
-    selectedCoupon,
-  } = useCart();
-
-  const { totalBeforeDiscount, totalAfterDiscount, totalDiscount } = calculateTotal();
+  const { cart, addToCart, removeFromCart, updateQuantity, applyCoupon, selectedCoupon } =
+    useCart();
 
   return (
     <>
@@ -37,9 +27,6 @@ export const CartPage = ({ products, coupons }: CartPageProps) => {
               cart={cart}
               coupons={coupons}
               selectedCoupon={selectedCoupon}
-              totalBeforeDiscount={totalBeforeDiscount}
-              totalDiscount={totalDiscount}
-              totalAfterDiscount={totalAfterDiscount}
               updateQuantity={updateQuantity}
               removeFromCart={removeFromCart}
               applyCoupon={applyCoupon}

@@ -6,6 +6,7 @@ import { AdminPage } from '../../refactoring/pages/admin/page';
 import { CartItem, Coupon, Product } from '../../types';
 import { useCart, useCoupons, useProducts } from '../../refactoring/hooks';
 import * as cartUtils from '../../refactoring/models/cart';
+import { calculateCartTotal } from '../../refactoring/models/cart';
 
 const mockProducts: Product[] = [
   {
@@ -489,7 +490,7 @@ describe('basic > ', () => {
         result.current.applyCoupon(testCoupon);
       });
 
-      const total = result.current.calculateTotal();
+      const total = calculateCartTotal(result.current.cart, result.current.selectedCoupon);
       expect(total.totalBeforeDiscount).toBe(200);
       expect(total.totalAfterDiscount).toBe(180);
       expect(total.totalDiscount).toBe(20);

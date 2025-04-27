@@ -1,15 +1,13 @@
 import { CheckoutButton, CouponSelector, OrderSummary } from '.';
 import { CartItem, Coupon } from '../../../../types';
 import { CartList } from '../../../components/cart/CartList';
+import { calculateCartTotal } from '../../../models/cart';
 import { EmptyCartMessage } from './empty/EmptyCartMessage';
 
 type CartSummarySectionProps = {
   cart: CartItem[];
   coupons: Coupon[];
   selectedCoupon: Coupon | null;
-  totalBeforeDiscount: number;
-  totalDiscount: number;
-  totalAfterDiscount: number;
   updateQuantity: (productId: string, newQuantity: number) => void;
   removeFromCart: (productId: string) => void;
   applyCoupon: (coupon: Coupon) => void;
@@ -20,15 +18,16 @@ export const CartSummarySection = ({
   cart,
   coupons,
   selectedCoupon,
-  totalBeforeDiscount,
-  totalDiscount,
-  totalAfterDiscount,
   updateQuantity,
   removeFromCart,
   applyCoupon,
   onCheckout,
 }: CartSummarySectionProps) => {
   const isCartEmpty = cart.length === 0;
+  const { totalBeforeDiscount, totalAfterDiscount, totalDiscount } = calculateCartTotal(
+    cart,
+    selectedCoupon
+  );
 
   if (isCartEmpty) return <EmptyCartMessage />;
 
