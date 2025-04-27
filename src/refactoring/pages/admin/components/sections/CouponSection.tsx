@@ -1,5 +1,5 @@
-import { Coupon } from '../../../../types';
-import { SectionTitle } from '../../../components';
+import { Coupon } from '../../../../../types';
+import { SectionTitle } from '../../../../components';
 
 export type CouponSectionProps = {
   newCoupon: Coupon;
@@ -15,8 +15,7 @@ export const CouponSection = ({
   coupons,
 }: CouponSectionProps) => {
   return (
-    <div>
-      <SectionTitle>쿠폰 관리</SectionTitle>
+    <>
       <div className="bg-white p-4 rounded shadow">
         <div className="space-y-2 mb-4">
           <input
@@ -80,6 +79,6 @@ export const CouponSection = ({
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Product } from '../../types.ts';
+import { Coupon, Discount, Product } from '../../types.ts';
 
 const updateProductInList = (products: Product[], updatedProduct: Product) => {
   return products.map((product) => (product.id === updatedProduct.id ? updatedProduct : product));
@@ -38,6 +38,21 @@ export const initialProducts: Product[] = [
 
 export const useProducts = (initialProducts: Product[]) => {
   const [products, setProducts] = useState<Product[]>(initialProducts);
+  const [openProductIds, setOpenProductIds] = useState<Set<string>>(new Set());
+  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+  const [newDiscount, setNewDiscount] = useState<Discount>({ quantity: 0, rate: 0 });
+  const [newCoupon, setNewCoupon] = useState<Coupon>({
+    name: '',
+    code: '',
+    discountType: 'percentage',
+    discountValue: 0,
+  });
+  const [newProduct, setNewProduct] = useState<Omit<Product, 'id'>>({
+    name: '',
+    price: 0,
+    stock: 0,
+    discounts: [],
+  });
 
   const updateProduct = (updatedProduct: Product) => {
     setProducts((prevProducts) => updateProductInList(prevProducts, updatedProduct));

@@ -1,2 +1,1 @@
-export * from './CouponSection';
-export * from './ProductsAdminSection';
+export * from './sections/CouponSection';
