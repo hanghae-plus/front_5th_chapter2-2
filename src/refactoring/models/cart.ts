@@ -1,6 +1,5 @@
 import { CartItem, Coupon, Product } from '../../types';
 
-//
 export const calculateItemTotal = (item: CartItem) => {
   const { product, quantity } = item;
   const discount = getMaxApplicableDiscount(item);
@@ -38,18 +37,6 @@ export const getRemainingStock = ({ cart, product }: { cart: CartItem[]; product
   const cartItem = cart.find((item) => item.product.id === product.id);
   const result = product.stock - (cartItem?.quantity || 0);
   return result;
-};
-
-export const addToCart = ({ prevCart, product }: { prevCart: CartItem[]; product: Product }) => {
-  const existingItem = prevCart.find((item) => item.product.id === product.id);
-  if (existingItem) {
-    return prevCart.map((item) =>
-      item.product.id === product.id
-        ? { ...item, quantity: Math.min(item.quantity + 1, product.stock) }
-        : item
-    );
-  }
-  return [...prevCart, { product, quantity: 1 }];
 };
 
 export const calculateCartTotal = (cart: CartItem[], selectedCoupon: Coupon | null) => {

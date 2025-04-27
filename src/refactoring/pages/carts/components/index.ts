@@ -1,11 +1,7 @@
 // section components
-export * from './CartSummarySection';
-export * from './ProductListSection';
+export * from './sections/ProductListSection';
 
 // productListSection components
-export * from './ProductCard';
-export * from './DiscountInfo';
+export * from './product/ProductCard';
 
-export * from './CouponSelector';
-export * from './OrderSummary';
-export * from './CheckoutButton';
+export * from './cart/CouponSelector';

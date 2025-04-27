@@ -1,7 +1,8 @@
 import { Coupon, Product } from '../../../types.ts';
-import { ProductListSection, CartSummarySection } from './components';
+import CartSummarySection from './components/sections/CartSummarySection.tsx';
 import { SectionTitle } from '../../components';
 import { useCart } from '../../hooks/useCart.ts';
+import { ProductListSection } from './components/sections/ProductListSection.tsx';
 
 interface CartPageProps {
   products: Product[];

@@ -1,5 +1,5 @@
-import { ProductCard } from '.';
-import { CartItem, Product } from '../../../../types';
+import { ProductCard } from '..';
+import { CartItem, Product } from '../../../../../types';
 
 type ProductLsitProps = {
   products: Product[];

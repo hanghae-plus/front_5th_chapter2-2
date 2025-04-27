@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { CartItem, Coupon, Product } from '../../types';
 import { getUpdatedCart, updateCartItemQuantity } from '../models/cart';
+import { initialCoupons, useCoupons } from './useCoupon';
 
 export const useCart = () => {
   const [cart, setCart] = useState<CartItem[]>([]);
-  const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
+  const { selectedCoupon, setSelectedCoupon } = useCoupons(initialCoupons);
 
   const addToCart = (product: Product) => {
     setCart((prevCart) => getUpdatedCart(prevCart, product));
