@@ -8,11 +8,14 @@ import {
   screen,
   within,
 } from "@testing-library/react";
-import { CartPage } from "../../refactoring/components/CartPage";
-import { AdminPage } from "../../refactoring/components/AdminPage";
+import { CartPage } from "../../refactoring/pages/CartPage";
+import { AdminPage } from "../../refactoring/pages/AdminPage";
 import { CartItem, Coupon, Product } from "../../types";
 import { useCart, useCoupons, useProducts } from "../../refactoring/hooks";
 import * as cartUtils from "../../refactoring/models/cart";
+import { ProductProvider } from "../../refactoring/provider/ProductProvider";
+import { CouponProvider } from "../../refactoring/provider/CouponProvider";
+import { CartProvider } from "../../refactoring/provider/CartProvider";
 
 const mockProducts: Product[] = [
   {
@@ -53,38 +56,75 @@ const mockCoupons: Coupon[] = [
 ];
 
 const TestAdminPage = () => {
-  const [products, setProducts] = useState<Product[]>(mockProducts);
-  const [coupons, setCoupons] = useState<Coupon[]>(mockCoupons);
+  const [products] = useState<Product[]>(mockProducts);
+  const [coupons] = useState<Coupon[]>(mockCoupons);
 
-  const handleProductUpdate = (updatedProduct: Product) => {
-    setProducts((prevProducts) =>
-      prevProducts.map((p) => (p.id === updatedProduct.id ? updatedProduct : p))
-    );
-  };
+  // const [products, setProducts] = useState<Product[]>(mockProducts);
+  // const [coupons, setCoupons] = useState<Coupon[]>(mockCoupons);
+  // const [newCoupon, setNewCoupon] = useState<Coupon>({
+  //   name: "",
+  //   code: "",
+  //   discountType: "percentage",
+  //   discountValue: 0,
+  // });
+  // const handleProductUpdate = (updatedProduct: Product) => {
+  //   setProducts((prevProducts) =>
+  //     prevProducts.map((p) =>
+  //       p.id === updatedProduct.id ? updatedProduct : p,
+  //     ),
+  //   );
+  // };
 
-  const handleProductAdd = (newProduct: Product) => {
-    setProducts((prevProducts) => [...prevProducts, newProduct]);
-  };
+  // const handleProductAdd = (newProduct: Product) => {
+  //   setProducts((prevProducts) => [...prevProducts, newProduct]);
+  // };
 
-  const handleCouponAdd = (newCoupon: Coupon) => {
-    setCoupons((prevCoupons) => [...prevCoupons, newCoupon]);
-  };
+  // const handleCouponAdd = (newCoupon: Coupon) => {
+  //   setCoupons((prevCoupons) => [...prevCoupons, newCoupon]);
+  // };
+  // const addCoupon = (newCoupon: Coupon) => {
+  //   setCoupons((prevCoupons) => [...prevCoupons, newCoupon]);
+  // };
 
+  // const resetNewCoupon = () => {
+  //   setNewCoupon({
+  //     name: "",
+  //     code: "",
+  //     discountType: "percentage",
+  //     discountValue: 0,
+  //   });
+  // };
+  // const handleAddNewCoupon = () => {
+  //   addCoupon(newCoupon);
+  //   resetNewCoupon();
+  // };
+
+  //FIXME: 프로바이더 적용
   return (
-    <AdminPage
-      products={products}
-      coupons={coupons}
-      onProductUpdate={handleProductUpdate}
-      onProductAdd={handleProductAdd}
-      onCouponAdd={handleCouponAdd}
-    />
+    <ProductProvider initialProducts={products}>
+      <CouponProvider intialCoupons={coupons}>
+        <AdminPage />
+      </CouponProvider>
+    </ProductProvider>
   );
 };
 
 describe("basic > ", () => {
   describe("시나리오 테스트 > ", () => {
     test("장바구니 페이지 테스트 > ", async () => {
-      render(<CartPage products={mockProducts} coupons={mockCoupons} />);
+      //FIXME: 프로바이더 적용
+
+      // render(<CartPage products={mockProducts} coupons={mockCoupons} />);
+      render(
+        <ProductProvider initialProducts={mockProducts}>
+          <CouponProvider intialCoupons={mockCoupons}>
+            <CartProvider>
+              <CartPage />
+            </CartProvider>
+          </CouponProvider>
+        </ProductProvider>,
+      );
+
       const product1 = screen.getByTestId("product-p1");
       const product2 = screen.getByTestId("product-p2");
       const product3 = screen.getByTestId("product-p3");
@@ -228,24 +268,24 @@ describe("basic > ", () => {
       fireEvent.click(screen.getByText("할인 추가"));
 
       expect(
-        screen.queryByText("5개 이상 구매 시 5% 할인")
+        screen.queryByText("5개 이상 구매 시 5% 할인"),
       ).toBeInTheDocument();
 
       // 할인 삭제
       fireEvent.click(screen.getAllByText("삭제")[0]);
       expect(
-        screen.queryByText("10개 이상 구매 시 10% 할인")
+        screen.queryByText("10개 이상 구매 시 10% 할인"),
       ).not.toBeInTheDocument();
       expect(
-        screen.queryByText("5개 이상 구매 시 5% 할인")
+        screen.queryByText("5개 이상 구매 시 5% 할인"),
       ).toBeInTheDocument();
 
       fireEvent.click(screen.getAllByText("삭제")[0]);
       expect(
-        screen.queryByText("10개 이상 구매 시 10% 할인")
+        screen.queryByText("10개 이상 구매 시 10% 할인"),
       ).not.toBeInTheDocument();
       expect(
-        screen.queryByText("5개 이상 구매 시 5% 할인")
+        screen.queryByText("5개 이상 구매 시 5% 할인"),
       ).not.toBeInTheDocument();
 
       // 4. 쿠폰 추가

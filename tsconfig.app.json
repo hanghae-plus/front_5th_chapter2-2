@@ -16,6 +16,10 @@
     "moduleDetection": "force",
     "noEmit": true,
     "jsx": "react-jsx",
+    "paths": {
+      "@r/*": ["./src/refactoring/*"],
+      "@/*": ["./src/*"]
+    },
 
     /* Linting */
     "strict": true,
