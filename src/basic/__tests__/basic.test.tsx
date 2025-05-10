@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { describe, expect, test } from "vitest";
 import {
   act,
@@ -8,11 +7,18 @@ import {
   screen,
   within,
 } from "@testing-library/react";
-import { CartPage } from "../../refactoring/components/CartPage";
-import { AdminPage } from "../../refactoring/components/AdminPage";
-import { CartItem, Coupon, Product } from "../../types";
-import { useCart, useCoupons, useProducts } from "../../refactoring/hooks";
-import * as cartUtils from "../../refactoring/models/cart";
+import { AdminPage, CartPage } from "@/refactoring/pages";
+
+import * as cartUtils from "@r/model/cart/lib";
+import { Product } from "@r/model/product/types";
+import { Coupon } from "@r/model/coupon/types";
+import { ProductProvider } from "@r/model/product/product-context";
+import { CouponProvider } from "@r/model/coupon/coupon-context";
+import { CartProvider } from "@r/model/cart/cart-context";
+import { useProducts } from "@r/model/product/use-product";
+import { useCoupons } from "@r/model/coupon/use-coupon";
+import { CartItem } from "@r/model/cart/types";
+import { useCart } from "@r/model/cart/use-cart";
 
 const mockProducts: Product[] = [
   {
@@ -53,38 +59,33 @@ const mockCoupons: Coupon[] = [
 ];
 
 const TestAdminPage = () => {
-  const [products, setProducts] = useState<Product[]>(mockProducts);
-  const [coupons, setCoupons] = useState<Coupon[]>(mockCoupons);
-
-  const handleProductUpdate = (updatedProduct: Product) => {
-    setProducts((prevProducts) =>
-      prevProducts.map((p) => (p.id === updatedProduct.id ? updatedProduct : p))
-    );
-  };
-
-  const handleProductAdd = (newProduct: Product) => {
-    setProducts((prevProducts) => [...prevProducts, newProduct]);
-  };
-
-  const handleCouponAdd = (newCoupon: Coupon) => {
-    setCoupons((prevCoupons) => [...prevCoupons, newCoupon]);
-  };
-
   return (
-    <AdminPage
-      products={products}
-      coupons={coupons}
-      onProductUpdate={handleProductUpdate}
-      onProductAdd={handleProductAdd}
-      onCouponAdd={handleCouponAdd}
-    />
+    <ProductProvider initialProducts={mockProducts}>
+      <CouponProvider initialCoupons={mockCoupons}>
+        <CartProvider>
+          <AdminPage />
+        </CartProvider>
+      </CouponProvider>
+    </ProductProvider>
+  );
+};
+
+const TestCartPage = () => {
+  return (
+    <ProductProvider initialProducts={mockProducts}>
+      <CouponProvider initialCoupons={mockCoupons}>
+        <CartProvider>
+          <CartPage />
+        </CartProvider>
+      </CouponProvider>
+    </ProductProvider>
   );
 };
 
 describe("basic > ", () => {
   describe("시나리오 테스트 > ", () => {
     test("장바구니 페이지 테스트 > ", async () => {
-      render(<CartPage products={mockProducts} coupons={mockCoupons} />);
+      render(<TestCartPage />);
       const product1 = screen.getByTestId("product-p1");
       const product2 = screen.getByTestId("product-p2");
       const product3 = screen.getByTestId("product-p3");
